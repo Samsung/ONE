@@ -183,6 +183,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:aa0baf85a7a5fb30d1145b7f99206867e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d77e33840448772c6624d895507a655" id="r_a8d77e33840448772c6624d895507a655"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1loader_1_1_base_loader.html#a8d77e33840448772c6624d895507a655">loadOperationIO</a> (const <a class="el" href="classonert_1_1loader_1_1_base_loader.html#a55006562f36bcf4ad0bf3aee7b0be7aa">Operator</a> *op, <a class="el" href="classonert_1_1ir_1_1_operand_index_sequence.html">ir::OperandIndexSequence</a> &amp;inputs, <a class="el" href="classonert_1_1ir_1_1_operand_index_sequence.html">ir::OperandIndexSequence</a> &amp;outputs)</td></tr>
 <tr class="separator:a8d77e33840448772c6624d895507a655"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc44332b5ef01be922db095295b9080a" id="r_abc44332b5ef01be922db095295b9080a"><td class="memTemplParams" colspan="2">template&lt;typename OpIR , typename... Args&gt; </td></tr>
+<tr class="memitem:abc44332b5ef01be922db095295b9080a"><td class="memTemplItemLeft" align="right" valign="top">const OpIR *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classonert_1_1loader_1_1_base_loader.html#abc44332b5ef01be922db095295b9080a">loadOperationTo</a> (const <a class="el" href="classonert_1_1loader_1_1_base_loader.html#a55006562f36bcf4ad0bf3aee7b0be7aa">Operator</a> *op, <a class="el" href="classonert_1_1ir_1_1_graph.html">ir::Graph</a> &amp;subg, Args &amp;&amp;...args)</td></tr>
+<tr class="separator:abc44332b5ef01be922db095295b9080a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1560a197419b7fe68d19883ebc6231e" id="r_ac1560a197419b7fe68d19883ebc6231e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1loader_1_1_base_loader.html#ac1560a197419b7fe68d19883ebc6231e">loadOperation</a> (const <a class="el" href="classonert_1_1loader_1_1_base_loader.html#a55006562f36bcf4ad0bf3aee7b0be7aa">Operator</a> *op, <a class="el" href="classonert_1_1ir_1_1_graph.html">ir::Graph</a> &amp;subg)</td></tr>
 <tr class="separator:ac1560a197419b7fe68d19883ebc6231e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab60b38e7eba5685b0d7132103075225a" id="r_ab60b38e7eba5685b0d7132103075225a"><td class="memTemplParams" colspan="2">template&lt;typename Param , typename OptionsType &gt; </td></tr>
@@ -768,15 +771,15 @@ template&lt;typename LoaderDomain &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_base_loader_8h_source.html#l00112">112</a> of file <a class="el" href="_base_loader_8h_source.html">BaseLoader.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  113</span>  {</div>
-<div class="line"><span class="lineno">  114</span>    <span class="keyword">auto</span> <span class="keyword">const</span> builtin_opcode = <a class="code hl_variable" href="classonert_1_1loader_1_1_base_loader.html#a83bba4a86c0d0624db36eea5aa985a51">_domain_model</a>-&gt;operator_codes()-&gt;Get(op-&gt;opcode_index());</div>
-<div class="line"><span class="lineno">  115</span>    <span class="keyword">auto</span> builtin_op = builtin_opcode-&gt;builtin_code();</div>
-<div class="line"><span class="lineno">  116</span>    <span class="keywordflow">if</span> (builtin_op &lt; BuiltinOperator::BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES)</div>
-<div class="line"><span class="lineno">  117</span>      builtin_op = <span class="keyword">static_cast&lt;</span><a class="code hl_typedef" href="classonert_1_1loader_1_1_base_loader.html#aa5998cb62abb8b25195a3b4c40b16bf1">BuiltinOperator</a><span class="keyword">&gt;</span>(builtin_opcode-&gt;deprecated_builtin_code());</div>
-<div class="line"><span class="lineno">  118</span> </div>
-<div class="line"><span class="lineno">  119</span>    <span class="keywordflow">return</span> builtin_op;</div>
-<div class="line"><span class="lineno">  120</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_base_loader_8h_source.html#l00114">114</a> of file <a class="el" href="_base_loader_8h_source.html">BaseLoader.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  115</span>  {</div>
+<div class="line"><span class="lineno">  116</span>    <span class="keyword">auto</span> <span class="keyword">const</span> builtin_opcode = <a class="code hl_variable" href="classonert_1_1loader_1_1_base_loader.html#a83bba4a86c0d0624db36eea5aa985a51">_domain_model</a>-&gt;operator_codes()-&gt;Get(op-&gt;opcode_index());</div>
+<div class="line"><span class="lineno">  117</span>    <span class="keyword">auto</span> builtin_op = builtin_opcode-&gt;builtin_code();</div>
+<div class="line"><span class="lineno">  118</span>    <span class="keywordflow">if</span> (builtin_op &lt; BuiltinOperator::BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES)</div>
+<div class="line"><span class="lineno">  119</span>      builtin_op = <span class="keyword">static_cast&lt;</span><a class="code hl_typedef" href="classonert_1_1loader_1_1_base_loader.html#aa5998cb62abb8b25195a3b4c40b16bf1">BuiltinOperator</a><span class="keyword">&gt;</span>(builtin_opcode-&gt;deprecated_builtin_code());</div>
+<div class="line"><span class="lineno">  120</span> </div>
+<div class="line"><span class="lineno">  121</span>    <span class="keywordflow">return</span> builtin_op;</div>
+<div class="line"><span class="lineno">  122</span>  }</div>
 <div class="ttc" id="aclassonert_1_1loader_1_1_base_loader_html_aa5998cb62abb8b25195a3b4c40b16bf1"><div class="ttname"><a href="classonert_1_1loader_1_1_base_loader.html#aa5998cb62abb8b25195a3b4c40b16bf1">onert::loader::BaseLoader::BuiltinOperator</a></div><div class="ttdeci">typename LoaderDomain::BuiltinOperator BuiltinOperator</div><div class="ttdef"><b>Definition</b> <a href="_base_loader_8h_source.html#l00046">BaseLoader.h:46</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_base_loader_8h_source.html#l00189">onert::loader::BaseLoader&lt; LoaderDomain &gt;::_domain_model</a>.</p>
@@ -1530,7 +1533,7 @@ template&lt;typename LoaderDomain &gt; </div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_reduce_html_a33b05f2f6bd23cebcbde5512b43d9cf3a6970bdc2201030b9c03fbdcf3973858a"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_reduce.html#a33b05f2f6bd23cebcbde5512b43d9cf3a6970bdc2201030b9c03fbdcf3973858a">onert::ir::operation::Reduce::ReduceType::SUM</a></div><div class="ttdeci">@ SUM</div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_reduce_html_a33b05f2f6bd23cebcbde5512b43d9cf3a8e1bde3c3d303163521522cf1d62f21f"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_reduce.html#a33b05f2f6bd23cebcbde5512b43d9cf3a8e1bde3c3d303163521522cf1d62f21f">onert::ir::operation::Reduce::ReduceType::ANY</a></div><div class="ttdeci">@ ANY</div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_reduce_html_a33b05f2f6bd23cebcbde5512b43d9cf3ac8074bb318fb85693233e64acc64c1ed"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_reduce.html#a33b05f2f6bd23cebcbde5512b43d9cf3ac8074bb318fb85693233e64acc64c1ed">onert::ir::operation::Reduce::ReduceType::PROD</a></div><div class="ttdeci">@ PROD</div></div>
-<div class="ttc" id="aclassonert_1_1loader_1_1_base_loader_html_a40bc961fc71181363922edb2cf91b534"><div class="ttname"><a href="classonert_1_1loader_1_1_base_loader.html#a40bc961fc71181363922edb2cf91b534">onert::loader::BaseLoader::getBuiltinOperator</a></div><div class="ttdeci">BuiltinOperator getBuiltinOperator(const Operator *op)</div><div class="ttdef"><b>Definition</b> <a href="_base_loader_8h_source.html#l00112">BaseLoader.h:112</a></div></div>
+<div class="ttc" id="aclassonert_1_1loader_1_1_base_loader_html_a40bc961fc71181363922edb2cf91b534"><div class="ttname"><a href="classonert_1_1loader_1_1_base_loader.html#a40bc961fc71181363922edb2cf91b534">onert::loader::BaseLoader::getBuiltinOperator</a></div><div class="ttdeci">BuiltinOperator getBuiltinOperator(const Operator *op)</div><div class="ttdef"><b>Definition</b> <a href="_base_loader_8h_source.html#l00114">BaseLoader.h:114</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a7d8a220d2262f9d6c658d549ee12cf2c">onert::ir::operation::ElementwiseUnary::ABS</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_binary_arithmetic.html#ab7fb82b7e7691abd67255583c240175aa9eeb52badb613229884838847294b90d">onert::ir::operation::BinaryArithmetic::ADD</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_reduce.html#a33b05f2f6bd23cebcbde5512b43d9cf3a5fb1f955b45e38e31789286a1790398d">onert::ir::operation::Reduce::ALL</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_reduce.html#a33b05f2f6bd23cebcbde5512b43d9cf3a8e1bde3c3d303163521522cf1d62f21f">onert::ir::operation::Reduce::ANY</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_pool2_d.html#a46ca72246c956a38f34d94a51b380330afcefd647d6a866603c627b11347c707a">onert::ir::operation::Pool2D::AVG</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a283929907641c5acaf4c5b67986fc1db">onert::ir::operation::ElementwiseUnary::CAST</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51aef23ef1d426ae1a73a7eed399cef707d">onert::ir::operation::ElementwiseUnary::COS</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51aa81d3a23bce0d4438ba9be9e9f3c29e8">onert::ir::operation::ElementwiseUnary::DEQUANTIZE</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_binary_arithmetic.html#ab7fb82b7e7691abd67255583c240175aa29bbf66f7f8529ec47e394fb5a36c646">onert::ir::operation::BinaryArithmetic::DIV</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_elementwise_activation.html#a655c45f3fd5251307d73aaadd805d329a5b44c930bf0ddeef48b50ef11e5ddd58">onert::ir::operation::ElementwiseActivation::ELU</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a8c670f8c37b95e1ed14a0ce414b049c7">onert::ir::operation::ElementwiseUnary::EXP</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a56c1e354d36beb85b0d881c5b2e24cbe">onert::ir::operation::ElementwiseUnary::FLOOR</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_elementwise_binary.html#a7041ec8a195e8ffbde1e007b8cb49783a77811fd0ec3d3ed2711a923332e8e69f">onert::ir::operation::ElementwiseBinary::FLOOR_DIV</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_elementwise_binary.html#a7041ec8a195e8ffbde1e007b8cb49783ab10eec01ae4fc20357527b92cf75224a">onert::ir::operation::ElementwiseBinary::FLOOR_MOD</a>, <a class="el" href="operation_2_elementwise_activation_8h_source.html#l00070">onert::ir::operation::ElementwiseActivation::infinity</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a4b5ffcdaf38ce4d463171f5c977c5ab3">onert::ir::operation::ElementwiseUnary::LOG</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_elementwise_binary.html#a7041ec8a195e8ffbde1e007b8cb49783aa770916377f618641eccd6783b13503a">onert::ir::operation::ElementwiseBinary::LOGICAL_AND</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a330c6551c4bc9acbc0a7363dc8f68680">onert::ir::operation::ElementwiseUnary::LOGICAL_NOT</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_elementwise_binary.html#a7041ec8a195e8ffbde1e007b8cb49783a0d0389dd347e259ac16a47fc9db81c18">onert::ir::operation::ElementwiseBinary::LOGICAL_OR</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_elementwise_activation.html#a655c45f3fd5251307d73aaadd805d329a72ee60fba0509af07cbbd91398d8db9d">onert::ir::operation::ElementwiseActivation::LOGISTIC</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_elementwise_binary.html#a7041ec8a195e8ffbde1e007b8cb49783a26a4b44a837bf97b972628509912b4a5">onert::ir::operation::ElementwiseBinary::MAX</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_pool2_d.html#a46ca72246c956a38f34d94a51b380330a26a4b44a837bf97b972628509912b4a5">onert::ir::operation::Pool2D::MAX</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_reduce.html#a33b05f2f6bd23cebcbde5512b43d9cf3a26a4b44a837bf97b972628509912b4a5">onert::ir::operation::Reduce::MAX</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_reduce.html#a33b05f2f6bd23cebcbde5512b43d9cf3a4ea6d1161ea24d7599365f574aff6610">onert::ir::operation::Reduce::MEAN</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_elementwise_binary.html#a7041ec8a195e8ffbde1e007b8cb49783ace31e2a082d17e038fcc6e3006166653">onert::ir::operation::ElementwiseBinary::MIN</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_binary_arithmetic.html#ab7fb82b7e7691abd67255583c240175aa2cdf52a55876063ec93b7d18bc741f6c">onert::ir::operation::BinaryArithmetic::MUL</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a5dd68b1a7db42a1cce4dce09dbaa179e">onert::ir::operation::ElementwiseUnary::NEG</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_reduce.html#a33b05f2f6bd23cebcbde5512b43d9cf3ac8074bb318fb85693233e64acc64c1ed">onert::ir::operation::Reduce::PROD</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a5758d4b17069a02495ee183b937221b2">onert::ir::operation::ElementwiseUnary::QUANTIZE</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_elementwise_activation.html#a655c45f3fd5251307d73aaadd805d329ad346bb4679d29be241279f15d7795c1c">onert::ir::operation::ElementwiseActivation::RELU</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a2ea77cf582892014b30e6fa7e558350d">onert::ir::operation::ElementwiseUnary::ROUND</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a66bac724670f51e77f3688d33ca0d781">onert::ir::operation::ElementwiseUnary::RSQRT</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a5b001d63db54e7383587771eeb2018a1">onert::ir::operation::ElementwiseUnary::SIN</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a36875f2500a09ee35d0bb7eb8c0b91b0">onert::ir::operation::ElementwiseUnary::SQRT</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a12dec4e1f7ec620651b2b95c440ffac0">onert::ir::operation::ElementwiseUnary::SQUARE</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_binary_arithmetic.html#ab7fb82b7e7691abd67255583c240175aa241dd841abade20fcb27b8a9f494e1eb">onert::ir::operation::BinaryArithmetic::SUB</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_reduce.html#a33b05f2f6bd23cebcbde5512b43d9cf3a6970bdc2201030b9c03fbdcf3973858a">onert::ir::operation::Reduce::SUM</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_elementwise_activation.html#a655c45f3fd5251307d73aaadd805d329a143c8c6f51b9bb893ce71e38702e3cc1">onert::ir::operation::ElementwiseActivation::TANH</a>, and <a class="el" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a64043bcc02f67f7445eb1b2feedf4e18">onert::ir::operation::ElementwiseUnary::ZEROS_LIKE</a>.</p>
 
@@ -1605,6 +1608,70 @@ template&lt;typename LoaderDomain &gt; </div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_abcab13752e1826b70991e56f8e9a834d"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">GenH5RandomInputs.inputs</a></div><div class="ttdeci">inputs</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00049">GenH5RandomInputs.py:49</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_operand_index_sequence_8h_source.html#l00043">onert::ir::OperandIndexSequence::append()</a>.</p>
+
+</div>
+</div>
+<a id="abc44332b5ef01be922db095295b9080a" name="abc44332b5ef01be922db095295b9080a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc44332b5ef01be922db095295b9080a">&#9670;&#160;</a></span>loadOperationTo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename LoaderDomain &gt; </div>
+<div class="memtemplate">
+template&lt;typename OpIR , typename... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const OpIR * <a class="el" href="classonert_1_1loader_1_1_base_loader.html">onert::loader::BaseLoader</a>&lt; LoaderDomain &gt;::loadOperationTo </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classonert_1_1loader_1_1_base_loader.html#a55006562f36bcf4ad0bf3aee7b0be7aa">Operator</a> *&#160;</td>
+          <td class="paramname"><em>op</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classonert_1_1ir_1_1_graph.html">ir::Graph</a> &amp;&#160;</td>
+          <td class="paramname"><em>subg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Args &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_base_loader_8h_source.html#l00677">677</a> of file <a class="el" href="_base_loader_8h_source.html">BaseLoader.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  679</span>{</div>
+<div class="line"><span class="lineno">  680</span>  <span class="keyword">static_assert</span>(<span class="keyword">sizeof</span>...(args) &lt;= 1, <span class="stringliteral">&quot;You can&#39;t have more than 1 arguments!&quot;</span>);</div>
+<div class="line"><span class="lineno">  681</span>  ir::OperandIndexSequence <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>;</div>
+<div class="line"><span class="lineno">  682</span>  ir::OperandIndexSequence outputs;</div>
+<div class="line"><span class="lineno">  683</span> </div>
+<div class="line"><span class="lineno">  684</span>  <a class="code hl_function" href="classonert_1_1loader_1_1_base_loader.html#a8d77e33840448772c6624d895507a655">loadOperationIO</a>(op, inputs, outputs);</div>
+<div class="line"><span class="lineno">  685</span> </div>
+<div class="line"><span class="lineno">  686</span>  std::unique_ptr&lt;OpIR&gt; new_op(<span class="keyword">new</span> OpIR(inputs, outputs, std::forward&lt;Args&gt;(args)...));</div>
+<div class="line"><span class="lineno">  687</span>  <span class="keyword">auto</span> ret = new_op.get();</div>
+<div class="line"><span class="lineno">  688</span>  subg.addOperation(std::move(new_op));</div>
+<div class="line"><span class="lineno">  689</span> </div>
+<div class="line"><span class="lineno">  690</span>  <span class="keywordflow">return</span> ret;</div>
+<div class="line"><span class="lineno">  691</span>}</div>
+<div class="ttc" id="aclassonert_1_1loader_1_1_base_loader_html_a8d77e33840448772c6624d895507a655"><div class="ttname"><a href="classonert_1_1loader_1_1_base_loader.html#a8d77e33840448772c6624d895507a655">onert::loader::BaseLoader::loadOperationIO</a></div><div class="ttdeci">void loadOperationIO(const Operator *op, ir::OperandIndexSequence &amp;inputs, ir::OperandIndexSequence &amp;outputs)</div><div class="ttdef"><b>Definition</b> <a href="_base_loader_8h_source.html#l00612">BaseLoader.h:612</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_graph_8cc_source.html#l00067">onert::ir::Graph::addOperation()</a>.</p>
 
 </div>
 </div>
@@ -2044,13 +2111,13 @@ template&lt;typename LoaderDomain &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_base_loader_8h_source.html#l00122">122</a> of file <a class="el" href="_base_loader_8h_source.html">BaseLoader.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  123</span>  {</div>
-<div class="line"><span class="lineno">  124</span>    <span class="keyword">const</span> <span class="keyword">auto</span> num_subgraphs = <a class="code hl_variable" href="classonert_1_1loader_1_1_base_loader.html#a83bba4a86c0d0624db36eea5aa985a51">_domain_model</a>-&gt;subgraphs()-&gt;size();</div>
-<div class="line"><span class="lineno">  125</span>    <span class="keywordflow">if</span> (subg_index &lt; 0 || subg_index &gt;= <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(num_subgraphs))</div>
-<div class="line"><span class="lineno">  126</span>      <span class="keywordflow">throw</span> std::runtime_error{std::string{<span class="stringliteral">&quot;Invalid subgraph index - &quot;</span>} +</div>
-<div class="line"><span class="lineno">  127</span>                               std::to_string(subg_index)};</div>
-<div class="line"><span class="lineno">  128</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_base_loader_8h_source.html#l00124">124</a> of file <a class="el" href="_base_loader_8h_source.html">BaseLoader.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  125</span>  {</div>
+<div class="line"><span class="lineno">  126</span>    <span class="keyword">const</span> <span class="keyword">auto</span> num_subgraphs = <a class="code hl_variable" href="classonert_1_1loader_1_1_base_loader.html#a83bba4a86c0d0624db36eea5aa985a51">_domain_model</a>-&gt;subgraphs()-&gt;size();</div>
+<div class="line"><span class="lineno">  127</span>    <span class="keywordflow">if</span> (subg_index &lt; 0 || subg_index &gt;= <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(num_subgraphs))</div>
+<div class="line"><span class="lineno">  128</span>      <span class="keywordflow">throw</span> std::runtime_error{std::string{<span class="stringliteral">&quot;Invalid subgraph index - &quot;</span>} +</div>
+<div class="line"><span class="lineno">  129</span>                               std::to_string(subg_index)};</div>
+<div class="line"><span class="lineno">  130</span>  }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_base_loader_8h_source.html#l00189">onert::loader::BaseLoader&lt; LoaderDomain &gt;::_domain_model</a>.</p>
 
@@ -2133,7 +2200,7 @@ template&lt;typename LoaderDomain &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="_base_loader_8h_source.html#l00189">189</a> of file <a class="el" href="_base_loader_8h_source.html">BaseLoader.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_base_loader_8h_source.html#l00112">onert::loader::BaseLoader&lt; LoaderDomain &gt;::getBuiltinOperator()</a>, and <a class="el" href="_base_loader_8h_source.html#l00122">onert::loader::BaseLoader&lt; LoaderDomain &gt;::verifySubgraphIndex()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_base_loader_8h_source.html#l00114">onert::loader::BaseLoader&lt; LoaderDomain &gt;::getBuiltinOperator()</a>, and <a class="el" href="_base_loader_8h_source.html#l00124">onert::loader::BaseLoader&lt; LoaderDomain &gt;::verifySubgraphIndex()</a>.</p>
 
 </div>
 </div>

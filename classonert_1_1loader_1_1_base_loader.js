@@ -28,6 +28,7 @@ var classonert_1_1loader_1_1_base_loader =
     [ "loadOperand", "classonert_1_1loader_1_1_base_loader.html#a510cb338c0618f2e0036392f207aa65b", null ],
     [ "loadOperation", "classonert_1_1loader_1_1_base_loader.html#ac1560a197419b7fe68d19883ebc6231e", null ],
     [ "loadOperationIO", "classonert_1_1loader_1_1_base_loader.html#a8d77e33840448772c6624d895507a655", null ],
+    [ "loadOperationTo", "classonert_1_1loader_1_1_base_loader.html#abc44332b5ef01be922db095295b9080a", null ],
     [ "loadPool2DOptions", "classonert_1_1loader_1_1_base_loader.html#a258cb4ea179e17d7f86173efb4babf24", null ],
     [ "loadQuantization", "classonert_1_1loader_1_1_base_loader.html#a732065268f4ac9826cff33839f2470d2", null ],
     [ "loadSparsity", "classonert_1_1loader_1_1_base_loader.html#aa0baf85a7a5fb30d1145b7f99206867e", null ],

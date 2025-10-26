@@ -16,5 +16,6 @@ var dir_68e22ee94e4b24fcc18e8c574fe0f494 =
     [ "KernelGenerator.h", "backend_2trix_2_kernel_generator_8h.html", "backend_2trix_2_kernel_generator_8h" ],
     [ "Tensor.h", "runtime_2onert_2backend_2trix_2_tensor_8h.html", "runtime_2onert_2backend_2trix_2_tensor_8h" ],
     [ "TensorBuilder.h", "backend_2trix_2_tensor_builder_8h.html", "backend_2trix_2_tensor_builder_8h" ],
-    [ "trix.cc", "trix_8cc.html", "trix_8cc" ]
+    [ "trix.cc", "trix_8cc.html", "trix_8cc" ],
+    [ "Validator.h", "trix_2_validator_8h.html", "trix_2_validator_8h" ]
 ];

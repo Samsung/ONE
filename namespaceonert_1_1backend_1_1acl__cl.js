@@ -7,6 +7,7 @@ var namespaceonert_1_1backend_1_1acl__cl =
     [ "ConstantInitializer", "classonert_1_1backend_1_1acl__cl_1_1_constant_initializer.html", "classonert_1_1backend_1_1acl__cl_1_1_constant_initializer" ],
     [ "KernelGenerator", "classonert_1_1backend_1_1acl__cl_1_1_kernel_generator.html", "classonert_1_1backend_1_1acl__cl_1_1_kernel_generator" ],
     [ "Optimizer", "classonert_1_1backend_1_1acl__cl_1_1_optimizer.html", "classonert_1_1backend_1_1acl__cl_1_1_optimizer" ],
+    [ "Validator", "classonert_1_1backend_1_1acl__cl_1_1_validator.html", "classonert_1_1backend_1_1acl__cl_1_1_validator" ],
     [ "ActivationBuilder", "namespaceonert_1_1backend_1_1acl__cl.html#aa0673ca06bf4d182fa3fca6535d2edcd", null ],
     [ "BackendContext", "namespaceonert_1_1backend_1_1acl__cl.html#ace222bac587e5e2b57816736b97909e3", null ],
     [ "InternalBufferManager", "namespaceonert_1_1backend_1_1acl__cl.html#a38f4246ec6bdaee3b5bcc440f2c89dbb", null ],

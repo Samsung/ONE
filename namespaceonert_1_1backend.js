@@ -19,6 +19,7 @@ var namespaceonert_1_1backend =
     [ "ITensor", "classonert_1_1backend_1_1_i_tensor.html", "classonert_1_1backend_1_1_i_tensor" ],
     [ "ITensorRegistry", "structonert_1_1backend_1_1_i_tensor_registry.html", "structonert_1_1backend_1_1_i_tensor_registry" ],
     [ "PortableTensorRegistryTemplate", "classonert_1_1backend_1_1_portable_tensor_registry_template.html", "classonert_1_1backend_1_1_portable_tensor_registry_template" ],
+    [ "ValidatorBase", "classonert_1_1backend_1_1_validator_base.html", "classonert_1_1backend_1_1_validator_base" ],
     [ "BackendContexts", "namespaceonert_1_1backend.html#ae138503c939b99456da0092d81727e62", null ],
     [ "FunctionMap", "namespaceonert_1_1backend.html#a0aaedc7641b82b747730d1814145a754", null ]
 ];

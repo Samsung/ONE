@@ -1,7 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$classpackage_1_1experimental_1_1train_1_1optimizer_1_1optimizer_1_1_optimizer.html" title=" " alt="" coords="5,23,293,64"/>
 <area shape="rect" id="Node000001" href="$classpackage_1_1experimental_1_1train_1_1optimizer_1_1adam_1_1_adam.html" title=" " alt="" coords="341,5,642,31"/>
-<area shape="poly" id="edge3315_Node000000_Node000001" title=" " alt="" coords="308,29,340,27,340,32,308,34"/>
+<area shape="poly" id="edge3321_Node000000_Node000001" title=" " alt="" coords="308,29,340,27,340,32,308,34"/>
 <area shape="rect" id="Node000002" href="$classpackage_1_1experimental_1_1train_1_1optimizer_1_1sgd_1_1_s_g_d.html" title=" " alt="" coords="349,55,634,80"/>
-<area shape="poly" id="edge3316_Node000000_Node000002" title=" " alt="" coords="308,52,349,55,349,60,308,57"/>
+<area shape="poly" id="edge3322_Node000000_Node000002" title=" " alt="" coords="308,52,349,55,349,60,308,57"/>
 </map>

@@ -7,6 +7,7 @@ var namespaceonert_1_1backend_1_1trix =
     [ "Config", "classonert_1_1backend_1_1trix_1_1_config.html", "classonert_1_1backend_1_1trix_1_1_config" ],
     [ "DevContext", "classonert_1_1backend_1_1trix_1_1_dev_context.html", "classonert_1_1backend_1_1trix_1_1_dev_context" ],
     [ "KernelGenerator", "classonert_1_1backend_1_1trix_1_1_kernel_generator.html", "classonert_1_1backend_1_1trix_1_1_kernel_generator" ],
+    [ "Validator", "classonert_1_1backend_1_1trix_1_1_validator.html", "classonert_1_1backend_1_1trix_1_1_validator" ],
     [ "ExternalTensor", "namespaceonert_1_1backend_1_1trix.html#af75d7ed0852b7dc18f464b438daf3d31", null ],
     [ "ModelID", "namespaceonert_1_1backend_1_1trix.html#a8cdd2f2c9c846f5f8142ad38759c8b2f", null ],
     [ "Tensor", "namespaceonert_1_1backend_1_1trix.html#a311e3d32e7db10c45c572e85a8965f47", null ],

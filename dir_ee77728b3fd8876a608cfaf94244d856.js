@@ -8,5 +8,6 @@ var dir_ee77728b3fd8876a608cfaf94244d856 =
     [ "IConfig.h", "_i_config_8h.html", "_i_config_8h" ],
     [ "IPortableTensor.h", "_i_portable_tensor_8h.html", "_i_portable_tensor_8h" ],
     [ "ITensor.h", "_i_tensor_8h.html", "_i_tensor_8h" ],
-    [ "ITensorRegistry.h", "_i_tensor_registry_8h.html", "_i_tensor_registry_8h" ]
+    [ "ITensorRegistry.h", "_i_tensor_registry_8h.html", "_i_tensor_registry_8h" ],
+    [ "ValidatorBase.h", "_validator_base_8h.html", "_validator_base_8h" ]
 ];

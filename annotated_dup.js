@@ -2813,7 +2813,8 @@ var annotated_dup =
           [ "Config", "classonert_1_1backend_1_1acl__cl_1_1_config.html", "classonert_1_1backend_1_1acl__cl_1_1_config" ],
           [ "ConstantInitializer", "classonert_1_1backend_1_1acl__cl_1_1_constant_initializer.html", "classonert_1_1backend_1_1acl__cl_1_1_constant_initializer" ],
           [ "KernelGenerator", "classonert_1_1backend_1_1acl__cl_1_1_kernel_generator.html", "classonert_1_1backend_1_1acl__cl_1_1_kernel_generator" ],
-          [ "Optimizer", "classonert_1_1backend_1_1acl__cl_1_1_optimizer.html", "classonert_1_1backend_1_1acl__cl_1_1_optimizer" ]
+          [ "Optimizer", "classonert_1_1backend_1_1acl__cl_1_1_optimizer.html", "classonert_1_1backend_1_1acl__cl_1_1_optimizer" ],
+          [ "Validator", "classonert_1_1backend_1_1acl__cl_1_1_validator.html", "classonert_1_1backend_1_1acl__cl_1_1_validator" ]
         ] ],
         [ "acl_common", "namespaceonert_1_1backend_1_1acl__common.html", [
           [ "AclActivationBuilder", "classonert_1_1backend_1_1acl__common_1_1_acl_activation_builder.html", null ],
@@ -2841,7 +2842,8 @@ var annotated_dup =
           [ "Config", "classonert_1_1backend_1_1acl__neon_1_1_config.html", "classonert_1_1backend_1_1acl__neon_1_1_config" ],
           [ "ConstantInitializer", "classonert_1_1backend_1_1acl__neon_1_1_constant_initializer.html", "classonert_1_1backend_1_1acl__neon_1_1_constant_initializer" ],
           [ "KernelGenerator", "classonert_1_1backend_1_1acl__neon_1_1_kernel_generator.html", "classonert_1_1backend_1_1acl__neon_1_1_kernel_generator" ],
-          [ "Optimizer", "classonert_1_1backend_1_1acl__neon_1_1_optimizer.html", "classonert_1_1backend_1_1acl__neon_1_1_optimizer" ]
+          [ "Optimizer", "classonert_1_1backend_1_1acl__neon_1_1_optimizer.html", "classonert_1_1backend_1_1acl__neon_1_1_optimizer" ],
+          [ "Validator", "classonert_1_1backend_1_1acl__neon_1_1_validator.html", "classonert_1_1backend_1_1acl__neon_1_1_validator" ]
         ] ],
         [ "basic", "namespaceonert_1_1backend_1_1basic.html", [
           [ "train", "namespaceonert_1_1backend_1_1basic_1_1train.html", [
@@ -2955,7 +2957,8 @@ var annotated_dup =
           [ "BackendContext", "classonert_1_1backend_1_1cpu_1_1_backend_context.html", "classonert_1_1backend_1_1cpu_1_1_backend_context" ],
           [ "Config", "classonert_1_1backend_1_1cpu_1_1_config.html", "classonert_1_1backend_1_1cpu_1_1_config" ],
           [ "ExternalContext", "classonert_1_1backend_1_1cpu_1_1_external_context.html", "classonert_1_1backend_1_1cpu_1_1_external_context" ],
-          [ "KernelGenerator", "classonert_1_1backend_1_1cpu_1_1_kernel_generator.html", "classonert_1_1backend_1_1cpu_1_1_kernel_generator" ]
+          [ "KernelGenerator", "classonert_1_1backend_1_1cpu_1_1_kernel_generator.html", "classonert_1_1backend_1_1cpu_1_1_kernel_generator" ],
+          [ "Validator", "classonert_1_1backend_1_1cpu_1_1_validator.html", "classonert_1_1backend_1_1cpu_1_1_validator" ]
         ] ],
         [ "custom", "namespaceonert_1_1backend_1_1custom.html", [
           [ "CustomKernelConfigParams", "structonert_1_1backend_1_1custom_1_1_custom_kernel_config_params.html", "structonert_1_1backend_1_1custom_1_1_custom_kernel_config_params" ],
@@ -2971,7 +2974,8 @@ var annotated_dup =
           [ "BackendContext", "classonert_1_1backend_1_1ruy_1_1_backend_context.html", "classonert_1_1backend_1_1ruy_1_1_backend_context" ],
           [ "Config", "classonert_1_1backend_1_1ruy_1_1_config.html", "classonert_1_1backend_1_1ruy_1_1_config" ],
           [ "ExternalContext", "classonert_1_1backend_1_1ruy_1_1_external_context.html", "classonert_1_1backend_1_1ruy_1_1_external_context" ],
-          [ "KernelGenerator", "classonert_1_1backend_1_1ruy_1_1_kernel_generator.html", "classonert_1_1backend_1_1ruy_1_1_kernel_generator" ]
+          [ "KernelGenerator", "classonert_1_1backend_1_1ruy_1_1_kernel_generator.html", "classonert_1_1backend_1_1ruy_1_1_kernel_generator" ],
+          [ "Validator", "classonert_1_1backend_1_1ruy_1_1_validator.html", "classonert_1_1backend_1_1ruy_1_1_validator" ]
         ] ],
         [ "train", "namespaceonert_1_1backend_1_1train.html", [
           [ "ops", "namespaceonert_1_1backend_1_1train_1_1ops.html", [
@@ -3034,7 +3038,8 @@ var annotated_dup =
           [ "BatchThreadPool", "classonert_1_1backend_1_1trix_1_1_batch_thread_pool.html", "classonert_1_1backend_1_1trix_1_1_batch_thread_pool" ],
           [ "Config", "classonert_1_1backend_1_1trix_1_1_config.html", "classonert_1_1backend_1_1trix_1_1_config" ],
           [ "DevContext", "classonert_1_1backend_1_1trix_1_1_dev_context.html", "classonert_1_1backend_1_1trix_1_1_dev_context" ],
-          [ "KernelGenerator", "classonert_1_1backend_1_1trix_1_1_kernel_generator.html", "classonert_1_1backend_1_1trix_1_1_kernel_generator" ]
+          [ "KernelGenerator", "classonert_1_1backend_1_1trix_1_1_kernel_generator.html", "classonert_1_1backend_1_1trix_1_1_kernel_generator" ],
+          [ "Validator", "classonert_1_1backend_1_1trix_1_1_validator.html", "classonert_1_1backend_1_1trix_1_1_validator" ]
         ] ],
         [ "Backend", "classonert_1_1backend_1_1_backend.html", "classonert_1_1backend_1_1_backend" ],
         [ "BackendContext", "classonert_1_1backend_1_1_backend_context.html", "classonert_1_1backend_1_1_backend_context" ],
@@ -3043,7 +3048,8 @@ var annotated_dup =
         [ "IPortableTensor", "classonert_1_1backend_1_1_i_portable_tensor.html", "classonert_1_1backend_1_1_i_portable_tensor" ],
         [ "ITensor", "classonert_1_1backend_1_1_i_tensor.html", "classonert_1_1backend_1_1_i_tensor" ],
         [ "ITensorRegistry", "structonert_1_1backend_1_1_i_tensor_registry.html", "structonert_1_1backend_1_1_i_tensor_registry" ],
-        [ "PortableTensorRegistryTemplate", "classonert_1_1backend_1_1_portable_tensor_registry_template.html", "classonert_1_1backend_1_1_portable_tensor_registry_template" ]
+        [ "PortableTensorRegistryTemplate", "classonert_1_1backend_1_1_portable_tensor_registry_template.html", "classonert_1_1backend_1_1_portable_tensor_registry_template" ],
+        [ "ValidatorBase", "classonert_1_1backend_1_1_validator_base.html", "classonert_1_1backend_1_1_validator_base" ]
       ] ],
       [ "compiler", "namespaceonert_1_1compiler.html", [
         [ "pass", "namespaceonert_1_1compiler_1_1pass.html", [

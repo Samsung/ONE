@@ -105,10 +105,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a9343acbed3795da963e506c2f47b6086"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa956662b060cbf562dfef4ad433b869" id="r_afa956662b060cbf562dfef4ad433b869"><td class="memItemLeft" align="right" valign="top">virtual std::unique_ptr&lt; <a class="el" href="classonert_1_1backend_1_1_backend_context.html">BackendContext</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1_backend.html#afa956662b060cbf562dfef4ad433b869">newContext</a> (<a class="el" href="structonert_1_1backend_1_1_context_data.html">ContextData</a> &amp;&amp;) const =0</td></tr>
 <tr class="separator:afa956662b060cbf562dfef4ad433b869"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bc329663fdf836690b11c65b4189a96" id="r_a5bc329663fdf836690b11c65b4189a96"><td class="memItemLeft" align="right" valign="top">virtual std::unique_ptr&lt; <a class="el" href="classonert_1_1backend_1_1_validator_base.html">ValidatorBase</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1_backend.html#a5bc329663fdf836690b11c65b4189a96">validator</a> (const <a class="el" href="classonert_1_1ir_1_1_graph.html">ir::Graph</a> &amp;graph) const</td></tr>
+<tr class="separator:a5bc329663fdf836690b11c65b4189a96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2backend_2_backend_8h_source.html#l00034">34</a> of file <a class="el" href="runtime_2onert_2core_2include_2backend_2_backend_8h_source.html">Backend.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2backend_2_backend_8h_source.html#l00035">35</a> of file <a class="el" href="runtime_2onert_2core_2include_2backend_2_backend_8h_source.html">Backend.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab4280759b28770ab6210733caa7a19b5" name="ab4280759b28770ab6210733caa7a19b5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab4280759b28770ab6210733caa7a19b5">&#9670;&#160;</a></span>~Backend()</h2>
@@ -191,6 +193,39 @@ Public Member Functions</h2></td></tr>
 
 <p>Implemented in <a class="el" href="classonert_1_1backend_1_1acl__cl_1_1_backend.html#a477e87d54b1aa6aef5518cb8bd88a759">onert::backend::acl_cl::Backend</a>, <a class="el" href="classonert_1_1backend_1_1acl__neon_1_1_backend.html#af3bbc912c02935fc39258b028abf1f6d">onert::backend::acl_neon::Backend</a>, <a class="el" href="classonert_1_1backend_1_1cpu_1_1_backend.html#ac23d07afade677789ac29751a0cd1b76">onert::backend::cpu::Backend</a>, <a class="el" href="classonert_1_1backend_1_1ruy_1_1_backend.html#a5710326c734830cc6db2604eb5c46b7d">onert::backend::ruy::Backend</a>, <a class="el" href="classonert_1_1backend_1_1train_1_1_backend.html#a502c31ad7adb63214824e2b07a64e11c">onert::backend::train::Backend</a>, <a class="el" href="classonert_1_1backend_1_1trix_1_1_backend.html#ae775df5db4b72d9ce05d0fad0a496f3b">onert::backend::trix::Backend</a>, and <a class="el" href="classonert_1_1backend_1_1builtin_1_1_backend.html#afecaf971fcba041b89675f8033532d9f">onert::backend::builtin::Backend</a>.</p>
 
+</div>
+</div>
+<a id="a5bc329663fdf836690b11c65b4189a96" name="a5bc329663fdf836690b11c65b4189a96"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5bc329663fdf836690b11c65b4189a96">&#9670;&#160;</a></span>validator()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual std::unique_ptr&lt; <a class="el" href="classonert_1_1backend_1_1_validator_base.html">ValidatorBase</a> &gt; onert::backend::Backend::validator </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classonert_1_1ir_1_1_graph.html">ir::Graph</a> &amp;&#160;</td>
+          <td class="paramname"><em>graph</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented in <a class="el" href="classonert_1_1backend_1_1acl__cl_1_1_backend.html#a10802dbfeda93da719bfe54da57660e6">onert::backend::acl_cl::Backend</a>, <a class="el" href="classonert_1_1backend_1_1acl__neon_1_1_backend.html#aeca73d724476c6e8bd2822ab55d42093">onert::backend::acl_neon::Backend</a>, <a class="el" href="classonert_1_1backend_1_1cpu_1_1_backend.html#a74c147c99ee239840a8caea07b69bdf6">onert::backend::cpu::Backend</a>, <a class="el" href="classonert_1_1backend_1_1ruy_1_1_backend.html#ace3268d9977533c94c2ee5ea5ae8f8a2">onert::backend::ruy::Backend</a>, and <a class="el" href="classonert_1_1backend_1_1trix_1_1_backend.html#a86458313890a1da8bec2c8adf40f13ed">onert::backend::trix::Backend</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2backend_2_backend_8h_source.html#l00043">43</a> of file <a class="el" href="runtime_2onert_2core_2include_2backend_2_backend_8h_source.html">Backend.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   44</span>  {</div>
+<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">return</span> std::make_unique&lt;ValidatorBase&gt;(graph);</div>
+<div class="line"><span class="lineno">   46</span>  }</div>
+</div><!-- fragment -->
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>

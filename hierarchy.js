@@ -4158,6 +4158,13 @@ var hierarchy =
       [ "onert::ir::train::operation::UntrainableOperation< OperationType, >", "classonert_1_1ir_1_1train_1_1operation_1_1_untrainable_operation.html", null ]
     ] ],
     [ "onert::ir::OperationVisitor", "structonert_1_1ir_1_1_operation_visitor.html", [
+      [ "onert::backend::ValidatorBase", "classonert_1_1backend_1_1_validator_base.html", [
+        [ "onert::backend::acl_cl::Validator", "classonert_1_1backend_1_1acl__cl_1_1_validator.html", null ],
+        [ "onert::backend::acl_neon::Validator", "classonert_1_1backend_1_1acl__neon_1_1_validator.html", null ],
+        [ "onert::backend::cpu::Validator", "classonert_1_1backend_1_1cpu_1_1_validator.html", null ],
+        [ "onert::backend::ruy::Validator", "classonert_1_1backend_1_1ruy_1_1_validator.html", null ],
+        [ "onert::backend::trix::Validator", "classonert_1_1backend_1_1trix_1_1_validator.html", null ]
+      ] ],
       [ "onert::backend::acl_common::AclConstantInitializer", "classonert_1_1backend_1_1acl__common_1_1_acl_constant_initializer.html", [
         [ "onert::backend::acl_cl::ConstantInitializer", "classonert_1_1backend_1_1acl__cl_1_1_constant_initializer.html", null ],
         [ "onert::backend::acl_neon::ConstantInitializer", "classonert_1_1backend_1_1acl__neon_1_1_constant_initializer.html", null ]

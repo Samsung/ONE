@@ -112,8 +112,8 @@ Collaboration diagram for onert::api::python::tensorinfo:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a8e596b3b8cec325afb3523b410635c09" id="r_a8e596b3b8cec325afb3523b410635c09"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1api_1_1python_1_1tensorinfo.html#a8e596b3b8cec325afb3523b410635c09">dtype</a></td></tr>
-<tr class="separator:a8e596b3b8cec325afb3523b410635c09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2bbc8dd0e0238d56106c034854f4886" id="r_ad2bbc8dd0e0238d56106c034854f4886"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1api_1_1python_1_1tensorinfo.html#ad2bbc8dd0e0238d56106c034854f4886">dtype</a></td></tr>
+<tr class="separator:ad2bbc8dd0e0238d56106c034854f4886"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45936e3deea0be2f489cded6d217041d" id="r_a45936e3deea0be2f489cded6d217041d"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1api_1_1python_1_1tensorinfo.html#a45936e3deea0be2f489cded6d217041d">rank</a></td></tr>
 <tr class="separator:a45936e3deea0be2f489cded6d217041d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e7e50ec05793e58725df34aa8f61278" id="r_a0e7e50ec05793e58725df34aa8f61278"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1api_1_1python_1_1tensorinfo.html#a0e7e50ec05793e58725df34aa8f61278">dims</a> [<a class="el" href="onert-micro_8h.html#ae4a6c20a576dbf5f53f34aa891089a25">NNFW_MAX_RANK</a>]</td></tr>
@@ -124,7 +124,7 @@ Data Fields</h2></td></tr>
 <p>This structure is used to describe input and output tensors. Application can get input and output tensor type and shape described in model by using <code><a class="el" href="">input_tensorinfo</a></code> and <code><a class="el" href="">output_tensorinfo</a></code></p>
 <p>Maximum rank is 6 (NNFW_MAX_RANK). And tensor's dimension value is filled in 'dims' field from index 0. For example, if tensor's rank is 4, application can get dimension value from dims[0], dims[1], dims[2], and dims[3] </p>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8h_source.html#l00048">48</a> of file <a class="el" href="nnfw__api__wrapper_8h_source.html">nnfw_api_wrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8h_source.html#l00050">50</a> of file <a class="el" href="nnfw__api__wrapper_8h_source.html">nnfw_api_wrapper.h</a>.</p>
 </div><h2 class="groupheader">Field Documentation</h2>
 <a id="a0e7e50ec05793e58725df34aa8f61278" name="a0e7e50ec05793e58725df34aa8f61278"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0e7e50ec05793e58725df34aa8f61278">&#9670;&#160;</a></span>dims</h2>
@@ -139,26 +139,26 @@ Data Fields</h2></td></tr>
 </div><div class="memdoc">
 <p>The dimension of tensor. Maximum rank is 6 (NNFW_MAX_RANK). </p>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8h_source.html#l00058">58</a> of file <a class="el" href="nnfw__api__wrapper_8h_source.html">nnfw_api_wrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8h_source.html#l00060">60</a> of file <a class="el" href="nnfw__api__wrapper_8h_source.html">nnfw_api_wrapper.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00117">onert::api::python::get_dims()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00190">onert::api::python::NNFW_SESSION::input_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00203">onert::api::python::NNFW_SESSION::output_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00127">onert::api::python::set_dims()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00156">onert::api::python::NNFW_SESSION::set_input_tensorinfo()</a>.</p>
 
 </div>
 </div>
-<a id="a8e596b3b8cec325afb3523b410635c09" name="a8e596b3b8cec325afb3523b410635c09"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8e596b3b8cec325afb3523b410635c09">&#9670;&#160;</a></span>dtype</h2>
+<a id="ad2bbc8dd0e0238d56106c034854f4886" name="ad2bbc8dd0e0238d56106c034854f4886"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2bbc8dd0e0238d56106c034854f4886">&#9670;&#160;</a></span>dtype</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const char* onert::api::python::tensorinfo::dtype</td>
+          <td class="memname">std::string onert::api::python::tensorinfo::dtype</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>The data type </p>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8h_source.html#l00051">51</a> of file <a class="el" href="nnfw__api__wrapper_8h_source.html">nnfw_api_wrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8h_source.html#l00053">53</a> of file <a class="el" href="nnfw__api__wrapper_8h_source.html">nnfw_api_wrapper.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="nnfw__tensorinfo__bindings_8cc_source.html#l00027">onert::api::python::bind_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00190">onert::api::python::NNFW_SESSION::input_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00203">onert::api::python::NNFW_SESSION::output_tensorinfo()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00156">onert::api::python::NNFW_SESSION::set_input_tensorinfo()</a>.</p>
 
@@ -177,7 +177,7 @@ Data Fields</h2></td></tr>
 </div><div class="memdoc">
 <p>The number of dimensions (rank) </p>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8h_source.html#l00053">53</a> of file <a class="el" href="nnfw__api__wrapper_8h_source.html">nnfw_api_wrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8h_source.html#l00055">55</a> of file <a class="el" href="nnfw__api__wrapper_8h_source.html">nnfw_api_wrapper.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="nnfw__tensorinfo__bindings_8cc_source.html#l00027">onert::api::python::bind_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00117">onert::api::python::get_dims()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00190">onert::api::python::NNFW_SESSION::input_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00203">onert::api::python::NNFW_SESSION::output_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00127">onert::api::python::set_dims()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00156">onert::api::python::NNFW_SESSION::set_input_tensorinfo()</a>.</p>
 

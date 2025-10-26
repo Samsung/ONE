@@ -12,5 +12,6 @@ var dir_e63553609781945599d2dd0f5e71ee7e =
     [ "ruy.cc", "ruy_8cc.html", "ruy_8cc" ],
     [ "StaticTensorManager.h", "backend_2ruy_2_static_tensor_manager_8h.html", "backend_2ruy_2_static_tensor_manager_8h" ],
     [ "Tensor.h", "runtime_2onert_2backend_2ruy_2_tensor_8h.html", "runtime_2onert_2backend_2ruy_2_tensor_8h" ],
-    [ "TensorBuilder.h", "backend_2ruy_2_tensor_builder_8h.html", "backend_2ruy_2_tensor_builder_8h" ]
+    [ "TensorBuilder.h", "backend_2ruy_2_tensor_builder_8h.html", "backend_2ruy_2_tensor_builder_8h" ],
+    [ "Validator.h", "ruy_2_validator_8h.html", "ruy_2_validator_8h" ]
 ];

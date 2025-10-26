@@ -15,5 +15,6 @@ var dir_cbf6658beac9ccb6c16f8d8eb7b234d2 =
     [ "SharedMemoryOperands.h", "_shared_memory_operands_8h.html", "_shared_memory_operands_8h" ],
     [ "StaticTensorManager.h", "backend_2cpu_2_static_tensor_manager_8h.html", "backend_2cpu_2_static_tensor_manager_8h" ],
     [ "Tensor.h", "runtime_2onert_2backend_2cpu_2_tensor_8h.html", "runtime_2onert_2backend_2cpu_2_tensor_8h" ],
-    [ "TensorBuilder.h", "backend_2cpu_2_tensor_builder_8h.html", "backend_2cpu_2_tensor_builder_8h" ]
+    [ "TensorBuilder.h", "backend_2cpu_2_tensor_builder_8h.html", "backend_2cpu_2_tensor_builder_8h" ],
+    [ "Validator.h", "cpu_2_validator_8h.html", "cpu_2_validator_8h" ]
 ];
