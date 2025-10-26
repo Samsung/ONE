@@ -114,6 +114,12 @@ jobs:
           path: ${{ env.NNCC_WORKSPACE }}/overlay
           key: overlay-onecc-${{ matrix.ubuntu_code }}-${{ hashFiles('compiler/common-artifacts/CMakeLists.txt') }}-${{ hashFiles('infra/cmake/packages/**/*.cmake') }}
 
+      - name: Caching ccache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ccache
+          key: ccache-onecc-${{ matrix.ubuntu_code }}
+
       - name: Build
         run: |
           ./nncc configure -DENABLE_STRICT_BUILD=ON -DCMAKE_BUILD_TYPE=${{ matrix.type }} \
