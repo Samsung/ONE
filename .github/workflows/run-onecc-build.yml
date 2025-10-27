@@ -56,7 +56,7 @@ jobs:
           JSON='{'
           if [[ "$EVENT_NAME" == "push" ]]; then
             JSON+='"type": ["Debug"],'
-            JSON+='"ubuntu_code": ["jammy"]'
+            JSON+='"ubuntu_code": ["jammy", "noble"]'
           elif [[ "$EVENT_NAME" == "pull_request" ]]; then
             JSON+='"type": ["Debug", "Release"],'
             JSON+='"ubuntu_code": ["jammy", "noble"],'
