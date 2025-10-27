@@ -105,14 +105,13 @@ function run_onert_with_all_config()
         BACKENDS_TO_USE+=$backend';'
         ((++PROFILING_RUN_CNT))
     done
-    export BACKENDS=$BACKENDS_TO_USE
     export EXECUTOR="Linear"
     for backend in $BACKEND_LIST; do
-        export OP_BACKEND_ALLOPS=$backend
+        export BACKENDS=$backend
         run_benchmark_and_print "onert_$backend" "ONERT-${backend^^}"\
                                 $MODEL $REPORT_MODEL_DIR $BENCHMARK_DRIVER_BIN
     done
-    unset EXECUTOR OP_BACKEND_ALLOPS BACKENDS
+    unset EXECUTOR BACKENDS
 }
 
 function run_benchmark_test()

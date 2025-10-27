@@ -54,7 +54,7 @@ test_model.conv2d_transpose
                         └── input.h5
 
 # @ target
-$ OP_BACKEND_ALLOPS=cpu \
+$ BACKENDS=cpu \
 onert/test/onert-test nnpkg-test test_model.conv2d_transpose
 [  Run  ] ./test_model.out   Pass
 [Compare] ./test_model.out   Pass

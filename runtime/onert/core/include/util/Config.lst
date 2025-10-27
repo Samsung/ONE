@@ -21,7 +21,6 @@
 //     Name                    | Type         | Default
 CONFIG(GRAPH_DOT_DUMP          , int          , "0")
 CONFIG(BACKENDS                , std::string  , "cpu;acl_cl;acl_neon;ruy;xnnpack;gpu_cl;trix;bcq") // FIXME Remove bcq
-CONFIG(OP_BACKEND_ALLOPS       , std::string  , "")
 CONFIG(OP_BACKEND_MAP          , std::string  , "")
 CONFIG(ENABLE_LOG              , bool         , "0")
 CONFIG(CPU_MEMORY_PLANNER      , std::string  , "WIC")

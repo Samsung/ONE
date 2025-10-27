@@ -49,18 +49,7 @@ std::unique_ptr<BackendResolver> ManualScheduler::schedule(const ir::Graph &grap
   if (backend_order.size() == 0)
     throw std::runtime_error{"No loaded backends available."};
 
-  // 1. Backend for All operations
-  const backend::Backend *backend_all = resolveBackend(manual_options.backend_for_all);
-  if (backend_all)
-  {
-    VERBOSE(ManualScheduler) << "Default backend for all ops: " << backend_all->config()->id()
-                             << std::endl;
-    graph.operations().iterate([&](const ir::OperationIndex &index, const ir::IOperation &) {
-      backend_resolver->setBackend(index, backend_all);
-    });
-  }
-
-  // 2. Backend per operation type
+  // 1. Backend per operation type
   std::unordered_map<ir::OpCode, backend::Backend *> op_type_map;
   for (const auto &[op_code, backend_name] : manual_options.opcode_to_backend)
   {
@@ -75,7 +64,7 @@ std::unique_ptr<BackendResolver> ManualScheduler::schedule(const ir::Graph &grap
     }
   });
 
-  // 3. Backend per operation index
+  // 2. Backend per operation index
   for (const auto &[key, val] : manual_options.index_to_backend)
   {
     try
@@ -90,7 +79,7 @@ std::unique_ptr<BackendResolver> ManualScheduler::schedule(const ir::Graph &grap
     }
   }
 
-  // 4. Fallback - backend priority order
+  // 3. Fallback - backend priority order
   std::unordered_map<const backend::Backend *, std::unique_ptr<backend::ValidatorBase>> validators;
   for (auto &&backend : backend_order)
   {
