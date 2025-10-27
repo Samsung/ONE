@@ -26,7 +26,7 @@ if(JPEG_FOUND)
   target_include_directories(style_transfer_app PRIVATE ${JPEG_INCLUDE_DIRS})
 endif(JPEG_FOUND)
 
-target_link_libraries(style_transfer_app Threads::Threads dl)
+target_link_libraries(style_transfer_app Threads::Threads)
 target_link_libraries(style_transfer_app nnfw-dev)
 target_link_libraries(style_transfer_app arser)
 if(JPEG_FOUND)

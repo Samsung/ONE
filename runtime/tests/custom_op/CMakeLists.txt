@@ -37,7 +37,7 @@ function(add_nnfw_custom_op_app NAME)
   target_link_libraries(${NAME} PRIVATE ${LIBNAMELIST})
   target_link_libraries(${NAME} PRIVATE nnfw-dev)
   target_link_libraries(${NAME} PRIVATE nnfw_common)
-  target_link_libraries(${NAME} PRIVATE dl Threads::Threads)
+  target_link_libraries(${NAME} PRIVATE Threads::Threads)
 endfunction()
 
 # Add custom op kernel with nnpackage spec conforming name.
