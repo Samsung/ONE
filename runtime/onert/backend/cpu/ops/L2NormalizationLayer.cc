@@ -17,9 +17,17 @@
 #include "L2NormalizationLayer.h"
 
 #include "OperationUtils.h"
+#include "../Validator.h"
 
 #include <cker/operation/L2Normalize.h>
 #include <cker/Types.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::L2Normalization &) { _supported = true; }
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

@@ -16,7 +16,16 @@
 
 #include "BroadcastToLayer.h"
 
+#include "../Validator.h"
+
 #include <cker/operation/BroadcastTo.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::BroadcastTo &) { _supported = true; }
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

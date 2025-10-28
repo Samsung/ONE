@@ -16,3 +16,12 @@
 
 // Empty file for Squeeze operation
 // Sqeeze operation is implemented as ReshapeLayer
+
+#include "../Validator.h"
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::Squeeze &) { _supported = true; }
+
+} // namespace onert::backend::cpu

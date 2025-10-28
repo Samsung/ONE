@@ -16,8 +16,17 @@
 
 #include "DepthwiseConv2DLayer.h"
 
-#include "cker/PortableTensorUtils.h"
+#include "../Validator.h"
+
+#include <cker/PortableTensorUtils.h>
 #include <cker/operation/DepthwiseConv.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::DepthwiseConv2D &) { _supported = true; }
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

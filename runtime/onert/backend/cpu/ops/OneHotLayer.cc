@@ -17,8 +17,16 @@
 #include "OneHotLayer.h"
 
 #include "OperationUtils.h"
+#include "../Validator.h"
 
 #include <cker/operation/OneHot.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::OneHot &) { _supported = true; }
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

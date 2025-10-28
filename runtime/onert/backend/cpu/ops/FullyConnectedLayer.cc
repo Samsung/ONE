@@ -17,11 +17,19 @@
 #include "FullyConnectedLayer.h"
 
 #include "GGMLHelper.h"
-
 #include "../Tensor.h"
+#include "../Validator.h"
+
 #include <cker/operation/FullyConnected.h>
 #include <cker/TensorUtils.h>
 #include <misc/polymorphic_downcast.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::FullyConnected &) { _supported = true; }
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

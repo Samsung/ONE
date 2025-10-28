@@ -16,10 +16,20 @@
 #include "ComparisonLayer.h"
 
 #include "OperationUtils.h"
+#include "../Validator.h"
 
 #include <assert.h>
 #include <cker/operation/Comparison.h>
+
 using namespace nnfw::cker;
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::Comparison &) { _supported = true; }
+
+} // namespace onert::backend::cpu
+
 namespace onert::backend::cpu::ops
 {
 

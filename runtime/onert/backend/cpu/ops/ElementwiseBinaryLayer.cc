@@ -17,12 +17,20 @@
 #include "ElementwiseBinaryLayer.h"
 
 #include "OperationUtils.h"
+#include "../Validator.h"
 
 #include <cker/operation/FloorDiv.h>
 #include <cker/operation/FloorMod.h>
 #include <cker/operation/LogicalAnd.h>
 #include <cker/operation/LogicalOr.h>
 #include <cker/operation/MaxMin.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::ElementwiseBinary &) { _supported = true; }
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

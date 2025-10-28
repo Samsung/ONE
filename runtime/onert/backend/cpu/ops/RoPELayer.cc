@@ -16,7 +16,16 @@
 
 #include "RoPELayer.h"
 
+#include "../Validator.h"
+
 #include <cker/operation/RoPE.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::RoPE &) { _supported = true; }
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

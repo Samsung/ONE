@@ -16,11 +16,20 @@
 
 #include "DetectionPostProcessLayer.h"
 
+#include "../Validator.h"
+
 #include "ndarray/Array.h"
 
 #include <numeric>
 #include <utility>
 #include <cmath>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::DetectionPostProcess &) { _supported = true; }
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

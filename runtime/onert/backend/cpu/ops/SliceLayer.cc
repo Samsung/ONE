@@ -17,8 +17,16 @@
 #include "SliceLayer.h"
 
 #include "OperationUtils.h"
+#include "../Validator.h"
 
 #include <cker/operation/Slice.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::Slice &) { _supported = true; }
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

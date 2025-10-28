@@ -17,9 +17,17 @@
 #include "AddNLayer.h"
 
 #include "OperationUtils.h"
+#include "../Validator.h"
 
 #include <cker/operation/AddN.h>
 #include <assert.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::AddN &) { _supported = true; }
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

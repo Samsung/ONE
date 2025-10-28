@@ -16,7 +16,16 @@
 
 #include "BatchMatMulLayer.h"
 
+#include "../Validator.h"
+
 #include <cker/operation/BatchMatMul.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::BatchMatMul &) { _supported = true; }
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

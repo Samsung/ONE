@@ -17,8 +17,16 @@
 #include "SelectLayer.h"
 
 #include "OperationUtils.h"
+#include "../Validator.h"
 
 #include <cker/operation/Select.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::Select &) { _supported = true; }
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

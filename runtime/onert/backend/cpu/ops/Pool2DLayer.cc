@@ -16,10 +16,19 @@
 
 #include "Pool2DLayer.h"
 
+#include "../Validator.h"
+
 #include <cker/operation/AveragePool.h>
 #include <cker/operation/MaxPool.h>
 
 #include <unordered_map>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::Pool2D &) { _supported = true; }
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

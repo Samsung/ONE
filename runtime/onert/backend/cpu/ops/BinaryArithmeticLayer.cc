@@ -16,7 +16,16 @@
 
 #include "BinaryArithmeticLayer.h"
 
+#include "../Validator.h"
+
 #include <cker/operation/BinaryArithmeticOps.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::BinaryArithmetic &) { _supported = true; }
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

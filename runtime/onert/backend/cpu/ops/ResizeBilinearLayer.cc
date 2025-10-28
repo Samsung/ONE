@@ -13,10 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "OperationUtils.h"
+
 #include "ResizeBilinearLayer.h"
+
+#include "OperationUtils.h"
+#include "../Validator.h"
+
 #include "cker/operation/ResizeBilinear.h"
 #include <cker/Types.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::ResizeBilinear &) { _supported = true; }
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

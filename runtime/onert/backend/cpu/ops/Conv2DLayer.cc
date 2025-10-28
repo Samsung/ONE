@@ -15,12 +15,21 @@
  */
 
 #include "Conv2DLayer.h"
-#include "OperationUtils.h"
-#include "cker/PortableTensorUtils.h"
 
+#include "OperationUtils.h"
 #include "../Tensor.h"
-#include "ir/Padding.h"
+#include "../Validator.h"
+
 #include <cker/operation/Conv.h>
+#include <cker/PortableTensorUtils.h>
+#include <ir/Padding.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::Conv2D &) { _supported = true; }
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

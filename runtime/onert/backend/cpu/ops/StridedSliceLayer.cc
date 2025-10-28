@@ -17,8 +17,16 @@
 #include "StridedSliceLayer.h"
 
 #include "OperationUtils.h"
+#include "../Validator.h"
 
 #include <cker/operation/StridedSlice.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::StridedSlice &) { _supported = true; }
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {
