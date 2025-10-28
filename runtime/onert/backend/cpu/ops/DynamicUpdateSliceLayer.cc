@@ -15,9 +15,19 @@
  */
 
 #include "DynamicUpdateSliceLayer.h"
+
+#include "../Validator.h"
+
 #include "OperationUtils.h"
 
 #include <cker/operation/DynamicUpdateSlice.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::DynamicUpdateSlice &) { _supported = true; }
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

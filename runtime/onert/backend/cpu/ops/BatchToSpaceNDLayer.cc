@@ -16,7 +16,16 @@
 
 #include "BatchToSpaceNDLayer.h"
 
+#include "../Validator.h"
+
 #include <cker/operation/BatchToSpaceND.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::BatchToSpaceND &) { _supported = true; }
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

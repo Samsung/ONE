@@ -17,10 +17,18 @@
 #include "ReduceLayer.h"
 
 #include "OperationUtils.h"
+#include "../Validator.h"
 
 #include "cker/neon/neon_check.h"
 #include <cker/operation/Reduce.h>
 #include <cker/operation/ReduceMean.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::Reduce &) { _supported = true; }
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

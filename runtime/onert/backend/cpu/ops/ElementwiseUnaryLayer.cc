@@ -17,6 +17,7 @@
 #include "ElementwiseUnaryLayer.h"
 
 #include "OperationUtils.h"
+#include "../Validator.h"
 
 #include <cker/operation/Dequantize.h>
 #include <cker/operation/Elementwise.h>
@@ -25,6 +26,13 @@
 #include <cker/operation/LogicalNot.h>
 #include <cker/operation/Round.h>
 #include <cker/operation/Quantize.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::ElementwiseUnary &) { _supported = true; }
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

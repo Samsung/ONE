@@ -17,9 +17,17 @@
 #include "TransposeLayer.h"
 
 #include "OperationUtils.h"
+#include "../Validator.h"
 
 #include <cker/operation/Transpose.h>
 #include <numeric>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::Transpose &) { _supported = true; }
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

@@ -17,8 +17,16 @@
 #include "TileLayer.h"
 
 #include "OperationUtils.h"
+#include "../Validator.h"
 
 #include <cker/operation/Tile.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::Tile &) { _supported = true; }
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

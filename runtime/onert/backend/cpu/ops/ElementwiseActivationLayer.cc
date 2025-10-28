@@ -17,6 +17,7 @@
 #include "ElementwiseActivationLayer.h"
 
 #include "OperationUtils.h"
+#include "../Validator.h"
 
 #include <cker/operation/ELU.h>
 #include <cker/operation/LeakyReLU.h>
@@ -25,6 +26,13 @@
 #include <cker/operation/ReLU6.h>
 #include <cker/operation/Tanh.h>
 #include <cker/operation/GELU.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::ElementwiseActivation &) { _supported = true; }
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

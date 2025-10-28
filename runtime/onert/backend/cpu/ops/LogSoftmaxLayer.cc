@@ -17,8 +17,16 @@
 #include "LogSoftmaxLayer.h"
 
 #include "OperationUtils.h"
+#include "../Validator.h"
 
 #include <cker/operation/LogSoftMax.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::LogSoftmax &) { _supported = true; }
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

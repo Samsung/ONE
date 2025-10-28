@@ -17,8 +17,16 @@
 #include "DepthToSpaceLayer.h"
 
 #include "OperationUtils.h"
+#include "../Validator.h"
 
 #include <cker/operation/DepthToSpace.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::DepthToSpace &) { _supported = true; }
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

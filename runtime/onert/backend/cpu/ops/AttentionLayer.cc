@@ -15,15 +15,26 @@
  */
 
 #include "AttentionLayer.h"
+
+#include "../Validator.h"
+
 #include "cker/operation/BatchMatMul.h"
 #include "cker/operation/FullyConnected.h"
 #include "cker/operation/RoPE.h"
 #include "cker/operation/SoftMax.h"
 #include "cker/operation/Transpose.h"
 #include "cker/Shape.h"
+
 #include <cassert>
 #include <stdexcept>
 #include <vector>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::Attention &) { _supported = true; }
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

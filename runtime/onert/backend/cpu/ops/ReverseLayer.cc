@@ -17,8 +17,16 @@
 #include "ReverseLayer.h"
 
 #include "OperationUtils.h"
+#include "../Validator.h"
 
 #include <cker/operation/Reverse.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::Reverse &) { _supported = true; }
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

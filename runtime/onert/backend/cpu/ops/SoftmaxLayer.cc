@@ -17,8 +17,16 @@
 #include "SoftmaxLayer.h"
 
 #include "OperationUtils.h"
+#include "../Validator.h"
 
 #include <cker/operation/SoftMax.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::Softmax &) { _supported = true; }
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {
