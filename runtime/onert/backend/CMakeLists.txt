@@ -9,6 +9,7 @@ set(LIB_ONERT_BACKEND_CPU onert_backend_cpu)
 add_subdirectory(cpu)
 add_subdirectory(acl_cl)
 add_subdirectory(acl_neon)
+add_subdirectory(ggml)
 add_subdirectory(ruy)
 add_subdirectory(trix)
 
