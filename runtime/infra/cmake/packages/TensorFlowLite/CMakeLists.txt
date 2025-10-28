@@ -301,7 +301,7 @@ target_compile_options(tensorflow-lite
   PRIVATE ${TFLITE_TARGET_PRIVATE_OPTIONS}
 )
 set_property(TARGET tensorflow-lite PROPERTY POSITION_INDEPENDENT_CODE ON)
-target_link_libraries(tensorflow-lite eigen flatbuffers::flatbuffers ruy abseil farmhash oourafft::fftsg2d pthreadpool Threads::Threads dl)
+target_link_libraries(tensorflow-lite eigen flatbuffers::flatbuffers ruy abseil farmhash oourafft::fftsg2d pthreadpool Threads::Threads ${CMAKE_DL_LIBS})
 if(NOT ANDROID)
   target_link_libraries(tensorflow-lite rt)
 endif()

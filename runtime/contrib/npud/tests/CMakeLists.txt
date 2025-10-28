@@ -12,6 +12,6 @@ target_include_directories(npud_gtest PUBLIC ${GLIB2.0_INCLUDE_DIRS})
 target_link_libraries(npud_gtest PRIVATE ${GLIB2.0_LIBRARIES})
 target_link_libraries(npud_gtest PRIVATE Threads::Threads)
 target_link_libraries(npud_gtest PRIVATE npud_core)
-target_link_libraries(npud_gtest PRIVATE gtest_main dl)
+target_link_libraries(npud_gtest PRIVATE gtest_main)
 
 install(TARGETS npud_gtest DESTINATION npud-gtest)

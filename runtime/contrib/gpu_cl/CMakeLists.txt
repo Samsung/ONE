@@ -22,7 +22,6 @@ endif ()
 
 target_compile_definitions(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE CL_TARGET_OPENCL_VERSION=220 EGL_NO_X11)
 
-target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE dl)
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE tflite-gpu-delegate)
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE onert_core)
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE ${LIB_ONERT_BACKEND_CL_COMMON})

@@ -31,7 +31,7 @@ target_link_libraries(${TEST_ONERT_TRAIN_BACKEND} ${LIB_ONERT_BACKEND_TRAIN})
 # Requires linking nnfw_coverage: check header coverage
 target_link_libraries(${TEST_ONERT_TRAIN_BACKEND} nnfw_common nnfw_coverage)
 target_link_libraries(${TEST_ONERT_TRAIN_BACKEND} onert_core)
-target_link_libraries(${TEST_ONERT_TRAIN_BACKEND} gtest gtest_main dl Threads::Threads)
+target_link_libraries(${TEST_ONERT_TRAIN_BACKEND} gtest gtest_main Threads::Threads)
 
 # Set install rpath to find onert_core, onert_backend_train, etc
 set_target_properties(${TEST_ONERT_TRAIN_BACKEND} PROPERTIES
