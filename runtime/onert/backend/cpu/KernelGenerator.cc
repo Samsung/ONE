@@ -589,7 +589,7 @@ void KernelGenerator::visit(const ir::operation::Gather &node)
 
   auto fn = std::make_unique<ops::GatherLayer>();
 
-  fn->configure(input_tensor, indices_tensor, output_tensor, axis, _external_context.get());
+  fn->configure(input_tensor, indices_tensor, output_tensor, axis);
 
   _return_fn = std::move(fn);
 }

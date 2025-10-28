@@ -70,11 +70,4 @@ void ExternalContext::setMaxNumThreads(int max_num_threads)
   _ruy_context->set_max_num_threads(_max_num_threads);
 }
 
-void ExternalContext::initGgmlContext()
-{
-  if (_ggml_context == nullptr)
-    _ggml_context = std::unique_ptr<ggml_context, decltype(&ggml_free)>(
-      ggml_init({.mem_size = 0, .mem_buffer = nullptr, .no_alloc = true}), &ggml_free);
-}
-
 } // namespace onert::backend::cpu
