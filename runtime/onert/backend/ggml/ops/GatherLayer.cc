@@ -18,6 +18,27 @@
 
 #include "GGMLHelper.h"
 #include "OperationUtils.h"
+#include "../Validator.h"
+
+namespace onert::backend::ggml
+{
+
+void Validator::visit(const ir::operation::Gather &node)
+{
+  using ir::operation::Gather;
+
+  const auto input_index{node.getInputs().at(Gather::Input::INPUT)};
+  const auto input_node = &_graph.operands().at(input_index);
+
+  _supported = false;
+
+  if (input_node->typeInfo().type() != ir::DataType::QUANT_GGML_Q4_0)
+    return;
+
+  _supported = true;
+}
+
+} // namespace onert::backend::ggml
 
 namespace onert::backend::ggml::ops
 {

@@ -17,8 +17,32 @@
 #include "FullyConnectedLayer.h"
 
 #include "GGMLHelper.h"
-
+#include "../Validator.h"
 #include "../Tensor.h"
+
+namespace onert::backend::ggml
+{
+
+void Validator::visit(const ir::operation::FullyConnected &node)
+{
+  using ir::operation::FullyConnected;
+
+  const auto weight_index{node.getInputs().at(FullyConnected::Input::WEIGHT)};
+  const auto weight_node = &_graph.operands().at(weight_index);
+
+  _supported = false;
+
+  if (weight_node->typeInfo().type() != ir::DataType::QUANT_GGML_Q4_0 &&
+      weight_node->typeInfo().type() != ir::DataType::QUANT_GGML_Q8_0)
+    return;
+
+  if (node.param().activation != ir::Activation::NONE)
+    return;
+
+  _supported = true;
+}
+
+} // namespace onert::backend::ggml
 
 namespace onert::backend::ggml::ops
 {

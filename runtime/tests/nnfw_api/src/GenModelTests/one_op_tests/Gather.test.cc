@@ -74,7 +74,7 @@ TEST_F(GenModelTest, OneOp_Gather_Q4_0)
   tc.addInput<int32_t>({2});
   tc.addOutput<float>(std::vector<float>{params.begin() + 64, params.begin() + 96});
   _context->addTestCase(tc);
-  _context->setBackends({"cpu"});
+  _context->setBackends({"ggml"});
 
   SUCCEED();
 }
@@ -95,7 +95,7 @@ TEST_F(GenModelTest, neg_OneOp_Gather_Q4_0_InvalidOutType)
   cgen.setInputsAndOutputs({indice}, {output});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->setBackends({"cpu"});
+  _context->setBackends({"ggml"});
   _context->expectFailModelLoad();
 
   SUCCEED();
@@ -115,7 +115,7 @@ TEST_F(GenModelTest, neg_OneOp_Gather_Q4_0_shape)
   cgen.setInputsAndOutputs({indice}, {output});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->setBackends({"cpu"});
+  _context->setBackends({"ggml"});
   _context->expectFailCompile();
 
   SUCCEED();
