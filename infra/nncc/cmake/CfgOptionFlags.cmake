@@ -57,3 +57,6 @@ option(NNCC_LIBRARY_NO_PIC "Disable PIC option for libraries" OFF)
 # Enable exclusion of a module in compiler with exclude.me file
 # This option is ignored when BUILD_WHITELIST is given
 option(ENABLE_EXCLUDE_ME "Exclude compiler module with exclude.me" ON)
+
+# Enable ccache for faster compilation
+option(ENABLE_CCACHE "Enable ccache for faster compilation" ON)

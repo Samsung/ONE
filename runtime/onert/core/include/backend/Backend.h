@@ -22,6 +22,7 @@
 #include "ir/Graph.h"
 #include "backend/IConfig.h"
 #include "backend/BackendContext.h"
+#include "backend/ValidatorBase.h"
 
 namespace onert::backend
 {
@@ -38,6 +39,11 @@ public:
   virtual std::shared_ptr<onert::backend::IConfig> config() const = 0;
 
   virtual std::unique_ptr<BackendContext> newContext(ContextData &&) const = 0;
+
+  virtual std::unique_ptr<ValidatorBase> validator(const ir::Graph &graph) const
+  {
+    return std::make_unique<ValidatorBase>(graph);
+  }
 };
 
 } // namespace onert::backend

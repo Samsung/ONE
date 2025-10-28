@@ -15,7 +15,7 @@ add_executable(kbenchmark ${SOURCES})
 target_compile_options(kbenchmark PRIVATE -Wno-psabi)
 target_include_directories(kbenchmark PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(kbenchmark PUBLIC nonius)
-target_link_libraries(kbenchmark PUBLIC dl)
+target_link_libraries(kbenchmark PUBLIC ${CMAKE_DL_LIBS})
 target_link_libraries(kbenchmark PUBLIC pthread arser)
 install(TARGETS kbenchmark DESTINATION ${CMAKE_INSTALL_BINDIR})
 

@@ -58,11 +58,9 @@ jobs:
 
       - name: Test onert build
         if: matrix.version != 'focal' # not supported
-        env:
-          DOCKER_IMAGE_NAME: one-test
         run: |
-          ./nnas docker-run --user make -f Makefile.template
-          ./nnas docker-run --user Product/out/test/onert-test unittest
+          docker run --rm -u root -v "${PWD}:${PWD}" -w "${PWD}" one-test make -f Makefile.template
+          docker run --rm -u root -v "${PWD}:${PWD}" -w "${PWD}" one-test Product/out/test/onert-test unittest
 
       - name: Download rootfs for cross build
         uses: dawidd6/action-download-artifact@v7
@@ -75,16 +73,13 @@ jobs:
       # Workaround: symlink for rootfs checker in cmake toolchain file
       - name: Install rootfs and cross build
         if: matrix.version != 'focal' # not supported
-        env:
-          DOCKER_IMAGE_NAME: one-test
-          DOCKER_ENV_VARS: '-e CROSS_BUILD=1 -e TARGET_ARCH=armv7l'
         run: |
           mkdir -p tools/cross/rootfs
           tar -zxf rootfs_arm_${{ matrix.version }}.tar.gz -C tools/cross/rootfs
           pushd tools/cross/rootfs/arm
           ln -sf usr/lib lib
           popd
-          ./nnas docker-run --user make -f Makefile.template
+          docker run --rm -u root -v "${PWD}:${PWD}" -w "${PWD}" -e CROSS_BUILD=1 -e TARGET_ARCH=armv7l one-test make -f Makefile.template
 
   build-android:
     needs: filtering
@@ -99,8 +94,5 @@ jobs:
           docker build --file infra/docker/android-sdk/Dockerfile --tag one-test .
 
       - name: Test onert build
-        env:
-          DOCKER_IMAGE_NAME: one-test
-          DOCKER_ENV_VARS: '-e CROSS_BUILD=1 -e TARGET_OS=android -e BUILD_TYPE=release'
         run: |
-          ./nnas docker-run --user make -f Makefile.template
+          docker run --rm -u root -v "${PWD}:${PWD}" -w "${PWD}" -e CROSS_BUILD=1 -e TARGET_OS=android -e BUILD_TYPE=release one-test make -f Makefile.template

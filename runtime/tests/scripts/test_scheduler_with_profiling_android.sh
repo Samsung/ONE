@@ -76,7 +76,7 @@ function run_without_sched()
 
     #LOG_FILE=$REPORT_MODEL_DIR/tflite_${EXECUTOR,,}_$BACKEND.txt
     LOG_FILE=$REPORT_MODEL_DIR/tflite_$EXECUTOR_$BACKEND.txt
-    export OP_BACKEND_ALLOPS=$BACKEND
+    export BACKENDS=$BACKEND
     export EXECUTOR=$EXECUTOR
 
     print_with_dots "$EXECUTOR $BACKEND without scheduler"
@@ -216,7 +216,6 @@ function run_benchmark_test()
         unset USE_SCHEDULER
         unset PROFILING_MODE
         unset EXECUTOR
-        unset OP_BACKEND_ALLOPS
     done
     unset BACKENDS
     echo "============================================"

@@ -213,7 +213,6 @@ TEST_F(ValidationTestAddModelLoaded, debug_set_config)
   NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "GRAPH_DOT_DUMP", "1"));
   NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "GRAPH_DOT_DUMP", "2"));
   NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "EXECUTOR", "Linear"));
-  NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "OP_BACKEND_ALLOPS", "cpu"));
   NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "USE_SCHEDULER", "0"));
   NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "USE_SCHEDULER", "1"));
   NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "PROFILING_MODE", "0"));

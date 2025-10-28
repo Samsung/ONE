@@ -20,6 +20,7 @@
 #include "BackendContext.h"
 #include "Config.h"
 #include "KernelGenerator.h"
+#include "Validator.h"
 
 #include <backend/Backend.h>
 
@@ -45,6 +46,11 @@ public:
     context->tensor_builder = tb;
     context->kernel_gen = std::make_shared<KernelGenerator>(graph, tb, tr, context->dev_context());
     return context;
+  }
+
+  std::unique_ptr<ValidatorBase> validator(const ir::Graph &graph) const override
+  {
+    return std::make_unique<Validator>(graph);
   }
 
 private:

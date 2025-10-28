@@ -72,6 +72,12 @@ jobs:
           restore-keys: |
             external-onert-${{ matrix.ubuntu_code }}-
 
+      - name: Caching ccache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ccache
+          key: ccache-onert-${{ matrix.ubuntu_code }}
+
       - name: Download rootfs for cross build
         uses: dawidd6/action-download-artifact@v7
         with:
@@ -79,14 +85,10 @@ jobs:
           branch: master
           name: rootfs_${{ matrix.platform }}_${{ matrix.ubuntu_code }}
 
-      # Workaround: symlink for rootfs checker in cmake toolchain file
       - name: Install rootfs for cross build
         run: |
           mkdir -p tools/cross/rootfs
           tar -zxf rootfs_${{ matrix.platform }}_${{ matrix.ubuntu_code }}.tar.gz -C tools/cross/rootfs
-          pushd tools/cross/rootfs/${{ matrix.platform }}
-          ln -sf usr/lib lib
-          popd
 
       - name: Build onert
         run: |

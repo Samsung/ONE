@@ -33,7 +33,7 @@ target_link_libraries(onert_core PRIVATE jsoncpp half)
 target_link_libraries(onert_core PRIVATE nnfw_lib_misc nnfw_lib_cker)
 target_link_libraries(onert_core PRIVATE nnfw_common)
 target_link_libraries(onert_core PRIVATE nnfw_coverage)
-target_link_libraries(onert_core PRIVATE dl Threads::Threads)
+target_link_libraries(onert_core PRIVATE ${CMAKE_DL_LIBS} Threads::Threads)
 
 # Ruy
 nnfw_find_package(Ruy REQUIRED)
@@ -74,7 +74,7 @@ add_executable(${TEST_ONERT_CORE} ${TESTS})
 target_link_libraries(${TEST_ONERT_CORE} onert_core)
 # Requires linking nnfw_coverage: check header coverage
 target_link_libraries(${TEST_ONERT_CORE} nnfw_common nnfw_coverage)
-target_link_libraries(${TEST_ONERT_CORE} gtest gtest_main dl Threads::Threads)
+target_link_libraries(${TEST_ONERT_CORE} gtest gtest_main ${CMAKE_DL_LIBS} Threads::Threads)
 
 add_test(${TEST_ONERT_CORE} ${TEST_ONERT_CORE})
 set_target_properties(${TEST_ONERT_CORE} PROPERTIES

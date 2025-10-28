@@ -15,7 +15,7 @@ endif(NOT ENABLE_TEST)
 
 add_executable(test_onert_frontend_nnapi ${TESTS_FRONTEND})
 
-target_link_libraries(test_onert_frontend_nnapi ${LIB_NNAPI} dl)
+target_link_libraries(test_onert_frontend_nnapi ${LIB_NNAPI})
 target_link_libraries(test_onert_frontend_nnapi gtest)
 target_link_libraries(test_onert_frontend_nnapi gtest_main)
 # Set INSTALL_RPATH to find onert_core

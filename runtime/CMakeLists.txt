@@ -98,6 +98,13 @@ include("${CMAKE_CURRENT_LIST_DIR}/infra/cmake/CfgOptionFlags.cmake")
 #      because compile flag setting can be decided using option (ex. ENABLE_COVERAGE)
 include("${CMAKE_CURRENT_LIST_DIR}/infra/cmake/ApplyCompileFlags.cmake")
 
+# CCache support
+find_program(CCACHE_PROGRAM ccache)
+if(CCACHE_PROGRAM AND ENABLE_CCACHE)
+  set(CMAKE_C_COMPILER_LAUNCHER ${CCACHE_PROGRAM})
+  set(CMAKE_CXX_COMPILER_LAUNCHER ${CCACHE_PROGRAM})
+endif(CCACHE_PROGRAM AND ENABLE_CCACHE)
+
 set(THREADS_PREFER_PTHREAD_FLAG TRUE)
 find_package(Threads REQUIRED)
 
