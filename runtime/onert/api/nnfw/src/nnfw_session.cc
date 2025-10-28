@@ -1117,10 +1117,6 @@ NNFW_STATUS nnfw_session::set_config(const char *key, const char *value)
   {
     _coptions->executor = value;
   }
-  else if (skey == config::OP_BACKEND_ALLOPS)
-  {
-    _coptions->manual_scheduler_options.backend_for_all = value;
-  }
   else if (skey == config::USE_SCHEDULER)
   {
     _coptions->he_scheduler = toBool(value);

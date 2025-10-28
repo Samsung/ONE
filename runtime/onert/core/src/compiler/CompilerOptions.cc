@@ -86,9 +86,6 @@ std::unique_ptr<CompilerOptions> CompilerOptions::fromGlobalConfig()
     // Backend for all
     auto &ms_options = o->manual_scheduler_options;
 
-    // Default value for op_backend_all is first element in the backend list
-    ms_options.backend_for_all = util::getConfigString(util::config::OP_BACKEND_ALLOPS);
-
 // Opcode to Backend
 #define OP(OpName)                                                                      \
   {                                                                                     \
@@ -128,8 +125,6 @@ void CompilerOptions::verboseOptions()
                     << nnfw::misc::join(backend_list.begin(), backend_list.end(), "/") << std::endl;
   VERBOSE(Compiler) << "graph_dump_level         : " << graph_dump_level << std::endl;
   VERBOSE(Compiler) << "executor                 : " << executor << std::endl;
-  VERBOSE(Compiler) << "manual backend_for_all   : " << manual_scheduler_options.backend_for_all
-                    << std::endl;
   VERBOSE(Compiler) << "manual_scheduler_options : "
                     << getOpBackends(manual_scheduler_options.opcode_to_backend) << std::endl;
   VERBOSE(Compiler) << "he_scheduler             : " << he_scheduler << std::endl;

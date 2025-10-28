@@ -34,7 +34,6 @@ struct ManualSchedulerOptions
 {
   void setBackendMap(const std::string &str);
 
-  std::string backend_for_all;
   std::unordered_map<ir::OpCode, std::string> opcode_to_backend;
   std::unordered_map<ir::OperationIndex, std::string> index_to_backend;
 };
