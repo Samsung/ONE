@@ -127,6 +127,12 @@ Identifies and removes unused tensors from all subgraphs within a Circle model. 
 
 ##
 
+### `retype.input_ids.py`
+
+Finds tensors named `input_ids` and changes their data type from int64 to int32. This filter is useful for models that need to be compatible with hardware or frameworks that expect input_ids to be 32-bit integers instead of 64-bit integers.
+
+##
+
 ### `gen_circle.*.py`
 
 
