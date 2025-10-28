@@ -1,7 +1,7 @@
 include(CMakeDependentOption)
 
 #
-# Platfor specific configuration
+# Platform specific configuration
 # note: this should be placed before default setting for option setting priority
 #       (platform specific setting have higher priority)
 #
@@ -20,6 +20,7 @@ option(ENABLE_CCACHE "Enable ccache for faster compilation" ON)
 #
 option(ENVVAR_ONERT_CONFIG "Use environment variable for onert configuration" ON)
 set(TRIX_REQ_TIMEOUT_SEC 60 CACHE STRING "Timeout for TRIX request")
+option(BUILD_GGMA_API "Build GGMA API for Generative AI" ON)
 
 #
 # Default build configuration for tests
