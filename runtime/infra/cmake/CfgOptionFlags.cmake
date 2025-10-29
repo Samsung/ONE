@@ -1,7 +1,7 @@
 include(CMakeDependentOption)
 
 #
-# Platfor specific configuration
+# Platform specific configuration
 # note: this should be placed before default setting for option setting priority
 #       (platform specific setting have higher priority)
 #
@@ -20,6 +20,7 @@ option(ENABLE_CCACHE "Enable ccache for faster compilation" ON)
 #
 option(ENVVAR_ONERT_CONFIG "Use environment variable for onert configuration" ON)
 set(TRIX_REQ_TIMEOUT_SEC 60 CACHE STRING "Timeout for TRIX request")
+option(BUILD_GGMA_API "Build GGMA API for Generative AI" ON)
 
 #
 # Default build configuration for tests
@@ -28,6 +29,7 @@ option(BUILD_RUNTIME_NNAPI_TEST "Build Runtime NN API Generated Test" ON)
 option(BUILD_RUNTIME_NNFW_API_TEST "Build Runtime NNFW API Tests" ON)
 option(BUILD_TFLITE_RUN "Build tflite_run test driver" ON)
 option(BUILD_ONERT_RUN "Build onert_run test driver" ON)
+option(BUILD_GGMA_RUN "Build ggma_run test driver" ON)
 option(BUILD_ONERT_TRAIN "Build onert_train test driver" ON)
 option(BUILD_TFLITE_COMPARATOR_TEST_TOOL "Build testing tool to compare runtime result with TFLite" ON)
 option(BUILD_WITH_HDF5 "Build test tool with HDF5 library" ON)
@@ -93,6 +95,8 @@ option(DOWNLOAD_FXDIV "Download fxdiv source" ON)
 option(BUILD_FXDIV "Build fxdiv library from the source" ON)
 option(DOWNLOAD_PYBIND11 "Download Pybind11 source" OFF)
 option(BUILD_PYTHON_BINDING "Build python binding" OFF)
+option(DOWNLOAD_SENTENCEPIECE "Download SentencePiece source" ON)
+option(BUILD_SENTENCEPIECE "Build SentencePiece library from the source" ON)
 option(HDF5_USE_STATIC_LIBRARIES "Determine whether or not static linking for HDF5" ON)
 
 #
