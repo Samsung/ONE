@@ -22,11 +22,11 @@
 namespace onert
 {
 
-class OnertException : public std::exception
+class Exception : public std::exception
 {
 public:
-  OnertException(const std::string &msg) : _msg{msg} {}
-  OnertException(const std::string &tag, const std::string &msg) : _msg{tag + " : " + msg} {}
+  Exception(const std::string &msg) : _msg{msg} {}
+  Exception(const std::string &tag, const std::string &msg) : _msg{tag + " : " + msg} {}
 
   const char *what() const noexcept override { return _msg.c_str(); }
 
@@ -34,11 +34,11 @@ private:
   std::string _msg;
 };
 
-class InsufficientBufferSizeException : public OnertException
+class InsufficientBufferSizeException : public Exception
 {
 public:
   InsufficientBufferSizeException(const std::string &msg)
-    : OnertException{"InsufficientBufferSize", msg}
+    : Exception{"Insufficient buffer size", msg}
   {
   }
 };
