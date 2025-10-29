@@ -180,11 +180,7 @@ public:
    * @param[in] from from IODesc
    * @param[in] to   to IODesc
    */
-  void addEdge(const IODesc &from, const IODesc &to)
-  {
-    std::cout << from << " -> " << to << std::endl;
-    _edges.edges.insert(ModelEdge{from, to});
-  }
+  void addEdge(const IODesc &from, const IODesc &to) { _edges.edges.insert(ModelEdge{from, to}); }
   /**
    * @brief   Get model edge set
    * @return  Edge set reference
