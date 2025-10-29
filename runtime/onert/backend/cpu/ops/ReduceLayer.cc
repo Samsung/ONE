@@ -17,10 +17,70 @@
 #include "ReduceLayer.h"
 
 #include "OperationUtils.h"
+#include "../KernelGenerator.h"
+#include "../Validator.h"
 
 #include "cker/neon/neon_check.h"
 #include <cker/operation/Reduce.h>
 #include <cker/operation/ReduceMean.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::Reduce &) { _supported = true; }
+
+ops::ReduceType convertReduceType(ir::operation::Reduce::ReduceType reduce_type_ir)
+{
+  switch (reduce_type_ir)
+  {
+    case ir::operation::Reduce::ReduceType::ALL:
+      return ops::ReduceType::kAll;
+    case ir::operation::Reduce::ReduceType::ANY:
+      return ops::ReduceType::kAny;
+    case ir::operation::Reduce::ReduceType::MAX:
+      return ops::ReduceType::kMax;
+    case ir::operation::Reduce::ReduceType::MIN:
+      return ops::ReduceType::kMin;
+    case ir::operation::Reduce::ReduceType::PROD:
+      return ops::ReduceType::kProd;
+    case ir::operation::Reduce::ReduceType::SUM:
+      return ops::ReduceType::kSum;
+    default:
+      throw std::runtime_error("cpu KernelGenerator : Not supported operation yet");
+  }
+}
+
+void KernelGenerator::visit(const ir::operation::Reduce &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::Reduce::Input::INPUT)};
+  const auto axes_index{node.getInputs().at(ir::operation::Reduce::Input::AXES)};
+
+  const auto keep_dims = node.param().keep_dims;
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
+  auto axes_tensor = _tensor_reg->getPortableTensor(axes_index);
+
+  if (node.param().reduce_type == ir::operation::Reduce::ReduceType::MEAN)
+  {
+    auto fn = std::make_unique<ops::MeanLayer>();
+
+    fn->configure(input_tensor, axes_tensor, output_tensor, keep_dims);
+
+    _return_fn = std::move(fn);
+  }
+  else
+  {
+    auto fn = std::make_unique<ops::ReduceLayer>();
+
+    const auto reduce_type = convertReduceType(node.param().reduce_type);
+    fn->configure(input_tensor, axes_tensor, output_tensor, reduce_type, keep_dims);
+
+    _return_fn = std::move(fn);
+  }
+}
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

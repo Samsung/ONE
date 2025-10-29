@@ -17,8 +17,37 @@
 #include "ConcatLayer.h"
 
 #include "OperationUtils.h"
+#include "../KernelGenerator.h"
+#include "../Validator.h"
 
 #include <cker/operation/Concatenation.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::Concat &) { _supported = true; }
+
+void KernelGenerator::visit(const ir::operation::Concat &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+
+  const auto rank = _ctx.at(ofm_index).shape().rank();
+  const auto axis = ops::getAxis(rank, node.param().axis);
+
+  auto output_tensor = _tensor_reg->getPortableTensor(ofm_index);
+
+  std::vector<const IPortableTensor *> input_tensors;
+  for (const auto &ifm_idx : node.getInputs())
+    input_tensors.emplace_back(_tensor_reg->getPortableTensor(ifm_idx));
+
+  auto fn = std::make_unique<ops::ConcatLayer>();
+
+  fn->configure(input_tensors, axis, output_tensor);
+
+  _return_fn = std::move(fn);
+}
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

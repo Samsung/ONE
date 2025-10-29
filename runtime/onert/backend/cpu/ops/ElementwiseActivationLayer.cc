@@ -17,6 +17,8 @@
 #include "ElementwiseActivationLayer.h"
 
 #include "OperationUtils.h"
+#include "../KernelGenerator.h"
+#include "../Validator.h"
 
 #include <cker/operation/ELU.h>
 #include <cker/operation/LeakyReLU.h>
@@ -25,6 +27,51 @@
 #include <cker/operation/ReLU6.h>
 #include <cker/operation/Tanh.h>
 #include <cker/operation/GELU.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::ElementwiseActivation &) { _supported = true; }
+
+ops::ElementwiseActivationType
+convertElementwiseActivationType(ir::operation::ElementwiseActivation::Type type_ir)
+{
+  switch (type_ir)
+  {
+    case ir::operation::ElementwiseActivation::Type::ELU:
+      return ops::ElementwiseActivationType::kElu;
+    case ir::operation::ElementwiseActivation::Type::LOGISTIC:
+      return ops::ElementwiseActivationType::kLogistic;
+    case ir::operation::ElementwiseActivation::Type::RELU:
+      return ops::ElementwiseActivationType::kReLU;
+    case ir::operation::ElementwiseActivation::Type::TANH:
+      return ops::ElementwiseActivationType::kTanh;
+    case ir::operation::ElementwiseActivation::Type::LEAKY_RELU:
+      return ops::ElementwiseActivationType::kLeakyReLU;
+    case ir::operation::ElementwiseActivation::Type::GELU:
+      return ops::ElementwiseActivationType::kGELU;
+    default:
+      throw std::runtime_error("cpu KernelGenerator : Not supported operation yet");
+  }
+}
+
+void KernelGenerator::visit(const ir::operation::ElementwiseActivation &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::ElementwiseActivation::Input::INPUT)};
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
+
+  auto fn = std::make_unique<ops::ElementwiseActivationLayer>();
+
+  fn->configure(input_tensor, output_tensor, node.param().alpha, node.param().beta,
+                node.param().approximate, convertElementwiseActivationType(node.param().op_type));
+
+  _return_fn = std::move(fn);
+}
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

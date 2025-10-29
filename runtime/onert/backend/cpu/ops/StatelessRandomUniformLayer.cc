@@ -16,7 +16,33 @@
 
 #include "StatelessRandomUniformLayer.h"
 
+#include "../KernelGenerator.h"
+#include "../Validator.h"
+
 #include <cker/operation/StatelessRandomUniform.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::StatelessRandomUniform &) { _supported = true; }
+
+void KernelGenerator::visit(const ir::operation::StatelessRandomUniform &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto shape_index{node.getInputs().at(ir::operation::StatelessRandomUniform::SHAPE)};
+  const auto seed_index{node.getInputs().at(ir::operation::StatelessRandomUniform::SEED)};
+
+  auto output_alloc = _tensor_reg->getPortableTensor(output_index);
+  auto shape_alloc = _tensor_reg->getPortableTensor(shape_index);
+  auto seed_alloc = _tensor_reg->getPortableTensor(seed_index);
+
+  auto fn = std::make_unique<ops::StatelessRandomUniformLayer>();
+
+  fn->configure(shape_alloc, seed_alloc, output_alloc);
+  _return_fn = std::move(fn);
+}
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

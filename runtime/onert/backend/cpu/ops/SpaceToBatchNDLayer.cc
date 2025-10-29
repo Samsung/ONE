@@ -17,8 +17,36 @@
 #include "SpaceToBatchNDLayer.h"
 
 #include "OperationUtils.h"
+#include "../KernelGenerator.h"
+#include "../Validator.h"
 
 #include <cker/operation/SpaceToBatchND.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::SpaceToBatchND &) { _supported = true; }
+
+void KernelGenerator::visit(const ir::operation::SpaceToBatchND &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::SpaceToBatchND::INPUT)};
+  const auto block_shape_index{node.getInputs().at(ir::operation::SpaceToBatchND::BLOCK_SIZE)};
+  const auto padding_index{node.getInputs().at(ir::operation::SpaceToBatchND::PADDINGS)};
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
+  auto block_shape_tensor = _tensor_reg->getPortableTensor(block_shape_index);
+  auto padding_tensor = _tensor_reg->getPortableTensor(padding_index);
+
+  auto fn = std::make_unique<ops::SpaceToBatchNDLayer>();
+
+  fn->configure(input_tensor, block_shape_tensor, padding_tensor, output_tensor);
+
+  _return_fn = std::move(fn);
+}
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

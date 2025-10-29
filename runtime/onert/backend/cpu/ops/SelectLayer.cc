@@ -17,8 +17,36 @@
 #include "SelectLayer.h"
 
 #include "OperationUtils.h"
+#include "../KernelGenerator.h"
+#include "../Validator.h"
 
 #include <cker/operation/Select.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::Select &) { _supported = true; }
+
+void KernelGenerator::visit(const ir::operation::Select &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto condition_index{node.getInputs().at(ir::operation::Select::Input::CONDITION)};
+  const auto true_index{node.getInputs().at(ir::operation::Select::Input::INPUT_TRUE)};
+  const auto false_index{node.getInputs().at(ir::operation::Select::Input::INPUT_FALSE)};
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto condition_tensor = _tensor_reg->getPortableTensor(condition_index);
+  auto true_tensor = _tensor_reg->getPortableTensor(true_index);
+  auto false_tensor = _tensor_reg->getPortableTensor(false_index);
+
+  auto fn = std::make_unique<ops::SelectLayer>();
+
+  fn->configure(condition_tensor, true_tensor, false_tensor, output_tensor);
+
+  _return_fn = std::move(fn);
+}
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

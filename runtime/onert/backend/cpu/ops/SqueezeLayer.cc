@@ -16,3 +16,30 @@
 
 // Empty file for Squeeze operation
 // Sqeeze operation is implemented as ReshapeLayer
+
+#include "ReshapeLayer.h"
+#include "../KernelGenerator.h"
+#include "../Validator.h"
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::Squeeze &) { _supported = true; }
+
+void KernelGenerator::visit(const ir::operation::Squeeze &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::Squeeze::Input::INPUT)};
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
+
+  // Squeeze can share same kernel with reshape
+  auto fn = std::make_unique<ops::ReshapeLayer>();
+
+  fn->configure(input_tensor, nullptr, output_tensor);
+
+  _return_fn = std::move(fn);
+}
+
+} // namespace onert::backend::cpu
