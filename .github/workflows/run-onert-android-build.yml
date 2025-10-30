@@ -63,6 +63,17 @@ jobs:
           restore-keys: |
             external-onert-ndk-
 
+      - name: Caching ccache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ccache
+          key: ccache-onert-android
+
+      # Set ccache size
+      # Release < 100MB / Debug < 250MB
+      - name: Reduce ccache size
+        run: ccache -M 100MB
+
       # numpy: test build
       # scons: arm compute library build
       - name: Install packages
