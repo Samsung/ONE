@@ -21,6 +21,7 @@ Source2001: EXTERNALS_FOR_ODC.tar.gz
 %{!?odc_build:      %define odc_build       1}
 %endif
 %{!?test_build:     %define test_build      0}
+%{!?ggma_build:     %define ggma_build      1}
 %{!?extra_option:   %define extra_option    %{nil}}
 # Define nproc on gbs build option if you want to set number of build threads manually (ex. CI/CD infra)
 %define build_jobs   %{?!nproc:%{?_smp_mflags}%{?!_smp_mflags:-j4}}%{?nproc:-j%nproc}
@@ -89,6 +90,23 @@ Summary: NNFW On-Device Compilation Package
 NNFW package for on-device compilation
 %endif # odc_build
 
+%if %{ggma_build} == 1
+%package ggma
+Summary: GGMA generative AI framework
+
+%description ggma
+GGMA package for on-device generative AI framework
+
+%files ggma
+%manifest %{name}.manifest
+%defattr(-,root,root,-)
+%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
+%{_libdir}/ggma/libggma_api.so
+%{_includedir}/ggma/*
+%{_libdir}/pkgconfig/ggma.pc
+%endif
+%endif # ggma_build
+
 %if %{test_build} == 1
 %package test
 Summary: NNFW Test
@@ -136,11 +154,17 @@ If you want to use test package, you should install runtime package which is bui
 %define option_config -DASAN_BUILD=ON
 %endif # asan
 
+# Set option for GGMA build
+%define option_ggma -DBUILD_GGMA_API=OFF
+%if %{ggma_build} == 1
+%define option_ggma -DBUILD_GGMA_API=ON
+%endif # ggma_build
+
 # CMAKE_INSTALL_PREFIX is used for config files
 # Actual install path is set by --prefix option in cmake install command
 %define build_options -DCMAKE_BUILD_TYPE=%{build_type} -DTARGET_ARCH=%{target_arch} -DTARGET_OS=tizen \\\
         -DEXTERNALS_BUILD_THREAD=%{nproc} -DBUILD_MINIMAL_SAMPLE=OFF -DNNFW_OVERLAY_DIR=$(pwd)/%{overlay_path} \\\
-        -DCMAKE_INSTALL_PREFIX=%{_prefix} %{option_test} %{option_config} %{extra_option}
+        -DCMAKE_INSTALL_PREFIX=%{_prefix} %{option_test} %{option_config} %{option_ggma} %{extra_option}
 
 %prep
 %setup -q
