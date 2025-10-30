@@ -14,8 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-MY_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-ROOT_PATH="$(cd ${MY_PATH}/../../ && pwd)"
+MY_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+ROOT_PATH="$(cd ${MY_PATH}/../../ >/dev/null && pwd)"
 
 # Install path on CI
 INSTALL_PATH=$ROOT_PATH/Product/out

@@ -7,7 +7,7 @@ usage()
   echo "       --tensorflow_path=TensorFlow path (Use externals/tensorflow by default)"
 }
 
-SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 
 TF_DIR="${SCRIPT_PATH}/../../externals/tensorflow"
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 
 if [[ -z "${NNAS_PROJECT_PATH}" ]]; then
   echo "ERROR: NNAS_PROJECT_PATH is not specified"

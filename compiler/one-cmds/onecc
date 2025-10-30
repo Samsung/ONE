@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-''''export SCRIPT_PATH="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)" # '''
-''''export PY_PATH=${SCRIPT_PATH}/venv/bin/python                                       # '''
-''''test -f ${PY_PATH} && exec ${PY_PATH} "$0" "$@"                                     # '''
-''''echo "Error: Virtual environment not found. Please run 'one-prepare-venv' command." # '''
-''''exit 255                                                                            # '''
+''''export SCRIPT_PATH="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" >/dev/null && pwd)" # '''
+''''export PY_PATH=${SCRIPT_PATH}/venv/bin/python                                                  # '''
+''''test -f ${PY_PATH} && exec ${PY_PATH} "$0" "$@"                                                # '''
+''''echo "Error: Virtual environment not found. Please run 'one-prepare-venv' command."            # '''
+''''exit 255                                                                                       # '''
 
 # Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
 #
@@ -42,9 +42,9 @@ def run_subtools():
 
     E.g. $ onecc -C ${CFG_FILE}
          $ onecc import tflite -i ${INPUT} -o ${OUTPUT} ## HERE
-        
+
     Please refer to above `subtool_list` for the support list of sub-tools.
-    
+
     This function checks if given sub-tool exists and run it directly.
     """
     subtool_keys: List[str] = oneutils.one_cmd_list()

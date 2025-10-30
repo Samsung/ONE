@@ -10,7 +10,7 @@
 # ref_dir  : artifacts directoy where reference test materials exist
 # eval_driver : luci_eval_driver path for evaluation
 
-VERIFY_SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+VERIFY_SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 VERIFY_SCRIPT_PATH="${VERIFY_SOURCE_PATH}/luci_eval_verifier_ref.py"
 BINDIR="$1"; shift
 REFDIR="$1"; shift

@@ -10,7 +10,7 @@
 
 set -e
 
-TEST_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+TEST_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 
 MODEL_NAME="$1"; shift
 

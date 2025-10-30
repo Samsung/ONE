@@ -14,7 +14,7 @@ usage()
     exit 1
 }
 
-__CrossDir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+__CrossDir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )
 __InitialDir=$PWD
 __UbuntuRepo="http://ports.ubuntu.com/"
 

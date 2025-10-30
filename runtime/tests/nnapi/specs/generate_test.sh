@@ -36,7 +36,7 @@ Ex
 # generate_wrapper below for generating models and examples and updating the
 # test framework in one shot.
 
-spec_dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+spec_dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )
 export NNAPI_BASE=$(readlink -f "$spec_dir/../../..")
 : ${TEST_DIR:=tests/nnapi}
 : ${FORCE:=""}
@@ -171,4 +171,3 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     exit $?
   fi
 fi # [[ "${BASH_SOURCE[0]}" == "${0}" ]]
-
