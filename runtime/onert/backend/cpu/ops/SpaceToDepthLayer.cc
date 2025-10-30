@@ -19,6 +19,7 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/SpaceToDepth.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -57,7 +58,7 @@ void SpaceToDepthLayer::run()
   }
   else
   {
-    throw std::runtime_error{"SpaceToDepth: unsupported data type"};
+    throw UnsupportedDataTypeException{"SpaceToDepth", _input->data_type()};
   }
 }
 

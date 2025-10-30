@@ -20,6 +20,7 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/LSTM.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -303,7 +304,7 @@ void LSTMLayer::run()
   }
   else
   {
-    throw std::runtime_error{"LSTMLayer: unsupported data type"};
+    throw UnsupportedDataTypeException{"LSTMLayer", _input->data_type()};
   }
 }
 

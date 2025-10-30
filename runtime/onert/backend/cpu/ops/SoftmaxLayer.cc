@@ -19,6 +19,7 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/SoftMax.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -114,7 +115,7 @@ void SoftMaxLayer::run()
       softmaxQuant8<int8_t>();
       break;
     default:
-      throw std::runtime_error{"SoftMax: unsupported data type"};
+      throw UnsupportedDataTypeException{"SoftMax", _input->data_type()};
   }
 }
 

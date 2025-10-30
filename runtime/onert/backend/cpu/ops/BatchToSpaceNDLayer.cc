@@ -17,6 +17,7 @@
 #include "BatchToSpaceNDLayer.h"
 
 #include <cker/operation/BatchToSpaceND.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -66,7 +67,7 @@ void BatchToSpaceNDLayer::run()
   }
   else
   {
-    throw std::runtime_error{"NYI"};
+    throw UnsupportedDataTypeException{"BatchToSpaceND", _output->data_type()};
   }
 }
 

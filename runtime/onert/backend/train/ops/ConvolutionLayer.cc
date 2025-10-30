@@ -22,8 +22,8 @@
 #include <cker/operation/Transpose.h>
 #include <cker/train/operation/Conv.h>
 #include <cker/train/operation/ReLU.h>
-
 #include <cker/operation/TransposeConv.h>
+#include <util/Exceptions.h>
 
 namespace
 {
@@ -108,7 +108,7 @@ void ConvolutionLayer::backward()
       break;
     }
     default:
-      throw std::runtime_error{"train ConvolutionLayer: unsupported data type"};
+      throw UnsupportedDataTypeException{"train Conv", data_type};
   }
 }
 

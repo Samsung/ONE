@@ -17,6 +17,7 @@
 #include "BroadcastToLayer.h"
 
 #include <cker/operation/BroadcastTo.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -57,7 +58,7 @@ void BroadcastToLayer::run()
                                         getShape(_output), getBuffer<uint32_t>(_output));
       break;
     default:
-      throw std::runtime_error{"BroadcastToLayer: unsupported data type"};
+      throw UnsupportedDataTypeException{"BroadcastTo", _output->data_type()};
   }
 }
 

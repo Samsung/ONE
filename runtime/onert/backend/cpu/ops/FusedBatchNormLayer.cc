@@ -17,6 +17,7 @@
 #include "FusedBatchNormLayer.h"
 
 #include <cker/operation/FusedBatchNorm.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -63,7 +64,7 @@ void FusedBatchNormLayer::run()
   }
   else
   {
-    throw std::runtime_error{"FusedBatchNorm: unsupported data type"};
+    throw UnsupportedDataTypeException{"FusedBatchNorm", _output->data_type()};
   }
 }
 

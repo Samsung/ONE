@@ -18,6 +18,7 @@
 #define __ONERT_IR_DATATYPE_H__
 
 #include <cstdlib>
+#include <string>
 
 namespace onert::ir
 {
@@ -43,6 +44,7 @@ enum class DataType
 
 size_t sizeOfDataType(DataType data_type);
 bool requireQuantParam(DataType data_type);
+std::string toString(DataType data_type);
 
 } // namespace onert::ir
 

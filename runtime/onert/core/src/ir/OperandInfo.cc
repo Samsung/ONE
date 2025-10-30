@@ -15,6 +15,7 @@
  */
 
 #include "ir/OperandInfo.h"
+#include "util/Exceptions.h"
 
 namespace onert::ir
 {
@@ -26,7 +27,7 @@ size_t OperandInfo::total_size() const
   {
     return _shape.num_elements() * sizeOfDataType(data_type);
   }
-  catch (const std::runtime_error &e)
+  catch (const onert::UnsupportedDataTypeException &e)
   {
     // Calculate total size for ggml block quantization type on exception handling
     // because it is rare case and we should care about performance on non-block case.

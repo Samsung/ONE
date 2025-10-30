@@ -21,6 +21,7 @@
 #include <cker/Shape.h>
 #include <cker/train/operation/ReduceMean.h>
 #include <cker/operation/BinaryArithmeticOps.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::train::ops
 {
@@ -49,7 +50,7 @@ void MeanLayer::backward()
   if (_keep_dims == false)
   {
     keep_dim_shape.ReplaceWith(getShape(_input));
-    auto axes_vec = cpu::ops::getReducerAxes(_axes);
+    auto axes_vec = cpu::ops::getReducerAxes("train Mean", _axes);
     for (const auto &axis : axes_vec)
     {
       keep_dim_shape.SetDim(axis, 1);
@@ -69,7 +70,7 @@ void MeanLayer::backward()
       break;
     }
     default:
-      throw std::runtime_error("train MeanLayer: unsupported data type");
+      throw UnsupportedDataTypeException{"train Mean", _back_prop_output->data_type()};
   }
 }
 

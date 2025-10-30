@@ -42,9 +42,10 @@ void ensure_status(NNFW_STATUS status)
       throw NnfwInsufficientOutputError("NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE");
     case NNFW_STATUS::NNFW_STATUS_DEPRECATED_API:
       throw NnfwDeprecatedApiError("NNFW_STATUS_DEPRECATED_API");
-    default:
-      throw NnfwError("NNFW_UNKNOWN_ERROR");
+    case NNFW_STATUS::NNFW_STATUS_UNSUPPORTED_DATA_TYPE:
+      throw NnfwUnsupportedDataTypeError("NNFW_STATUS_UNSUPPORTED_DATA_TYPE");
   }
+  throw NnfwError("NNFW_UNKNOWN_ERROR");
 }
 
 NNFW_LAYOUT getLayout(const char *layout)

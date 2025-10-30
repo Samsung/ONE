@@ -17,6 +17,7 @@
 #include "BinaryArithmeticLayer.h"
 
 #include <cker/operation/BinaryArithmeticOps.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -120,7 +121,7 @@ generateKernelGeneric(const IPortableTensor *lhs, const IPortableTensor *rhs,
       break;
     }
     default:
-      throw std::runtime_error{"BinaryArithmetic(generic): Unsupported data type"};
+      throw UnsupportedDataTypeException{"BinaryArithmetic(generic)", lhs->data_type()};
   }
 }
 
@@ -205,7 +206,6 @@ void BinaryArithmeticLayer::configure(const IPortableTensor *lhs, const IPortabl
         _kernel =
           Eval<nnfw::cker::BinaryArithmeticOpType::ADD, int8_t>(_lhs, _rhs, _output, op_params);
       }
-
       else
       {
         _kernel = generateKernelGeneric<nnfw::cker::BinaryArithmeticOpType::ADD>(
@@ -227,7 +227,6 @@ void BinaryArithmeticLayer::configure(const IPortableTensor *lhs, const IPortabl
         _kernel =
           Eval<nnfw::cker::BinaryArithmeticOpType::SUB, int8_t>(_lhs, _rhs, _output, op_params);
       }
-
       else
       {
         _kernel = generateKernelGeneric<nnfw::cker::BinaryArithmeticOpType::SUB>(
@@ -265,8 +264,7 @@ void BinaryArithmeticLayer::configure(const IPortableTensor *lhs, const IPortabl
       {
         // TODO Support quantized type
         // TODO Support integer type with zero check
-        throw std::runtime_error{
-          "BinaryArithmetic(Div): Div operation does not support non-float data types yet"};
+        throw UnsupportedDataTypeException{"BinaryArithmetic(Div)", lhs->data_type()};
       }
       break;
     default:

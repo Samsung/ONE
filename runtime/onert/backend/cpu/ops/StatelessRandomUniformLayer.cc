@@ -17,6 +17,7 @@
 #include "StatelessRandomUniformLayer.h"
 
 #include <cker/operation/StatelessRandomUniform.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -51,7 +52,7 @@ void StatelessRandomUniformLayer::run()
       StatelessRandomUniformFloat32();
       break;
     default:
-      throw std::runtime_error{"StatelessRandomUniformLayer: unsupported data type"};
+      throw UnsupportedDataTypeException{"StatelessRandomUniform", _output->data_type()};
   }
 }
 

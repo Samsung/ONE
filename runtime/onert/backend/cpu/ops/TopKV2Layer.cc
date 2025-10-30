@@ -19,6 +19,7 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/TopKV2.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -41,7 +42,7 @@ void TopKV2Layer::configure(const IPortableTensor *input, IPortableTensor *outpu
 void TopKV2Layer::run()
 {
   if (_output_indices->data_type() != OperandType::INT32)
-    throw std::runtime_error{"TopKV2: unsupported output indices type"};
+    throw UnsupportedDataTypeException{"TopKV2", _output_indices->data_type()};
 
   if (_input->data_type() == OperandType::FLOAT32)
   {
@@ -63,7 +64,7 @@ void TopKV2Layer::run()
   }
   else
   {
-    throw std::runtime_error{"TopKV2: unsupported data type"};
+    throw UnsupportedDataTypeException{"TopKV2", _input->data_type()};
   }
 }
 

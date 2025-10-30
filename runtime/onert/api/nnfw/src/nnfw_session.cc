@@ -502,6 +502,11 @@ NNFW_STATUS nnfw_session::run()
     std::cerr << "Error during nnfw_session::run : " << e.what() << std::endl;
     return NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE;
   }
+  catch (const onert::UnsupportedDataTypeException &e)
+  {
+    std::cerr << "Error during nnfw_session::run : " << e.what() << std::endl;
+    return NNFW_STATUS_UNSUPPORTED_DATA_TYPE;
+  }
   catch (const std::exception &e)
   {
     std::cerr << "Error during nnfw_session::run : " << e.what() << std::endl;

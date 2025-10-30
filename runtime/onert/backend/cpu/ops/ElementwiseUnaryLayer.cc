@@ -25,6 +25,7 @@
 #include <cker/operation/LogicalNot.h>
 #include <cker/operation/Round.h>
 #include <cker/operation/Quantize.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -66,8 +67,7 @@ void castPtr(const FromT *in, DataPtr out, int num_elements, ir::DataType data_t
                      [](FromT a) { return static_cast<int64_t>(a); });
       return;
     default:
-      throw std::runtime_error("Cast: Not supported output type" +
-                               std::to_string((int)data_type_out));
+      throw UnsupportedDataTypeException{"Cast", data_type_out};
   }
 }
 
@@ -103,8 +103,7 @@ void cast(const IPortableTensor *input, IPortableTensor *output)
       castPtr(in.i64, out, num_elements, output->data_type());
       return;
     default:
-      throw std::runtime_error("Cast: unsupported data type" +
-                               std::to_string((int)input->data_type()));
+      throw UnsupportedDataTypeException{"Cast", input->data_type()};
   }
 }
 
@@ -226,7 +225,7 @@ void ElementwiseUnaryLayer::configure(const IPortableTensor *input, IPortableTen
       }
       else
       {
-        throw std::runtime_error{"Abs: Unsupported data type"};
+        throw UnsupportedDataTypeException{"Abs", input->data_type()};
       }
       break;
     case ElementwiseUnaryType::kCast:
@@ -239,7 +238,7 @@ void ElementwiseUnaryLayer::configure(const IPortableTensor *input, IPortableTen
       }
       else
       {
-        throw std::runtime_error{"Cos: Unsupported data type"};
+        throw UnsupportedDataTypeException{"Cos", input->data_type()};
       }
       break;
     case ElementwiseUnaryType::kDequantize:
@@ -258,7 +257,7 @@ void ElementwiseUnaryLayer::configure(const IPortableTensor *input, IPortableTen
       }
       else
       {
-        throw std::runtime_error{"Dequantize: Unsupported data type"};
+        throw UnsupportedDataTypeException{"Dequantize", input->data_type()};
       }
       break;
     case ElementwiseUnaryType::kExp:
@@ -268,7 +267,7 @@ void ElementwiseUnaryLayer::configure(const IPortableTensor *input, IPortableTen
       }
       else
       {
-        throw std::runtime_error{"Exp: Unsupported data type"};
+        throw UnsupportedDataTypeException{"Exp", input->data_type()};
       }
       break;
     case ElementwiseUnaryType::kErf:
@@ -278,7 +277,7 @@ void ElementwiseUnaryLayer::configure(const IPortableTensor *input, IPortableTen
       }
       else
       {
-        throw std::runtime_error{"Exp: Unsupported data type"};
+        throw UnsupportedDataTypeException{"Exp", input->data_type()};
       }
       break;
     case ElementwiseUnaryType::kFloor:
@@ -288,7 +287,7 @@ void ElementwiseUnaryLayer::configure(const IPortableTensor *input, IPortableTen
       }
       else
       {
-        throw std::runtime_error{"Floor: Unsupported data type"};
+        throw UnsupportedDataTypeException{"Floor", input->data_type()};
       }
       break;
     case ElementwiseUnaryType::kLog:
@@ -298,7 +297,7 @@ void ElementwiseUnaryLayer::configure(const IPortableTensor *input, IPortableTen
       }
       else
       {
-        throw std::runtime_error{"Log: Unsupported  data type"};
+        throw UnsupportedDataTypeException{"Log", input->data_type()};
       }
       break;
     case ElementwiseUnaryType::kLogicalNot:
@@ -309,7 +308,7 @@ void ElementwiseUnaryLayer::configure(const IPortableTensor *input, IPortableTen
       }
       else
       {
-        throw std::runtime_error{"LogicalNot: Unsupported  data type"};
+        throw UnsupportedDataTypeException{"LogicalNot", input->data_type()};
       }
       break;
     case ElementwiseUnaryType::kNeg:
@@ -327,7 +326,7 @@ void ElementwiseUnaryLayer::configure(const IPortableTensor *input, IPortableTen
       }
       else
       {
-        throw std::runtime_error{"Neg: Unsupported  data type"};
+        throw UnsupportedDataTypeException{"Neg", input->data_type()};
       }
       break;
     case ElementwiseUnaryType::kRound:
@@ -337,7 +336,7 @@ void ElementwiseUnaryLayer::configure(const IPortableTensor *input, IPortableTen
       }
       else
       {
-        throw std::runtime_error{"Round: Unsupported  data type"};
+        throw UnsupportedDataTypeException{"Round", input->data_type()};
       }
       break;
     case ElementwiseUnaryType::kRSqrt:
@@ -347,7 +346,7 @@ void ElementwiseUnaryLayer::configure(const IPortableTensor *input, IPortableTen
       }
       else
       {
-        throw std::runtime_error{"RSqrt: Unsupported  data type"};
+        throw UnsupportedDataTypeException{"RSqrt", input->data_type()};
       }
       break;
     case ElementwiseUnaryType::kSin:
@@ -357,7 +356,7 @@ void ElementwiseUnaryLayer::configure(const IPortableTensor *input, IPortableTen
       }
       else
       {
-        throw std::runtime_error{"Sin: Unsupported  data type"};
+        throw UnsupportedDataTypeException{"Sin", input->data_type()};
       }
       break;
     case ElementwiseUnaryType::kSqrt:
@@ -367,7 +366,7 @@ void ElementwiseUnaryLayer::configure(const IPortableTensor *input, IPortableTen
       }
       else
       {
-        throw std::runtime_error{"Sqrt: Unsupported  data type"};
+        throw UnsupportedDataTypeException{"Sqrt", input->data_type()};
       }
       break;
     case ElementwiseUnaryType::kSquare:
@@ -377,7 +376,7 @@ void ElementwiseUnaryLayer::configure(const IPortableTensor *input, IPortableTen
       }
       else
       {
-        throw std::runtime_error{"Square: Unsupported  data type"};
+        throw UnsupportedDataTypeException{"Square", input->data_type()};
       }
       break;
     case ElementwiseUnaryType::kZerosLike:
@@ -391,7 +390,7 @@ void ElementwiseUnaryLayer::configure(const IPortableTensor *input, IPortableTen
       }
       else
       {
-        throw std::runtime_error{"ZerosLike: Unsupported data type"};
+        throw UnsupportedDataTypeException{"ZerosLike", input->data_type()};
       }
       break;
     default:
@@ -431,7 +430,7 @@ void QuantizeLayer::configure(const IPortableTensor *input, IPortableTensor *out
   }
   else
   {
-    throw std::runtime_error{"Quantize: Unsupported  data type"};
+    throw UnsupportedDataTypeException{"Quantize", input->data_type()};
   }
 }
 
@@ -444,7 +443,7 @@ void QuantizeLayer::run()
     else if (_output->data_type() == OperandType::QUANT_INT16_SYMM)
       affineQuantize<float, int16_t>(_input, _output);
     else
-      throw std::runtime_error{"Quantize: Unsupported data type"};
+      throw UnsupportedDataTypeException{"Quantize", _output->data_type()};
   }
   else if ((_input->data_type() == OperandType::QUANT_UINT8_ASYMM) &&
            (_output->data_type() == OperandType::QUANT_INT8_ASYMM))
@@ -464,7 +463,7 @@ void QuantizeLayer::run()
   }
   else
   {
-    throw std::runtime_error{"Quantize: Unsupported  data type"};
+    throw UnsupportedDataTypeException{"Quantize", _input->data_type()};
   }
 }
 

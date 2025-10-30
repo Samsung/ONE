@@ -20,6 +20,7 @@
 #include <cker/train/optimizer/Adam.h>
 #include <cmath>
 #include <misc/polymorphic_downcast.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::train::optimizer
 {
@@ -63,7 +64,7 @@ void Adam::applyGradient(const UpdateFactors &factors) const
         use_nesterov);
       break;
     default:
-      throw std::runtime_error("Adam: Not supported data type");
+      throw UnsupportedDataTypeException{"train Adam", grad_tensor.data_type()};
   }
 }
 

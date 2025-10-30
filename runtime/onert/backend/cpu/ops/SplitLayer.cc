@@ -19,6 +19,7 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/Split.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -87,7 +88,7 @@ void SplitLayer::run()
   }
   else
   {
-    throw std::runtime_error{"Split: unsupported input type"};
+    throw UnsupportedDataTypeException{"Split", _input->data_type()};
   }
 }
 
