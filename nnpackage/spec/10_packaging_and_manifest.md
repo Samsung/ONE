@@ -1,5 +1,15 @@
 # Packaging and Manifest
 
+## Revision History
+
+Version Major.Minor.Patch
+
+1.0.0: Initial version
+1.1.0: `configs` is added
+1.2.0: `tvn` is added for supported model-types.
+1.3.0: `pkg-inputs`, `pkg-outputs` and `model-connect` are added
+1.3.1: `model-types` is not mandatory any longer
+
 ## 1. Overview
 
 `nnpackage` is the input of nnfw, and the output of nncc.
@@ -73,31 +83,115 @@ attribute itself can be omitted. As of now we only support only one item.
 `models` is an array of path to model files, which is relative path from top level directory of this package.
 The first element from the array will be the default model to be executed.
 
-#### model-types
+#### Multiple Models Description
 
-`model-types` is an array of strings that describes the type of each model in `models`.
+`nnpackage` can describe a workflow that involves several models.
+Each connection point is identified by a **triple**:
 
-It can have the values (case-sensitive) in following table.
+```
+model_index : subgraph_index : io_index
+```
 
-| name   | description            |
-|--------|------------------------|
-| tflite | tensorflow lite schema |
-| circle | nnpackage schema       |
-| tvn    | trix-engine binary     |
+* **model_index** – Position of the model in the `models` array (starting at 0).
+* **subgraph_index** – Sub‑graph identifier inside the model file (used by Circle and TensorFlow Lite).
+* **io_index** – Input (or output) slot number within that sub‑graph.
+
+##### pkg‑inputs
+
+`pkg‑inputs` is an array of strings that specifies the entry points of the whole package.
+Each entry uses the triple notation described above.
+
+```json
+"pkg-inputs": [
+  "0:0:0",
+  "1:0:2"
+]
+```
+
+##### pkg‑outputs
+
+`pkg‑outputs` is an array of strings that lists the exit points of the package, also using the triple notation.
+
+```json
+"pkg-outputs": [
+  "2:0:0",
+  "2:0:1"
+]
+```
+
+##### model‑connect
+
+`model‑connect` defines how data flows between the models.
+Each object contains a **source** (`from`) and one or more **destinations** (`to`), all expressed with the triple notation.
+
+```json
+"model-connect": [
+  { "from": "0:0:0", "to": [ "1:0:0", "1:0:1" ] },
+  { "from": "1:0:2", "to": [ "2:0:0" ] }
+]
+```
+
+* The first entry connects the output `0:0:0` of model 0 to two inputs of model 1.
+* The second entry routes the output `1:0:2` of model 1 to the input `2:0:0` of model 2.
+
+These fields enable **nnpackage** to orchestrate multiple models as a single, unified graph, making it possible to build complex pipelines where the output of one model becomes the input of another.
 
 ### Example
 
-Here is an example of `MANIFEST`.
+Here is an example of `MANIFEST` with multi-model connections:
 
-```
+```json
 {
     "major-version" : "1",
-    "minor-version" : "2",
-    "patch-version" : "0",
-    "configs"     : [ "model.cfg" ],
-    "models"      : [ "mymodel.model", "yourmodel.model", "binmodel.tvn" ],
-    "model-types" : [ "tflite", "circle", "tvn" ]
+    "minor-version" : "3",
+    "patch-version" : "1",
+    "configs"     : [  ],
+    "models"      : [
+      "encoder.circle",
+      "decoder.circle"
+    ],
+  "pkg-inputs": [
+    "0:0:0"
+  ],
+  "pkg-outputs": [
+    "1:0:0"
+  ],
+  "model-connect": [
+    { "from": "0:0:0", "to": [ "1:0:0" ] }
+  ]
 }
+```
+
+This diagram illustrates the above configuration.
+
+```
+     Package Input 0
+
+          │
+          │ (0:0:0)
+          │
+          ▼  nnpackage
+     ┌──────────────────────┐
+     │                      │
+     │          Model 0     │
+     │  ┌─────────────────┐ │
+     │  │ encoder.circle  │ │
+     │  │ (subgraph 0)    │ │
+     │  └─────────────────┘ │
+     │        │             │
+     │        │  output     │
+     │        │  (0:0:0)    │
+     │        │             │
+     │        ▼  Model 1    │
+     │  ┌─────────────────┐ │
+     │  │ decoder.circle  │ │
+     │  │ (subgraph 0)    │ │
+     │  └─────────────────┘ │
+     │         │            │
+     └─────────┼────────────┘
+               │ (1:0:0)
+               ▼
+          Package Output 0
 ```
 
 ## 5. Configuration file
