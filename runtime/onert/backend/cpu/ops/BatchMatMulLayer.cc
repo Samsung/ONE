@@ -16,7 +16,36 @@
 
 #include "BatchMatMulLayer.h"
 
+#include "../KernelGenerator.h"
+#include "../Validator.h"
+
 #include <cker/operation/BatchMatMul.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::BatchMatMul &) { _supported = true; }
+
+void KernelGenerator::visit(const ir::operation::BatchMatMul &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto lhs_index{node.getInputs().at(ir::operation::BatchMatMul::LHS)};
+  const auto rhs_index{node.getInputs().at(ir::operation::BatchMatMul::RHS)};
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto lhs_tensor = _tensor_reg->getPortableTensor(lhs_index);
+  auto rhs_tensor = _tensor_reg->getPortableTensor(rhs_index);
+
+  const auto adj_x = node.param().adj_x;
+  const auto adj_y = node.param().adj_y;
+
+  auto fn = std::make_unique<ops::BatchMatMulLayer>();
+
+  fn->configure(lhs_tensor, rhs_tensor, adj_x, adj_y, output_tensor);
+  _return_fn = std::move(fn);
+}
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

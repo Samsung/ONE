@@ -16,8 +16,35 @@
 
 #include "PowLayer.h"
 
+#include "../KernelGenerator.h"
+#include "../Validator.h"
+
 #include <cker/operation/Pow.h>
 #include <cker/operation/BinaryArithmeticOps.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::Pow &) { _supported = true; }
+
+void KernelGenerator::visit(const ir::operation::Pow &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto lhs_index{node.getInputs().at(ir::operation::Pow::LHS)};
+  const auto rhs_index{node.getInputs().at(ir::operation::Pow::RHS)};
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto lhs_tensor = _tensor_reg->getPortableTensor(lhs_index);
+  auto rhs_tensor = _tensor_reg->getPortableTensor(rhs_index);
+
+  auto fn = std::make_unique<ops::PowLayer>();
+
+  fn->configure(lhs_tensor, rhs_tensor, ir::Activation::NONE, output_tensor);
+
+  _return_fn = std::move(fn);
+}
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

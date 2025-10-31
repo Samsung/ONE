@@ -17,8 +17,41 @@
 #include "UnpackLayer.h"
 
 #include "OperationUtils.h"
+#include "../KernelGenerator.h"
+#include "../Validator.h"
 
 #include <cker/operation/Unpack.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::Unpack &) { _supported = true; }
+
+void KernelGenerator::visit(const ir::operation::Unpack &node)
+{
+  const auto input_index{node.getInputs().at(0)};
+
+  const auto rank = _ctx.at(input_index).shape().rank();
+  const auto axis = ops::getAxis(rank, node.param().axis);
+
+  assert(rank == 0 || (-rank <= axis && axis < rank));
+
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
+
+  std::vector<IPortableTensor *> output_tensors;
+  for (const auto &output_idx : node.getOutputs())
+    output_tensors.emplace_back(_tensor_reg->getPortableTensor(output_idx));
+
+  auto fn = std::make_unique<ops::UnpackLayer>();
+
+  uint32_t axis_resolved = (axis < 0 ? axis + rank : axis);
+
+  fn->configure(input_tensor, axis_resolved, node.param().num, output_tensors);
+
+  _return_fn = std::move(fn);
+}
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

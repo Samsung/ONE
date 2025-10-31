@@ -17,12 +17,61 @@
 #include "ElementwiseBinaryLayer.h"
 
 #include "OperationUtils.h"
+#include "../KernelGenerator.h"
+#include "../Validator.h"
 
 #include <cker/operation/FloorDiv.h>
 #include <cker/operation/FloorMod.h>
 #include <cker/operation/LogicalAnd.h>
 #include <cker/operation/LogicalOr.h>
 #include <cker/operation/MaxMin.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::ElementwiseBinary &) { _supported = true; }
+
+ops::ElementwiseBinaryType
+convertElementwiseBinaryType(ir::operation::ElementwiseBinary::ElementwiseBinaryType type_ir)
+{
+  switch (type_ir)
+  {
+    case ir::operation::ElementwiseBinary::ElementwiseBinaryType::FLOOR_DIV:
+      return ops::ElementwiseBinaryType::kFloorDiv;
+    case ir::operation::ElementwiseBinary::ElementwiseBinaryType::FLOOR_MOD:
+      return ops::ElementwiseBinaryType::kFloorMod;
+    case ir::operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_AND:
+      return ops::ElementwiseBinaryType::kLogicalAnd;
+    case ir::operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_OR:
+      return ops::ElementwiseBinaryType::kLogicalOr;
+    case ir::operation::ElementwiseBinary::ElementwiseBinaryType::MAX:
+      return ops::ElementwiseBinaryType::kMax;
+    case ir::operation::ElementwiseBinary::ElementwiseBinaryType::MIN:
+      return ops::ElementwiseBinaryType::kMin;
+    default:
+      throw std::runtime_error("cpu KernelGenerator : Not supported operation yet");
+  }
+}
+
+void KernelGenerator::visit(const ir::operation::ElementwiseBinary &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto lhs_index{node.getInputs().at(ir::operation::ElementwiseBinary::Input::LHS)};
+  const auto rhs_index{node.getInputs().at(ir::operation::ElementwiseBinary::Input::RHS)};
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto lhs_tensor = _tensor_reg->getPortableTensor(lhs_index);
+  auto rhs_tensor = _tensor_reg->getPortableTensor(rhs_index);
+
+  auto fn = std::make_unique<ops::ElementwiseBinaryLayer>();
+
+  fn->configure(lhs_tensor, rhs_tensor, output_tensor,
+                convertElementwiseBinaryType(node.param().op_type));
+
+  _return_fn = std::move(fn);
+}
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

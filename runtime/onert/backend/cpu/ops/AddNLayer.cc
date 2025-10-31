@@ -17,9 +17,35 @@
 #include "AddNLayer.h"
 
 #include "OperationUtils.h"
+#include "../KernelGenerator.h"
+#include "../Validator.h"
 
 #include <cker/operation/AddN.h>
 #include <assert.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::AddN &) { _supported = true; }
+
+void KernelGenerator::visit(const ir::operation::AddN &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+
+  std::vector<const IPortableTensor *> input_tensors;
+  for (const auto &input_idx : node.getInputs())
+    input_tensors.emplace_back(_tensor_reg->getPortableTensor(input_idx));
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+
+  auto fn = std::make_unique<ops::AddNLayer>();
+
+  fn->configure(std::move(input_tensors), output_tensor);
+
+  _return_fn = std::move(fn);
+}
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {
