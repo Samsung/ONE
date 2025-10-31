@@ -21,8 +21,8 @@
 # NNPackageTest $1 $2
 #   Run [INSTALL_PATH]/test/onert-test nnpkg-test command
 
-CURRENT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ROOT_PATH="$(cd ${CURRENT_PATH}/../../ && pwd)"
+CURRENT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
+ROOT_PATH="$(cd ${CURRENT_PATH}/../../ >/dev/null && pwd)"
 
 # Install path on CI
 INSTALL_PATH=$ROOT_PATH/Product/out
