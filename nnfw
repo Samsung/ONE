@@ -4,13 +4,14 @@ NNFW_SCRIPT_RPATH="runtime/infra"
 NNFW_COMMAND_RPATH="${NNFW_SCRIPT_RPATH}/command"
 
 NNFW_PROJECT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+NNFW_COMMAND_PATH="${NNFW_PROJECT_PATH}/${NNFW_COMMAND_RPATH}"
 NNFW_SCRIPT_PATH="${NNFW_PROJECT_PATH}/${NNFW_SCRIPT_RPATH}"
 
 function Usage()
 {
   echo "Usage: $0 [COMMAND] ..."
   echo "Command:"
-  for file in "$NNFW_COMMAND_RPATH"/*;
+  for file in "$NNFW_COMMAND_PATH"/*;
   do
     echo "  $(basename "$file")"
   done
@@ -23,7 +24,7 @@ if [[ -z "${COMMAND}" ]]; then
   exit 255
 fi
 
-COMMAND_FILE="${NNFW_PROJECT_PATH}/${NNFW_COMMAND_RPATH}/${COMMAND}"
+COMMAND_FILE="${NNFW_COMMAND_PATH}/${COMMAND}"
 
 if [[ ! -f "${COMMAND_FILE}" ]]; then
   echo "ERROR: '${COMMAND}' is not supported"
