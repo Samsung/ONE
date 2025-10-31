@@ -113,11 +113,12 @@ std::string trim(std::string_view value)
   return std::string(value.substr(begin, end - begin + 1));
 }
 
-std::string inferModelType(const std::string &filename)
+std::string inferModelType(const std::filesystem::path &file_path)
 {
-  std::filesystem::path file_path(filename);
-  std::string ext = file_path.extension().string();
-  return ext.empty() ? "" : ext.substr(1);
+  if (!file_path.has_extension())
+    return "";
+
+  return file_path.extension().string().substr(1);
 }
 
 bool loadConfigure(const std::string cfgfile, onert::util::CfgKeyValues &keyValues)
@@ -329,10 +330,11 @@ NNFW_STATUS nnfw_session::load_model_from_path(const char *path)
   try
   {
     std::filesystem::path filename{path};
-    if (!std::filesystem::is_directory(filename) && filename.has_extension())
+    if (!std::filesystem::is_directory(filename))
     {
-      std::string model_type = filename.extension().string().substr(1); // + 1 to exclude dot
-      return loadModelFile(filename, model_type);
+      std::string model_type = inferModelType(filename);
+      if (!model_type.empty())
+        return loadModelFile(filename, model_type);
     }
 
     const auto &package_dir = filename;
@@ -383,14 +385,15 @@ NNFW_STATUS nnfw_session::load_model_from_path(const char *path)
 
     for (uint16_t i = 0; i < num_models; ++i)
     {
-      const auto model_file_path = package_dir / models[i].asString();
+      const auto model_file_name = std::filesystem::path(models[i].asString());
+      const auto model_file_path = package_dir / model_file_name;
       std::string model_type;
 
       // Use model-types if available and not empty, otherwise infer from file extension
       if (!model_types.empty() && i < model_types.size())
         model_type = model_types[i].asString();
       else
-        model_type = inferModelType(models[i].asString());
+        model_type = inferModelType(model_file_name);
       if (model_type.empty())
       {
         std::cerr << "Error: Cannot determine model type for '" << models[i].asString() << "'."
