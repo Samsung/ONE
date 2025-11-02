@@ -435,6 +435,7 @@ var menudata={children:[
 {text:"r",url:"globals_enum.html#index_r"}]},
 {text:"Enumerator",url:"globals_eval.html",children:[
 {text:"a",url:"globals_eval.html#index_a"},
+{text:"g",url:"globals_eval.html#index_g"},
 {text:"k",url:"globals_eval.html#index_k"},
 {text:"n",url:"globals_eval.html#index_n"}]},
 {text:"Macros",url:"globals_defs.html",children:[

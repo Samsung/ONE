@@ -12,6 +12,6 @@ var namespaceonert =
     [ "shape_inference", "namespaceonert_1_1shape__inference.html", "namespaceonert_1_1shape__inference" ],
     [ "trix_loader", "namespaceonert_1_1trix__loader.html", "namespaceonert_1_1trix__loader" ],
     [ "util", "namespaceonert_1_1util.html", "namespaceonert_1_1util" ],
-    [ "InsufficientBufferSizeException", "classonert_1_1_insufficient_buffer_size_exception.html", "classonert_1_1_insufficient_buffer_size_exception" ],
-    [ "OnertException", "classonert_1_1_onert_exception.html", "classonert_1_1_onert_exception" ]
+    [ "Exception", "classonert_1_1_exception.html", "classonert_1_1_exception" ],
+    [ "InsufficientBufferSizeException", "classonert_1_1_insufficient_buffer_size_exception.html", "classonert_1_1_insufficient_buffer_size_exception" ]
 ];

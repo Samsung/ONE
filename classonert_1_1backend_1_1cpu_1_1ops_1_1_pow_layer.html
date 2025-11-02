@@ -197,13 +197,13 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_pow_layer_8cc_source.html#l00045">45</a> of file <a class="el" href="_pow_layer_8cc_source.html">PowLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   47</span>{</div>
-<div class="line"><span class="lineno">   48</span>  _lhs = lhs;</div>
-<div class="line"><span class="lineno">   49</span>  _rhs = rhs;</div>
-<div class="line"><span class="lineno">   50</span>  _activation = activation;</div>
-<div class="line"><span class="lineno">   51</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
-<div class="line"><span class="lineno">   52</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_pow_layer_8cc_source.html#l00072">72</a> of file <a class="el" href="_pow_layer_8cc_source.html">PowLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   74</span>{</div>
+<div class="line"><span class="lineno">   75</span>  _lhs = lhs;</div>
+<div class="line"><span class="lineno">   76</span>  _rhs = rhs;</div>
+<div class="line"><span class="lineno">   77</span>  _activation = activation;</div>
+<div class="line"><span class="lineno">   78</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
+<div class="line"><span class="lineno">   79</span>}</div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00096">gen_h5_explicit_inputs_all.py:96</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -223,25 +223,25 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_pow_layer_8cc_source.html#l00025">25</a> of file <a class="el" href="_pow_layer_8cc_source.html">PowLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   26</span>{</div>
-<div class="line"><span class="lineno">   27</span>  <span class="keywordtype">float</span> output_activation_min = 0, output_activation_max = 0;</div>
-<div class="line"><span class="lineno">   28</span>  <a class="code hl_function" href="namespaceonert_1_1util.html#a9aac61f35b6d507552fea7bd8ac070ab">CalculateActivationRange</a>(_activation, &amp;output_activation_min, &amp;output_activation_max);</div>
-<div class="line"><span class="lineno">   29</span>  <a class="code hl_struct" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html">nnfw::cker::BinaryArithmeticOpParam</a> op_params;</div>
-<div class="line"><span class="lineno">   30</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#ac8fdfaa8e3b43c341a0128857d3bcf20">float_activation_max</a> = output_activation_max;</div>
-<div class="line"><span class="lineno">   31</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#af87d13f6f63a9d5eeb175c2db94bae92">float_activation_min</a> = output_activation_min;</div>
-<div class="line"><span class="lineno">   32</span> </div>
-<div class="line"><span class="lineno">   33</span>  <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#afc22736e0da6f4516d09f994d0e9d07a">HaveSameShapes</a>(_lhs, _rhs))</div>
-<div class="line"><span class="lineno">   34</span>  {</div>
-<div class="line"><span class="lineno">   35</span>    nnfw::cker::BroadcastBinaryArithmeticOp&lt;nnfw::cker::BinaryArithmeticOpType::POW&gt;(</div>
-<div class="line"><span class="lineno">   36</span>      op_params, <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_lhs), getBuffer&lt;float&gt;(_lhs), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_rhs), getBuffer&lt;float&gt;(_rhs),</div>
-<div class="line"><span class="lineno">   37</span>      <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_output), getBuffer&lt;float&gt;(_output));</div>
-<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">   39</span>  }</div>
-<div class="line"><span class="lineno">   40</span> </div>
-<div class="line"><span class="lineno">   41</span>  <a class="code hl_function" href="namespacennfw_1_1cker.html#a8741f6b2ba404c870bbc0a4b732e8993">nnfw::cker::powImpl</a>(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_lhs), getBuffer&lt;float&gt;(_lhs), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_rhs),</div>
-<div class="line"><span class="lineno">   42</span>                      getBuffer&lt;float&gt;(_rhs), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_output), getBuffer&lt;float&gt;(_output));</div>
-<div class="line"><span class="lineno">   43</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_pow_layer_8cc_source.html#l00052">52</a> of file <a class="el" href="_pow_layer_8cc_source.html">PowLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   53</span>{</div>
+<div class="line"><span class="lineno">   54</span>  <span class="keywordtype">float</span> output_activation_min = 0, output_activation_max = 0;</div>
+<div class="line"><span class="lineno">   55</span>  <a class="code hl_function" href="namespaceonert_1_1util.html#a9aac61f35b6d507552fea7bd8ac070ab">CalculateActivationRange</a>(_activation, &amp;output_activation_min, &amp;output_activation_max);</div>
+<div class="line"><span class="lineno">   56</span>  <a class="code hl_struct" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html">nnfw::cker::BinaryArithmeticOpParam</a> op_params;</div>
+<div class="line"><span class="lineno">   57</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#ac8fdfaa8e3b43c341a0128857d3bcf20">float_activation_max</a> = output_activation_max;</div>
+<div class="line"><span class="lineno">   58</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#af87d13f6f63a9d5eeb175c2db94bae92">float_activation_min</a> = output_activation_min;</div>
+<div class="line"><span class="lineno">   59</span> </div>
+<div class="line"><span class="lineno">   60</span>  <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#afc22736e0da6f4516d09f994d0e9d07a">HaveSameShapes</a>(_lhs, _rhs))</div>
+<div class="line"><span class="lineno">   61</span>  {</div>
+<div class="line"><span class="lineno">   62</span>    nnfw::cker::BroadcastBinaryArithmeticOp&lt;nnfw::cker::BinaryArithmeticOpType::POW&gt;(</div>
+<div class="line"><span class="lineno">   63</span>      op_params, <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_lhs), getBuffer&lt;float&gt;(_lhs), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_rhs), getBuffer&lt;float&gt;(_rhs),</div>
+<div class="line"><span class="lineno">   64</span>      <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_output), getBuffer&lt;float&gt;(_output));</div>
+<div class="line"><span class="lineno">   65</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">   66</span>  }</div>
+<div class="line"><span class="lineno">   67</span> </div>
+<div class="line"><span class="lineno">   68</span>  <a class="code hl_function" href="namespacennfw_1_1cker.html#a8741f6b2ba404c870bbc0a4b732e8993">nnfw::cker::powImpl</a>(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_lhs), getBuffer&lt;float&gt;(_lhs), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_rhs),</div>
+<div class="line"><span class="lineno">   69</span>                      getBuffer&lt;float&gt;(_rhs), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_output), getBuffer&lt;float&gt;(_output));</div>
+<div class="line"><span class="lineno">   70</span>}</div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_a8741f6b2ba404c870bbc0a4b732e8993"><div class="ttname"><a href="namespacennfw_1_1cker.html#a8741f6b2ba404c870bbc0a4b732e8993">nnfw::cker::powImpl</a></div><div class="ttdeci">void powImpl(const Shape &amp;input1_shape, const T *input1_data, const Shape &amp;input2_shape, const T *input2_data, const Shape &amp;output_shape, T *output_data)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2operation_2_pow_8h_source.html#l00031">Pow.h:31</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a1cfb53087f7fc161b9162d65aa5520d9"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">onert::backend::cpu::ops::getShape</a></div><div class="ttdeci">nnfw::cker::Shape getShape(const IPortableTensor *tensor)</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_operation_utils_8h_source.html#l00089">OperationUtils.h:89</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_afc22736e0da6f4516d09f994d0e9d07a"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#afc22736e0da6f4516d09f994d0e9d07a">onert::backend::cpu::ops::HaveSameShapes</a></div><div class="ttdeci">bool HaveSameShapes(const IPortableTensor *input1, const IPortableTensor *input2)</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_operation_utils_8cc_source.html#l00195">OperationUtils.cc:195</a></div></div>
@@ -252,7 +252,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_calculate_activation_range_8h_source.html#l00028">onert::util::CalculateActivationRange()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00199">nnfw::cker::BinaryArithmeticOpParam::float_activation_max</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00198">nnfw::cker::BinaryArithmeticOpParam::float_activation_min</a>, <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00089">onert::backend::cpu::ops::getShape()</a>, <a class="el" href="cpu_2ops_2_operation_utils_8cc_source.html#l00195">onert::backend::cpu::ops::HaveSameShapes()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_pow_8h_source.html#l00031">nnfw::cker::powImpl()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_pow_layer_8cc_source.html#l00054">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_pow_layer_8cc_source.html#l00081">run()</a>.</p>
 
 </div>
 </div>
@@ -281,17 +281,17 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_function.html#aedd6f5e12852d808abb97327b9d229e2">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_pow_layer_8cc_source.html#l00054">54</a> of file <a class="el" href="_pow_layer_8cc_source.html">PowLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   55</span>{</div>
-<div class="line"><span class="lineno">   56</span>  <span class="keywordflow">if</span> (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32)</div>
-<div class="line"><span class="lineno">   57</span>    <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_pow_layer.html#a95f130b34d9cb9e7f44ad6a43b38a883">powFloat32</a>();</div>
-<div class="line"><span class="lineno">   58</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Pow: unsupportted data type&quot;</span>};</div>
-<div class="line"><span class="lineno">   60</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_pow_layer_8cc_source.html#l00081">81</a> of file <a class="el" href="_pow_layer_8cc_source.html">PowLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   82</span>{</div>
+<div class="line"><span class="lineno">   83</span>  <span class="keywordflow">if</span> (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32)</div>
+<div class="line"><span class="lineno">   84</span>    <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_pow_layer.html#a95f130b34d9cb9e7f44ad6a43b38a883">powFloat32</a>();</div>
+<div class="line"><span class="lineno">   85</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   86</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Pow: unsupportted data type&quot;</span>};</div>
+<div class="line"><span class="lineno">   87</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aae73f75c41fa15f5ae2c391918fa09c5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor::data_type</a></div><div class="ttdeci">ir::DataType data_type() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00054">IPortableTensor.h:54</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_pow_layer_html_a95f130b34d9cb9e7f44ad6a43b38a883"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_pow_layer.html#a95f130b34d9cb9e7f44ad6a43b38a883">onert::backend::cpu::ops::PowLayer::powFloat32</a></div><div class="ttdeci">void powFloat32()</div><div class="ttdef"><b>Definition</b> <a href="_pow_layer_8cc_source.html#l00025">PowLayer.cc:25</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_pow_layer_html_a95f130b34d9cb9e7f44ad6a43b38a883"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_pow_layer.html#a95f130b34d9cb9e7f44ad6a43b38a883">onert::backend::cpu::ops::PowLayer::powFloat32</a></div><div class="ttdeci">void powFloat32()</div><div class="ttdef"><b>Definition</b> <a href="_pow_layer_8cc_source.html#l00052">PowLayer.cc:52</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>, and <a class="el" href="_pow_layer_8cc_source.html#l00025">powFloat32()</a>.</p>
+<p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>, and <a class="el" href="_pow_layer_8cc_source.html#l00052">powFloat32()</a>.</p>
 
 </div>
 </div>

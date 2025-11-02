@@ -211,15 +211,15 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_one_hot_layer_8cc_source.html#l00034">34</a> of file <a class="el" href="_one_hot_layer_8cc_source.html">OneHotLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   37</span>{</div>
-<div class="line"><span class="lineno">   38</span>  _indices = indices;</div>
-<div class="line"><span class="lineno">   39</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
-<div class="line"><span class="lineno">   40</span>  _depth = depth;</div>
-<div class="line"><span class="lineno">   41</span>  _on_value = on_value;</div>
-<div class="line"><span class="lineno">   42</span>  _off_value = off_value;</div>
-<div class="line"><span class="lineno">   43</span>  _axis = axis;</div>
-<div class="line"><span class="lineno">   44</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_one_hot_layer_8cc_source.html#l00069">69</a> of file <a class="el" href="_one_hot_layer_8cc_source.html">OneHotLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   72</span>{</div>
+<div class="line"><span class="lineno">   73</span>  _indices = indices;</div>
+<div class="line"><span class="lineno">   74</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
+<div class="line"><span class="lineno">   75</span>  _depth = depth;</div>
+<div class="line"><span class="lineno">   76</span>  _on_value = on_value;</div>
+<div class="line"><span class="lineno">   77</span>  _off_value = off_value;</div>
+<div class="line"><span class="lineno">   78</span>  _axis = axis;</div>
+<div class="line"><span class="lineno">   79</span>}</div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00096">gen_h5_explicit_inputs_all.py:96</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -241,13 +241,13 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_one_hot_layer_8cc_source.html#l00026">26</a> of file <a class="el" href="_one_hot_layer_8cc_source.html">OneHotLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   27</span>{</div>
-<div class="line"><span class="lineno">   28</span>  <span class="comment">// It assumes index is int32_t type.</span></div>
-<div class="line"><span class="lineno">   29</span>  nnfw::cker::OneHot&lt;T, int32_t&gt;(</div>
-<div class="line"><span class="lineno">   30</span>    *getBuffer&lt;int32_t&gt;(_depth), *getBuffer&lt;T&gt;(_on_value), *getBuffer&lt;T&gt;(_off_value), _axis,</div>
-<div class="line"><span class="lineno">   31</span>    <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_indices), getBuffer&lt;int32_t&gt;(_indices), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_output), getBuffer&lt;T&gt;(_output));</div>
-<div class="line"><span class="lineno">   32</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_one_hot_layer_8cc_source.html#l00061">61</a> of file <a class="el" href="_one_hot_layer_8cc_source.html">OneHotLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   62</span>{</div>
+<div class="line"><span class="lineno">   63</span>  <span class="comment">// It assumes index is int32_t type.</span></div>
+<div class="line"><span class="lineno">   64</span>  nnfw::cker::OneHot&lt;T, int32_t&gt;(</div>
+<div class="line"><span class="lineno">   65</span>    *getBuffer&lt;int32_t&gt;(_depth), *getBuffer&lt;T&gt;(_on_value), *getBuffer&lt;T&gt;(_off_value), _axis,</div>
+<div class="line"><span class="lineno">   66</span>    <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_indices), getBuffer&lt;int32_t&gt;(_indices), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_output), getBuffer&lt;T&gt;(_output));</div>
+<div class="line"><span class="lineno">   67</span>}</div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a1cfb53087f7fc161b9162d65aa5520d9"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">onert::backend::cpu::ops::getShape</a></div><div class="ttdeci">nnfw::cker::Shape getShape(const IPortableTensor *tensor)</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_operation_utils_8h_source.html#l00089">OperationUtils.h:89</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00089">onert::backend::cpu::ops::getShape()</a>.</p>
@@ -279,17 +279,17 @@ template&lt;typename T &gt; </div>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_function.html#aedd6f5e12852d808abb97327b9d229e2">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_one_hot_layer_8cc_source.html#l00046">46</a> of file <a class="el" href="_one_hot_layer_8cc_source.html">OneHotLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   47</span>{</div>
-<div class="line"><span class="lineno">   48</span>  <span class="keywordflow">if</span> (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32)</div>
-<div class="line"><span class="lineno">   49</span>  {</div>
-<div class="line"><span class="lineno">   50</span>    oneHotImpl&lt;float&gt;();</div>
-<div class="line"><span class="lineno">   51</span>  }</div>
-<div class="line"><span class="lineno">   52</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   53</span>  {</div>
-<div class="line"><span class="lineno">   54</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;OneHot: unsupported data type&quot;</span>};</div>
-<div class="line"><span class="lineno">   55</span>  }</div>
-<div class="line"><span class="lineno">   56</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_one_hot_layer_8cc_source.html#l00081">81</a> of file <a class="el" href="_one_hot_layer_8cc_source.html">OneHotLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   82</span>{</div>
+<div class="line"><span class="lineno">   83</span>  <span class="keywordflow">if</span> (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32)</div>
+<div class="line"><span class="lineno">   84</span>  {</div>
+<div class="line"><span class="lineno">   85</span>    oneHotImpl&lt;float&gt;();</div>
+<div class="line"><span class="lineno">   86</span>  }</div>
+<div class="line"><span class="lineno">   87</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   88</span>  {</div>
+<div class="line"><span class="lineno">   89</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;OneHot: unsupported data type&quot;</span>};</div>
+<div class="line"><span class="lineno">   90</span>  }</div>
+<div class="line"><span class="lineno">   91</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aae73f75c41fa15f5ae2c391918fa09c5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor::data_type</a></div><div class="ttdeci">ir::DataType data_type() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00054">IPortableTensor.h:54</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>.</p>

@@ -146,11 +146,11 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_log_softmax_layer_8cc_source.html#l00026">26</a> of file <a class="el" href="_log_softmax_layer_8cc_source.html">LogSoftmaxLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   26</span>                                 : _input(<span class="keyword">nullptr</span>), _output(<span class="keyword">nullptr</span>), _beta(0.0), _axis(0)</div>
-<div class="line"><span class="lineno">   27</span>{</div>
-<div class="line"><span class="lineno">   28</span>  <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">   29</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_log_softmax_layer_8cc_source.html#l00053">53</a> of file <a class="el" href="_log_softmax_layer_8cc_source.html">LogSoftmaxLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   53</span>                                 : _input(<span class="keyword">nullptr</span>), _output(<span class="keyword">nullptr</span>), _beta(0.0), _axis(0)</div>
+<div class="line"><span class="lineno">   54</span>{</div>
+<div class="line"><span class="lineno">   55</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   56</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -193,23 +193,23 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_log_softmax_layer_8cc_source.html#l00063">63</a> of file <a class="el" href="_log_softmax_layer_8cc_source.html">LogSoftmaxLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   65</span>{</div>
-<div class="line"><span class="lineno">   66</span>  _input = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
-<div class="line"><span class="lineno">   67</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
-<div class="line"><span class="lineno">   68</span>  _beta = beta;</div>
-<div class="line"><span class="lineno">   69</span>  _axis = axis;</div>
-<div class="line"><span class="lineno">   70</span>  <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_UINT8_ASYMM)</div>
-<div class="line"><span class="lineno">   71</span>  {</div>
-<div class="line"><span class="lineno">   72</span>    <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_log_soft_max_layer.html#a6624fc9ad85c5bca2ad727b8eb347786">PopulateLookupTable</a>(_beta);</div>
-<div class="line"><span class="lineno">   73</span>  }</div>
-<div class="line"><span class="lineno">   74</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_log_softmax_layer_8cc_source.html#l00090">90</a> of file <a class="el" href="_log_softmax_layer_8cc_source.html">LogSoftmaxLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   92</span>{</div>
+<div class="line"><span class="lineno">   93</span>  _input = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
+<div class="line"><span class="lineno">   94</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
+<div class="line"><span class="lineno">   95</span>  _beta = beta;</div>
+<div class="line"><span class="lineno">   96</span>  _axis = axis;</div>
+<div class="line"><span class="lineno">   97</span>  <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_UINT8_ASYMM)</div>
+<div class="line"><span class="lineno">   98</span>  {</div>
+<div class="line"><span class="lineno">   99</span>    <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_log_soft_max_layer.html#a6624fc9ad85c5bca2ad727b8eb347786">PopulateLookupTable</a>(_beta);</div>
+<div class="line"><span class="lineno">  100</span>  }</div>
+<div class="line"><span class="lineno">  101</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aae73f75c41fa15f5ae2c391918fa09c5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor::data_type</a></div><div class="ttdeci">ir::DataType data_type() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00054">IPortableTensor.h:54</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_log_soft_max_layer_html_a6624fc9ad85c5bca2ad727b8eb347786"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_log_soft_max_layer.html#a6624fc9ad85c5bca2ad727b8eb347786">onert::backend::cpu::ops::LogSoftMaxLayer::PopulateLookupTable</a></div><div class="ttdeci">void PopulateLookupTable(const float kBeta)</div><div class="ttdef"><b>Definition</b> <a href="_log_softmax_layer_8cc_source.html#l00031">LogSoftmaxLayer.cc:31</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_log_soft_max_layer_html_a6624fc9ad85c5bca2ad727b8eb347786"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_log_soft_max_layer.html#a6624fc9ad85c5bca2ad727b8eb347786">onert::backend::cpu::ops::LogSoftMaxLayer::PopulateLookupTable</a></div><div class="ttdeci">void PopulateLookupTable(const float kBeta)</div><div class="ttdef"><b>Definition</b> <a href="_log_softmax_layer_8cc_source.html#l00058">LogSoftmaxLayer.cc:58</a></div></div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00096">gen_h5_explicit_inputs_all.py:96</a></div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>, and <a class="el" href="_log_softmax_layer_8cc_source.html#l00031">PopulateLookupTable()</a>.</p>
+<p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>, and <a class="el" href="_log_softmax_layer_8cc_source.html#l00058">PopulateLookupTable()</a>.</p>
 
 </div>
 </div>
@@ -228,14 +228,14 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_log_softmax_layer_8cc_source.html#l00041">41</a> of file <a class="el" href="_log_softmax_layer_8cc_source.html">LogSoftmaxLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   42</span>{</div>
-<div class="line"><span class="lineno">   43</span>  <a class="code hl_struct" href="structnnfw_1_1cker_1_1_softmax_params.html">nnfw::cker::SoftmaxParams</a> op_params;</div>
-<div class="line"><span class="lineno">   44</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_softmax_params.html#ab0944f3827962b0e769a4aa47424ae68">beta</a> = _beta;</div>
-<div class="line"><span class="lineno">   45</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_softmax_params.html#aee82983abc9aa9e3d8e87fc006baedae">axis</a> = _axis;</div>
-<div class="line"><span class="lineno">   46</span>  <a class="code hl_function" href="namespacennfw_1_1cker.html#ac4525c325c5109c91fea040d86032b5a">nnfw::cker::LogSoftmax</a>(op_params, <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_input), getBuffer&lt;float&gt;(_input), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_output),</div>
-<div class="line"><span class="lineno">   47</span>                         getBuffer&lt;float&gt;(_output));</div>
-<div class="line"><span class="lineno">   48</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_log_softmax_layer_8cc_source.html#l00068">68</a> of file <a class="el" href="_log_softmax_layer_8cc_source.html">LogSoftmaxLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   69</span>{</div>
+<div class="line"><span class="lineno">   70</span>  <a class="code hl_struct" href="structnnfw_1_1cker_1_1_softmax_params.html">nnfw::cker::SoftmaxParams</a> op_params;</div>
+<div class="line"><span class="lineno">   71</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_softmax_params.html#ab0944f3827962b0e769a4aa47424ae68">beta</a> = _beta;</div>
+<div class="line"><span class="lineno">   72</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_softmax_params.html#aee82983abc9aa9e3d8e87fc006baedae">axis</a> = _axis;</div>
+<div class="line"><span class="lineno">   73</span>  <a class="code hl_function" href="namespacennfw_1_1cker.html#ac4525c325c5109c91fea040d86032b5a">nnfw::cker::LogSoftmax</a>(op_params, <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_input), getBuffer&lt;float&gt;(_input), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_output),</div>
+<div class="line"><span class="lineno">   74</span>                         getBuffer&lt;float&gt;(_output));</div>
+<div class="line"><span class="lineno">   75</span>}</div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_ac4525c325c5109c91fea040d86032b5a"><div class="ttname"><a href="namespacennfw_1_1cker.html#ac4525c325c5109c91fea040d86032b5a">nnfw::cker::LogSoftmax</a></div><div class="ttdeci">void LogSoftmax(const SoftmaxParams &amp;params, const Shape &amp;input_shape, const float *input_data, const Shape &amp;output_shape, float *output_data)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2operation_2_log_softmax_8h_source.html#l00034">LogSoftMax.h:34</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a1cfb53087f7fc161b9162d65aa5520d9"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">onert::backend::cpu::ops::getShape</a></div><div class="ttdeci">nnfw::cker::Shape getShape(const IPortableTensor *tensor)</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_operation_utils_8h_source.html#l00089">OperationUtils.h:89</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_softmax_params_html"><div class="ttname"><a href="structnnfw_1_1cker_1_1_softmax_params.html">nnfw::cker::SoftmaxParams</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00102">Types.h:103</a></div></div>
@@ -244,7 +244,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00107">nnfw::cker::SoftmaxParams::axis</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00106">nnfw::cker::SoftmaxParams::beta</a>, <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00089">onert::backend::cpu::ops::getShape()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_log_softmax_8h_source.html#l00034">nnfw::cker::LogSoftmax()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_log_softmax_layer_8cc_source.html#l00076">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_log_softmax_layer_8cc_source.html#l00103">run()</a>.</p>
 
 </div>
 </div>
@@ -263,18 +263,18 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_log_softmax_layer_8cc_source.html#l00050">50</a> of file <a class="el" href="_log_softmax_layer_8cc_source.html">LogSoftmaxLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   51</span>{</div>
-<div class="line"><span class="lineno">   52</span>  <a class="code hl_struct" href="structnnfw_1_1cker_1_1_softmax_params.html">nnfw::cker::SoftmaxParams</a> op_params;</div>
-<div class="line"><span class="lineno">   53</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_softmax_params.html#ab0944f3827962b0e769a4aa47424ae68">beta</a> = _beta;</div>
-<div class="line"><span class="lineno">   54</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_softmax_params.html#aee82983abc9aa9e3d8e87fc006baedae">axis</a> = _axis;</div>
-<div class="line"><span class="lineno">   55</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_softmax_params.html#a1d4c87dfe7accb45919d134fd294e0de">table</a> = _table;</div>
-<div class="line"><span class="lineno">   56</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_softmax_params.html#a11397677239b566c4a1ad5bccc3ec5a9">zero_point</a> = _output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a5baa2b3c848503091f9f61d0045cf648">data_zero_point</a>();</div>
-<div class="line"><span class="lineno">   57</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_softmax_params.html#ad61040579917160703efd1a23f73fc9a">scale</a> = _output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a56b8936eb8f5a8cbcf5cbe9d6c080ef9">data_scale</a>();</div>
-<div class="line"><span class="lineno">   58</span>  <a class="code hl_function" href="namespacennfw_1_1cker.html#ac4525c325c5109c91fea040d86032b5a">nnfw::cker::LogSoftmax</a>(op_params, _input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a56b8936eb8f5a8cbcf5cbe9d6c080ef9">data_scale</a>(), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_input),</div>
-<div class="line"><span class="lineno">   59</span>                         getBuffer&lt;uint8_t&gt;(_input), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_output),</div>
-<div class="line"><span class="lineno">   60</span>                         getBuffer&lt;uint8_t&gt;(_output));</div>
-<div class="line"><span class="lineno">   61</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_log_softmax_layer_8cc_source.html#l00077">77</a> of file <a class="el" href="_log_softmax_layer_8cc_source.html">LogSoftmaxLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   78</span>{</div>
+<div class="line"><span class="lineno">   79</span>  <a class="code hl_struct" href="structnnfw_1_1cker_1_1_softmax_params.html">nnfw::cker::SoftmaxParams</a> op_params;</div>
+<div class="line"><span class="lineno">   80</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_softmax_params.html#ab0944f3827962b0e769a4aa47424ae68">beta</a> = _beta;</div>
+<div class="line"><span class="lineno">   81</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_softmax_params.html#aee82983abc9aa9e3d8e87fc006baedae">axis</a> = _axis;</div>
+<div class="line"><span class="lineno">   82</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_softmax_params.html#a1d4c87dfe7accb45919d134fd294e0de">table</a> = _table;</div>
+<div class="line"><span class="lineno">   83</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_softmax_params.html#a11397677239b566c4a1ad5bccc3ec5a9">zero_point</a> = _output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a5baa2b3c848503091f9f61d0045cf648">data_zero_point</a>();</div>
+<div class="line"><span class="lineno">   84</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_softmax_params.html#ad61040579917160703efd1a23f73fc9a">scale</a> = _output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a56b8936eb8f5a8cbcf5cbe9d6c080ef9">data_scale</a>();</div>
+<div class="line"><span class="lineno">   85</span>  <a class="code hl_function" href="namespacennfw_1_1cker.html#ac4525c325c5109c91fea040d86032b5a">nnfw::cker::LogSoftmax</a>(op_params, _input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a56b8936eb8f5a8cbcf5cbe9d6c080ef9">data_scale</a>(), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_input),</div>
+<div class="line"><span class="lineno">   86</span>                         getBuffer&lt;uint8_t&gt;(_input), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_output),</div>
+<div class="line"><span class="lineno">   87</span>                         getBuffer&lt;uint8_t&gt;(_output));</div>
+<div class="line"><span class="lineno">   88</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_a56b8936eb8f5a8cbcf5cbe9d6c080ef9"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#a56b8936eb8f5a8cbcf5cbe9d6c080ef9">onert::backend::IPortableTensor::data_scale</a></div><div class="ttdeci">float data_scale() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00055">IPortableTensor.h:55</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_a5baa2b3c848503091f9f61d0045cf648"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#a5baa2b3c848503091f9f61d0045cf648">onert::backend::IPortableTensor::data_zero_point</a></div><div class="ttdeci">int32_t data_zero_point() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00056">IPortableTensor.h:56</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_softmax_params_html_a11397677239b566c4a1ad5bccc3ec5a9"><div class="ttname"><a href="structnnfw_1_1cker_1_1_softmax_params.html#a11397677239b566c4a1ad5bccc3ec5a9">nnfw::cker::SoftmaxParams::zero_point</a></div><div class="ttdeci">int32_t zero_point</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00115">Types.h:115</a></div></div>
@@ -283,7 +283,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00107">nnfw::cker::SoftmaxParams::axis</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00106">nnfw::cker::SoftmaxParams::beta</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00055">onert::backend::IPortableTensor::data_scale()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00056">onert::backend::IPortableTensor::data_zero_point()</a>, <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00089">onert::backend::cpu::ops::getShape()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_log_softmax_8h_source.html#l00034">nnfw::cker::LogSoftmax()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00116">nnfw::cker::SoftmaxParams::scale</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00117">nnfw::cker::SoftmaxParams::table</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00115">nnfw::cker::SoftmaxParams::zero_point</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_log_softmax_layer_8cc_source.html#l00076">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_log_softmax_layer_8cc_source.html#l00103">run()</a>.</p>
 
 </div>
 </div>
@@ -303,20 +303,20 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_log_softmax_layer_8cc_source.html#l00031">31</a> of file <a class="el" href="_log_softmax_layer_8cc_source.html">LogSoftmaxLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   32</span>{</div>
-<div class="line"><span class="lineno">   33</span>  <span class="keyword">const</span> <span class="keywordtype">float</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">scale</a> = -_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a56b8936eb8f5a8cbcf5cbe9d6c080ef9">data_scale</a>() * kBeta;</div>
-<div class="line"><span class="lineno">   34</span>  <span class="keyword">const</span> int32_t max_uint8 = std::numeric_limits&lt;uint8_t&gt;::max();</div>
-<div class="line"><span class="lineno">   35</span>  <span class="keywordflow">for</span> (int32_t val = 0; val &lt;= max_uint8; ++val)</div>
-<div class="line"><span class="lineno">   36</span>  {</div>
-<div class="line"><span class="lineno">   37</span>    _table[max_uint8 - val] = expf(scale * val);</div>
-<div class="line"><span class="lineno">   38</span>  }</div>
-<div class="line"><span class="lineno">   39</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_log_softmax_layer_8cc_source.html#l00058">58</a> of file <a class="el" href="_log_softmax_layer_8cc_source.html">LogSoftmaxLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   59</span>{</div>
+<div class="line"><span class="lineno">   60</span>  <span class="keyword">const</span> <span class="keywordtype">float</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">scale</a> = -_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a56b8936eb8f5a8cbcf5cbe9d6c080ef9">data_scale</a>() * kBeta;</div>
+<div class="line"><span class="lineno">   61</span>  <span class="keyword">const</span> int32_t max_uint8 = std::numeric_limits&lt;uint8_t&gt;::max();</div>
+<div class="line"><span class="lineno">   62</span>  <span class="keywordflow">for</span> (int32_t val = 0; val &lt;= max_uint8; ++val)</div>
+<div class="line"><span class="lineno">   63</span>  {</div>
+<div class="line"><span class="lineno">   64</span>    _table[max_uint8 - val] = expf(scale * val);</div>
+<div class="line"><span class="lineno">   65</span>  }</div>
+<div class="line"><span class="lineno">   66</span>}</div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">mir_caffe::CaffeOpType::scale</a></div><div class="ttdeci">@ scale</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00055">onert::backend::IPortableTensor::data_scale()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_log_softmax_layer_8cc_source.html#l00063">configure()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_log_softmax_layer_8cc_source.html#l00090">configure()</a>.</p>
 
 </div>
 </div>
@@ -345,25 +345,25 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_function.html#aedd6f5e12852d808abb97327b9d229e2">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_log_softmax_layer_8cc_source.html#l00076">76</a> of file <a class="el" href="_log_softmax_layer_8cc_source.html">LogSoftmaxLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   77</span>{</div>
-<div class="line"><span class="lineno">   78</span>  <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32)</div>
-<div class="line"><span class="lineno">   79</span>  {</div>
-<div class="line"><span class="lineno">   80</span>    <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_log_soft_max_layer.html#a061c02c333681ef0b2b131a4e200d2fb">logsoftmaxFloat32</a>();</div>
-<div class="line"><span class="lineno">   81</span>  }</div>
-<div class="line"><span class="lineno">   82</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_UINT8_ASYMM)</div>
-<div class="line"><span class="lineno">   83</span>  {</div>
-<div class="line"><span class="lineno">   84</span>    <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_log_soft_max_layer.html#aaf4c760b2bae379f697ad5a72e575514">logsoftmaxQuant8</a>();</div>
-<div class="line"><span class="lineno">   85</span>  }</div>
-<div class="line"><span class="lineno">   86</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   87</span>  {</div>
-<div class="line"><span class="lineno">   88</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;LogSoftmax : unsupported data type&quot;</span>};</div>
-<div class="line"><span class="lineno">   89</span>  }</div>
-<div class="line"><span class="lineno">   90</span>}</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_log_soft_max_layer_html_a061c02c333681ef0b2b131a4e200d2fb"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_log_soft_max_layer.html#a061c02c333681ef0b2b131a4e200d2fb">onert::backend::cpu::ops::LogSoftMaxLayer::logsoftmaxFloat32</a></div><div class="ttdeci">void logsoftmaxFloat32()</div><div class="ttdef"><b>Definition</b> <a href="_log_softmax_layer_8cc_source.html#l00041">LogSoftmaxLayer.cc:41</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_log_soft_max_layer_html_aaf4c760b2bae379f697ad5a72e575514"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_log_soft_max_layer.html#aaf4c760b2bae379f697ad5a72e575514">onert::backend::cpu::ops::LogSoftMaxLayer::logsoftmaxQuant8</a></div><div class="ttdeci">void logsoftmaxQuant8()</div><div class="ttdef"><b>Definition</b> <a href="_log_softmax_layer_8cc_source.html#l00050">LogSoftmaxLayer.cc:50</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_log_softmax_layer_8cc_source.html#l00103">103</a> of file <a class="el" href="_log_softmax_layer_8cc_source.html">LogSoftmaxLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  104</span>{</div>
+<div class="line"><span class="lineno">  105</span>  <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32)</div>
+<div class="line"><span class="lineno">  106</span>  {</div>
+<div class="line"><span class="lineno">  107</span>    <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_log_soft_max_layer.html#a061c02c333681ef0b2b131a4e200d2fb">logsoftmaxFloat32</a>();</div>
+<div class="line"><span class="lineno">  108</span>  }</div>
+<div class="line"><span class="lineno">  109</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_UINT8_ASYMM)</div>
+<div class="line"><span class="lineno">  110</span>  {</div>
+<div class="line"><span class="lineno">  111</span>    <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_log_soft_max_layer.html#aaf4c760b2bae379f697ad5a72e575514">logsoftmaxQuant8</a>();</div>
+<div class="line"><span class="lineno">  112</span>  }</div>
+<div class="line"><span class="lineno">  113</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  114</span>  {</div>
+<div class="line"><span class="lineno">  115</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;LogSoftmax : unsupported data type&quot;</span>};</div>
+<div class="line"><span class="lineno">  116</span>  }</div>
+<div class="line"><span class="lineno">  117</span>}</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_log_soft_max_layer_html_a061c02c333681ef0b2b131a4e200d2fb"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_log_soft_max_layer.html#a061c02c333681ef0b2b131a4e200d2fb">onert::backend::cpu::ops::LogSoftMaxLayer::logsoftmaxFloat32</a></div><div class="ttdeci">void logsoftmaxFloat32()</div><div class="ttdef"><b>Definition</b> <a href="_log_softmax_layer_8cc_source.html#l00068">LogSoftmaxLayer.cc:68</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_log_soft_max_layer_html_aaf4c760b2bae379f697ad5a72e575514"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_log_soft_max_layer.html#aaf4c760b2bae379f697ad5a72e575514">onert::backend::cpu::ops::LogSoftMaxLayer::logsoftmaxQuant8</a></div><div class="ttdeci">void logsoftmaxQuant8()</div><div class="ttdef"><b>Definition</b> <a href="_log_softmax_layer_8cc_source.html#l00077">LogSoftmaxLayer.cc:77</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>, <a class="el" href="_log_softmax_layer_8cc_source.html#l00041">logsoftmaxFloat32()</a>, and <a class="el" href="_log_softmax_layer_8cc_source.html#l00050">logsoftmaxQuant8()</a>.</p>
+<p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>, <a class="el" href="_log_softmax_layer_8cc_source.html#l00068">logsoftmaxFloat32()</a>, and <a class="el" href="_log_softmax_layer_8cc_source.html#l00077">logsoftmaxQuant8()</a>.</p>
 
 </div>
 </div>

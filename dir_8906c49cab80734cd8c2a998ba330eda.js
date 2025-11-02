@@ -4,7 +4,7 @@ var dir_8906c49cab80734cd8c2a998ba330eda =
     [ "ConcatSpec.cpp", "_concat_spec_8cpp.html", "_concat_spec_8cpp" ],
     [ "ConcatSpec.h", "_concat_spec_8h.html", "_concat_spec_8h" ],
     [ "Context.cpp", "enco_2frontend_2caffe_2src_2_context_8cpp.html", null ],
-    [ "Context.h", "enco_2frontend_2caffe_2src_2_context_8h.html", "enco_2frontend_2caffe_2src_2_context_8h" ],
+    [ "Context.h", "compiler_2enco_2frontend_2caffe_2src_2_context_8h.html", "compiler_2enco_2frontend_2caffe_2src_2_context_8h" ],
     [ "Convert.cpp", "enco_2frontend_2caffe_2src_2_convert_8cpp.html", "enco_2frontend_2caffe_2src_2_convert_8cpp" ],
     [ "Convert.h", "compiler_2enco_2frontend_2caffe_2src_2_convert_8h.html", "compiler_2enco_2frontend_2caffe_2src_2_convert_8h" ],
     [ "ConvolutionSpec.cpp", "_convolution_spec_8cpp.html", null ],

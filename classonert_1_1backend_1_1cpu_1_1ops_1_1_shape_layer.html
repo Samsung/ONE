@@ -140,11 +140,11 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shape_layer_8cc_source.html#l00024">24</a> of file <a class="el" href="_shape_layer_8cc_source.html">ShapeLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   24</span>                       : _input(<span class="keyword">nullptr</span>), _output(<span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   25</span>{</div>
-<div class="line"><span class="lineno">   26</span>  <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">   27</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_shape_layer_8cc_source.html#l00048">48</a> of file <a class="el" href="_shape_layer_8cc_source.html">ShapeLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   48</span>                       : _input(<span class="keyword">nullptr</span>), _output(<span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   49</span>{</div>
+<div class="line"><span class="lineno">   50</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   51</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -175,11 +175,11 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shape_layer_8cc_source.html#l00038">38</a> of file <a class="el" href="_shape_layer_8cc_source.html">ShapeLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   39</span>{</div>
-<div class="line"><span class="lineno">   40</span>  _input = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
-<div class="line"><span class="lineno">   41</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
-<div class="line"><span class="lineno">   42</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_shape_layer_8cc_source.html#l00062">62</a> of file <a class="el" href="_shape_layer_8cc_source.html">ShapeLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   63</span>{</div>
+<div class="line"><span class="lineno">   64</span>  _input = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
+<div class="line"><span class="lineno">   65</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
+<div class="line"><span class="lineno">   66</span>}</div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00096">gen_h5_explicit_inputs_all.py:96</a></div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 </div><!-- fragment -->
@@ -210,29 +210,29 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_function.html#aedd6f5e12852d808abb97327b9d229e2">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_shape_layer_8cc_source.html#l00044">44</a> of file <a class="el" href="_shape_layer_8cc_source.html">ShapeLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   45</span>{</div>
-<div class="line"><span class="lineno">   46</span>  <span class="keywordflow">if</span> (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::UINT32)</div>
-<div class="line"><span class="lineno">   47</span>  {</div>
-<div class="line"><span class="lineno">   48</span>    <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a64a12e50438b6ce7454d211f672bd307">GetRawShape</a>(_input, getBuffer&lt;uint32_t&gt;(_output));</div>
-<div class="line"><span class="lineno">   49</span>  }</div>
-<div class="line"><span class="lineno">   50</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::INT32)</div>
-<div class="line"><span class="lineno">   51</span>  {</div>
-<div class="line"><span class="lineno">   52</span>    <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a64a12e50438b6ce7454d211f672bd307">GetRawShape</a>(_input, getBuffer&lt;int32_t&gt;(_output));</div>
-<div class="line"><span class="lineno">   53</span>  }</div>
-<div class="line"><span class="lineno">   54</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::INT64)</div>
-<div class="line"><span class="lineno">   55</span>  {</div>
-<div class="line"><span class="lineno">   56</span>    <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a64a12e50438b6ce7454d211f672bd307">GetRawShape</a>(_input, getBuffer&lt;int64_t&gt;(_output));</div>
-<div class="line"><span class="lineno">   57</span>  }</div>
-<div class="line"><span class="lineno">   58</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   59</span>  {</div>
-<div class="line"><span class="lineno">   60</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;NYI : not supported output type for ShapeLayer&quot;</span>};</div>
-<div class="line"><span class="lineno">   61</span>  }</div>
-<div class="line"><span class="lineno">   62</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_shape_layer_8cc_source.html#l00068">68</a> of file <a class="el" href="_shape_layer_8cc_source.html">ShapeLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   69</span>{</div>
+<div class="line"><span class="lineno">   70</span>  <span class="keywordflow">if</span> (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::UINT32)</div>
+<div class="line"><span class="lineno">   71</span>  {</div>
+<div class="line"><span class="lineno">   72</span>    <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a64a12e50438b6ce7454d211f672bd307">GetRawShape</a>(_input, getBuffer&lt;uint32_t&gt;(_output));</div>
+<div class="line"><span class="lineno">   73</span>  }</div>
+<div class="line"><span class="lineno">   74</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::INT32)</div>
+<div class="line"><span class="lineno">   75</span>  {</div>
+<div class="line"><span class="lineno">   76</span>    <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a64a12e50438b6ce7454d211f672bd307">GetRawShape</a>(_input, getBuffer&lt;int32_t&gt;(_output));</div>
+<div class="line"><span class="lineno">   77</span>  }</div>
+<div class="line"><span class="lineno">   78</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::INT64)</div>
+<div class="line"><span class="lineno">   79</span>  {</div>
+<div class="line"><span class="lineno">   80</span>    <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a64a12e50438b6ce7454d211f672bd307">GetRawShape</a>(_input, getBuffer&lt;int64_t&gt;(_output));</div>
+<div class="line"><span class="lineno">   81</span>  }</div>
+<div class="line"><span class="lineno">   82</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   83</span>  {</div>
+<div class="line"><span class="lineno">   84</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;NYI : not supported output type for ShapeLayer&quot;</span>};</div>
+<div class="line"><span class="lineno">   85</span>  }</div>
+<div class="line"><span class="lineno">   86</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aae73f75c41fa15f5ae2c391918fa09c5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor::data_type</a></div><div class="ttdeci">ir::DataType data_type() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00054">IPortableTensor.h:54</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a64a12e50438b6ce7454d211f672bd307"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a64a12e50438b6ce7454d211f672bd307">onert::backend::cpu::ops::GetRawShape</a></div><div class="ttdeci">void GetRawShape(const IPortableTensor *input, T *output_data)</div><div class="ttdef"><b>Definition</b> <a href="_shape_layer_8cc_source.html#l00029">ShapeLayer.cc:29</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a64a12e50438b6ce7454d211f672bd307"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a64a12e50438b6ce7454d211f672bd307">onert::backend::cpu::ops::GetRawShape</a></div><div class="ttdeci">void GetRawShape(const IPortableTensor *input, T *output_data)</div><div class="ttdef"><b>Definition</b> <a href="_shape_layer_8cc_source.html#l00053">ShapeLayer.cc:53</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>, and <a class="el" href="_shape_layer_8cc_source.html#l00029">onert::backend::cpu::ops::GetRawShape()</a>.</p>
+<p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>, and <a class="el" href="_shape_layer_8cc_source.html#l00053">onert::backend::cpu::ops::GetRawShape()</a>.</p>
 
 </div>
 </div>

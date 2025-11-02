@@ -2,6 +2,7 @@ var namespaceonert_1_1ir_1_1operation =
 [
     [ "AddN", "classonert_1_1ir_1_1operation_1_1_add_n.html", "classonert_1_1ir_1_1operation_1_1_add_n" ],
     [ "ArgMinMax", "classonert_1_1ir_1_1operation_1_1_arg_min_max.html", "classonert_1_1ir_1_1operation_1_1_arg_min_max" ],
+    [ "Attention", "classonert_1_1ir_1_1operation_1_1_attention.html", "classonert_1_1ir_1_1operation_1_1_attention" ],
     [ "BatchMatMul", "classonert_1_1ir_1_1operation_1_1_batch_mat_mul.html", "classonert_1_1ir_1_1operation_1_1_batch_mat_mul" ],
     [ "BatchToSpaceND", "classonert_1_1ir_1_1operation_1_1_batch_to_space_n_d.html", "classonert_1_1ir_1_1operation_1_1_batch_to_space_n_d" ],
     [ "BCQFullyConnected", "classonert_1_1ir_1_1operation_1_1_b_c_q_fully_connected.html", "classonert_1_1ir_1_1operation_1_1_b_c_q_fully_connected" ],

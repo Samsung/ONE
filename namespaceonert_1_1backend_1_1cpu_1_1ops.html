@@ -103,6 +103,8 @@ Data Structures</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_arg_min_max_layer.html">ArgMinMaxLayer</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_attention_layer.html">AttentionLayer</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_mat_mul_layer.html">BatchMatMulLayer</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer.html">BatchToSpaceNDLayer</a></td></tr>
@@ -287,6 +289,8 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:ae471e3174fd7c72eda35fbca6c4c29d4" id="r_ae471e3174fd7c72eda35fbca6c4c29d4"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ae471e3174fd7c72eda35fbca6c4c29d4">blockSizeFor</a> (int32_t index, int32_t block_size=32)</td></tr>
+<tr class="separator:ae471e3174fd7c72eda35fbca6c4c29d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3eab9c641dc437bfc3a5b3414a16e790" id="r_a3eab9c641dc437bfc3a5b3414a16e790"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a3eab9c641dc437bfc3a5b3414a16e790"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classndarray_1_1_array.html">Array</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a3eab9c641dc437bfc3a5b3414a16e790">toArray</a> (uint8_t *ptr, std::vector&lt; int32_t &gt; &amp;descr)</td></tr>
 <tr class="separator:a3eab9c641dc437bfc3a5b3414a16e790"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -668,16 +672,67 @@ template&lt;typename InputT , typename OutputT &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_elementwise_unary_layer_8cc_source.html#l00405">405</a> of file <a class="el" href="_elementwise_unary_layer_8cc_source.html">ElementwiseUnaryLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  406</span>{</div>
-<div class="line"><span class="lineno">  407</span>  <a class="code hl_function" href="namespacennfw_1_1cker.html#a364a0f3d557088ce4c2c123a16ed25c2">nnfw::cker::Quantize</a>(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(input), getBuffer&lt;InputT&gt;(input), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(output),</div>
-<div class="line"><span class="lineno">  408</span>                       getBuffer&lt;OutputT&gt;(output), output-&gt;data_scale(), output-&gt;data_zero_point());</div>
-<div class="line"><span class="lineno">  409</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_elementwise_unary_layer_8cc_source.html#l00479">479</a> of file <a class="el" href="_elementwise_unary_layer_8cc_source.html">ElementwiseUnaryLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  480</span>{</div>
+<div class="line"><span class="lineno">  481</span>  <a class="code hl_function" href="namespacennfw_1_1cker.html#a364a0f3d557088ce4c2c123a16ed25c2">nnfw::cker::Quantize</a>(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(input), getBuffer&lt;InputT&gt;(input), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(output),</div>
+<div class="line"><span class="lineno">  482</span>                       getBuffer&lt;OutputT&gt;(output), output-&gt;data_scale(), output-&gt;data_zero_point());</div>
+<div class="line"><span class="lineno">  483</span>}</div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_a364a0f3d557088ce4c2c123a16ed25c2"><div class="ttname"><a href="namespacennfw_1_1cker.html#a364a0f3d557088ce4c2c123a16ed25c2">nnfw::cker::Quantize</a></div><div class="ttdeci">void Quantize(const Shape &amp;input_shape, const InputT *input_data, const Shape &amp;output_shape, OutputT *output_data, const float output_scale, const int32_t output_offset)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00034">Quantize.h:34</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a1cfb53087f7fc161b9162d65aa5520d9"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">onert::backend::cpu::ops::getShape</a></div><div class="ttdeci">nnfw::cker::Shape getShape(const IPortableTensor *tensor)</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_operation_utils_8h_source.html#l00089">OperationUtils.h:89</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00089">getShape()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00034">nnfw::cker::Quantize()</a>.</p>
 
+</div>
+</div>
+<a id="ae471e3174fd7c72eda35fbca6c4c29d4" name="ae471e3174fd7c72eda35fbca6c4c29d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae471e3174fd7c72eda35fbca6c4c29d4">&#9670;&#160;</a></span>blockSizeFor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int32_t onert::backend::cpu::ops::blockSizeFor </td>
+          <td>(</td>
+          <td class="paramtype">int32_t&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int32_t&#160;</td>
+          <td class="paramname"><em>block_size</em> = <code>32</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Calculate the block-aligned size that includes the given index.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">index</td><td>The current token position (0-based index) </td></tr>
+    <tr><td class="paramname">block_size</td><td>The minimum memory access unit (default: 32) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The smallest multiple of block_size that can include the given index</dd></dl>
+<p>This function calculates the minimum block-aligned memory size needed to access data from position 0 up to and including the specified index.</p>
+<p>Example with block_size = 32:</p><ul>
+<li>If index = 0 (1st token) -&gt; returns 32 (positions 0-31)</li>
+<li>If index = 31 (32nd token) -&gt; returns 32 (positions 0-31)</li>
+</ul>
+<p>This ensures block-aligned memory access for optimal performance. </p>
+
+<p class="definition">Definition at line <a class="el" href="_attention_layer_8cc_source.html#l00157">157</a> of file <a class="el" href="_attention_layer_8cc_source.html">AttentionLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  158</span>{</div>
+<div class="line"><span class="lineno">  159</span>  <span class="comment">// We need to include index, so we calculate for index + 1 elements</span></div>
+<div class="line"><span class="lineno">  160</span>  <span class="comment">// Then round up to the nearest multiple of block_size</span></div>
+<div class="line"><span class="lineno">  161</span>  <span class="keyword">const</span> int32_t elements_needed = index + 1;</div>
+<div class="line"><span class="lineno">  162</span>  <span class="keywordflow">return</span> ((elements_needed + block_size - 1) / block_size) * block_size;</div>
+<div class="line"><span class="lineno">  163</span>}</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="aa3ed894d41e9c8473df0db171af23d7d" name="aa3ed894d41e9c8473df0db171af23d7d"></a>
@@ -777,7 +832,7 @@ template&lt;typename InputT , typename OutputT &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">onert::ir::NONE</a>, <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ad346bb4679d29be241279f15d7795c1c">onert::ir::RELU</a>, <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4a235769ca556a132313d564d3c57098f9">onert::ir::RELU1</a>, <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ac014a3d2b85dcb087a709b9b2a3b8e6b">onert::ir::RELU6</a>, and <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab299f45b5de2a8f7c45192590290742b">onert::ir::SIGMOID</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_pool2_d_layer_8cc_source.html#l00082">onert::backend::cpu::ops::PoolLayer::configure()</a>, <a class="el" href="_depthwise_conv2_d_layer_8cc_source.html#l00124">onert::backend::cpu::ops::DepthwiseConvolutionLayer::convQ8i()</a>, <a class="el" href="_depthwise_conv2_d_layer_8cc_source.html#l00096">onert::backend::cpu::ops::DepthwiseConvolutionLayer::convQ8uPerChannel()</a>, <a class="el" href="_depthwise_conv2_d_layer_8cc_source.html#l00061">onert::backend::cpu::ops::DepthwiseConvolutionLayer::convQ8uPerTensor()</a>, and <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00061">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedQuant8()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_pool2_d_layer_8cc_source.html#l00131">onert::backend::cpu::ops::PoolLayer::configure()</a>, <a class="el" href="_depthwise_conv2_d_layer_8cc_source.html#l00171">onert::backend::cpu::ops::DepthwiseConvolutionLayer::convQ8i()</a>, <a class="el" href="_depthwise_conv2_d_layer_8cc_source.html#l00143">onert::backend::cpu::ops::DepthwiseConvolutionLayer::convQ8uPerChannel()</a>, <a class="el" href="_depthwise_conv2_d_layer_8cc_source.html#l00108">onert::backend::cpu::ops::DepthwiseConvolutionLayer::convQ8uPerTensor()</a>, and <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00094">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedQuant8()</a>.</p>
 
 </div>
 </div>
@@ -872,7 +927,7 @@ template&lt;typename InputT , typename OutputT &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="namespacennfw_1_1cker.html#af09a114337895158c72fde6226b568a2a35c3ace1970663a16e5c65baa5941b13">nnfw::cker::kNone</a>, <a class="el" href="namespacennfw_1_1cker.html#af09a114337895158c72fde6226b568a2a067892a9ea619b2c378e06000c9763af">nnfw::cker::kRelu</a>, <a class="el" href="namespacennfw_1_1cker.html#af09a114337895158c72fde6226b568a2ae0a0000573fa134f9ee575b47d839ee4">nnfw::cker::kRelu1</a>, <a class="el" href="namespacennfw_1_1cker.html#af09a114337895158c72fde6226b568a2a4c7f8cb4a4aefd7ac6a89fa1b747233d">nnfw::cker::kRelu6</a>, <a class="el" href="namespacennfw_1_1cker.html#af09a114337895158c72fde6226b568a2ac00732693e14261bf9c2a4612a7f9bf9">nnfw::cker::kSigmoid</a>, <a class="el" href="namespacennfw_1_1cker.html#af09a114337895158c72fde6226b568a2a4918cf5d849692c2bed918bb9e948630">nnfw::cker::kTanh</a>, <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">onert::ir::NONE</a>, <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ad346bb4679d29be241279f15d7795c1c">onert::ir::RELU</a>, <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4a235769ca556a132313d564d3c57098f9">onert::ir::RELU1</a>, <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ac014a3d2b85dcb087a709b9b2a3b8e6b">onert::ir::RELU6</a>, <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab299f45b5de2a8f7c45192590290742b">onert::ir::SIGMOID</a>, and <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4a143c8c6f51b9bb893ce71e38702e3cc1">onert::ir::TANH</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00209">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnected16x1Float32()</a>, <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00039">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedFloat32()</a>, <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00088">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedHybrid()</a>, <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00149">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedSparseWeight()</a>, and <a class="el" href="_l_s_t_m_layer_8cc_source.html#l00057">onert::backend::cpu::ops::LSTMLayer::LSTMFloat()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00242">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnected16x1Float32()</a>, <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00072">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedFloat32()</a>, <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00121">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedHybrid()</a>, <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00182">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedSparseWeight()</a>, and <a class="el" href="_l_s_t_m_layer_8cc_source.html#l00250">onert::backend::cpu::ops::LSTMLayer::LSTMFloat()</a>.</p>
 
 </div>
 </div>
@@ -1146,7 +1201,7 @@ template&lt;&gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_g_g_m_l_helper_8cc_source.html#l00022">getGGMLType()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00176">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedGGMLWeight()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00209">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedGGMLWeight()</a>.</p>
 
 </div>
 </div>
@@ -1284,7 +1339,7 @@ template&lt;&gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693a440806ada035e97a59ec9d2ca6796cb3">onert::ir::EXPLICIT</a>, <a class="el" href="cpu_2ops_2_operation_utils_8cc_source.html#l00262">getPaddingType()</a>, <a class="el" href="namespacennfw_1_1cker.html#a214af5851ca7b77819a78cf4177eb754a35c3ace1970663a16e5c65baa5941b13">nnfw::cker::kNone</a>, <a class="el" href="namespacennfw_1_1cker.html#a214af5851ca7b77819a78cf4177eb754ad523906435f67e94367d4fab5b9380da">nnfw::cker::kSame</a>, <a class="el" href="namespacennfw_1_1cker.html#a214af5851ca7b77819a78cf4177eb754a4d3576c37e6f03700bad4345238fffa0">nnfw::cker::kValid</a>, <a class="el" href="namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693ac706ffd80b0ad0a4ef605c581e95252b">onert::ir::SAME</a>, and <a class="el" href="namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693ac9f1a6384b1c466d4612f513bd8e13ea">onert::ir::VALID</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_operation_utils_8cc_source.html#l00262">getPaddingType()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">onert::backend::cpu::ops::ConvolutionLayer::prepare()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_operation_utils_8cc_source.html#l00262">getPaddingType()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00340">onert::backend::cpu::ops::ConvolutionLayer::prepare()</a>.</p>
 
 </div>
 </div>
@@ -1346,7 +1401,7 @@ template&lt;&gt; </div>
 <div class="line"><span class="lineno">   90</span>  *multiplier = input_product_scale / output_scale;</div>
 <div class="line"><span class="lineno">   91</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_depthwise_conv2_d_layer_8cc_source.html#l00061">onert::backend::cpu::ops::DepthwiseConvolutionLayer::convQ8uPerTensor()</a>, and <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00061">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedQuant8()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_depthwise_conv2_d_layer_8cc_source.html#l00108">onert::backend::cpu::ops::DepthwiseConvolutionLayer::convQ8uPerTensor()</a>, and <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00094">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedQuant8()</a>.</p>
 
 </div>
 </div>
@@ -1433,7 +1488,7 @@ template&lt;&gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="cpu_2ops_2_operation_utils_8cc_source.html#l00056">QuantizeMultiplier()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">onert::backend::cpu::ops::ConvolutionLayer::prepare()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00340">onert::backend::cpu::ops::ConvolutionLayer::prepare()</a>.</p>
 
 </div>
 </div>
@@ -1465,16 +1520,16 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shape_layer_8cc_source.html#l00029">29</a> of file <a class="el" href="_shape_layer_8cc_source.html">ShapeLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   30</span>{</div>
-<div class="line"><span class="lineno">   31</span>  <span class="keyword">auto</span> shape = input-&gt;getShape();</div>
-<div class="line"><span class="lineno">   32</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; shape.rank(); ++i)</div>
-<div class="line"><span class="lineno">   33</span>  {</div>
-<div class="line"><span class="lineno">   34</span>    output_data[i] = <span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>(shape.dim(i));</div>
-<div class="line"><span class="lineno">   35</span>  }</div>
-<div class="line"><span class="lineno">   36</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_shape_layer_8cc_source.html#l00053">53</a> of file <a class="el" href="_shape_layer_8cc_source.html">ShapeLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   54</span>{</div>
+<div class="line"><span class="lineno">   55</span>  <span class="keyword">auto</span> shape = input-&gt;getShape();</div>
+<div class="line"><span class="lineno">   56</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; shape.rank(); ++i)</div>
+<div class="line"><span class="lineno">   57</span>  {</div>
+<div class="line"><span class="lineno">   58</span>    output_data[i] = <span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>(shape.dim(i));</div>
+<div class="line"><span class="lineno">   59</span>  }</div>
+<div class="line"><span class="lineno">   60</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_shape_layer_8cc_source.html#l00044">onert::backend::cpu::ops::ShapeLayer::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_shape_layer_8cc_source.html#l00068">onert::backend::cpu::ops::ShapeLayer::run()</a>.</p>
 
 </div>
 </div>
@@ -1525,7 +1580,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>, and <a class="el" href="_i_portable_tensor_8h_source.html#l00064">onert::backend::IPortableTensor::getShape()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_mean_layer_8cc_source.html#l00043">onert::backend::train::ops::MeanLayer::backward()</a>, <a class="el" href="_reduce_layer_8cc_source.html#l00224">onert::backend::cpu::ops::MeanLayer::MeanFloat32()</a>, <a class="el" href="_reduce_layer_8cc_source.html#l00244">onert::backend::cpu::ops::MeanLayer::MeanQuant8()</a>, and <a class="el" href="_reduce_layer_8cc_source.html#l00204">onert::backend::cpu::ops::ReduceLayer::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_mean_layer_8cc_source.html#l00043">onert::backend::train::ops::MeanLayer::backward()</a>, <a class="el" href="_reduce_layer_8cc_source.html#l00284">onert::backend::cpu::ops::MeanLayer::MeanFloat32()</a>, <a class="el" href="_reduce_layer_8cc_source.html#l00304">onert::backend::cpu::ops::MeanLayer::MeanQuant8()</a>, and <a class="el" href="_reduce_layer_8cc_source.html#l00264">onert::backend::cpu::ops::ReduceLayer::run()</a>.</p>
 
 </div>
 </div>
@@ -1608,7 +1663,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00134">nnfw::cker::Shape::DimsData()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_elementwise_unary_layer_8cc_source.html#l00405">affineQuantize()</a>, <a class="el" href="_batch_mat_mul_layer_8cc_source.html#l00033">onert::backend::cpu::ops::BatchMatMulLayer::batchMatMulFloat32()</a>, <a class="el" href="_batch_to_space_n_d_layer_8cc_source.html#l00030">onert::backend::cpu::ops::BatchToSpaceNDLayer::batchToSpaceNDGeneric()</a>, <a class="el" href="_concat_layer_8cc_source.html#l00031">onert::backend::cpu::ops::ConcatLayer::concatenationGeneral()</a>, <a class="el" href="_concat_layer_8cc_source.html#l00060">onert::backend::cpu::ops::ConcatLayer::concatenationQuant8()</a>, <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00082">onert::backend::cpu::ops::ElementwiseActivationLayer::configure()</a>, <a class="el" href="_depthwise_conv2_d_layer_8cc_source.html#l00025">onert::backend::cpu::ops::DepthwiseConvolutionLayer::convFloat32()</a>, <a class="el" href="_depthwise_conv2_d_layer_8cc_source.html#l00124">onert::backend::cpu::ops::DepthwiseConvolutionLayer::convQ8i()</a>, <a class="el" href="_depthwise_conv2_d_layer_8cc_source.html#l00159">onert::backend::cpu::ops::DepthwiseConvolutionLayer::convQ8iHybridPerChannel()</a>, <a class="el" href="_depthwise_conv2_d_layer_8cc_source.html#l00096">onert::backend::cpu::ops::DepthwiseConvolutionLayer::convQ8uPerChannel()</a>, <a class="el" href="_depthwise_conv2_d_layer_8cc_source.html#l00061">onert::backend::cpu::ops::DepthwiseConvolutionLayer::convQ8uPerTensor()</a>, <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00069">onert::backend::cpu::ops::ElementwiseActivationLayer::EvalUsingLookupTable()</a>, <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00209">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnected16x1Float32()</a>, <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00039">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedFloat32()</a>, <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00088">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedHybrid()</a>, <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00061">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedQuant8()</a>, <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00149">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedSparseWeight()</a>, <a class="el" href="_fused_batch_norm_layer_8cc_source.html#l00033">onert::backend::cpu::ops::FusedBatchNormLayer::fusedbatchnormFloat32()</a>, <a class="el" href="_log_softmax_layer_8cc_source.html#l00041">onert::backend::cpu::ops::LogSoftMaxLayer::logsoftmaxFloat32()</a>, <a class="el" href="_log_softmax_layer_8cc_source.html#l00050">onert::backend::cpu::ops::LogSoftMaxLayer::logsoftmaxQuant8()</a>, <a class="el" href="_reduce_layer_8cc_source.html#l00224">onert::backend::cpu::ops::MeanLayer::MeanFloat32()</a>, <a class="el" href="_reduce_layer_8cc_source.html#l00244">onert::backend::cpu::ops::MeanLayer::MeanQuant8()</a>, <a class="el" href="_one_hot_layer_8cc_source.html#l00026">onert::backend::cpu::ops::OneHotLayer::oneHotImpl()</a>, <a class="el" href="_pack_layer_8cc_source.html#l00031">onert::backend::cpu::ops::PackLayer::packImpl()</a>, <a class="el" href="cpu_2ops_2_pad_layer_8cc_source.html#l00030">onert::backend::cpu::ops::PadLayer::padImpl()</a>, <a class="el" href="_pow_layer_8cc_source.html#l00025">onert::backend::cpu::ops::PowLayer::powFloat32()</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">onert::backend::cpu::ops::ConvolutionLayer::prepare()</a>, <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00284">onert::backend::cpu::ops::FullyConnectedLayer::prepare()</a>, <a class="el" href="_add_n_layer_8cc_source.html#l00033">onert::backend::cpu::ops::AddNLayer::run()</a>, <a class="el" href="_broadcast_to_layer_8cc_source.html#l00037">onert::backend::cpu::ops::BroadcastToLayer::run()</a>, <a class="el" href="_dynamic_update_slice_layer_8cc_source.html#l00048">onert::backend::cpu::ops::DynamicUpdateSliceLayer::run()</a>, <a class="el" href="_elementwise_unary_layer_8cc_source.html#l00438">onert::backend::cpu::ops::QuantizeLayer::run()</a>, <a class="el" href="_fill_layer_8cc_source.html#l00037">onert::backend::cpu::ops::FillLayer::run()</a>, <a class="el" href="_l2_normalization_layer_8cc_source.html#l00036">onert::backend::cpu::ops::L2NormLayer::run()</a>, <a class="el" href="_reduce_layer_8cc_source.html#l00204">onert::backend::cpu::ops::ReduceLayer::run()</a>, <a class="el" href="_resize_bilinear_layer_8cc_source.html#l00066">onert::backend::cpu::ops::ResizeBilinearLayer::run()</a>, <a class="el" href="_reverse_layer_8cc_source.html#l00026">onert::backend::cpu::ops::ReverseLayer::run()</a>, <a class="el" href="_rms_norm_layer_8cc_source.html#l00039">onert::backend::cpu::ops::RmsNormLayer::run()</a>, <a class="el" href="_top_k_v2_layer_8cc_source.html#l00041">onert::backend::cpu::ops::TopKV2Layer::run()</a>, <a class="el" href="cpu_2ops_2_soft_max_layer_8cc_source.html#l00031">onert::backend::cpu::ops::SoftMaxLayer::softmaxFloat32()</a>, <a class="el" href="cpu_2ops_2_soft_max_layer_8cc_source.html#l00064">onert::backend::cpu::ops::SoftMaxLayer::softmaxQuant8()</a>, <a class="el" href="_split_layer_8cc_source.html#l00031">onert::backend::cpu::ops::SplitLayer::split()</a>, <a class="el" href="_split_v_layer_8cc_source.html#l00032">onert::backend::cpu::ops::SplitVLayer::splitV()</a>, <a class="el" href="_squared_difference_layer_8cc_source.html#l00031">onert::backend::cpu::ops::SqDiffLayer::SqDiffFloat32()</a>, <a class="el" href="_stateless_random_uniform_layer_8cc_source.html#l00038">onert::backend::cpu::ops::StatelessRandomUniformLayer::StatelessRandomUniformFloat32()</a>, <a class="el" href="_tile_layer_8cc_source.html#l00031">onert::backend::cpu::ops::TileLayer::tileFloat32()</a>, and <a class="el" href="_transpose_layer_8cc_source.html#l00032">onert::backend::cpu::ops::TransposeLayer::transpose()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_elementwise_unary_layer_8cc_source.html#l00479">affineQuantize()</a>, <a class="el" href="_batch_mat_mul_layer_8cc_source.html#l00062">onert::backend::cpu::ops::BatchMatMulLayer::batchMatMulFloat32()</a>, <a class="el" href="_batch_to_space_n_d_layer_8cc_source.html#l00066">onert::backend::cpu::ops::BatchToSpaceNDLayer::batchToSpaceNDGeneric()</a>, <a class="el" href="_concat_layer_8cc_source.html#l00060">onert::backend::cpu::ops::ConcatLayer::concatenationGeneral()</a>, <a class="el" href="_concat_layer_8cc_source.html#l00089">onert::backend::cpu::ops::ConcatLayer::concatenationQuant8()</a>, <a class="el" href="_attention_layer_8cc_source.html#l00094">onert::backend::cpu::ops::AttentionLayer::configure()</a>, <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00129">onert::backend::cpu::ops::ElementwiseActivationLayer::configure()</a>, <a class="el" href="_depthwise_conv2_d_layer_8cc_source.html#l00072">onert::backend::cpu::ops::DepthwiseConvolutionLayer::convFloat32()</a>, <a class="el" href="_depthwise_conv2_d_layer_8cc_source.html#l00171">onert::backend::cpu::ops::DepthwiseConvolutionLayer::convQ8i()</a>, <a class="el" href="_depthwise_conv2_d_layer_8cc_source.html#l00206">onert::backend::cpu::ops::DepthwiseConvolutionLayer::convQ8iHybridPerChannel()</a>, <a class="el" href="_depthwise_conv2_d_layer_8cc_source.html#l00143">onert::backend::cpu::ops::DepthwiseConvolutionLayer::convQ8uPerChannel()</a>, <a class="el" href="_depthwise_conv2_d_layer_8cc_source.html#l00108">onert::backend::cpu::ops::DepthwiseConvolutionLayer::convQ8uPerTensor()</a>, <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00116">onert::backend::cpu::ops::ElementwiseActivationLayer::EvalUsingLookupTable()</a>, <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00242">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnected16x1Float32()</a>, <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00072">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedFloat32()</a>, <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00121">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedHybrid()</a>, <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00094">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedQuant8()</a>, <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00182">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedSparseWeight()</a>, <a class="el" href="_fused_batch_norm_layer_8cc_source.html#l00063">onert::backend::cpu::ops::FusedBatchNormLayer::fusedbatchnormFloat32()</a>, <a class="el" href="_log_softmax_layer_8cc_source.html#l00068">onert::backend::cpu::ops::LogSoftMaxLayer::logsoftmaxFloat32()</a>, <a class="el" href="_log_softmax_layer_8cc_source.html#l00077">onert::backend::cpu::ops::LogSoftMaxLayer::logsoftmaxQuant8()</a>, <a class="el" href="_reduce_layer_8cc_source.html#l00284">onert::backend::cpu::ops::MeanLayer::MeanFloat32()</a>, <a class="el" href="_reduce_layer_8cc_source.html#l00304">onert::backend::cpu::ops::MeanLayer::MeanQuant8()</a>, <a class="el" href="_one_hot_layer_8cc_source.html#l00061">onert::backend::cpu::ops::OneHotLayer::oneHotImpl()</a>, <a class="el" href="_pack_layer_8cc_source.html#l00062">onert::backend::cpu::ops::PackLayer::packImpl()</a>, <a class="el" href="cpu_2ops_2_pad_layer_8cc_source.html#l00063">onert::backend::cpu::ops::PadLayer::padImpl()</a>, <a class="el" href="_pow_layer_8cc_source.html#l00052">onert::backend::cpu::ops::PowLayer::powFloat32()</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00340">onert::backend::cpu::ops::ConvolutionLayer::prepare()</a>, <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00317">onert::backend::cpu::ops::FullyConnectedLayer::prepare()</a>, <a class="el" href="_add_n_layer_8cc_source.html#l00059">onert::backend::cpu::ops::AddNLayer::run()</a>, <a class="el" href="_broadcast_to_layer_8cc_source.html#l00064">onert::backend::cpu::ops::BroadcastToLayer::run()</a>, <a class="el" href="_dynamic_update_slice_layer_8cc_source.html#l00080">onert::backend::cpu::ops::DynamicUpdateSliceLayer::run()</a>, <a class="el" href="_elementwise_unary_layer_8cc_source.html#l00512">onert::backend::cpu::ops::QuantizeLayer::run()</a>, <a class="el" href="_fill_layer_8cc_source.html#l00062">onert::backend::cpu::ops::FillLayer::run()</a>, <a class="el" href="_l2_normalization_layer_8cc_source.html#l00060">onert::backend::cpu::ops::L2NormLayer::run()</a>, <a class="el" href="_reduce_layer_8cc_source.html#l00264">onert::backend::cpu::ops::ReduceLayer::run()</a>, <a class="el" href="_resize_bilinear_layer_8cc_source.html#l00118">onert::backend::cpu::ops::ResizeBilinearLayer::run()</a>, <a class="el" href="_reverse_layer_8cc_source.html#l00052">onert::backend::cpu::ops::ReverseLayer::run()</a>, <a class="el" href="_rms_norm_layer_8cc_source.html#l00066">onert::backend::cpu::ops::RmsNormLayer::run()</a>, <a class="el" href="_top_k_v2_layer_8cc_source.html#l00071">onert::backend::cpu::ops::TopKV2Layer::run()</a>, <a class="el" href="cpu_2ops_2_soft_max_layer_8cc_source.html#l00057">onert::backend::cpu::ops::SoftMaxLayer::softmaxFloat32()</a>, <a class="el" href="cpu_2ops_2_soft_max_layer_8cc_source.html#l00090">onert::backend::cpu::ops::SoftMaxLayer::softmaxQuant8()</a>, <a class="el" href="_split_layer_8cc_source.html#l00062">onert::backend::cpu::ops::SplitLayer::split()</a>, <a class="el" href="_split_v_layer_8cc_source.html#l00065">onert::backend::cpu::ops::SplitVLayer::splitV()</a>, <a class="el" href="_squared_difference_layer_8cc_source.html#l00056">onert::backend::cpu::ops::SqDiffLayer::SqDiffFloat32()</a>, <a class="el" href="_stateless_random_uniform_layer_8cc_source.html#l00064">onert::backend::cpu::ops::StatelessRandomUniformLayer::StatelessRandomUniformFloat32()</a>, <a class="el" href="_tile_layer_8cc_source.html#l00056">onert::backend::cpu::ops::TileLayer::tileFloat32()</a>, and <a class="el" href="_transpose_layer_8cc_source.html#l00058">onert::backend::cpu::ops::TransposeLayer::transpose()</a>.</p>
 
 </div>
 </div>
@@ -1707,7 +1762,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2ann-ref_2src_2_shape_8cpp_source.html#l00058">getNumberOfDimensions()</a>, and <a class="el" href="_i_portable_tensor_8h_source.html#l00064">onert::backend::IPortableTensor::getShape()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_pow_layer_8cc_source.html#l00025">onert::backend::cpu::ops::PowLayer::powFloat32()</a>, and <a class="el" href="_select_layer_8cc_source.html#l00041">onert::backend::cpu::ops::SelectLayer::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_pow_layer_8cc_source.html#l00052">onert::backend::cpu::ops::PowLayer::powFloat32()</a>, and <a class="el" href="_select_layer_8cc_source.html#l00069">onert::backend::cpu::ops::SelectLayer::run()</a>.</p>
 
 </div>
 </div>
@@ -1764,7 +1819,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   74</span>  *quantized_multiplier = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(q_fixed);</div>
 <div class="line"><span class="lineno">   75</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_elementwise_unary_layer_8cc_source.html#l00411">onert::backend::cpu::ops::QuantizeLayer::configure()</a>, <a class="el" href="_depthwise_conv2_d_layer_8cc_source.html#l00061">onert::backend::cpu::ops::DepthwiseConvolutionLayer::convQ8uPerTensor()</a>, <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00061">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedQuant8()</a>, and <a class="el" href="cpu_2ops_2_operation_utils_8cc_source.html#l00093">GetQuantizedConvolutionMultipliersAndShifts()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_elementwise_unary_layer_8cc_source.html#l00485">onert::backend::cpu::ops::QuantizeLayer::configure()</a>, <a class="el" href="_depthwise_conv2_d_layer_8cc_source.html#l00108">onert::backend::cpu::ops::DepthwiseConvolutionLayer::convQ8uPerTensor()</a>, <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00094">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedQuant8()</a>, and <a class="el" href="cpu_2ops_2_operation_utils_8cc_source.html#l00093">GetQuantizedConvolutionMultipliersAndShifts()</a>.</p>
 
 </div>
 </div>
@@ -1880,7 +1935,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_split_layer_8cc_source.html#l00031">onert::backend::cpu::ops::SplitLayer::split()</a>, and <a class="el" href="_split_v_layer_8cc_source.html#l00032">onert::backend::cpu::ops::SplitVLayer::splitV()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_split_layer_8cc_source.html#l00062">onert::backend::cpu::ops::SplitLayer::split()</a>, and <a class="el" href="_split_v_layer_8cc_source.html#l00065">onert::backend::cpu::ops::SplitVLayer::splitV()</a>.</p>
 
 </div>
 </div>
@@ -1912,16 +1967,16 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_detection_post_process_layer_8cc_source.html#l00258">258</a> of file <a class="el" href="_detection_post_process_layer_8cc_source.html">DetectionPostProcessLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  259</span>{</div>
-<div class="line"><span class="lineno">  260</span>  <a class="code hl_class" href="classndarray_1_1_shape.html">ndarray::Shape</a> shape(descr.size());</div>
-<div class="line"><span class="lineno">  261</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; descr.size(); ++i)</div>
-<div class="line"><span class="lineno">  262</span>  {</div>
-<div class="line"><span class="lineno">  263</span>    shape.dim(i) = descr[i];</div>
-<div class="line"><span class="lineno">  264</span>  }</div>
-<div class="line"><span class="lineno">  265</span> </div>
-<div class="line"><span class="lineno">  266</span>  <span class="keywordflow">return</span> Array&lt;T&gt;{<span class="keyword">reinterpret_cast&lt;</span>T *<span class="keyword">&gt;</span>(ptr), shape};</div>
-<div class="line"><span class="lineno">  267</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_detection_post_process_layer_8cc_source.html#l00313">313</a> of file <a class="el" href="_detection_post_process_layer_8cc_source.html">DetectionPostProcessLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  314</span>{</div>
+<div class="line"><span class="lineno">  315</span>  <a class="code hl_class" href="classndarray_1_1_shape.html">ndarray::Shape</a> shape(descr.size());</div>
+<div class="line"><span class="lineno">  316</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; descr.size(); ++i)</div>
+<div class="line"><span class="lineno">  317</span>  {</div>
+<div class="line"><span class="lineno">  318</span>    shape.dim(i) = descr[i];</div>
+<div class="line"><span class="lineno">  319</span>  }</div>
+<div class="line"><span class="lineno">  320</span> </div>
+<div class="line"><span class="lineno">  321</span>  <span class="keywordflow">return</span> Array&lt;T&gt;{<span class="keyword">reinterpret_cast&lt;</span>T *<span class="keyword">&gt;</span>(ptr), shape};</div>
+<div class="line"><span class="lineno">  322</span>}</div>
 <div class="ttc" id="aclassndarray_1_1_shape_html"><div class="ttname"><a href="classndarray_1_1_shape.html">ndarray::Shape</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2libs_2ndarray_2include_2ndarray_2_shape_8h_source.html#l00029">Shape.h:30</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2libs_2ndarray_2include_2ndarray_2_shape_8h_source.html#l00044">ndarray::Shape::dim()</a>.</p>

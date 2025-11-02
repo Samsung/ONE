@@ -6,5 +6,6 @@ var searchData=
   ['generate_5fbcq_5fmetadata_3',['generate_bcq_metadata',['../namespacegenerate__bcq__metadata.html',1,'']]],
   ['generate_5fbcq_5foutput_5farrays_4',['generate_bcq_output_arrays',['../namespacegenerate__bcq__output__arrays.html',1,'']]],
   ['genh5randominputs_5',['GenH5RandomInputs',['../namespace_gen_h5_random_inputs.html',1,'']]],
-  ['grpc_6',['grpc',['../namespacegrpc.html',1,'']]]
+  ['ggma_6',['ggma',['../namespaceggma.html',1,'']]],
+  ['grpc_7',['grpc',['../namespacegrpc.html',1,'']]]
 ];

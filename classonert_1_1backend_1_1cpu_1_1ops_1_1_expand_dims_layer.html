@@ -140,11 +140,11 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_expand_dims_layer_8cc_source.html#l00022">22</a> of file <a class="el" href="_expand_dims_layer_8cc_source.html">ExpandDimsLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   22</span>                                 : _input(<span class="keyword">nullptr</span>), _output(<span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   23</span>{</div>
-<div class="line"><span class="lineno">   24</span>  <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">   25</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_expand_dims_layer_8cc_source.html#l00048">48</a> of file <a class="el" href="_expand_dims_layer_8cc_source.html">ExpandDimsLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   48</span>                                 : _input(<span class="keyword">nullptr</span>), _output(<span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   49</span>{</div>
+<div class="line"><span class="lineno">   50</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   51</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -175,11 +175,11 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_expand_dims_layer_8cc_source.html#l00027">27</a> of file <a class="el" href="_expand_dims_layer_8cc_source.html">ExpandDimsLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   28</span>{</div>
-<div class="line"><span class="lineno">   29</span>  _input = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
-<div class="line"><span class="lineno">   30</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
-<div class="line"><span class="lineno">   31</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_expand_dims_layer_8cc_source.html#l00053">53</a> of file <a class="el" href="_expand_dims_layer_8cc_source.html">ExpandDimsLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   54</span>{</div>
+<div class="line"><span class="lineno">   55</span>  _input = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
+<div class="line"><span class="lineno">   56</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
+<div class="line"><span class="lineno">   57</span>}</div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00096">gen_h5_explicit_inputs_all.py:96</a></div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 </div><!-- fragment -->
@@ -210,15 +210,15 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_function.html#aedd6f5e12852d808abb97327b9d229e2">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_expand_dims_layer_8cc_source.html#l00033">33</a> of file <a class="el" href="_expand_dims_layer_8cc_source.html">ExpandDimsLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   34</span>{</div>
-<div class="line"><span class="lineno">   35</span>  <span class="comment">// output buffer equals to input buffer means that copy is not needed</span></div>
-<div class="line"><span class="lineno">   36</span>  <span class="keywordflow">if</span> (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">buffer</a>() != _input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">buffer</a>())</div>
-<div class="line"><span class="lineno">   37</span>  {</div>
-<div class="line"><span class="lineno">   38</span>    <span class="keywordtype">size_t</span> count = _input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a52fa5a71552928aebcb47eafa1a7b182">total_size</a>();</div>
-<div class="line"><span class="lineno">   39</span>    memcpy(_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">buffer</a>(), _input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">buffer</a>(), count);</div>
-<div class="line"><span class="lineno">   40</span>  }</div>
-<div class="line"><span class="lineno">   41</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_expand_dims_layer_8cc_source.html#l00059">59</a> of file <a class="el" href="_expand_dims_layer_8cc_source.html">ExpandDimsLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   60</span>{</div>
+<div class="line"><span class="lineno">   61</span>  <span class="comment">// output buffer equals to input buffer means that copy is not needed</span></div>
+<div class="line"><span class="lineno">   62</span>  <span class="keywordflow">if</span> (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">buffer</a>() != _input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">buffer</a>())</div>
+<div class="line"><span class="lineno">   63</span>  {</div>
+<div class="line"><span class="lineno">   64</span>    <span class="keywordtype">size_t</span> count = _input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a52fa5a71552928aebcb47eafa1a7b182">total_size</a>();</div>
+<div class="line"><span class="lineno">   65</span>    memcpy(_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">buffer</a>(), _input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">buffer</a>(), count);</div>
+<div class="line"><span class="lineno">   66</span>  }</div>
+<div class="line"><span class="lineno">   67</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_a52fa5a71552928aebcb47eafa1a7b182"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#a52fa5a71552928aebcb47eafa1a7b182">onert::backend::IPortableTensor::total_size</a></div><div class="ttdeci">size_t total_size() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00052">IPortableTensor.h:52</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_tensor_html_ac42a9739e80a0e11be18c0e0a61ccf85"><div class="ttname"><a href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">onert::backend::ITensor::buffer</a></div><div class="ttdeci">virtual uint8_t * buffer() const =0</div></div>
 </div><!-- fragment -->

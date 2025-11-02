@@ -115,78 +115,121 @@ $(document).ready(function(){initNavTree('_batch_to_space_n_d_layer_8cc_source.h
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="_batch_to_space_n_d_layer_8h.html">BatchToSpaceNDLayer.h</a>&quot;</span></div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &lt;<a class="code" href="runtime_2compute_2cker_2include_2cker_2operation_2_batch_to_space_n_d_8h.html">cker/operation/BatchToSpaceND.h</a>&gt;</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html">onert::backend::cpu::ops</a></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>{</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;../KernelGenerator.h&quot;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;../Validator.h&quot;</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &lt;<a class="code" href="runtime_2compute_2cker_2include_2cker_2operation_2_batch_to_space_n_d_8h.html">cker/operation/BatchToSpaceND.h</a>&gt;</span></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
-<div class="foldopen" id="foldopen00024" data-start="{" data-end="}">
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer.html#a2aadefdaec6c1c3f894c4984fac9d466">   24</a></span><a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer.html#a2aadefdaec6c1c3f894c4984fac9d466">BatchToSpaceNDLayer::BatchToSpaceNDLayer</a>()</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  : _input(nullptr), _output(nullptr), _block_shape(nullptr), _crops(nullptr)</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>{</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <span class="comment">// DO NOTHING</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>}</div>
-</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="foldopen" id="foldopen00030" data-start="{" data-end="}">
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer.html#aefbf29e4dc0ebf17bf143f2faa0ef704">   30</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer.html#aefbf29e4dc0ebf17bf143f2faa0ef704">BatchToSpaceNDLayer::batchToSpaceNDGeneric</a>()</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>{</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keyword">const</span> int32_t NNapiCrops[]{0, 0, 0, 0};</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="keyword">const</span> int32_t *_crops_buffer;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert_1_1backend_1_1cpu.html">onert::backend::cpu</a></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>{</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keywordtype">void</span> Validator::visit(<span class="keyword">const</span> ir::operation::BatchToSpaceND &amp;) { <a class="code hl_variable" href="classonert_1_1backend_1_1_validator_base.html#a9f77e8b5eb3af283457c70572c3223e4">_supported</a> = <span class="keyword">true</span>; }</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keywordtype">void</span> KernelGenerator::visit(<span class="keyword">const</span> ir::operation::BatchToSpaceND &amp;node)</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>{</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index{node.getOutputs().at(0)};</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_batch_to_space_n_d.html#a2fa7aa5522d4c5244d9f512053ef7471a89076b2db0b757a5b4b41c68f357e012">ir::operation::BatchToSpaceND::INPUT</a>)};</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="keyword">const</span> <span class="keyword">auto</span> block_size_index{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_batch_to_space_n_d.html#a2fa7aa5522d4c5244d9f512053ef7471acc7b0953d7fb1e1375f0f8df8ecc77b6">ir::operation::BatchToSpaceND::BLOCK_SIZE</a>)};</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keywordflow">if</span> (_crops == <span class="keyword">nullptr</span>)</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  {</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    _crops_buffer = NNapiCrops;</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  }</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  {</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    _crops_buffer = getBuffer&lt;int32_t&gt;(_crops);</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  }</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  nnfw::cker::BatchToSpaceND&lt;T&gt;(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_input), getBuffer&lt;T&gt;(_input),</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>                                getBuffer&lt;int32_t&gt;(_block_shape), _crops_buffer, <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_output),</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>                                getBuffer&lt;T&gt;(_output));</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>}</div>
-</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="foldopen" id="foldopen00048" data-start="{" data-end="}">
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer.html#a7247ee9c220e082cd1fd870f69a82b67">   48</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer.html#a7247ee9c220e082cd1fd870f69a82b67">BatchToSpaceNDLayer::configure</a>(<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *input, <a class="code hl_class" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output,</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>                                    <a class="code hl_class" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *block_shape, <a class="code hl_class" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *crops)</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>{</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  _output = output;</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  _input = input;</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  _block_shape = block_shape;</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  _crops = crops;</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>}</div>
-</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keyword">auto</span> output_alloc = _tensor_reg-&gt;getPortableTensor(output_index);</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keyword">auto</span> input_alloc = _tensor_reg-&gt;getPortableTensor(input_index);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keyword">auto</span> block_size_alloc = _tensor_reg-&gt;getPortableTensor(block_size_index);</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keyword">auto</span> fn = std::make_unique&lt;ops::BatchToSpaceNDLayer&gt;();</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  IPortableTensor *crops_alloc = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keyword">const</span> <span class="keyword">auto</span> NNApiInputs = 2;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="keywordflow">if</span> (node.getInputs().size() != NNApiInputs)</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  {</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keyword">const</span> <span class="keyword">auto</span> crops_data_index{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_batch_to_space_n_d.html#a2fa7aa5522d4c5244d9f512053ef7471a8ff2dbe9b752d571d36bb49fd9f9735c">ir::operation::BatchToSpaceND::CROPS_DATA</a>)};</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    crops_alloc = _tensor_reg-&gt;getPortableTensor(crops_data_index);</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  }</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  fn-&gt;configure(input_alloc, output_alloc, block_size_alloc, crops_alloc);</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_kernel_generator_base.html#a0641657bea8e14881f1ed6e604ee7e19">_return_fn</a> = std::move(fn);</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>}</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>} <span class="comment">// namespace onert::backend::cpu</span></div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="foldopen" id="foldopen00057" data-start="{" data-end="}">
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer.html#adcff157dcccbf1142f8558b58eff59e1">   57</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer.html#adcff157dcccbf1142f8558b58eff59e1">BatchToSpaceNDLayer::run</a>()</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html">onert::backend::cpu::ops</a></div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>{</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="keywordflow">if</span> (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32)</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  {</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    batchToSpaceNDGeneric&lt;float&gt;();</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  }</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_UINT8_ASYMM)</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  {</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    batchToSpaceNDGeneric&lt;uint8_t&gt;();</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  }</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  {</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;NYI&quot;</span>};</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  }</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>}</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="foldopen" id="foldopen00060" data-start="{" data-end="}">
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer.html#a2aadefdaec6c1c3f894c4984fac9d466">   60</a></span><a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer.html#a2aadefdaec6c1c3f894c4984fac9d466">BatchToSpaceNDLayer::BatchToSpaceNDLayer</a>()</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  : _input(nullptr), _output(nullptr), _block_shape(nullptr), _crops(nullptr)</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>{</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>}</div>
 </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>} <span class="comment">// namespace onert::backend::cpu::ops</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="foldopen" id="foldopen00066" data-start="{" data-end="}">
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer.html#aefbf29e4dc0ebf17bf143f2faa0ef704">   66</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer.html#aefbf29e4dc0ebf17bf143f2faa0ef704">BatchToSpaceNDLayer::batchToSpaceNDGeneric</a>()</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>{</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <span class="keyword">const</span> int32_t NNapiCrops[]{0, 0, 0, 0};</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="keyword">const</span> int32_t *_crops_buffer;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="keywordflow">if</span> (_crops == <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  {</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    _crops_buffer = NNapiCrops;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  }</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  {</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    _crops_buffer = getBuffer&lt;int32_t&gt;(_crops);</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  }</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  nnfw::cker::BatchToSpaceND&lt;T&gt;(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_input), getBuffer&lt;T&gt;(_input),</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>                                getBuffer&lt;int32_t&gt;(_block_shape), _crops_buffer, <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_output),</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>                                getBuffer&lt;T&gt;(_output));</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>}</div>
+</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="foldopen" id="foldopen00084" data-start="{" data-end="}">
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer.html#a7247ee9c220e082cd1fd870f69a82b67">   84</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer.html#a7247ee9c220e082cd1fd870f69a82b67">BatchToSpaceNDLayer::configure</a>(<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *input, <a class="code hl_class" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output,</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>                                    <a class="code hl_class" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *block_shape, <a class="code hl_class" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *crops)</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>{</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  _output = output;</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  _input = input;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  _block_shape = block_shape;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  _crops = crops;</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>}</div>
+</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="foldopen" id="foldopen00093" data-start="{" data-end="}">
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer.html#adcff157dcccbf1142f8558b58eff59e1">   93</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer.html#adcff157dcccbf1142f8558b58eff59e1">BatchToSpaceNDLayer::run</a>()</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>{</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  <span class="keywordflow">if</span> (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32)</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  {</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    batchToSpaceNDGeneric&lt;float&gt;();</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  }</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_UINT8_ASYMM)</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  {</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    batchToSpaceNDGeneric&lt;uint8_t&gt;();</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  }</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  {</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;NYI&quot;</span>};</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  }</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>}</div>
+</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>} <span class="comment">// namespace onert::backend::cpu::ops</span></div>
 <div class="ttc" id="a_batch_to_space_n_d_layer_8h_html"><div class="ttname"><a href="_batch_to_space_n_d_layer_8h.html">BatchToSpaceNDLayer.h</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html">onert::backend::IPortableTensor</a></div><div class="ttdoc">A tensor class that is portable for other backends.</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00036">IPortableTensor.h:37</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aae73f75c41fa15f5ae2c391918fa09c5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor::data_type</a></div><div class="ttdeci">ir::DataType data_type() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00054">IPortableTensor.h:54</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer_html_a2aadefdaec6c1c3f894c4984fac9d466"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer.html#a2aadefdaec6c1c3f894c4984fac9d466">onert::backend::cpu::ops::BatchToSpaceNDLayer::BatchToSpaceNDLayer</a></div><div class="ttdeci">BatchToSpaceNDLayer()</div><div class="ttdef"><b>Definition</b> <a href="_batch_to_space_n_d_layer_8cc_source.html#l00024">BatchToSpaceNDLayer.cc:24</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer_html_a7247ee9c220e082cd1fd870f69a82b67"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer.html#a7247ee9c220e082cd1fd870f69a82b67">onert::backend::cpu::ops::BatchToSpaceNDLayer::configure</a></div><div class="ttdeci">void configure(const IPortableTensor *input, IPortableTensor *output, IPortableTensor *block_shape, IPortableTensor *crops)</div><div class="ttdef"><b>Definition</b> <a href="_batch_to_space_n_d_layer_8cc_source.html#l00048">BatchToSpaceNDLayer.cc:48</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer_html_adcff157dcccbf1142f8558b58eff59e1"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer.html#adcff157dcccbf1142f8558b58eff59e1">onert::backend::cpu::ops::BatchToSpaceNDLayer::run</a></div><div class="ttdeci">void run() override</div><div class="ttdef"><b>Definition</b> <a href="_batch_to_space_n_d_layer_8cc_source.html#l00057">BatchToSpaceNDLayer.cc:57</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer_html_aefbf29e4dc0ebf17bf143f2faa0ef704"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer.html#aefbf29e4dc0ebf17bf143f2faa0ef704">onert::backend::cpu::ops::BatchToSpaceNDLayer::batchToSpaceNDGeneric</a></div><div class="ttdeci">void batchToSpaceNDGeneric()</div><div class="ttdef"><b>Definition</b> <a href="_batch_to_space_n_d_layer_8cc_source.html#l00030">BatchToSpaceNDLayer.cc:30</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html">onert::backend::cpu::ops</a></div><div class="ttdef"><b>Definition</b> <a href="_add_n_layer_8cc_source.html#l00024">AddNLayer.cc:25</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1_validator_base_html_a9f77e8b5eb3af283457c70572c3223e4"><div class="ttname"><a href="classonert_1_1backend_1_1_validator_base.html#a9f77e8b5eb3af283457c70572c3223e4">onert::backend::ValidatorBase::_supported</a></div><div class="ttdeci">bool _supported</div><div class="ttdef"><b>Definition</b> <a href="_validator_base_8h_source.html#l00050">ValidatorBase.h:50</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1basic_1_1_kernel_generator_base_html_a0641657bea8e14881f1ed6e604ee7e19"><div class="ttname"><a href="classonert_1_1backend_1_1basic_1_1_kernel_generator_base.html#a0641657bea8e14881f1ed6e604ee7e19">onert::backend::basic::KernelGeneratorBase::_return_fn</a></div><div class="ttdeci">std::unique_ptr&lt; exec::IFunction &gt; _return_fn</div><div class="ttdef"><b>Definition</b> <a href="basic_2_kernel_generator_base_8h_source.html#l00060">KernelGeneratorBase.h:60</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer_html_a2aadefdaec6c1c3f894c4984fac9d466"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer.html#a2aadefdaec6c1c3f894c4984fac9d466">onert::backend::cpu::ops::BatchToSpaceNDLayer::BatchToSpaceNDLayer</a></div><div class="ttdeci">BatchToSpaceNDLayer()</div><div class="ttdef"><b>Definition</b> <a href="_batch_to_space_n_d_layer_8cc_source.html#l00060">BatchToSpaceNDLayer.cc:60</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer_html_a7247ee9c220e082cd1fd870f69a82b67"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer.html#a7247ee9c220e082cd1fd870f69a82b67">onert::backend::cpu::ops::BatchToSpaceNDLayer::configure</a></div><div class="ttdeci">void configure(const IPortableTensor *input, IPortableTensor *output, IPortableTensor *block_shape, IPortableTensor *crops)</div><div class="ttdef"><b>Definition</b> <a href="_batch_to_space_n_d_layer_8cc_source.html#l00084">BatchToSpaceNDLayer.cc:84</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer_html_adcff157dcccbf1142f8558b58eff59e1"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer.html#adcff157dcccbf1142f8558b58eff59e1">onert::backend::cpu::ops::BatchToSpaceNDLayer::run</a></div><div class="ttdeci">void run() override</div><div class="ttdef"><b>Definition</b> <a href="_batch_to_space_n_d_layer_8cc_source.html#l00093">BatchToSpaceNDLayer.cc:93</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer_html_aefbf29e4dc0ebf17bf143f2faa0ef704"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer.html#aefbf29e4dc0ebf17bf143f2faa0ef704">onert::backend::cpu::ops::BatchToSpaceNDLayer::batchToSpaceNDGeneric</a></div><div class="ttdeci">void batchToSpaceNDGeneric()</div><div class="ttdef"><b>Definition</b> <a href="_batch_to_space_n_d_layer_8cc_source.html#l00066">BatchToSpaceNDLayer.cc:66</a></div></div>
+<div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_batch_to_space_n_d_html_a2fa7aa5522d4c5244d9f512053ef7471a89076b2db0b757a5b4b41c68f357e012"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_batch_to_space_n_d.html#a2fa7aa5522d4c5244d9f512053ef7471a89076b2db0b757a5b4b41c68f357e012">onert::ir::operation::BatchToSpaceND::INPUT</a></div><div class="ttdeci">@ INPUT</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_batch_to_space_n_d_8h_source.html#l00030">BatchToSpaceND.h:30</a></div></div>
+<div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_batch_to_space_n_d_html_a2fa7aa5522d4c5244d9f512053ef7471a8ff2dbe9b752d571d36bb49fd9f9735c"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_batch_to_space_n_d.html#a2fa7aa5522d4c5244d9f512053ef7471a8ff2dbe9b752d571d36bb49fd9f9735c">onert::ir::operation::BatchToSpaceND::CROPS_DATA</a></div><div class="ttdeci">@ CROPS_DATA</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_batch_to_space_n_d_8h_source.html#l00033">BatchToSpaceND.h:32</a></div></div>
+<div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_batch_to_space_n_d_html_a2fa7aa5522d4c5244d9f512053ef7471acc7b0953d7fb1e1375f0f8df8ecc77b6"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_batch_to_space_n_d.html#a2fa7aa5522d4c5244d9f512053ef7471acc7b0953d7fb1e1375f0f8df8ecc77b6">onert::ir::operation::BatchToSpaceND::BLOCK_SIZE</a></div><div class="ttdeci">@ BLOCK_SIZE</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_batch_to_space_n_d_8h_source.html#l00031">BatchToSpaceND.h:31</a></div></div>
+<div class="ttc" id="anamespace_gen_h5_random_inputs_html_ae2b1c0809b846c696f9011ba5dc18e69"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">GenH5RandomInputs.input_index</a></div><div class="ttdeci">input_index</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00060">GenH5RandomInputs.py:60</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html">onert::backend::cpu::ops</a></div><div class="ttdef"><b>Definition</b> <a href="_add_n_layer_8cc_source.html#l00050">AddNLayer.cc:51</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a1cfb53087f7fc161b9162d65aa5520d9"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">onert::backend::cpu::ops::getShape</a></div><div class="ttdeci">nnfw::cker::Shape getShape(const IPortableTensor *tensor)</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_operation_utils_8h_source.html#l00089">OperationUtils.h:89</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_html"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu.html">onert::backend::cpu</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2backend_2cpu_2_backend_8h_source.html#l00030">Backend.h:31</a></div></div>
 <div class="ttc" id="aruntime_2compute_2cker_2include_2cker_2operation_2_batch_to_space_n_d_8h_html"><div class="ttname"><a href="runtime_2compute_2cker_2include_2cker_2operation_2_batch_to_space_n_d_8h.html">BatchToSpaceND.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

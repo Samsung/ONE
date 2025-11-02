@@ -5,7 +5,7 @@ var searchData=
   ['kernelbuilder_2eh_2',['kernelbuilder.h',['../onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8h.html',1,'(Global Namespace)'],['../compiler_2luci-interpreter_2src_2loader_2_kernel_builder_8h.html',1,'(Global Namespace)']]],
   ['kernelbuilderhelper_2ecpp_3',['KernelBuilderHelper.cpp',['../_kernel_builder_helper_8cpp.html',1,'']]],
   ['kernelbuilderhelper_2eh_4',['KernelBuilderHelper.h',['../_kernel_builder_helper_8h.html',1,'']]],
-  ['kernelgenerator_2ecc_5',['kernelgenerator.cc',['../backend_2train_2_kernel_generator_8cc.html',1,'(Global Namespace)'],['../backend_2ruy_2_kernel_generator_8cc.html',1,'(Global Namespace)'],['../backend_2cpu_2_kernel_generator_8cc.html',1,'(Global Namespace)'],['../backend_2acl__neon_2_kernel_generator_8cc.html',1,'(Global Namespace)'],['../backend_2acl__cl_2_kernel_generator_8cc.html',1,'(Global Namespace)'],['../backend_2trix_2_kernel_generator_8cc.html',1,'(Global Namespace)'],['../core_2src_2backend_2builtin_2_kernel_generator_8cc.html',1,'(Global Namespace)'],['../core_2src_2backend_2builtin_2train_2_kernel_generator_8cc.html',1,'(Global Namespace)']]],
+  ['kernelgenerator_2ecc_5',['kernelgenerator.cc',['../backend_2trix_2_kernel_generator_8cc.html',1,'(Global Namespace)'],['../backend_2train_2_kernel_generator_8cc.html',1,'(Global Namespace)'],['../backend_2ruy_2_kernel_generator_8cc.html',1,'(Global Namespace)'],['../backend_2cpu_2_kernel_generator_8cc.html',1,'(Global Namespace)'],['../backend_2acl__neon_2_kernel_generator_8cc.html',1,'(Global Namespace)'],['../backend_2acl__cl_2_kernel_generator_8cc.html',1,'(Global Namespace)'],['../core_2src_2backend_2builtin_2_kernel_generator_8cc.html',1,'(Global Namespace)'],['../core_2src_2backend_2builtin_2train_2_kernel_generator_8cc.html',1,'(Global Namespace)']]],
   ['kernelgenerator_2eh_6',['kernelgenerator.h',['../backend_2acl__cl_2_kernel_generator_8h.html',1,'(Global Namespace)'],['../backend_2acl__neon_2_kernel_generator_8h.html',1,'(Global Namespace)'],['../backend_2cpu_2_kernel_generator_8h.html',1,'(Global Namespace)'],['../backend_2ruy_2_kernel_generator_8h.html',1,'(Global Namespace)'],['../backend_2train_2_kernel_generator_8h.html',1,'(Global Namespace)'],['../backend_2trix_2_kernel_generator_8h.html',1,'(Global Namespace)'],['../core_2src_2backend_2builtin_2_kernel_generator_8h.html',1,'(Global Namespace)'],['../core_2src_2backend_2builtin_2train_2_kernel_generator_8h.html',1,'(Global Namespace)']]],
   ['kernelgeneratorbase_2eh_7',['kernelgeneratorbase.h',['../basic_2_kernel_generator_base_8h.html',1,'(Global Namespace)'],['../train_2_kernel_generator_base_8h.html',1,'(Global Namespace)']]],
   ['kernellayout_2eh_8',['KernelLayout.h',['../_kernel_layout_8h.html',1,'']]],
@@ -18,5 +18,7 @@ var searchData=
   ['knob_2ecpp_15',['knob.cpp',['../moco-tf_2src_2_knob_8cpp.html',1,'(Global Namespace)'],['../exo_2src_2_knob_8cpp.html',1,'(Global Namespace)']]],
   ['knob_2eh_16',['knob.h',['../moco-tf_2src_2_knob_8h.html',1,'(Global Namespace)'],['../exo_2src_2_knob_8h.html',1,'(Global Namespace)']]],
   ['kuma_2ecpp_17',['kuma.cpp',['../kuma_8cpp.html',1,'']]],
-  ['kuma_2eh_18',['kuma.h',['../kuma_8h.html',1,'']]]
+  ['kuma_2eh_18',['kuma.h',['../kuma_8h.html',1,'']]],
+  ['kv_5fcache_2ecc_19',['kv_cache.cc',['../kv__cache_8cc.html',1,'']]],
+  ['kv_5fcache_2eh_20',['kv_cache.h',['../kv__cache_8h.html',1,'']]]
 ];

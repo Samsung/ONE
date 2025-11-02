@@ -91,11 +91,14 @@ $(document).ready(function(){initNavTree('_pool2_d_layer_8cc.html',''); initResi
 <div class="header">
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#define-members">Macros</a>  </div>
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">Pool2DLayer.cc File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="_pool2_d_layer_8h_source.html">Pool2DLayer.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="backend_2cpu_2_kernel_generator_8h_source.html">../KernelGenerator.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="cpu_2_validator_8h_source.html">../Validator.h</a>&quot;</code><br />
 <code>#include &lt;<a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_average_pool_8h_source.html">cker/operation/AveragePool.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_max_pool_8h_source.html">cker/operation/MaxPool.h</a>&gt;</code><br />
 <code>#include &lt;unordered_map&gt;</code><br />
@@ -117,6 +120,11 @@ Namespaces</h2></td></tr>
 Macros</h2></td></tr>
 <tr class="memitem:af81c104fb20f3f55d17078d7f8a98fd2" id="r_af81c104fb20f3f55d17078d7f8a98fd2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_pool2_d_layer_8cc.html#af81c104fb20f3f55d17078d7f8a98fd2">POOLING_PARAMETERS</a></td></tr>
 <tr class="separator:af81c104fb20f3f55d17078d7f8a98fd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:aecc2e40bed8742bd1cc42035e6405891" id="r_aecc2e40bed8742bd1cc42035e6405891"><td class="memItemLeft" align="right" valign="top">ops::PoolType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1cpu.html#aecc2e40bed8742bd1cc42035e6405891">onert::backend::cpu::convertPoolType</a> (<a class="el" href="classonert_1_1ir_1_1operation_1_1_pool2_d.html#a46ca72246c956a38f34d94a51b380330">ir::operation::Pool2D::PoolType</a> type_ir)</td></tr>
+<tr class="separator:aecc2e40bed8742bd1cc42035e6405891"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="af81c104fb20f3f55d17078d7f8a98fd2" name="af81c104fb20f3f55d17078d7f8a98fd2"></a>
@@ -154,62 +162,62 @@ Macros</h2></td></tr>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_pool_params_html_aef09bc53314176a8b709a6cd07d601d7"><div class="ttname"><a href="structnnfw_1_1cker_1_1_pool_params.html#aef09bc53314176a8b709a6cd07d601d7">nnfw::cker::PoolParams::padding_values</a></div><div class="ttdeci">PaddingValues padding_values</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00089">Types.h:89</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_pool_params_html_af962d4c51d9cfff5445f8fd0fa79d1f2"><div class="ttname"><a href="structnnfw_1_1cker_1_1_pool_params.html#af962d4c51d9cfff5445f8fd0fa79d1f2">nnfw::cker::PoolParams::filter_height</a></div><div class="ttdeci">int filter_height</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00092">Types.h:92</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="_pool2_d_layer_8cc_source.html#l00069">69</a> of file <a class="el" href="_pool2_d_layer_8cc_source.html">Pool2DLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   86</span>{</div>
-<div class="line"><span class="lineno">   87</span>  assert(input != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   88</span>  assert(output != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   89</span> </div>
-<div class="line"><span class="lineno">   90</span>  _input = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
-<div class="line"><span class="lineno">   91</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
-<div class="line"><span class="lineno">   92</span> </div>
-<div class="line"><span class="lineno">   93</span>  <a class="code hl_define" href="_pool2_d_layer_8cc.html#af81c104fb20f3f55d17078d7f8a98fd2">POOLING_PARAMETERS</a></div>
-<div class="line"><span class="lineno">   94</span> </div>
-<div class="line"><span class="lineno">   95</span>  <span class="keywordflow">switch</span> (_input-&gt;data_type())</div>
-<div class="line"><span class="lineno">   96</span>  {</div>
-<div class="line"><span class="lineno">   97</span>    <span class="keywordflow">case</span> OperandType::FLOAT32:</div>
-<div class="line"><span class="lineno">   98</span>    {</div>
-<div class="line"><span class="lineno">   99</span>      <span class="keywordtype">float</span> output_activation_min = 0;</div>
-<div class="line"><span class="lineno">  100</span>      <span class="keywordtype">float</span> output_activation_max = 0;</div>
-<div class="line"><span class="lineno">  101</span>      CalculateActivationRange&lt;float&gt;(activation, &amp;output_activation_min, &amp;output_activation_max);</div>
-<div class="line"><span class="lineno">  102</span>      op_params.float_activation_min = output_activation_min;</div>
-<div class="line"><span class="lineno">  103</span>      op_params.float_activation_max = output_activation_max;</div>
-<div class="line"><span class="lineno">  104</span> </div>
-<div class="line"><span class="lineno">  105</span>      _kernel = generateKernelGeneric&lt;float&gt;(op_params, op_type);</div>
-<div class="line"><span class="lineno">  106</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  107</span>    }</div>
-<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">case</span> OperandType::QUANT_UINT8_ASYMM:</div>
-<div class="line"><span class="lineno">  109</span>    {</div>
-<div class="line"><span class="lineno">  110</span>      int32_t output_activation_min = 0;</div>
-<div class="line"><span class="lineno">  111</span>      int32_t output_activation_max = 0;</div>
-<div class="line"><span class="lineno">  112</span>      <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#aa3ed894d41e9c8473df0db171af23d7d">CalculateActivationRangeQuantized</a>(activation, _output, &amp;output_activation_min,</div>
-<div class="line"><span class="lineno">  113</span>                                        &amp;output_activation_max);</div>
-<div class="line"><span class="lineno">  114</span>      op_params.quantized_activation_min = output_activation_min;</div>
-<div class="line"><span class="lineno">  115</span>      op_params.quantized_activation_max = output_activation_max;</div>
-<div class="line"><span class="lineno">  116</span>      _kernel = generateKernelGeneric&lt;uint8_t&gt;(op_params, op_type);</div>
-<div class="line"><span class="lineno">  117</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  118</span>    }</div>
-<div class="line"><span class="lineno">  119</span>    <span class="keywordflow">case</span> OperandType::QUANT_INT8_ASYMM:</div>
-<div class="line"><span class="lineno">  120</span>    {</div>
-<div class="line"><span class="lineno">  121</span>      int32_t output_activation_min = 0;</div>
-<div class="line"><span class="lineno">  122</span>      int32_t output_activation_max = 0;</div>
-<div class="line"><span class="lineno">  123</span>      <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#aa3ed894d41e9c8473df0db171af23d7d">CalculateActivationRangeQuantized</a>(activation, _output, &amp;output_activation_min,</div>
-<div class="line"><span class="lineno">  124</span>                                        &amp;output_activation_max);</div>
-<div class="line"><span class="lineno">  125</span>      op_params.quantized_activation_min = output_activation_min;</div>
-<div class="line"><span class="lineno">  126</span>      op_params.quantized_activation_max = output_activation_max;</div>
-<div class="line"><span class="lineno">  127</span>      _kernel = generateKernelGeneric&lt;int8_t&gt;(op_params, op_type);</div>
-<div class="line"><span class="lineno">  128</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  129</span>    }</div>
-<div class="line"><span class="lineno">  130</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  131</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Pool: unsupported data type&quot;</span>};</div>
-<div class="line"><span class="lineno">  132</span>  }</div>
-<div class="line"><span class="lineno">  133</span>}</div>
-<div class="line"><span class="lineno">  134</span> </div>
-<div class="line"><span class="lineno">  135</span><span class="keywordtype">void</span> PoolLayer::run() { _kernel(_input, _output); }</div>
-<div class="line"><span class="lineno">  136</span> </div>
-<div class="line"><span class="lineno">  137</span><span class="preprocessor">#undef AVGPOOLING_PARAMETERS</span></div>
+<p class="definition">Definition at line <a class="el" href="_pool2_d_layer_8cc_source.html#l00118">118</a> of file <a class="el" href="_pool2_d_layer_8cc_source.html">Pool2DLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  135</span>{</div>
+<div class="line"><span class="lineno">  136</span>  assert(input != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  137</span>  assert(output != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  138</span> </div>
-<div class="line"><span class="lineno">  139</span>} <span class="comment">// namespace onert::backend::cpu::ops</span></div>
-<div class="ttc" id="a_pool2_d_layer_8cc_html_af81c104fb20f3f55d17078d7f8a98fd2"><div class="ttname"><a href="_pool2_d_layer_8cc.html#af81c104fb20f3f55d17078d7f8a98fd2">POOLING_PARAMETERS</a></div><div class="ttdeci">#define POOLING_PARAMETERS</div><div class="ttdef"><b>Definition</b> <a href="_pool2_d_layer_8cc_source.html#l00069">Pool2DLayer.cc:69</a></div></div>
+<div class="line"><span class="lineno">  139</span>  _input = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
+<div class="line"><span class="lineno">  140</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
+<div class="line"><span class="lineno">  141</span> </div>
+<div class="line"><span class="lineno">  142</span>  <a class="code hl_define" href="_pool2_d_layer_8cc.html#af81c104fb20f3f55d17078d7f8a98fd2">POOLING_PARAMETERS</a></div>
+<div class="line"><span class="lineno">  143</span> </div>
+<div class="line"><span class="lineno">  144</span>  <span class="keywordflow">switch</span> (_input-&gt;data_type())</div>
+<div class="line"><span class="lineno">  145</span>  {</div>
+<div class="line"><span class="lineno">  146</span>    <span class="keywordflow">case</span> OperandType::FLOAT32:</div>
+<div class="line"><span class="lineno">  147</span>    {</div>
+<div class="line"><span class="lineno">  148</span>      <span class="keywordtype">float</span> output_activation_min = 0;</div>
+<div class="line"><span class="lineno">  149</span>      <span class="keywordtype">float</span> output_activation_max = 0;</div>
+<div class="line"><span class="lineno">  150</span>      CalculateActivationRange&lt;float&gt;(activation, &amp;output_activation_min, &amp;output_activation_max);</div>
+<div class="line"><span class="lineno">  151</span>      op_params.float_activation_min = output_activation_min;</div>
+<div class="line"><span class="lineno">  152</span>      op_params.float_activation_max = output_activation_max;</div>
+<div class="line"><span class="lineno">  153</span> </div>
+<div class="line"><span class="lineno">  154</span>      _kernel = generateKernelGeneric&lt;float&gt;(op_params, op_type);</div>
+<div class="line"><span class="lineno">  155</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  156</span>    }</div>
+<div class="line"><span class="lineno">  157</span>    <span class="keywordflow">case</span> OperandType::QUANT_UINT8_ASYMM:</div>
+<div class="line"><span class="lineno">  158</span>    {</div>
+<div class="line"><span class="lineno">  159</span>      int32_t output_activation_min = 0;</div>
+<div class="line"><span class="lineno">  160</span>      int32_t output_activation_max = 0;</div>
+<div class="line"><span class="lineno">  161</span>      <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#aa3ed894d41e9c8473df0db171af23d7d">CalculateActivationRangeQuantized</a>(activation, _output, &amp;output_activation_min,</div>
+<div class="line"><span class="lineno">  162</span>                                        &amp;output_activation_max);</div>
+<div class="line"><span class="lineno">  163</span>      op_params.quantized_activation_min = output_activation_min;</div>
+<div class="line"><span class="lineno">  164</span>      op_params.quantized_activation_max = output_activation_max;</div>
+<div class="line"><span class="lineno">  165</span>      _kernel = generateKernelGeneric&lt;uint8_t&gt;(op_params, op_type);</div>
+<div class="line"><span class="lineno">  166</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  167</span>    }</div>
+<div class="line"><span class="lineno">  168</span>    <span class="keywordflow">case</span> OperandType::QUANT_INT8_ASYMM:</div>
+<div class="line"><span class="lineno">  169</span>    {</div>
+<div class="line"><span class="lineno">  170</span>      int32_t output_activation_min = 0;</div>
+<div class="line"><span class="lineno">  171</span>      int32_t output_activation_max = 0;</div>
+<div class="line"><span class="lineno">  172</span>      <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#aa3ed894d41e9c8473df0db171af23d7d">CalculateActivationRangeQuantized</a>(activation, _output, &amp;output_activation_min,</div>
+<div class="line"><span class="lineno">  173</span>                                        &amp;output_activation_max);</div>
+<div class="line"><span class="lineno">  174</span>      op_params.quantized_activation_min = output_activation_min;</div>
+<div class="line"><span class="lineno">  175</span>      op_params.quantized_activation_max = output_activation_max;</div>
+<div class="line"><span class="lineno">  176</span>      _kernel = generateKernelGeneric&lt;int8_t&gt;(op_params, op_type);</div>
+<div class="line"><span class="lineno">  177</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  178</span>    }</div>
+<div class="line"><span class="lineno">  179</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  180</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Pool: unsupported data type&quot;</span>};</div>
+<div class="line"><span class="lineno">  181</span>  }</div>
+<div class="line"><span class="lineno">  182</span>}</div>
+<div class="line"><span class="lineno">  183</span> </div>
+<div class="line"><span class="lineno">  184</span><span class="keywordtype">void</span> PoolLayer::run() { _kernel(_input, _output); }</div>
+<div class="line"><span class="lineno">  185</span> </div>
+<div class="line"><span class="lineno">  186</span><span class="preprocessor">#undef AVGPOOLING_PARAMETERS</span></div>
+<div class="line"><span class="lineno">  187</span> </div>
+<div class="line"><span class="lineno">  188</span>} <span class="comment">// namespace onert::backend::cpu::ops</span></div>
+<div class="ttc" id="a_pool2_d_layer_8cc_html_af81c104fb20f3f55d17078d7f8a98fd2"><div class="ttname"><a href="_pool2_d_layer_8cc.html#af81c104fb20f3f55d17078d7f8a98fd2">POOLING_PARAMETERS</a></div><div class="ttdeci">#define POOLING_PARAMETERS</div><div class="ttdef"><b>Definition</b> <a href="_pool2_d_layer_8cc_source.html#l00118">Pool2DLayer.cc:118</a></div></div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00096">gen_h5_explicit_inputs_all.py:96</a></div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_aa3ed894d41e9c8473df0db171af23d7d"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#aa3ed894d41e9c8473df0db171af23d7d">onert::backend::cpu::ops::CalculateActivationRangeQuantized</a></div><div class="ttdeci">void CalculateActivationRangeQuantized(ir::Activation activation, const IPortableTensor *output, int32_t *act_min, int32_t *act_max)</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_operation_utils_8cc_source.html#l00138">OperationUtils.cc:138</a></div></div>

@@ -183,32 +183,32 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_elementwise_unary_layer_8cc_source.html#l00411">411</a> of file <a class="el" href="_elementwise_unary_layer_8cc_source.html">ElementwiseUnaryLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  412</span>{</div>
-<div class="line"><span class="lineno">  413</span>  assert(input != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  414</span>  assert(output != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  415</span> </div>
-<div class="line"><span class="lineno">  416</span>  _input = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
-<div class="line"><span class="lineno">  417</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
-<div class="line"><span class="lineno">  418</span> </div>
-<div class="line"><span class="lineno">  419</span>  <span class="keywordflow">if</span> ((_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32))</div>
-<div class="line"><span class="lineno">  420</span>  {</div>
-<div class="line"><span class="lineno">  421</span>    <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">  422</span>  }</div>
-<div class="line"><span class="lineno">  423</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (((<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;data_type() == OperandType::QUANT_UINT8_ASYMM) &amp;&amp;</div>
-<div class="line"><span class="lineno">  424</span>            (<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;data_type() == OperandType::QUANT_INT8_ASYMM)) ||</div>
-<div class="line"><span class="lineno">  425</span>           ((<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;data_type() == OperandType::QUANT_INT8_ASYMM) &amp;&amp;</div>
-<div class="line"><span class="lineno">  426</span>            (<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;data_type() == OperandType::QUANT_UINT8_ASYMM)))</div>
-<div class="line"><span class="lineno">  427</span>  {</div>
-<div class="line"><span class="lineno">  428</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> effective_output_scale =</div>
-<div class="line"><span class="lineno">  429</span>      <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;data_scale()) / <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;data_scale());</div>
-<div class="line"><span class="lineno">  430</span>    <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a3be5fe32ffdf0573dd36b64172dbaa3a">QuantizeMultiplier</a>(effective_output_scale, &amp;_output_multiplier, &amp;_output_shift);</div>
-<div class="line"><span class="lineno">  431</span>  }</div>
-<div class="line"><span class="lineno">  432</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  433</span>  {</div>
-<div class="line"><span class="lineno">  434</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Quantize: Unsupported  data type&quot;</span>};</div>
-<div class="line"><span class="lineno">  435</span>  }</div>
-<div class="line"><span class="lineno">  436</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_elementwise_unary_layer_8cc_source.html#l00485">485</a> of file <a class="el" href="_elementwise_unary_layer_8cc_source.html">ElementwiseUnaryLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  486</span>{</div>
+<div class="line"><span class="lineno">  487</span>  assert(input != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  488</span>  assert(output != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  489</span> </div>
+<div class="line"><span class="lineno">  490</span>  _input = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
+<div class="line"><span class="lineno">  491</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
+<div class="line"><span class="lineno">  492</span> </div>
+<div class="line"><span class="lineno">  493</span>  <span class="keywordflow">if</span> ((_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32))</div>
+<div class="line"><span class="lineno">  494</span>  {</div>
+<div class="line"><span class="lineno">  495</span>    <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">  496</span>  }</div>
+<div class="line"><span class="lineno">  497</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (((<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;data_type() == OperandType::QUANT_UINT8_ASYMM) &amp;&amp;</div>
+<div class="line"><span class="lineno">  498</span>            (<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;data_type() == OperandType::QUANT_INT8_ASYMM)) ||</div>
+<div class="line"><span class="lineno">  499</span>           ((<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;data_type() == OperandType::QUANT_INT8_ASYMM) &amp;&amp;</div>
+<div class="line"><span class="lineno">  500</span>            (<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;data_type() == OperandType::QUANT_UINT8_ASYMM)))</div>
+<div class="line"><span class="lineno">  501</span>  {</div>
+<div class="line"><span class="lineno">  502</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> effective_output_scale =</div>
+<div class="line"><span class="lineno">  503</span>      <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;data_scale()) / <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;data_scale());</div>
+<div class="line"><span class="lineno">  504</span>    <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a3be5fe32ffdf0573dd36b64172dbaa3a">QuantizeMultiplier</a>(effective_output_scale, &amp;_output_multiplier, &amp;_output_shift);</div>
+<div class="line"><span class="lineno">  505</span>  }</div>
+<div class="line"><span class="lineno">  506</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  507</span>  {</div>
+<div class="line"><span class="lineno">  508</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Quantize: Unsupported  data type&quot;</span>};</div>
+<div class="line"><span class="lineno">  509</span>  }</div>
+<div class="line"><span class="lineno">  510</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aae73f75c41fa15f5ae2c391918fa09c5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor::data_type</a></div><div class="ttdeci">ir::DataType data_type() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00054">IPortableTensor.h:54</a></div></div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00096">gen_h5_explicit_inputs_all.py:96</a></div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
@@ -243,38 +243,38 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_function.html#aedd6f5e12852d808abb97327b9d229e2">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_elementwise_unary_layer_8cc_source.html#l00438">438</a> of file <a class="el" href="_elementwise_unary_layer_8cc_source.html">ElementwiseUnaryLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  439</span>{</div>
-<div class="line"><span class="lineno">  440</span>  <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32)</div>
-<div class="line"><span class="lineno">  441</span>  {</div>
-<div class="line"><span class="lineno">  442</span>    <span class="keywordflow">if</span> (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_UINT8_ASYMM)</div>
-<div class="line"><span class="lineno">  443</span>      affineQuantize&lt;float, uint8_t&gt;(_input, _output);</div>
-<div class="line"><span class="lineno">  444</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_INT16_SYMM)</div>
-<div class="line"><span class="lineno">  445</span>      affineQuantize&lt;float, int16_t&gt;(_input, _output);</div>
-<div class="line"><span class="lineno">  446</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  447</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Quantize: Unsupported data type&quot;</span>};</div>
-<div class="line"><span class="lineno">  448</span>  }</div>
-<div class="line"><span class="lineno">  449</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> ((_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_UINT8_ASYMM) &amp;&amp;</div>
-<div class="line"><span class="lineno">  450</span>           (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_INT8_ASYMM))</div>
-<div class="line"><span class="lineno">  451</span>  {</div>
-<div class="line"><span class="lineno">  452</span>    <a class="code hl_function" href="namespacennfw_1_1cker.html#af9872cd57a5ec52950cf7214ee97b785">nnfw::cker::Requantize&lt;uint8_t, int8_t&gt;</a>(</div>
-<div class="line"><span class="lineno">  453</span>      getBuffer&lt;uint8_t&gt;(_input), <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_input), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_output)),</div>
-<div class="line"><span class="lineno">  454</span>      _output_multiplier, _output_shift, _input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a5baa2b3c848503091f9f61d0045cf648">data_zero_point</a>(), _output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a5baa2b3c848503091f9f61d0045cf648">data_zero_point</a>(),</div>
-<div class="line"><span class="lineno">  455</span>      getBuffer&lt;int8_t&gt;(_output));</div>
-<div class="line"><span class="lineno">  456</span>  }</div>
-<div class="line"><span class="lineno">  457</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> ((_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_INT8_ASYMM) &amp;&amp;</div>
-<div class="line"><span class="lineno">  458</span>           (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_UINT8_ASYMM))</div>
-<div class="line"><span class="lineno">  459</span>  {</div>
-<div class="line"><span class="lineno">  460</span>    <a class="code hl_function" href="namespacennfw_1_1cker.html#a3ad71bab48b0fcf4a3e540e7ca0b58c6">nnfw::cker::Requantize&lt;int8_t, uint8_t&gt;</a>(</div>
-<div class="line"><span class="lineno">  461</span>      getBuffer&lt;int8_t&gt;(_input), <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_input), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_output)),</div>
-<div class="line"><span class="lineno">  462</span>      _output_multiplier, _output_shift, _input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a5baa2b3c848503091f9f61d0045cf648">data_zero_point</a>(), _output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a5baa2b3c848503091f9f61d0045cf648">data_zero_point</a>(),</div>
-<div class="line"><span class="lineno">  463</span>      getBuffer&lt;uint8_t&gt;(_output));</div>
-<div class="line"><span class="lineno">  464</span>  }</div>
-<div class="line"><span class="lineno">  465</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  466</span>  {</div>
-<div class="line"><span class="lineno">  467</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Quantize: Unsupported  data type&quot;</span>};</div>
-<div class="line"><span class="lineno">  468</span>  }</div>
-<div class="line"><span class="lineno">  469</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_elementwise_unary_layer_8cc_source.html#l00512">512</a> of file <a class="el" href="_elementwise_unary_layer_8cc_source.html">ElementwiseUnaryLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  513</span>{</div>
+<div class="line"><span class="lineno">  514</span>  <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32)</div>
+<div class="line"><span class="lineno">  515</span>  {</div>
+<div class="line"><span class="lineno">  516</span>    <span class="keywordflow">if</span> (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_UINT8_ASYMM)</div>
+<div class="line"><span class="lineno">  517</span>      affineQuantize&lt;float, uint8_t&gt;(_input, _output);</div>
+<div class="line"><span class="lineno">  518</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_INT16_SYMM)</div>
+<div class="line"><span class="lineno">  519</span>      affineQuantize&lt;float, int16_t&gt;(_input, _output);</div>
+<div class="line"><span class="lineno">  520</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  521</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Quantize: Unsupported data type&quot;</span>};</div>
+<div class="line"><span class="lineno">  522</span>  }</div>
+<div class="line"><span class="lineno">  523</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> ((_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_UINT8_ASYMM) &amp;&amp;</div>
+<div class="line"><span class="lineno">  524</span>           (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_INT8_ASYMM))</div>
+<div class="line"><span class="lineno">  525</span>  {</div>
+<div class="line"><span class="lineno">  526</span>    <a class="code hl_function" href="namespacennfw_1_1cker.html#af9872cd57a5ec52950cf7214ee97b785">nnfw::cker::Requantize&lt;uint8_t, int8_t&gt;</a>(</div>
+<div class="line"><span class="lineno">  527</span>      getBuffer&lt;uint8_t&gt;(_input), <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_input), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_output)),</div>
+<div class="line"><span class="lineno">  528</span>      _output_multiplier, _output_shift, _input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a5baa2b3c848503091f9f61d0045cf648">data_zero_point</a>(), _output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a5baa2b3c848503091f9f61d0045cf648">data_zero_point</a>(),</div>
+<div class="line"><span class="lineno">  529</span>      getBuffer&lt;int8_t&gt;(_output));</div>
+<div class="line"><span class="lineno">  530</span>  }</div>
+<div class="line"><span class="lineno">  531</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> ((_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_INT8_ASYMM) &amp;&amp;</div>
+<div class="line"><span class="lineno">  532</span>           (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_UINT8_ASYMM))</div>
+<div class="line"><span class="lineno">  533</span>  {</div>
+<div class="line"><span class="lineno">  534</span>    <a class="code hl_function" href="namespacennfw_1_1cker.html#a3ad71bab48b0fcf4a3e540e7ca0b58c6">nnfw::cker::Requantize&lt;int8_t, uint8_t&gt;</a>(</div>
+<div class="line"><span class="lineno">  535</span>      getBuffer&lt;int8_t&gt;(_input), <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_input), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_output)),</div>
+<div class="line"><span class="lineno">  536</span>      _output_multiplier, _output_shift, _input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a5baa2b3c848503091f9f61d0045cf648">data_zero_point</a>(), _output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a5baa2b3c848503091f9f61d0045cf648">data_zero_point</a>(),</div>
+<div class="line"><span class="lineno">  537</span>      getBuffer&lt;uint8_t&gt;(_output));</div>
+<div class="line"><span class="lineno">  538</span>  }</div>
+<div class="line"><span class="lineno">  539</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  540</span>  {</div>
+<div class="line"><span class="lineno">  541</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Quantize: Unsupported  data type&quot;</span>};</div>
+<div class="line"><span class="lineno">  542</span>  }</div>
+<div class="line"><span class="lineno">  543</span>}</div>
 <div class="ttc" id="aann-ref_2src_2ops_2internal_2_dims_8h_html_a93604338a7a3801ed30692282ff124ce"><div class="ttname"><a href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a></div><div class="ttdeci">int MatchingFlatSize(const Dims&lt; N &gt; &amp;dims, const Dims&lt; N &gt; &amp;check_dims_0)</div><div class="ttdef"><b>Definition</b> <a href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00108">Dims.h:108</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_a5baa2b3c848503091f9f61d0045cf648"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#a5baa2b3c848503091f9f61d0045cf648">onert::backend::IPortableTensor::data_zero_point</a></div><div class="ttdeci">int32_t data_zero_point() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00056">IPortableTensor.h:56</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_a3ad71bab48b0fcf4a3e540e7ca0b58c6"><div class="ttname"><a href="namespacennfw_1_1cker.html#a3ad71bab48b0fcf4a3e540e7ca0b58c6">nnfw::cker::Requantize&lt; int8_t, uint8_t &gt;</a></div><div class="ttdeci">void Requantize&lt; int8_t, uint8_t &gt;(const int8_t *input_data, int32_t size, int32_t effective_scale_multiplier, int32_t effective_scale_shift, int32_t input_zeropoint, int32_t output_zeropoint, uint8_t *output_data)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00379">Quantize.h:379</a></div></div>

@@ -54,6 +54,7 @@ var searchData=
   ['kernelwithparams_3c_20unidirectionalsequencelstmparams_20_3e_51',['KernelWithParams&lt; UnidirectionalSequenceLSTMParams &gt;',['../classluci__interpreter_1_1_kernel_with_params.html',1,'luci_interpreter']]],
   ['kernelwithparams_3c_20unpackparams_20_3e_52',['KernelWithParams&lt; UnpackParams &gt;',['../classluci__interpreter_1_1_kernel_with_params.html',1,'luci_interpreter']]],
   ['knobtrait_53',['knobtrait',['../structexo_1_1_knob_trait.html',1,'exo::KnobTrait&lt; K &gt;'],['../structmoco_1_1tf_1_1_knob_trait.html',1,'moco::tf::KnobTrait&lt; K &gt;']]],
-  ['kvstoreinterface_54',['KVStoreInterface',['../classpepper_1_1_k_v_store_interface.html',1,'pepper']]],
-  ['kvstoreinterface_3c_20kvstoretrait_3a_3aqueryable_20_3e_55',['KVStoreInterface&lt; KVStoreTrait::Queryable &gt;',['../classpepper_1_1_k_v_store_interface_3_01_k_v_store_trait_1_1_queryable_01_4.html',1,'pepper']]]
+  ['kvcache_54',['KVCache',['../structggma_1_1_k_v_cache.html',1,'ggma']]],
+  ['kvstoreinterface_55',['KVStoreInterface',['../classpepper_1_1_k_v_store_interface.html',1,'pepper']]],
+  ['kvstoreinterface_3c_20kvstoretrait_3a_3aqueryable_20_3e_56',['KVStoreInterface&lt; KVStoreTrait::Queryable &gt;',['../classpepper_1_1_k_v_store_interface_3_01_k_v_store_trait_1_1_queryable_01_4.html',1,'pepper']]]
 ];

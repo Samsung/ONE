@@ -180,11 +180,11 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_add_n_layer_8cc_source.html#l00027">27</a> of file <a class="el" href="_add_n_layer_8cc_source.html">AddNLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   28</span>{</div>
-<div class="line"><span class="lineno">   29</span>  _inputs = std::move(inputs);</div>
-<div class="line"><span class="lineno">   30</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
-<div class="line"><span class="lineno">   31</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_add_n_layer_8cc_source.html#l00053">53</a> of file <a class="el" href="_add_n_layer_8cc_source.html">AddNLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   54</span>{</div>
+<div class="line"><span class="lineno">   55</span>  _inputs = std::move(inputs);</div>
+<div class="line"><span class="lineno">   56</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
+<div class="line"><span class="lineno">   57</span>}</div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00096">gen_h5_explicit_inputs_all.py:96</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -214,32 +214,32 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_function.html#aedd6f5e12852d808abb97327b9d229e2">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_add_n_layer_8cc_source.html#l00033">33</a> of file <a class="el" href="_add_n_layer_8cc_source.html">AddNLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   34</span>{</div>
-<div class="line"><span class="lineno">   35</span>  <span class="keywordtype">size_t</span> input_size = _inputs.size();</div>
-<div class="line"><span class="lineno">   36</span>  <span class="keywordflow">if</span> (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == ir::DataType::INT32)</div>
-<div class="line"><span class="lineno">   37</span>  {</div>
-<div class="line"><span class="lineno">   38</span>    std::vector&lt;const int32_t *&gt; input_buffers(input_size);</div>
-<div class="line"><span class="lineno">   39</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; input_size; i++)</div>
-<div class="line"><span class="lineno">   40</span>    {</div>
-<div class="line"><span class="lineno">   41</span>      input_buffers[i] = getBuffer&lt;int32_t&gt;(_inputs[i]);</div>
-<div class="line"><span class="lineno">   42</span>    }</div>
-<div class="line"><span class="lineno">   43</span>    <a class="code hl_function" href="namespaceluci__interpreter__pal.html#ae19d51038821799f0cae12d633ebc3de">AddN</a>(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_inputs[0]), input_size, input_buffers.data(), getBuffer&lt;int32_t&gt;(_output));</div>
-<div class="line"><span class="lineno">   44</span>  }</div>
-<div class="line"><span class="lineno">   45</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == ir::DataType::FLOAT32)</div>
-<div class="line"><span class="lineno">   46</span>  {</div>
-<div class="line"><span class="lineno">   47</span>    std::vector&lt;const float *&gt; input_buffers(input_size);</div>
-<div class="line"><span class="lineno">   48</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; input_size; i++)</div>
-<div class="line"><span class="lineno">   49</span>    {</div>
-<div class="line"><span class="lineno">   50</span>      input_buffers[i] = getBuffer&lt;float&gt;(_inputs[i]);</div>
-<div class="line"><span class="lineno">   51</span>    }</div>
-<div class="line"><span class="lineno">   52</span>    <a class="code hl_function" href="namespaceluci__interpreter__pal.html#ae19d51038821799f0cae12d633ebc3de">AddN</a>(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_inputs[0]), input_size, input_buffers.data(), getBuffer&lt;float&gt;(_output));</div>
-<div class="line"><span class="lineno">   53</span>  }</div>
-<div class="line"><span class="lineno">   54</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   55</span>  {</div>
-<div class="line"><span class="lineno">   56</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;AddN: unsupported data type&quot;</span>);</div>
-<div class="line"><span class="lineno">   57</span>  }</div>
-<div class="line"><span class="lineno">   58</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_add_n_layer_8cc_source.html#l00059">59</a> of file <a class="el" href="_add_n_layer_8cc_source.html">AddNLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   60</span>{</div>
+<div class="line"><span class="lineno">   61</span>  <span class="keywordtype">size_t</span> input_size = _inputs.size();</div>
+<div class="line"><span class="lineno">   62</span>  <span class="keywordflow">if</span> (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == ir::DataType::INT32)</div>
+<div class="line"><span class="lineno">   63</span>  {</div>
+<div class="line"><span class="lineno">   64</span>    std::vector&lt;const int32_t *&gt; input_buffers(input_size);</div>
+<div class="line"><span class="lineno">   65</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; input_size; i++)</div>
+<div class="line"><span class="lineno">   66</span>    {</div>
+<div class="line"><span class="lineno">   67</span>      input_buffers[i] = getBuffer&lt;int32_t&gt;(_inputs[i]);</div>
+<div class="line"><span class="lineno">   68</span>    }</div>
+<div class="line"><span class="lineno">   69</span>    <a class="code hl_function" href="namespaceluci__interpreter__pal.html#ae19d51038821799f0cae12d633ebc3de">AddN</a>(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_inputs[0]), input_size, input_buffers.data(), getBuffer&lt;int32_t&gt;(_output));</div>
+<div class="line"><span class="lineno">   70</span>  }</div>
+<div class="line"><span class="lineno">   71</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == ir::DataType::FLOAT32)</div>
+<div class="line"><span class="lineno">   72</span>  {</div>
+<div class="line"><span class="lineno">   73</span>    std::vector&lt;const float *&gt; input_buffers(input_size);</div>
+<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; input_size; i++)</div>
+<div class="line"><span class="lineno">   75</span>    {</div>
+<div class="line"><span class="lineno">   76</span>      input_buffers[i] = getBuffer&lt;float&gt;(_inputs[i]);</div>
+<div class="line"><span class="lineno">   77</span>    }</div>
+<div class="line"><span class="lineno">   78</span>    <a class="code hl_function" href="namespaceluci__interpreter__pal.html#ae19d51038821799f0cae12d633ebc3de">AddN</a>(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_inputs[0]), input_size, input_buffers.data(), getBuffer&lt;float&gt;(_output));</div>
+<div class="line"><span class="lineno">   79</span>  }</div>
+<div class="line"><span class="lineno">   80</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   81</span>  {</div>
+<div class="line"><span class="lineno">   82</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;AddN: unsupported data type&quot;</span>);</div>
+<div class="line"><span class="lineno">   83</span>  }</div>
+<div class="line"><span class="lineno">   84</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aae73f75c41fa15f5ae2c391918fa09c5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor::data_type</a></div><div class="ttdeci">ir::DataType data_type() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00054">IPortableTensor.h:54</a></div></div>
 <div class="ttc" id="anamespaceluci__interpreter__pal_html_ae19d51038821799f0cae12d633ebc3de"><div class="ttname"><a href="namespaceluci__interpreter__pal.html#ae19d51038821799f0cae12d633ebc3de">luci_interpreter_pal::AddN</a></div><div class="ttdeci">void AddN(const size_t flat_size, const size_t num_inputs, const T *const *input_data, T *output_data)</div><div class="ttdef"><b>Definition</b> <a href="luci-interpreter_2pal_2common_2_p_a_l_add_n_8h_source.html#l00029">PALAddN.h:29</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a1cfb53087f7fc161b9162d65aa5520d9"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">onert::backend::cpu::ops::getShape</a></div><div class="ttdeci">nnfw::cker::Shape getShape(const IPortableTensor *tensor)</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_operation_utils_8h_source.html#l00089">OperationUtils.h:89</a></div></div>

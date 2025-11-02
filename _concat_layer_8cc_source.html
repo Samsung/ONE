@@ -116,148 +116,182 @@ $(document).ready(function(){initNavTree('_concat_layer_8cc_source.html',''); in
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="_concat_layer_8h.html">ConcatLayer.h</a>&quot;</span></div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;<a class="code" href="train_2ops_2_operation_utils_8h.html">OperationUtils.h</a>&quot;</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &lt;<a class="code" href="runtime_2compute_2cker_2include_2cker_2operation_2_concatenation_8h.html">cker/operation/Concatenation.h</a>&gt;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;../KernelGenerator.h&quot;</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;../Validator.h&quot;</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html">onert::backend::cpu::ops</a></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>{</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="foldopen" id="foldopen00026" data-start="{" data-end="}">
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer.html#a06c948fcfe425c3e8ef8f27e3023a886">   26</a></span><a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer.html#a06c948fcfe425c3e8ef8f27e3023a886">ConcatLayer::ConcatLayer</a>() : _inputs(), _output(nullptr), _axis(0)</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>{</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="comment">// DO NOTHING</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>}</div>
-</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="foldopen" id="foldopen00031" data-start="{" data-end="}">
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer.html#adcd074a3a906880fa5f596428d8efa89">   31</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer.html#adcd074a3a906880fa5f596428d8efa89">ConcatLayer::concatenationGeneral</a>()</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>{</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  uint32_t num_inputs = _inputs.size();</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <a class="code hl_struct" href="structnnfw_1_1cker_1_1_concatenation_params.html">nnfw::cker::ConcatenationParams</a> op_params;</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_concatenation_params.html#ae0fe9eaca1f73abaf2bf6600bec35a53">axis</a> = _axis;</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_concatenation_params.html#a71f555b874f1c5fcfd4436438576e752">inputs_count</a> = num_inputs;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &lt;<a class="code" href="runtime_2compute_2cker_2include_2cker_2operation_2_concatenation_8h.html">cker/operation/Concatenation.h</a>&gt;</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert_1_1backend_1_1cpu.html">onert::backend::cpu</a></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>{</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keywordtype">void</span> Validator::visit(<span class="keyword">const</span> ir::operation::Concat &amp;) { <a class="code hl_variable" href="classonert_1_1backend_1_1_validator_base.html#a9f77e8b5eb3af283457c70572c3223e4">_supported</a> = <span class="keyword">true</span>; }</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keywordtype">void</span> KernelGenerator::visit(<span class="keyword">const</span> ir::operation::Concat &amp;node)</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>{</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keyword">const</span> <span class="keyword">auto</span> ofm_index{node.getOutputs().at(0)};</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="keyword">const</span> <span class="keyword">auto</span> rank = _ctx.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(ofm_index).shape().rank();</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keyword">const</span> <span class="keyword">auto</span> axis = ops::getAxis(rank, node.param().axis);</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#a187620ffdf72abdf0acf204385501746">output_tensor</a> = _tensor_reg-&gt;getPortableTensor(ofm_index);</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  std::vector&lt;nnfw::cker::Shape *&gt; inputDimsPtr;</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  std::vector&lt;nnfw::cker::Shape&gt; inputDims;</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  inputDimsPtr.reserve(num_inputs);</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  inputDims.reserve(num_inputs);</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; num_inputs; i++)</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  {</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    inputDims.push_back(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_inputs[i]));</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    inputDimsPtr.push_back(&amp;inputDims[i]);</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  }</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  std::vector&lt;const IPortableTensor *&gt; input_tensors;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ifm_idx : node.getInputs())</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    input_tensors.emplace_back(_tensor_reg-&gt;getPortableTensor(ifm_idx));</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keyword">auto</span> fn = std::make_unique&lt;ops::ConcatLayer&gt;();</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  fn-&gt;configure(input_tensors, axis, output_tensor);</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_kernel_generator_base.html#a0641657bea8e14881f1ed6e604ee7e19">_return_fn</a> = std::move(fn);</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>}</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  std::vector&lt;const T *&gt; inputDataPtrs;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>} <span class="comment">// namespace onert::backend::cpu</span></div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> input : _inputs)</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  {</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    inputDataPtrs.emplace_back(getBuffer&lt;T&gt;(input));</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  }</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  nnfw::cker::Concatenation&lt;T&gt;(op_params, inputDimsPtr.data(), inputDataPtrs.data(),</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                               <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_output), getBuffer&lt;T&gt;(_output));</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>}</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html">onert::backend::cpu::ops</a></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>{</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="foldopen" id="foldopen00055" data-start="{" data-end="}">
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer.html#a06c948fcfe425c3e8ef8f27e3023a886">   55</a></span><a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer.html#a06c948fcfe425c3e8ef8f27e3023a886">ConcatLayer::ConcatLayer</a>() : _inputs(), _output(nullptr), _axis(0)</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>{</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>}</div>
 </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
 <div class="foldopen" id="foldopen00060" data-start="{" data-end="}">
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer.html#a4cf8ae24499889811899d48ea136d5e0">   60</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer.html#a4cf8ae24499889811899d48ea136d5e0">ConcatLayer::concatenationQuant8</a>()</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer.html#adcd074a3a906880fa5f596428d8efa89">   60</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer.html#adcd074a3a906880fa5f596428d8efa89">ConcatLayer::concatenationGeneral</a>()</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>{</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  uint32_t num_inputs = _inputs.size();</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  std::vector&lt;int32_t&gt; input_zeropoints(num_inputs);</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  std::vector&lt;float&gt; input_scales(num_inputs);</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; num_inputs; i++)</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  {</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    input_zeropoints[i] = _inputs[i]-&gt;data_zero_point();</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    input_scales[i] = _inputs[i]-&gt;data_scale();</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  }</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <a class="code hl_struct" href="structnnfw_1_1cker_1_1_concatenation_params.html">nnfw::cker::ConcatenationParams</a> op_params;</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_concatenation_params.html#ae0fe9eaca1f73abaf2bf6600bec35a53">axis</a> = _axis;</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_concatenation_params.html#a71f555b874f1c5fcfd4436438576e752">inputs_count</a> = num_inputs;</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_concatenation_params.html#a13ebc9bf09498326d0e62211f67bd674">input_zeropoint</a> = input_zeropoints.data();</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_concatenation_params.html#a72a27c58d5584fdfb8b802b108d10af3">input_scale</a> = input_scales.data();</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_concatenation_params.html#ae2be61cdb0514ad6fcf19c5ce09b9386">output_zeropoint</a> = _output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a5baa2b3c848503091f9f61d0045cf648">data_zero_point</a>();</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_concatenation_params.html#a79e65e91c1b7dd6df981a58ee22f5903">output_scale</a> = _output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a56b8936eb8f5a8cbcf5cbe9d6c080ef9">data_scale</a>();</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  std::vector&lt;nnfw::cker::Shape *&gt; inputDimsPtr;</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  std::vector&lt;nnfw::cker::Shape&gt; inputDims;</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  inputDimsPtr.reserve(num_inputs);</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  inputDims.reserve(num_inputs);</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; num_inputs; i++)</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  {</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    inputDims.push_back(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_inputs[i]));</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    inputDimsPtr.push_back(&amp;inputDims[i]);</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  }</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  std::vector&lt;const uint8_t *&gt; inputDataPtrs;</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> input : _inputs)</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  {</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    inputDataPtrs.emplace_back(getBuffer&lt;uint8_t&gt;(input));</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  }</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  <a class="code hl_function" href="namespacennfw_1_1cker.html#a06477c8b318177e9ba1c6160b9b1d813">nnfw::cker::ConcatenationWithScaling</a>(op_params, inputDimsPtr.data(), inputDataPtrs.data(),</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>                                       <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_output), getBuffer&lt;uint8_t&gt;(_output));</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>}</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <a class="code hl_struct" href="structnnfw_1_1cker_1_1_concatenation_params.html">nnfw::cker::ConcatenationParams</a> op_params;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_concatenation_params.html#ae0fe9eaca1f73abaf2bf6600bec35a53">axis</a> = _axis;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_concatenation_params.html#a71f555b874f1c5fcfd4436438576e752">inputs_count</a> = num_inputs;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  std::vector&lt;nnfw::cker::Shape *&gt; inputDimsPtr;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  std::vector&lt;nnfw::cker::Shape&gt; inputDims;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  inputDimsPtr.reserve(num_inputs);</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  inputDims.reserve(num_inputs);</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; num_inputs; i++)</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  {</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    inputDims.push_back(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_inputs[i]));</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    inputDimsPtr.push_back(&amp;inputDims[i]);</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  }</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  std::vector&lt;const T *&gt; inputDataPtrs;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> input : _inputs)</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  {</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    inputDataPtrs.emplace_back(getBuffer&lt;T&gt;(input));</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  }</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  nnfw::cker::Concatenation&lt;T&gt;(op_params, inputDimsPtr.data(), inputDataPtrs.data(),</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>                               <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_output), getBuffer&lt;T&gt;(_output));</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>}</div>
 </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
-<div class="foldopen" id="foldopen00100" data-start="{" data-end="}">
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer.html#a7887834c1f89811a34ca009e68b3488a">  100</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer.html#a7887834c1f89811a34ca009e68b3488a">ConcatLayer::configure</a>(<span class="keyword">const</span> std::vector&lt;const IPortableTensor *&gt; &amp;inputs, int32_t axis,</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>                            <a class="code hl_class" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output)</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>{</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  assert(inputs.size() &gt; 0);</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  assert(output != <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  _inputs = inputs;</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  _axis = axis;</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  _output = output;</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>}</div>
-</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
-<div class="foldopen" id="foldopen00111" data-start="{" data-end="}">
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer.html#a6e32ca3202379f3802276b6aa6888c0e">  111</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer.html#a6e32ca3202379f3802276b6aa6888c0e">ConcatLayer::run</a>()</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>{</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <span class="keywordflow">switch</span> (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>())</div>
+<div class="foldopen" id="foldopen00089" data-start="{" data-end="}">
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer.html#a4cf8ae24499889811899d48ea136d5e0">   89</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer.html#a4cf8ae24499889811899d48ea136d5e0">ConcatLayer::concatenationQuant8</a>()</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>{</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  uint32_t num_inputs = _inputs.size();</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  std::vector&lt;int32_t&gt; input_zeropoints(num_inputs);</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  std::vector&lt;float&gt; input_scales(num_inputs);</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; num_inputs; i++)</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  {</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    input_zeropoints[i] = _inputs[i]-&gt;data_zero_point();</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    input_scales[i] = _inputs[i]-&gt;data_scale();</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  }</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  <a class="code hl_struct" href="structnnfw_1_1cker_1_1_concatenation_params.html">nnfw::cker::ConcatenationParams</a> op_params;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_concatenation_params.html#ae0fe9eaca1f73abaf2bf6600bec35a53">axis</a> = _axis;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_concatenation_params.html#a71f555b874f1c5fcfd4436438576e752">inputs_count</a> = num_inputs;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_concatenation_params.html#a13ebc9bf09498326d0e62211f67bd674">input_zeropoint</a> = input_zeropoints.data();</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_concatenation_params.html#a72a27c58d5584fdfb8b802b108d10af3">input_scale</a> = input_scales.data();</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_concatenation_params.html#ae2be61cdb0514ad6fcf19c5ce09b9386">output_zeropoint</a> = _output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a5baa2b3c848503091f9f61d0045cf648">data_zero_point</a>();</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_concatenation_params.html#a79e65e91c1b7dd6df981a58ee22f5903">output_scale</a> = _output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a56b8936eb8f5a8cbcf5cbe9d6c080ef9">data_scale</a>();</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  std::vector&lt;nnfw::cker::Shape *&gt; inputDimsPtr;</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  std::vector&lt;nnfw::cker::Shape&gt; inputDims;</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  inputDimsPtr.reserve(num_inputs);</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  inputDims.reserve(num_inputs);</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; num_inputs; i++)</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  {</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    <span class="keywordflow">case</span> OperandType::FLOAT32:</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>      concatenationGeneral&lt;float&gt;();</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="keywordflow">case</span> OperandType::QUANT_UINT8_ASYMM:</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>      <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer.html#a4cf8ae24499889811899d48ea136d5e0">concatenationQuant8</a>();</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    <span class="keywordflow">case</span> OperandType::QUANT_INT8_ASYMM:</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>      concatenationGeneral&lt;int8_t&gt;();</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    <span class="keywordflow">case</span> OperandType::QUANT_INT16_SYMM:</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>      concatenationGeneral&lt;int16_t&gt;();</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    <span class="keywordflow">case</span> OperandType::INT32:</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>      concatenationGeneral&lt;int32_t&gt;();</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    <span class="keywordflow">case</span> OperandType::INT64:</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>      concatenationGeneral&lt;int64_t&gt;();</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Concat: unsupported data type&quot;</span>);</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>  }</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>}</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    inputDims.push_back(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_inputs[i]));</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    inputDimsPtr.push_back(&amp;inputDims[i]);</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  }</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  std::vector&lt;const uint8_t *&gt; inputDataPtrs;</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> input : _inputs)</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  {</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    inputDataPtrs.emplace_back(getBuffer&lt;uint8_t&gt;(input));</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  }</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  <a class="code hl_function" href="namespacennfw_1_1cker.html#a06477c8b318177e9ba1c6160b9b1d813">nnfw::cker::ConcatenationWithScaling</a>(op_params, inputDimsPtr.data(), inputDataPtrs.data(),</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>                                       <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_output), getBuffer&lt;uint8_t&gt;(_output));</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>}</div>
 </div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>} <span class="comment">// namespace onert::backend::cpu::ops</span></div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
+<div class="foldopen" id="foldopen00129" data-start="{" data-end="}">
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer.html#a7887834c1f89811a34ca009e68b3488a">  129</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer.html#a7887834c1f89811a34ca009e68b3488a">ConcatLayer::configure</a>(<span class="keyword">const</span> std::vector&lt;const IPortableTensor *&gt; &amp;inputs, int32_t axis,</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>                            <a class="code hl_class" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output)</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>{</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  assert(inputs.size() &gt; 0);</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>  assert(output != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>  _inputs = inputs;</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>  _axis = axis;</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>  _output = output;</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>}</div>
+</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span> </div>
+<div class="foldopen" id="foldopen00140" data-start="{" data-end="}">
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer.html#a6e32ca3202379f3802276b6aa6888c0e">  140</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer.html#a6e32ca3202379f3802276b6aa6888c0e">ConcatLayer::run</a>()</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>{</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>  <span class="keywordflow">switch</span> (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>())</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>  {</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    <span class="keywordflow">case</span> OperandType::FLOAT32:</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>      concatenationGeneral&lt;float&gt;();</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    <span class="keywordflow">case</span> OperandType::QUANT_UINT8_ASYMM:</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>      <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer.html#a4cf8ae24499889811899d48ea136d5e0">concatenationQuant8</a>();</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    <span class="keywordflow">case</span> OperandType::QUANT_INT8_ASYMM:</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>      concatenationGeneral&lt;int8_t&gt;();</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    <span class="keywordflow">case</span> OperandType::QUANT_INT16_SYMM:</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>      concatenationGeneral&lt;int16_t&gt;();</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    <span class="keywordflow">case</span> OperandType::INT32:</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>      concatenationGeneral&lt;int32_t&gt;();</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    <span class="keywordflow">case</span> OperandType::INT64:</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>      concatenationGeneral&lt;int64_t&gt;();</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Concat: unsupported data type&quot;</span>);</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>  }</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>}</div>
+</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span> </div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>} <span class="comment">// namespace onert::backend::cpu::ops</span></div>
 <div class="ttc" id="a_concat_layer_8h_html"><div class="ttname"><a href="_concat_layer_8h.html">ConcatLayer.h</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html">onert::backend::IPortableTensor</a></div><div class="ttdoc">A tensor class that is portable for other backends.</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00036">IPortableTensor.h:37</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_a56b8936eb8f5a8cbcf5cbe9d6c080ef9"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#a56b8936eb8f5a8cbcf5cbe9d6c080ef9">onert::backend::IPortableTensor::data_scale</a></div><div class="ttdeci">float data_scale() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00055">IPortableTensor.h:55</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_a5baa2b3c848503091f9f61d0045cf648"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#a5baa2b3c848503091f9f61d0045cf648">onert::backend::IPortableTensor::data_zero_point</a></div><div class="ttdeci">int32_t data_zero_point() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00056">IPortableTensor.h:56</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aae73f75c41fa15f5ae2c391918fa09c5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor::data_type</a></div><div class="ttdeci">ir::DataType data_type() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00054">IPortableTensor.h:54</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer_html_a06c948fcfe425c3e8ef8f27e3023a886"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer.html#a06c948fcfe425c3e8ef8f27e3023a886">onert::backend::cpu::ops::ConcatLayer::ConcatLayer</a></div><div class="ttdeci">ConcatLayer()</div><div class="ttdef"><b>Definition</b> <a href="_concat_layer_8cc_source.html#l00026">ConcatLayer.cc:26</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer_html_a4cf8ae24499889811899d48ea136d5e0"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer.html#a4cf8ae24499889811899d48ea136d5e0">onert::backend::cpu::ops::ConcatLayer::concatenationQuant8</a></div><div class="ttdeci">void concatenationQuant8()</div><div class="ttdef"><b>Definition</b> <a href="_concat_layer_8cc_source.html#l00060">ConcatLayer.cc:60</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer_html_a6e32ca3202379f3802276b6aa6888c0e"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer.html#a6e32ca3202379f3802276b6aa6888c0e">onert::backend::cpu::ops::ConcatLayer::run</a></div><div class="ttdeci">void run() override</div><div class="ttdef"><b>Definition</b> <a href="_concat_layer_8cc_source.html#l00111">ConcatLayer.cc:111</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer_html_a7887834c1f89811a34ca009e68b3488a"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer.html#a7887834c1f89811a34ca009e68b3488a">onert::backend::cpu::ops::ConcatLayer::configure</a></div><div class="ttdeci">void configure(const std::vector&lt; const IPortableTensor * &gt; &amp;inputs, int32_t axis, IPortableTensor *output)</div><div class="ttdef"><b>Definition</b> <a href="_concat_layer_8cc_source.html#l00100">ConcatLayer.cc:100</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer_html_adcd074a3a906880fa5f596428d8efa89"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer.html#adcd074a3a906880fa5f596428d8efa89">onert::backend::cpu::ops::ConcatLayer::concatenationGeneral</a></div><div class="ttdeci">void concatenationGeneral()</div><div class="ttdef"><b>Definition</b> <a href="_concat_layer_8cc_source.html#l00031">ConcatLayer.cc:31</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1_validator_base_html_a9f77e8b5eb3af283457c70572c3223e4"><div class="ttname"><a href="classonert_1_1backend_1_1_validator_base.html#a9f77e8b5eb3af283457c70572c3223e4">onert::backend::ValidatorBase::_supported</a></div><div class="ttdeci">bool _supported</div><div class="ttdef"><b>Definition</b> <a href="_validator_base_8h_source.html#l00050">ValidatorBase.h:50</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1basic_1_1_kernel_generator_base_html_a0641657bea8e14881f1ed6e604ee7e19"><div class="ttname"><a href="classonert_1_1backend_1_1basic_1_1_kernel_generator_base.html#a0641657bea8e14881f1ed6e604ee7e19">onert::backend::basic::KernelGeneratorBase::_return_fn</a></div><div class="ttdeci">std::unique_ptr&lt; exec::IFunction &gt; _return_fn</div><div class="ttdef"><b>Definition</b> <a href="basic_2_kernel_generator_base_8h_source.html#l00060">KernelGeneratorBase.h:60</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer_html_a06c948fcfe425c3e8ef8f27e3023a886"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer.html#a06c948fcfe425c3e8ef8f27e3023a886">onert::backend::cpu::ops::ConcatLayer::ConcatLayer</a></div><div class="ttdeci">ConcatLayer()</div><div class="ttdef"><b>Definition</b> <a href="_concat_layer_8cc_source.html#l00055">ConcatLayer.cc:55</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer_html_a4cf8ae24499889811899d48ea136d5e0"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer.html#a4cf8ae24499889811899d48ea136d5e0">onert::backend::cpu::ops::ConcatLayer::concatenationQuant8</a></div><div class="ttdeci">void concatenationQuant8()</div><div class="ttdef"><b>Definition</b> <a href="_concat_layer_8cc_source.html#l00089">ConcatLayer.cc:89</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer_html_a6e32ca3202379f3802276b6aa6888c0e"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer.html#a6e32ca3202379f3802276b6aa6888c0e">onert::backend::cpu::ops::ConcatLayer::run</a></div><div class="ttdeci">void run() override</div><div class="ttdef"><b>Definition</b> <a href="_concat_layer_8cc_source.html#l00140">ConcatLayer.cc:140</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer_html_a7887834c1f89811a34ca009e68b3488a"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer.html#a7887834c1f89811a34ca009e68b3488a">onert::backend::cpu::ops::ConcatLayer::configure</a></div><div class="ttdeci">void configure(const std::vector&lt; const IPortableTensor * &gt; &amp;inputs, int32_t axis, IPortableTensor *output)</div><div class="ttdef"><b>Definition</b> <a href="_concat_layer_8cc_source.html#l00129">ConcatLayer.cc:129</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer_html_adcd074a3a906880fa5f596428d8efa89"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_concat_layer.html#adcd074a3a906880fa5f596428d8efa89">onert::backend::cpu::ops::ConcatLayer::concatenationGeneral</a></div><div class="ttdeci">void concatenationGeneral()</div><div class="ttdef"><b>Definition</b> <a href="_concat_layer_8cc_source.html#l00060">ConcatLayer.cc:60</a></div></div>
+<div class="ttc" id="aclassonert_1_1util_1_1_object_manager_html_adb269e5affe5040bceb6a80b457a01be"><div class="ttname"><a href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">onert::util::ObjectManager::at</a></div><div class="ttdeci">const Object &amp; at(const Index &amp;index) const</div><div class="ttdoc">Get the object that is associated with the given index.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00119">ObjectManager.h:119</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_a06477c8b318177e9ba1c6160b9b1d813"><div class="ttname"><a href="namespacennfw_1_1cker.html#a06477c8b318177e9ba1c6160b9b1d813">nnfw::cker::ConcatenationWithScaling</a></div><div class="ttdeci">void ConcatenationWithScaling(const ConcatenationParams &amp;params, const Shape *const *input_shapes, const uint8_t *const *input_data, const Shape &amp;output_shape, uint8_t *output_data)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2operation_2_concatenation_8h_source.html#l00083">Concatenation.h:83</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html">onert::backend::cpu::ops</a></div><div class="ttdef"><b>Definition</b> <a href="_add_n_layer_8cc_source.html#l00024">AddNLayer.cc:25</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html">onert::backend::cpu::ops</a></div><div class="ttdef"><b>Definition</b> <a href="_add_n_layer_8cc_source.html#l00050">AddNLayer.cc:51</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a1cfb53087f7fc161b9162d65aa5520d9"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">onert::backend::cpu::ops::getShape</a></div><div class="ttdeci">nnfw::cker::Shape getShape(const IPortableTensor *tensor)</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_operation_utils_8h_source.html#l00089">OperationUtils.h:89</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_html"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu.html">onert::backend::cpu</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2backend_2cpu_2_backend_8h_source.html#l00030">Backend.h:31</a></div></div>
+<div class="ttc" id="anamespacepart__eval__one_html_a187620ffdf72abdf0acf204385501746"><div class="ttname"><a href="namespacepart__eval__one.html#a187620ffdf72abdf0acf204385501746">part_eval_one.output_tensor</a></div><div class="ttdeci">output_tensor</div><div class="ttdef"><b>Definition</b> <a href="part__eval__one_8py_source.html#l00116">part_eval_one.py:116</a></div></div>
 <div class="ttc" id="aruntime_2compute_2cker_2include_2cker_2operation_2_concatenation_8h_html"><div class="ttname"><a href="runtime_2compute_2cker_2include_2cker_2operation_2_concatenation_8h.html">Concatenation.h</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_concatenation_params_html"><div class="ttname"><a href="structnnfw_1_1cker_1_1_concatenation_params.html">nnfw::cker::ConcatenationParams</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00221">Types.h:222</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_concatenation_params_html_a13ebc9bf09498326d0e62211f67bd674"><div class="ttname"><a href="structnnfw_1_1cker_1_1_concatenation_params.html#a13ebc9bf09498326d0e62211f67bd674">nnfw::cker::ConcatenationParams::input_zeropoint</a></div><div class="ttdeci">const int32_t * input_zeropoint</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00224">Types.h:224</a></div></div>

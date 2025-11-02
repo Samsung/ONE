@@ -5,7 +5,7 @@ var dir_aa4669bf2bab8c2f75fdb409fe404ab8 =
     [ "Backend.h", "runtime_2onert_2backend_2acl__cl_2_backend_8h.html", "runtime_2onert_2backend_2acl__cl_2_backend_8h" ],
     [ "BackendContext.h", "backend_2acl__cl_2_backend_context_8h.html", "backend_2acl__cl_2_backend_context_8h" ],
     [ "CLTimer.h", "_c_l_timer_8h.html", "_c_l_timer_8h" ],
-    [ "Config.cc", "backend_2acl__cl_2_config_8cc.html", null ],
+    [ "Config.cc", "onert_2backend_2acl__cl_2config_8cc.html", null ],
     [ "Config.h", "runtime_2onert_2backend_2acl__cl_2_config_8h.html", "runtime_2onert_2backend_2acl__cl_2_config_8h" ],
     [ "ConstantInitializer.cc", "acl__cl_2_constant_initializer_8cc.html", null ],
     [ "ConstantInitializer.h", "acl__cl_2_constant_initializer_8h.html", "acl__cl_2_constant_initializer_8h" ],

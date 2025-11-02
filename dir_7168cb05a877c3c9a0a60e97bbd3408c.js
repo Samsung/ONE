@@ -4,7 +4,7 @@ var dir_7168cb05a877c3c9a0a60e97bbd3408c =
     [ "acl_neon.cc", "acl__neon_8cc.html", "acl__neon_8cc" ],
     [ "Backend.h", "runtime_2onert_2backend_2acl__neon_2_backend_8h.html", "runtime_2onert_2backend_2acl__neon_2_backend_8h" ],
     [ "BackendContext.h", "backend_2acl__neon_2_backend_context_8h.html", "backend_2acl__neon_2_backend_context_8h" ],
-    [ "Config.cc", "backend_2acl__neon_2_config_8cc.html", null ],
+    [ "Config.cc", "onert_2backend_2acl__neon_2config_8cc.html", null ],
     [ "Config.h", "runtime_2onert_2backend_2acl__neon_2_config_8h.html", "runtime_2onert_2backend_2acl__neon_2_config_8h" ],
     [ "ConstantInitializer.cc", "acl__neon_2_constant_initializer_8cc.html", null ],
     [ "ConstantInitializer.h", "acl__neon_2_constant_initializer_8h.html", "acl__neon_2_constant_initializer_8h" ],

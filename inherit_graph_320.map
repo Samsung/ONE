@@ -1,3 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classkuma_1_1_context_3_01_algorithm_1_1_linear_scan_first_fit_01_4.html" title=" " alt="" coords="5,5,175,46"/>
+<area shape="rect" id="Node000000" href="$classkbenchmark_1_1_operation.html" title=" " alt="" coords="5,46,160,72"/>
+<area shape="rect" id="Node000001" href="$classkbenchmark_1_1operation_1_1_convolution.html" title=" " alt="" coords="208,5,359,46"/>
+<area shape="poly" id="edge297_Node000000_Node000001" title=" " alt="" coords="175,41,207,36,208,41,175,46"/>
+<area shape="rect" id="Node000002" href="$classkbenchmark_1_1operation_1_1_transpose_conv.html" title=" " alt="" coords="208,71,359,111"/>
+<area shape="poly" id="edge298_Node000000_Node000002" title=" " alt="" coords="175,71,208,76,207,82,175,76"/>
 </map>

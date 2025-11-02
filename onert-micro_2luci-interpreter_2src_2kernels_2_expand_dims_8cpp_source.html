@@ -193,9 +193,9 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  assert(input_data != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  assert(output_data != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">element_size</a> = <a class="code hl_function" href="namespaceluci__interpreter.html#aa129d157edeab20d5916101a10cd9f32">getDataTypeSize</a>(Tensor::element_type(input));</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> element_size = <a class="code hl_function" href="namespaceluci__interpreter.html#aa129d157edeab20d5916101a10cd9f32">getDataTypeSize</a>(Tensor::element_type(input));</div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  <span class="keyword">const</span> int32_t num_elements = Tensor::num_elements(input);</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  std::memcpy(output_data, input_data, num_elements * <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">element_size</a>);</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  std::memcpy(output_data, input_data, num_elements * element_size);</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>}</div>
 </div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>

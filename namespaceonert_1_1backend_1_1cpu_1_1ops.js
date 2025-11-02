@@ -2,6 +2,7 @@ var namespaceonert_1_1backend_1_1cpu_1_1ops =
 [
     [ "AddNLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_add_n_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_add_n_layer" ],
     [ "ArgMinMaxLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_arg_min_max_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_arg_min_max_layer" ],
+    [ "AttentionLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_attention_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_attention_layer" ],
     [ "BatchMatMulLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_mat_mul_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_mat_mul_layer" ],
     [ "BatchToSpaceNDLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer" ],
     [ "BinaryArithmeticLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_binary_arithmetic_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_binary_arithmetic_layer" ],
@@ -112,6 +113,7 @@ var namespaceonert_1_1backend_1_1cpu_1_1ops =
       [ "kInvalid", "namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5f443fc989245643bdd21c1c2289085aab10913c938482a8aa4ba85b7a1116cb4", null ]
     ] ],
     [ "affineQuantize", "namespaceonert_1_1backend_1_1cpu_1_1ops.html#aa7584aef07be0382d601c7661d7871f5", null ],
+    [ "blockSizeFor", "namespaceonert_1_1backend_1_1cpu_1_1ops.html#ae471e3174fd7c72eda35fbca6c4c29d4", null ],
     [ "CalculateActivationRangeQuantized", "namespaceonert_1_1backend_1_1cpu_1_1ops.html#aa3ed894d41e9c8473df0db171af23d7d", null ],
     [ "CalculateInputRadius", "namespaceonert_1_1backend_1_1cpu_1_1ops.html#a03d14d78d8be88975e381ff1c795bd5c", null ],
     [ "convertActivationType", "namespaceonert_1_1backend_1_1cpu_1_1ops.html#a0e7672ebf55bbaa7e1d86a46cfd53c5e", null ],

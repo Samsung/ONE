@@ -140,12 +140,12 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_comparison_layer_8cc_source.html#l00119">119</a> of file <a class="el" href="_comparison_layer_8cc_source.html">ComparisonLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  120</span>  : _lhs(<span class="keyword">nullptr</span>), _rhs(<span class="keyword">nullptr</span>), _output(<span class="keyword">nullptr</span>),</div>
-<div class="line"><span class="lineno">  121</span>    _op_type(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_comparison.html#aa5054ea86b5d5f56dece84d43c7567e8af5f286e73bda105e538310b3190f75c5">ir::operation::Comparison::ComparisonType::Equal</a>)</div>
-<div class="line"><span class="lineno">  122</span>{</div>
-<div class="line"><span class="lineno">  123</span>  <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">  124</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_comparison_layer_8cc_source.html#l00149">149</a> of file <a class="el" href="_comparison_layer_8cc_source.html">ComparisonLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  150</span>  : _lhs(<span class="keyword">nullptr</span>), _rhs(<span class="keyword">nullptr</span>), _output(<span class="keyword">nullptr</span>),</div>
+<div class="line"><span class="lineno">  151</span>    _op_type(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_comparison.html#aa5054ea86b5d5f56dece84d43c7567e8af5f286e73bda105e538310b3190f75c5">ir::operation::Comparison::ComparisonType::Equal</a>)</div>
+<div class="line"><span class="lineno">  152</span>{</div>
+<div class="line"><span class="lineno">  153</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">  154</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_comparison_html_aa5054ea86b5d5f56dece84d43c7567e8af5f286e73bda105e538310b3190f75c5"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_comparison.html#aa5054ea86b5d5f56dece84d43c7567e8af5f286e73bda105e538310b3190f75c5">onert::ir::operation::Comparison::ComparisonType::Equal</a></div><div class="ttdeci">@ Equal</div></div>
 </div><!-- fragment -->
 </div>
@@ -189,13 +189,13 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_comparison_layer_8cc_source.html#l00126">126</a> of file <a class="el" href="_comparison_layer_8cc_source.html">ComparisonLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  128</span>{</div>
-<div class="line"><span class="lineno">  129</span>  _lhs = lhs;</div>
-<div class="line"><span class="lineno">  130</span>  _rhs = rhs;</div>
-<div class="line"><span class="lineno">  131</span>  _op_type = op_type;</div>
-<div class="line"><span class="lineno">  132</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
-<div class="line"><span class="lineno">  133</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_comparison_layer_8cc_source.html#l00156">156</a> of file <a class="el" href="_comparison_layer_8cc_source.html">ComparisonLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  158</span>{</div>
+<div class="line"><span class="lineno">  159</span>  _lhs = lhs;</div>
+<div class="line"><span class="lineno">  160</span>  _rhs = rhs;</div>
+<div class="line"><span class="lineno">  161</span>  _op_type = op_type;</div>
+<div class="line"><span class="lineno">  162</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
+<div class="line"><span class="lineno">  163</span>}</div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00096">gen_h5_explicit_inputs_all.py:96</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -225,33 +225,33 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_function.html#aedd6f5e12852d808abb97327b9d229e2">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_comparison_layer_8cc_source.html#l00135">135</a> of file <a class="el" href="_comparison_layer_8cc_source.html">ComparisonLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  136</span>{</div>
-<div class="line"><span class="lineno">  137</span>  <span class="keywordflow">if</span> (_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32)</div>
-<div class="line"><span class="lineno">  138</span>  {</div>
-<div class="line"><span class="lineno">  139</span>    compareScalar&lt;float&gt;(_lhs, _rhs, _output, _op_type);</div>
-<div class="line"><span class="lineno">  140</span>  }</div>
-<div class="line"><span class="lineno">  141</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::INT32)</div>
-<div class="line"><span class="lineno">  142</span>  {</div>
-<div class="line"><span class="lineno">  143</span>    compareScalar&lt;int32_t&gt;(_lhs, _rhs, _output, _op_type);</div>
-<div class="line"><span class="lineno">  144</span>  }</div>
-<div class="line"><span class="lineno">  145</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::INT64)</div>
-<div class="line"><span class="lineno">  146</span>  {</div>
-<div class="line"><span class="lineno">  147</span>    compareScalar&lt;int64_t&gt;(_lhs, _rhs, _output, _op_type);</div>
-<div class="line"><span class="lineno">  148</span>  }</div>
-<div class="line"><span class="lineno">  149</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::BOOL8)</div>
-<div class="line"><span class="lineno">  150</span>  {</div>
-<div class="line"><span class="lineno">  151</span>    compareScalar&lt;uint8_t&gt;(_lhs, _rhs, _output, _op_type);</div>
-<div class="line"><span class="lineno">  152</span>  }</div>
-<div class="line"><span class="lineno">  153</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_UINT8_ASYMM)</div>
-<div class="line"><span class="lineno">  154</span>  {</div>
-<div class="line"><span class="lineno">  155</span>    compareQuant8&lt;uint8_t&gt;(_lhs, _rhs, _output, _op_type);</div>
-<div class="line"><span class="lineno">  156</span>  }</div>
-<div class="line"><span class="lineno">  157</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  158</span>  {</div>
-<div class="line"><span class="lineno">  159</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Compare: unsupported data type&quot;</span>};</div>
-<div class="line"><span class="lineno">  160</span>  }</div>
-<div class="line"><span class="lineno">  161</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_comparison_layer_8cc_source.html#l00165">165</a> of file <a class="el" href="_comparison_layer_8cc_source.html">ComparisonLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  166</span>{</div>
+<div class="line"><span class="lineno">  167</span>  <span class="keywordflow">if</span> (_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32)</div>
+<div class="line"><span class="lineno">  168</span>  {</div>
+<div class="line"><span class="lineno">  169</span>    compareScalar&lt;float&gt;(_lhs, _rhs, _output, _op_type);</div>
+<div class="line"><span class="lineno">  170</span>  }</div>
+<div class="line"><span class="lineno">  171</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::INT32)</div>
+<div class="line"><span class="lineno">  172</span>  {</div>
+<div class="line"><span class="lineno">  173</span>    compareScalar&lt;int32_t&gt;(_lhs, _rhs, _output, _op_type);</div>
+<div class="line"><span class="lineno">  174</span>  }</div>
+<div class="line"><span class="lineno">  175</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::INT64)</div>
+<div class="line"><span class="lineno">  176</span>  {</div>
+<div class="line"><span class="lineno">  177</span>    compareScalar&lt;int64_t&gt;(_lhs, _rhs, _output, _op_type);</div>
+<div class="line"><span class="lineno">  178</span>  }</div>
+<div class="line"><span class="lineno">  179</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::BOOL8)</div>
+<div class="line"><span class="lineno">  180</span>  {</div>
+<div class="line"><span class="lineno">  181</span>    compareScalar&lt;uint8_t&gt;(_lhs, _rhs, _output, _op_type);</div>
+<div class="line"><span class="lineno">  182</span>  }</div>
+<div class="line"><span class="lineno">  183</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_UINT8_ASYMM)</div>
+<div class="line"><span class="lineno">  184</span>  {</div>
+<div class="line"><span class="lineno">  185</span>    compareQuant8&lt;uint8_t&gt;(_lhs, _rhs, _output, _op_type);</div>
+<div class="line"><span class="lineno">  186</span>  }</div>
+<div class="line"><span class="lineno">  187</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  188</span>  {</div>
+<div class="line"><span class="lineno">  189</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Compare: unsupported data type&quot;</span>};</div>
+<div class="line"><span class="lineno">  190</span>  }</div>
+<div class="line"><span class="lineno">  191</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aae73f75c41fa15f5ae2c391918fa09c5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor::data_type</a></div><div class="ttdeci">ir::DataType data_type() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00054">IPortableTensor.h:54</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>.</p>

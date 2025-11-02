@@ -144,12 +144,12 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_batch_mat_mul_layer_8cc_source.html#l00024">24</a> of file <a class="el" href="_batch_mat_mul_layer_8cc_source.html">BatchMatMulLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   25</span>  : _lhs(<span class="keyword">nullptr</span>), _rhs(<span class="keyword">nullptr</span>), _output(<span class="keyword">nullptr</span>), _adj_x(<span class="keyword">false</span>), _adj_y(<span class="keyword">false</span>),</div>
-<div class="line"><span class="lineno">   26</span>    _kernel(<span class="keyword">new</span> <a class="code hl_class" href="classnnfw_1_1cker_1_1_batch_mat_mul.html">nnfw::cker::BatchMatMul</a>())</div>
-<div class="line"><span class="lineno">   27</span>{</div>
-<div class="line"><span class="lineno">   28</span>  <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">   29</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_batch_mat_mul_layer_8cc_source.html#l00053">53</a> of file <a class="el" href="_batch_mat_mul_layer_8cc_source.html">BatchMatMulLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   54</span>  : _lhs(<span class="keyword">nullptr</span>), _rhs(<span class="keyword">nullptr</span>), _output(<span class="keyword">nullptr</span>), _adj_x(<span class="keyword">false</span>), _adj_y(<span class="keyword">false</span>),</div>
+<div class="line"><span class="lineno">   55</span>    _kernel(<span class="keyword">new</span> <a class="code hl_class" href="classnnfw_1_1cker_1_1_batch_mat_mul.html">nnfw::cker::BatchMatMul</a>())</div>
+<div class="line"><span class="lineno">   56</span>{</div>
+<div class="line"><span class="lineno">   57</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   58</span>}</div>
 <div class="ttc" id="aclassnnfw_1_1cker_1_1_batch_mat_mul_html"><div class="ttname"><a href="classnnfw_1_1cker_1_1_batch_mat_mul.html">nnfw::cker::BatchMatMul</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2operation_2_batch_mat_mul_8h_source.html#l00036">BatchMatMul.h:37</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -195,19 +195,19 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_batch_mat_mul_layer_8cc_source.html#l00033">33</a> of file <a class="el" href="_batch_mat_mul_layer_8cc_source.html">BatchMatMulLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   34</span>{</div>
-<div class="line"><span class="lineno">   35</span>  <a class="code hl_class" href="classnnfw_1_1cker_1_1_batch_mat_mul.html">nnfw::cker::BatchMatMul</a> &amp;batchmatmul_kernel = *_kernel;</div>
-<div class="line"><span class="lineno">   36</span>  <a class="code hl_class" href="classnnfw_1_1cker_1_1_shape.html">nnfw::cker::Shape</a> lhs_shape = <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_lhs);</div>
-<div class="line"><span class="lineno">   37</span>  <a class="code hl_class" href="classnnfw_1_1cker_1_1_shape.html">nnfw::cker::Shape</a> rhs_shape = <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_rhs);</div>
-<div class="line"><span class="lineno">   38</span>  <a class="code hl_class" href="classnnfw_1_1cker_1_1_shape.html">nnfw::cker::Shape</a> <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_output);</div>
-<div class="line"><span class="lineno">   39</span> </div>
-<div class="line"><span class="lineno">   40</span>  <span class="comment">// TODO implement for constant input</span></div>
-<div class="line"><span class="lineno">   41</span> </div>
-<div class="line"><span class="lineno">   42</span>  batchmatmul_kernel.<a class="code hl_function" href="classnnfw_1_1cker_1_1_batch_mat_mul.html#acdb752823e6a1bc5bc36d02c5f718403">prepare</a>(lhs_shape, rhs_shape, _adj_x, _adj_y, _rhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aea60bbe865c4ce194daf9b61d7353052">is_constant</a>());</div>
-<div class="line"><span class="lineno">   43</span>  batchmatmul_kernel(lhs_shape, getBuffer&lt;float&gt;(_lhs), rhs_shape, getBuffer&lt;float&gt;(_rhs), _adj_x,</div>
-<div class="line"><span class="lineno">   44</span>                     _adj_y, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, getBuffer&lt;float&gt;(_output));</div>
-<div class="line"><span class="lineno">   45</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_batch_mat_mul_layer_8cc_source.html#l00062">62</a> of file <a class="el" href="_batch_mat_mul_layer_8cc_source.html">BatchMatMulLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   63</span>{</div>
+<div class="line"><span class="lineno">   64</span>  <a class="code hl_class" href="classnnfw_1_1cker_1_1_batch_mat_mul.html">nnfw::cker::BatchMatMul</a> &amp;batchmatmul_kernel = *_kernel;</div>
+<div class="line"><span class="lineno">   65</span>  <a class="code hl_class" href="classnnfw_1_1cker_1_1_shape.html">nnfw::cker::Shape</a> lhs_shape = <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_lhs);</div>
+<div class="line"><span class="lineno">   66</span>  <a class="code hl_class" href="classnnfw_1_1cker_1_1_shape.html">nnfw::cker::Shape</a> rhs_shape = <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_rhs);</div>
+<div class="line"><span class="lineno">   67</span>  <a class="code hl_class" href="classnnfw_1_1cker_1_1_shape.html">nnfw::cker::Shape</a> <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_output);</div>
+<div class="line"><span class="lineno">   68</span> </div>
+<div class="line"><span class="lineno">   69</span>  <span class="comment">// TODO implement for constant input</span></div>
+<div class="line"><span class="lineno">   70</span> </div>
+<div class="line"><span class="lineno">   71</span>  batchmatmul_kernel.<a class="code hl_function" href="classnnfw_1_1cker_1_1_batch_mat_mul.html#acdb752823e6a1bc5bc36d02c5f718403">prepare</a>(lhs_shape, rhs_shape, _adj_x, _adj_y, _rhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aea60bbe865c4ce194daf9b61d7353052">is_constant</a>());</div>
+<div class="line"><span class="lineno">   72</span>  batchmatmul_kernel(lhs_shape, getBuffer&lt;float&gt;(_lhs), rhs_shape, getBuffer&lt;float&gt;(_rhs), _adj_x,</div>
+<div class="line"><span class="lineno">   73</span>                     _adj_y, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, getBuffer&lt;float&gt;(_output));</div>
+<div class="line"><span class="lineno">   74</span>}</div>
 <div class="ttc" id="aclassnnfw_1_1cker_1_1_batch_mat_mul_html_acdb752823e6a1bc5bc36d02c5f718403"><div class="ttname"><a href="classnnfw_1_1cker_1_1_batch_mat_mul.html#acdb752823e6a1bc5bc36d02c5f718403">nnfw::cker::BatchMatMul::prepare</a></div><div class="ttdeci">void prepare(const Shape &amp;lhs_shape, const Shape &amp;rhs_shape, bool adj_x, bool adj_y, bool rhs_const)</div><div class="ttdoc">Prepare temporary area for calculation.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2operation_2_batch_mat_mul_8h_source.html#l00047">BatchMatMul.h:47</a></div></div>
 <div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html">nnfw::cker::Shape</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00034">Shape.h:35</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aea60bbe865c4ce194daf9b61d7353052"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aea60bbe865c4ce194daf9b61d7353052">onert::backend::IPortableTensor::is_constant</a></div><div class="ttdeci">bool is_constant() const override final</div><div class="ttdoc">Return true if the tensor is constant.</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00062">IPortableTensor.h:62</a></div></div>
@@ -216,7 +216,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00089">onert::backend::cpu::ops::getShape()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00062">onert::backend::IPortableTensor::is_constant()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_batch_mat_mul_8h_source.html#l00047">nnfw::cker::BatchMatMul::prepare()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_batch_mat_mul_layer_8cc_source.html#l00061">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_batch_mat_mul_layer_8cc_source.html#l00090">run()</a>.</p>
 
 </div>
 </div>
@@ -264,18 +264,18 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_batch_mat_mul_layer_8cc_source.html#l00047">47</a> of file <a class="el" href="_batch_mat_mul_layer_8cc_source.html">BatchMatMulLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   49</span>{</div>
-<div class="line"><span class="lineno">   50</span>  assert(lhs != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   51</span>  assert(rhs != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   52</span>  assert(output != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   53</span> </div>
-<div class="line"><span class="lineno">   54</span>  _lhs = lhs;</div>
-<div class="line"><span class="lineno">   55</span>  _rhs = rhs;</div>
-<div class="line"><span class="lineno">   56</span>  _adj_x = adj_x;</div>
-<div class="line"><span class="lineno">   57</span>  _adj_y = adj_y;</div>
-<div class="line"><span class="lineno">   58</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
-<div class="line"><span class="lineno">   59</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_batch_mat_mul_layer_8cc_source.html#l00076">76</a> of file <a class="el" href="_batch_mat_mul_layer_8cc_source.html">BatchMatMulLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   78</span>{</div>
+<div class="line"><span class="lineno">   79</span>  assert(lhs != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   80</span>  assert(rhs != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   81</span>  assert(output != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   82</span> </div>
+<div class="line"><span class="lineno">   83</span>  _lhs = lhs;</div>
+<div class="line"><span class="lineno">   84</span>  _rhs = rhs;</div>
+<div class="line"><span class="lineno">   85</span>  _adj_x = adj_x;</div>
+<div class="line"><span class="lineno">   86</span>  _adj_y = adj_y;</div>
+<div class="line"><span class="lineno">   87</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
+<div class="line"><span class="lineno">   88</span>}</div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00096">gen_h5_explicit_inputs_all.py:96</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -305,21 +305,21 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_function.html#aedd6f5e12852d808abb97327b9d229e2">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_batch_mat_mul_layer_8cc_source.html#l00061">61</a> of file <a class="el" href="_batch_mat_mul_layer_8cc_source.html">BatchMatMulLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   62</span>{</div>
-<div class="line"><span class="lineno">   63</span>  <span class="keywordflow">if</span> ((_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32) &amp;&amp; (_rhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32))</div>
-<div class="line"><span class="lineno">   64</span>  {</div>
-<div class="line"><span class="lineno">   65</span>    <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_mat_mul_layer.html#af20a69771dd4059b8528d08bf03441c0">batchMatMulFloat32</a>();</div>
-<div class="line"><span class="lineno">   66</span>  }</div>
-<div class="line"><span class="lineno">   67</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   68</span>  {</div>
-<div class="line"><span class="lineno">   69</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;BatchMatMul: unsupported data type&quot;</span>};</div>
-<div class="line"><span class="lineno">   70</span>  }</div>
-<div class="line"><span class="lineno">   71</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_batch_mat_mul_layer_8cc_source.html#l00090">90</a> of file <a class="el" href="_batch_mat_mul_layer_8cc_source.html">BatchMatMulLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   91</span>{</div>
+<div class="line"><span class="lineno">   92</span>  <span class="keywordflow">if</span> ((_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32) &amp;&amp; (_rhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32))</div>
+<div class="line"><span class="lineno">   93</span>  {</div>
+<div class="line"><span class="lineno">   94</span>    <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_mat_mul_layer.html#af20a69771dd4059b8528d08bf03441c0">batchMatMulFloat32</a>();</div>
+<div class="line"><span class="lineno">   95</span>  }</div>
+<div class="line"><span class="lineno">   96</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   97</span>  {</div>
+<div class="line"><span class="lineno">   98</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;BatchMatMul: unsupported data type&quot;</span>};</div>
+<div class="line"><span class="lineno">   99</span>  }</div>
+<div class="line"><span class="lineno">  100</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aae73f75c41fa15f5ae2c391918fa09c5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor::data_type</a></div><div class="ttdeci">ir::DataType data_type() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00054">IPortableTensor.h:54</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_batch_mat_mul_layer_html_af20a69771dd4059b8528d08bf03441c0"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_mat_mul_layer.html#af20a69771dd4059b8528d08bf03441c0">onert::backend::cpu::ops::BatchMatMulLayer::batchMatMulFloat32</a></div><div class="ttdeci">void batchMatMulFloat32()</div><div class="ttdef"><b>Definition</b> <a href="_batch_mat_mul_layer_8cc_source.html#l00033">BatchMatMulLayer.cc:33</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_batch_mat_mul_layer_html_af20a69771dd4059b8528d08bf03441c0"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_mat_mul_layer.html#af20a69771dd4059b8528d08bf03441c0">onert::backend::cpu::ops::BatchMatMulLayer::batchMatMulFloat32</a></div><div class="ttdeci">void batchMatMulFloat32()</div><div class="ttdef"><b>Definition</b> <a href="_batch_mat_mul_layer_8cc_source.html#l00062">BatchMatMulLayer.cc:62</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_batch_mat_mul_layer_8cc_source.html#l00033">batchMatMulFloat32()</a>, and <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>.</p>
+<p class="reference">References <a class="el" href="_batch_mat_mul_layer_8cc_source.html#l00062">batchMatMulFloat32()</a>, and <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>.</p>
 
 </div>
 </div>

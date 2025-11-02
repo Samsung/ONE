@@ -299,6 +299,7 @@ var namespaces_dup =
       [ "tensor", "namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc", null ],
       [ "type", "namespace_gen_h5_random_inputs.html#afea8a50fa091e375360ea27f12396c74", null ]
     ] ],
+    [ "ggma", "namespaceggma.html", "namespaceggma" ],
     [ "grpc", "namespacegrpc.html", null ],
     [ "hermes", "namespacehermes.html", "namespacehermes" ],
     [ "impl", "namespaceimpl.html", [
@@ -416,6 +417,7 @@ var namespaces_dup =
       [ "testcases", "namespacejpeg2hdf5.html#ad6aa1592e59e8dc8ed18604f6a44df77", null ],
       [ "w", "namespacejpeg2hdf5.html#ac7eea56215106b0908497982f6eed453", null ]
     ] ],
+    [ "Json", "namespace_json.html", null ],
     [ "kbenchmark", "namespacekbenchmark.html", "namespacekbenchmark" ],
     [ "kuma", "namespacekuma.html", "namespacekuma" ],
     [ "loco", "namespaceloco.html", "namespaceloco" ],

@@ -140,11 +140,11 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_select_layer_8cc_source.html#l00026">26</a> of file <a class="el" href="_select_layer_8cc_source.html">SelectLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   27</span>  : _cond(<span class="keyword">nullptr</span>), _input_true(<span class="keyword">nullptr</span>), _input_false(<span class="keyword">nullptr</span>), _output(<span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   28</span>{</div>
-<div class="line"><span class="lineno">   29</span>  <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">   30</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_select_layer_8cc_source.html#l00054">54</a> of file <a class="el" href="_select_layer_8cc_source.html">SelectLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   55</span>  : _cond(<span class="keyword">nullptr</span>), _input_true(<span class="keyword">nullptr</span>), _input_false(<span class="keyword">nullptr</span>), _output(<span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   56</span>{</div>
+<div class="line"><span class="lineno">   57</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   58</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -187,13 +187,13 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_select_layer_8cc_source.html#l00032">32</a> of file <a class="el" href="_select_layer_8cc_source.html">SelectLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   34</span>{</div>
-<div class="line"><span class="lineno">   35</span>  _cond = cond;</div>
-<div class="line"><span class="lineno">   36</span>  _input_true = input_true;</div>
-<div class="line"><span class="lineno">   37</span>  _input_false = input_false;</div>
-<div class="line"><span class="lineno">   38</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
-<div class="line"><span class="lineno">   39</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_select_layer_8cc_source.html#l00060">60</a> of file <a class="el" href="_select_layer_8cc_source.html">SelectLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   62</span>{</div>
+<div class="line"><span class="lineno">   63</span>  _cond = cond;</div>
+<div class="line"><span class="lineno">   64</span>  _input_true = input_true;</div>
+<div class="line"><span class="lineno">   65</span>  _input_false = input_false;</div>
+<div class="line"><span class="lineno">   66</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
+<div class="line"><span class="lineno">   67</span>}</div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00096">gen_h5_explicit_inputs_all.py:96</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -223,43 +223,43 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_function.html#aedd6f5e12852d808abb97327b9d229e2">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_select_layer_8cc_source.html#l00041">41</a> of file <a class="el" href="_select_layer_8cc_source.html">SelectLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   42</span>{</div>
-<div class="line"><span class="lineno">   43</span> </div>
-<div class="line"><span class="lineno">   44</span><span class="preprocessor">#define KERNEL_SELECT(type, op)                                                     \</span></div>
-<div class="line"><span class="lineno">   45</span><span class="preprocessor">  nnfw::cker::op(getShape(_cond), getBuffer&lt;uint8_t&gt;(_cond), getShape(_input_true), \</span></div>
-<div class="line"><span class="lineno">   46</span><span class="preprocessor">                 getBuffer&lt;type&gt;(_input_true), getShape(_input_false),              \</span></div>
-<div class="line"><span class="lineno">   47</span><span class="preprocessor">                 getBuffer&lt;type&gt;(_input_false), getShape(_output), getBuffer&lt;type&gt;(_output));</span></div>
-<div class="line"><span class="lineno">   48</span> </div>
-<div class="line"><span class="lineno">   49</span><span class="preprocessor">#define KERNEL_SWITCH(type, op)                                  \</span></div>
-<div class="line"><span class="lineno">   50</span><span class="preprocessor">  switch (type)                                                  \</span></div>
-<div class="line"><span class="lineno">   51</span><span class="preprocessor">  {                                                              \</span></div>
-<div class="line"><span class="lineno">   52</span><span class="preprocessor">    break;                                                       \</span></div>
-<div class="line"><span class="lineno">   53</span><span class="preprocessor">    case OperandType::FLOAT32:                                   \</span></div>
-<div class="line"><span class="lineno">   54</span><span class="preprocessor">      KERNEL_SELECT(float, op);                                  \</span></div>
-<div class="line"><span class="lineno">   55</span><span class="preprocessor">      break;                                                     \</span></div>
-<div class="line"><span class="lineno">   56</span><span class="preprocessor">    default:                                                     \</span></div>
-<div class="line"><span class="lineno">   57</span><span class="preprocessor">      throw std::runtime_error{&quot;Select: unsupported data type&quot;}; \</span></div>
-<div class="line"><span class="lineno">   58</span><span class="preprocessor">  }</span></div>
-<div class="line"><span class="lineno">   59</span> </div>
-<div class="line"><span class="lineno">   60</span>  <span class="keyword">auto</span> input_type = _input_true-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>();</div>
-<div class="line"><span class="lineno">   61</span>  <span class="keywordtype">bool</span> require_broadcast =</div>
-<div class="line"><span class="lineno">   62</span>    !<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#afc22736e0da6f4516d09f994d0e9d07a">HaveSameShapes</a>(_input_true, _cond) || !<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#afc22736e0da6f4516d09f994d0e9d07a">HaveSameShapes</a>(_input_false, _cond);</div>
-<div class="line"><span class="lineno">   63</span>  <span class="keywordtype">bool</span> rank_one_select = ((_input_true-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">getShape</a>().rank() == 1) &amp;&amp; !require_broadcast);</div>
-<div class="line"><span class="lineno">   64</span> </div>
-<div class="line"><span class="lineno">   65</span>  <span class="keywordflow">if</span> (rank_one_select)</div>
-<div class="line"><span class="lineno">   66</span>  {</div>
-<div class="line"><span class="lineno">   67</span>    <a class="code hl_define" href="_select_layer_8cc.html#a1327004010b84cb19659537df90867e7">KERNEL_SWITCH</a>(input_type, RankOneSelect);</div>
-<div class="line"><span class="lineno">   68</span>  }</div>
-<div class="line"><span class="lineno">   69</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (require_broadcast)</div>
-<div class="line"><span class="lineno">   70</span>  {</div>
-<div class="line"><span class="lineno">   71</span>    <a class="code hl_define" href="_select_layer_8cc.html#a1327004010b84cb19659537df90867e7">KERNEL_SWITCH</a>(input_type, BroadcastSelect4DSlow);</div>
-<div class="line"><span class="lineno">   72</span>  }</div>
-<div class="line"><span class="lineno">   73</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   74</span>  {</div>
-<div class="line"><span class="lineno">   75</span>    <a class="code hl_define" href="_select_layer_8cc.html#a1327004010b84cb19659537df90867e7">KERNEL_SWITCH</a>(input_type, Select);</div>
-<div class="line"><span class="lineno">   76</span>  }</div>
-<div class="line"><span class="lineno">   77</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_select_layer_8cc_source.html#l00069">69</a> of file <a class="el" href="_select_layer_8cc_source.html">SelectLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   70</span>{</div>
+<div class="line"><span class="lineno">   71</span> </div>
+<div class="line"><span class="lineno">   72</span><span class="preprocessor">#define KERNEL_SELECT(type, op)                                                     \</span></div>
+<div class="line"><span class="lineno">   73</span><span class="preprocessor">  nnfw::cker::op(getShape(_cond), getBuffer&lt;uint8_t&gt;(_cond), getShape(_input_true), \</span></div>
+<div class="line"><span class="lineno">   74</span><span class="preprocessor">                 getBuffer&lt;type&gt;(_input_true), getShape(_input_false),              \</span></div>
+<div class="line"><span class="lineno">   75</span><span class="preprocessor">                 getBuffer&lt;type&gt;(_input_false), getShape(_output), getBuffer&lt;type&gt;(_output));</span></div>
+<div class="line"><span class="lineno">   76</span> </div>
+<div class="line"><span class="lineno">   77</span><span class="preprocessor">#define KERNEL_SWITCH(type, op)                                  \</span></div>
+<div class="line"><span class="lineno">   78</span><span class="preprocessor">  switch (type)                                                  \</span></div>
+<div class="line"><span class="lineno">   79</span><span class="preprocessor">  {                                                              \</span></div>
+<div class="line"><span class="lineno">   80</span><span class="preprocessor">    break;                                                       \</span></div>
+<div class="line"><span class="lineno">   81</span><span class="preprocessor">    case OperandType::FLOAT32:                                   \</span></div>
+<div class="line"><span class="lineno">   82</span><span class="preprocessor">      KERNEL_SELECT(float, op);                                  \</span></div>
+<div class="line"><span class="lineno">   83</span><span class="preprocessor">      break;                                                     \</span></div>
+<div class="line"><span class="lineno">   84</span><span class="preprocessor">    default:                                                     \</span></div>
+<div class="line"><span class="lineno">   85</span><span class="preprocessor">      throw std::runtime_error{&quot;Select: unsupported data type&quot;}; \</span></div>
+<div class="line"><span class="lineno">   86</span><span class="preprocessor">  }</span></div>
+<div class="line"><span class="lineno">   87</span> </div>
+<div class="line"><span class="lineno">   88</span>  <span class="keyword">auto</span> input_type = _input_true-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>();</div>
+<div class="line"><span class="lineno">   89</span>  <span class="keywordtype">bool</span> require_broadcast =</div>
+<div class="line"><span class="lineno">   90</span>    !<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#afc22736e0da6f4516d09f994d0e9d07a">HaveSameShapes</a>(_input_true, _cond) || !<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#afc22736e0da6f4516d09f994d0e9d07a">HaveSameShapes</a>(_input_false, _cond);</div>
+<div class="line"><span class="lineno">   91</span>  <span class="keywordtype">bool</span> rank_one_select = ((_input_true-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">getShape</a>().rank() == 1) &amp;&amp; !require_broadcast);</div>
+<div class="line"><span class="lineno">   92</span> </div>
+<div class="line"><span class="lineno">   93</span>  <span class="keywordflow">if</span> (rank_one_select)</div>
+<div class="line"><span class="lineno">   94</span>  {</div>
+<div class="line"><span class="lineno">   95</span>    <a class="code hl_define" href="_select_layer_8cc.html#a1327004010b84cb19659537df90867e7">KERNEL_SWITCH</a>(input_type, RankOneSelect);</div>
+<div class="line"><span class="lineno">   96</span>  }</div>
+<div class="line"><span class="lineno">   97</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (require_broadcast)</div>
+<div class="line"><span class="lineno">   98</span>  {</div>
+<div class="line"><span class="lineno">   99</span>    <a class="code hl_define" href="_select_layer_8cc.html#a1327004010b84cb19659537df90867e7">KERNEL_SWITCH</a>(input_type, BroadcastSelect4DSlow);</div>
+<div class="line"><span class="lineno">  100</span>  }</div>
+<div class="line"><span class="lineno">  101</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  102</span>  {</div>
+<div class="line"><span class="lineno">  103</span>    <a class="code hl_define" href="_select_layer_8cc.html#a1327004010b84cb19659537df90867e7">KERNEL_SWITCH</a>(input_type, Select);</div>
+<div class="line"><span class="lineno">  104</span>  }</div>
+<div class="line"><span class="lineno">  105</span>}</div>
 <div class="ttc" id="a_select_layer_8cc_html_a1327004010b84cb19659537df90867e7"><div class="ttname"><a href="_select_layer_8cc.html#a1327004010b84cb19659537df90867e7">KERNEL_SWITCH</a></div><div class="ttdeci">#define KERNEL_SWITCH(type, op)</div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aae73f75c41fa15f5ae2c391918fa09c5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor::data_type</a></div><div class="ttdeci">ir::DataType data_type() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00054">IPortableTensor.h:54</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_ad010d0f248f6e0e400485d81410ac158"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">onert::backend::IPortableTensor::getShape</a></div><div class="ttdeci">ir::Shape getShape() const override final</div><div class="ttdoc">Get ir::Shape of tensor.</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00064">IPortableTensor.h:64</a></div></div>

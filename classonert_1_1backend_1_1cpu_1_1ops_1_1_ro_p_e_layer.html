@@ -142,12 +142,12 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_ro_p_e_layer_8cc_source.html#l00024">24</a> of file <a class="el" href="_ro_p_e_layer_8cc_source.html">RoPELayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   25</span>  : _input(<span class="keyword">nullptr</span>), _sin(<span class="keyword">nullptr</span>), _cos(<span class="keyword">nullptr</span>), _mode(<a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#a6623890820032bcd77b068b87d0787a2a9415e4147e7880a5659b025ef0c7cecc">nnfw::cker::RoPEMode::kGptNeox</a>),</div>
-<div class="line"><span class="lineno">   26</span>    _output(<span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   27</span>{</div>
-<div class="line"><span class="lineno">   28</span>  <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">   29</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_ro_p_e_layer_8cc_source.html#l00054">54</a> of file <a class="el" href="_ro_p_e_layer_8cc_source.html">RoPELayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   55</span>  : _input(<span class="keyword">nullptr</span>), _sin(<span class="keyword">nullptr</span>), _cos(<span class="keyword">nullptr</span>), _mode(<a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#a6623890820032bcd77b068b87d0787a2a9415e4147e7880a5659b025ef0c7cecc">nnfw::cker::RoPEMode::kGptNeox</a>),</div>
+<div class="line"><span class="lineno">   56</span>    _output(<span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   57</span>{</div>
+<div class="line"><span class="lineno">   58</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   59</span>}</div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_a6623890820032bcd77b068b87d0787a2a9415e4147e7880a5659b025ef0c7cecc"><div class="ttname"><a href="namespacennfw_1_1cker.html#a6623890820032bcd77b068b87d0787a2a9415e4147e7880a5659b025ef0c7cecc">nnfw::cker::RoPEMode::kGptNeox</a></div><div class="ttdeci">@ kGptNeox</div></div>
 </div><!-- fragment -->
 </div>
@@ -222,19 +222,19 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_ro_p_e_layer_8cc_source.html#l00033">33</a> of file <a class="el" href="_ro_p_e_layer_8cc_source.html">RoPELayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   36</span>{</div>
-<div class="line"><span class="lineno">   37</span>  assert(input != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   38</span>  assert(sin != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   39</span>  assert(cos != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   40</span>  assert(output != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   41</span> </div>
-<div class="line"><span class="lineno">   42</span>  _input = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
-<div class="line"><span class="lineno">   43</span>  _sin = sin;</div>
-<div class="line"><span class="lineno">   44</span>  _cos = cos;</div>
-<div class="line"><span class="lineno">   45</span>  _mode = <a class="code hl_variable" href="namespacecompare__tensors__all.html#a91e233995f6cb545d646945e1681ea04">mode</a>;</div>
-<div class="line"><span class="lineno">   46</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
-<div class="line"><span class="lineno">   47</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_ro_p_e_layer_8cc_source.html#l00063">63</a> of file <a class="el" href="_ro_p_e_layer_8cc_source.html">RoPELayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   66</span>{</div>
+<div class="line"><span class="lineno">   67</span>  assert(input != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   68</span>  assert(sin != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   69</span>  assert(cos != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   70</span>  assert(output != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   71</span> </div>
+<div class="line"><span class="lineno">   72</span>  _input = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
+<div class="line"><span class="lineno">   73</span>  _sin = sin;</div>
+<div class="line"><span class="lineno">   74</span>  _cos = cos;</div>
+<div class="line"><span class="lineno">   75</span>  _mode = <a class="code hl_variable" href="namespacecompare__tensors__all.html#a91e233995f6cb545d646945e1681ea04">mode</a>;</div>
+<div class="line"><span class="lineno">   76</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
+<div class="line"><span class="lineno">   77</span>}</div>
 <div class="ttc" id="anamespacecompare__tensors__all_html_a91e233995f6cb545d646945e1681ea04"><div class="ttname"><a href="namespacecompare__tensors__all.html#a91e233995f6cb545d646945e1681ea04">compare_tensors_all.mode</a></div><div class="ttdeci">mode</div><div class="ttdef"><b>Definition</b> <a href="compare__tensors__all_8py_source.html#l00056">compare_tensors_all.py:56</a></div></div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00096">gen_h5_explicit_inputs_all.py:96</a></div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
@@ -266,29 +266,29 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_function.html#aedd6f5e12852d808abb97327b9d229e2">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_ro_p_e_layer_8cc_source.html#l00059">59</a> of file <a class="el" href="_ro_p_e_layer_8cc_source.html">RoPELayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   60</span>{</div>
-<div class="line"><span class="lineno">   61</span>  <span class="keywordflow">switch</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>())</div>
-<div class="line"><span class="lineno">   62</span>  {</div>
-<div class="line"><span class="lineno">   63</span>    <span class="keywordflow">case</span> OperandType::FLOAT32:</div>
-<div class="line"><span class="lineno">   64</span>      rope&lt;float&gt;();</div>
-<div class="line"><span class="lineno">   65</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   66</span>    <span class="keywordflow">case</span> OperandType::INT32:</div>
-<div class="line"><span class="lineno">   67</span>      rope&lt;int32_t&gt;();</div>
-<div class="line"><span class="lineno">   68</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   69</span>    <span class="keywordflow">case</span> OperandType::INT64:</div>
-<div class="line"><span class="lineno">   70</span>      rope&lt;int64_t&gt;();</div>
-<div class="line"><span class="lineno">   71</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   72</span>    <span class="keywordflow">case</span> OperandType::QUANT_UINT8_ASYMM:</div>
-<div class="line"><span class="lineno">   73</span>      rope&lt;uint8_t&gt;();</div>
-<div class="line"><span class="lineno">   74</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   75</span>    <span class="keywordflow">case</span> OperandType::QUANT_INT8_ASYMM:</div>
-<div class="line"><span class="lineno">   76</span>      rope&lt;int8_t&gt;();</div>
-<div class="line"><span class="lineno">   77</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   78</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">   79</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;RoPE: unsupported data type&quot;</span>);</div>
-<div class="line"><span class="lineno">   80</span>  }</div>
-<div class="line"><span class="lineno">   81</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_ro_p_e_layer_8cc_source.html#l00089">89</a> of file <a class="el" href="_ro_p_e_layer_8cc_source.html">RoPELayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   90</span>{</div>
+<div class="line"><span class="lineno">   91</span>  <span class="keywordflow">switch</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>())</div>
+<div class="line"><span class="lineno">   92</span>  {</div>
+<div class="line"><span class="lineno">   93</span>    <span class="keywordflow">case</span> OperandType::FLOAT32:</div>
+<div class="line"><span class="lineno">   94</span>      rope&lt;float&gt;();</div>
+<div class="line"><span class="lineno">   95</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   96</span>    <span class="keywordflow">case</span> OperandType::INT32:</div>
+<div class="line"><span class="lineno">   97</span>      rope&lt;int32_t&gt;();</div>
+<div class="line"><span class="lineno">   98</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   99</span>    <span class="keywordflow">case</span> OperandType::INT64:</div>
+<div class="line"><span class="lineno">  100</span>      rope&lt;int64_t&gt;();</div>
+<div class="line"><span class="lineno">  101</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  102</span>    <span class="keywordflow">case</span> OperandType::QUANT_UINT8_ASYMM:</div>
+<div class="line"><span class="lineno">  103</span>      rope&lt;uint8_t&gt;();</div>
+<div class="line"><span class="lineno">  104</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  105</span>    <span class="keywordflow">case</span> OperandType::QUANT_INT8_ASYMM:</div>
+<div class="line"><span class="lineno">  106</span>      rope&lt;int8_t&gt;();</div>
+<div class="line"><span class="lineno">  107</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  109</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;RoPE: unsupported data type&quot;</span>);</div>
+<div class="line"><span class="lineno">  110</span>  }</div>
+<div class="line"><span class="lineno">  111</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aae73f75c41fa15f5ae2c391918fa09c5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor::data_type</a></div><div class="ttdeci">ir::DataType data_type() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00054">IPortableTensor.h:54</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>.</p>

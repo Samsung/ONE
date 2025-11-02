@@ -97,6 +97,8 @@ $(document).ready(function(){initNavTree('_elementwise_unary_layer_8cc.html','')
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="_elementwise_unary_layer_8h_source.html">ElementwiseUnaryLayer.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="cpu_2ops_2_operation_utils_8h_source.html">OperationUtils.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="backend_2cpu_2_kernel_generator_8h_source.html">../KernelGenerator.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="cpu_2_validator_8h_source.html">../Validator.h</a>&quot;</code><br />
 <code>#include &lt;<a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_dequantize_8h_source.html">cker/operation/Dequantize.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html">cker/operation/Elementwise.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_erf_8h_source.html">cker/operation/Erf.h</a>&gt;</code><br />
@@ -120,6 +122,8 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:af80cf061310715902b12faf9fdf01ed3" id="r_af80cf061310715902b12faf9fdf01ed3"><td class="memItemLeft" align="right" valign="top">ops::ElementwiseUnaryType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1cpu.html#af80cf061310715902b12faf9fdf01ed3">onert::backend::cpu::convertElementwiseUnaryType</a> (<a class="el" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51">ir::operation::ElementwiseUnary::Type</a> type_ir)</td></tr>
+<tr class="separator:af80cf061310715902b12faf9fdf01ed3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7584aef07be0382d601c7661d7871f5" id="r_aa7584aef07be0382d601c7661d7871f5"><td class="memTemplParams" colspan="2">template&lt;typename InputT , typename OutputT &gt; </td></tr>
 <tr class="memitem:aa7584aef07be0382d601c7661d7871f5"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#aa7584aef07be0382d601c7661d7871f5">onert::backend::cpu::ops::affineQuantize</a> (const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *input, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output)</td></tr>
 <tr class="separator:aa7584aef07be0382d601c7661d7871f5"><td class="memSeparator" colspan="2">&#160;</td></tr>

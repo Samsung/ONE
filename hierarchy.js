@@ -1610,6 +1610,7 @@ var hierarchy =
     [ "ConstGenLayer", "struct_const_gen_layer.html", null ],
     [ "circle_eval_diff::CircleEvalDiff::Context", "structcircle__eval__diff_1_1_circle_eval_diff_1_1_context.html", null ],
     [ "fme_detect::EqualizePatternFinder::Context", "structfme__detect_1_1_equalize_pattern_finder_1_1_context.html", null ],
+    [ "ggma::context", "classggma_1_1context.html", null ],
     [ "GraphBuilder::Context", "class_graph_builder_1_1_context.html", null ],
     [ "kuma::Context< Alg >", "classkuma_1_1_context.html", null ],
     [ "loco::ShapeInferenceRule::Context", "structloco_1_1_shape_inference_rule_1_1_context.html", null ],
@@ -1937,7 +1938,7 @@ var hierarchy =
     [ "std::exception", null, [
       [ "nnc::DriverException", "classnnc_1_1_driver_exception.html", null ],
       [ "nnc::PassException", "classnnc_1_1_pass_exception.html", null ],
-      [ "onert::OnertException", "classonert_1_1_onert_exception.html", [
+      [ "onert::Exception", "classonert_1_1_exception.html", [
         [ "onert::InsufficientBufferSizeException", "classonert_1_1_insufficient_buffer_size_exception.html", null ]
       ] ],
       [ "oops::InternalExn", "classoops_1_1_internal_exn.html", null ],
@@ -2085,6 +2086,7 @@ var hierarchy =
     [ "nnfw::ruy::GemmParams< AccumScalar, DstScalar, quantization_flavor >", "structnnfw_1_1ruy_1_1_gemm_params.html", null ],
     [ "circlechef::GeneratedModel", "classcirclechef_1_1_generated_model.html", null ],
     [ "tflchef::GeneratedModel", "classtflchef_1_1_generated_model.html", null ],
+    [ "ggma::GGMAConfig", "structggma_1_1_g_g_m_a_config.html", null ],
     [ "enco::GlobalData", "structenco_1_1_global_data.html", null ],
     [ "mir::Graph", "classmir_1_1_graph.html", null ],
     [ "caffeimport::GraphBuilder", "classcaffeimport_1_1_graph_builder.html", [
@@ -2425,6 +2427,7 @@ var hierarchy =
       [ "onert::backend::builtin::kernel::WhileLayer", "classonert_1_1backend_1_1builtin_1_1kernel_1_1_while_layer.html", null ],
       [ "onert::backend::cpu::ops::AddNLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_add_n_layer.html", null ],
       [ "onert::backend::cpu::ops::ArgMinMaxLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_arg_min_max_layer.html", null ],
+      [ "onert::backend::cpu::ops::AttentionLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_attention_layer.html", null ],
       [ "onert::backend::cpu::ops::BatchMatMulLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_mat_mul_layer.html", null ],
       [ "onert::backend::cpu::ops::BatchToSpaceNDLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer.html", null ],
       [ "onert::backend::cpu::ops::BinaryArithmeticLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_binary_arithmetic_layer.html", [
@@ -2624,6 +2627,7 @@ var hierarchy =
       [ "onert::ir::Operation", "classonert_1_1ir_1_1_operation.html", [
         [ "onert::ir::operation::AddN", "classonert_1_1ir_1_1operation_1_1_add_n.html", null ],
         [ "onert::ir::operation::ArgMinMax", "classonert_1_1ir_1_1operation_1_1_arg_min_max.html", null ],
+        [ "onert::ir::operation::Attention", "classonert_1_1ir_1_1operation_1_1_attention.html", null ],
         [ "onert::ir::operation::BCQFullyConnected", "classonert_1_1ir_1_1operation_1_1_b_c_q_fully_connected.html", null ],
         [ "onert::ir::operation::BCQGather", "classonert_1_1ir_1_1operation_1_1_b_c_q_gather.html", null ],
         [ "onert::ir::operation::BCQUnembedding", "classonert_1_1ir_1_1operation_1_1_b_c_q_unembedding.html", null ],
@@ -3101,6 +3105,7 @@ var hierarchy =
     ] ],
     [ "exo::KnobTrait< K >", "structexo_1_1_knob_trait.html", null ],
     [ "moco::tf::KnobTrait< K >", "structmoco_1_1tf_1_1_knob_trait.html", null ],
+    [ "ggma::KVCache", "structggma_1_1_k_v_cache.html", null ],
     [ "pepper::KVStoreInterface< Trait >", "classpepper_1_1_k_v_store_interface.html", null ],
     [ "pepper::KVStoreInterface< KVStoreTrait::Queryable >", "classpepper_1_1_k_v_store_interface_3_01_k_v_store_trait_1_1_queryable_01_4.html", [
       [ "pepper::ProcessEnvironment", "structpepper_1_1_process_environment.html", null ]
@@ -3335,6 +3340,7 @@ var hierarchy =
     [ "onert::ir::Model", "classonert_1_1ir_1_1_model.html", null ],
     [ "ModelArgumentInfo", "struct_model_argument_info.html", null ],
     [ "ModelBuilder", "class_model_builder.html", null ],
+    [ "ggma::ModelConfig", "structggma_1_1_model_config.html", null ],
     [ "mir_onnx::ModelContext", "classmir__onnx_1_1_model_context.html", null ],
     [ "onert::ir::ModelEdge", "structonert_1_1ir_1_1_model_edge.html", null ],
     [ "onert::ir::ModelEdgeEqual", "structonert_1_1ir_1_1_model_edge_equal.html", null ],
@@ -4355,6 +4361,7 @@ var hierarchy =
     ] ],
     [ "onert::exec::ParallelScheduler", "classonert_1_1exec_1_1_parallel_scheduler.html", null ],
     [ "onert::ir::operation::ArgMinMax::Param", "structonert_1_1ir_1_1operation_1_1_arg_min_max_1_1_param.html", null ],
+    [ "onert::ir::operation::Attention::Param", "structonert_1_1ir_1_1operation_1_1_attention_1_1_param.html", null ],
     [ "onert::ir::operation::BatchMatMul::Param", "structonert_1_1ir_1_1operation_1_1_batch_mat_mul_1_1_param.html", null ],
     [ "onert::ir::operation::BCQFullyConnected::Param", "structonert_1_1ir_1_1operation_1_1_b_c_q_fully_connected_1_1_param.html", null ],
     [ "onert::ir::operation::BCQGather::Param", "structonert_1_1ir_1_1operation_1_1_b_c_q_gather_1_1_param.html", null ],

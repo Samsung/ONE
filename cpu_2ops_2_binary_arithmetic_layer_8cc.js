@@ -1,5 +1,6 @@
 var cpu_2ops_2_binary_arithmetic_layer_8cc =
 [
+    [ "convertArithmeticType", "cpu_2ops_2_binary_arithmetic_layer_8cc.html#ad2a53baf0afa54d1d8214de11c0f15c3", null ],
     [ "_lhs_shape", "cpu_2ops_2_binary_arithmetic_layer_8cc.html#a537c200d3423d732035a0da2f5ea8ffb", null ],
     [ "_need_broadcast", "cpu_2ops_2_binary_arithmetic_layer_8cc.html#abd2c2e62838c34ef1189bf6766021ff6", null ],
     [ "_op_params", "cpu_2ops_2_binary_arithmetic_layer_8cc.html#a3c2839aef66813def3869d5fb9ec8ef2", null ],

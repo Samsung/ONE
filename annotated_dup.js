@@ -617,6 +617,12 @@ var annotated_dup =
     [ "foder", "namespacefoder.html", [
       [ "FileLoader", "classfoder_1_1_file_loader.html", "classfoder_1_1_file_loader" ]
     ] ],
+    [ "ggma", "namespaceggma.html", [
+      [ "context", "classggma_1_1context.html", "classggma_1_1context" ],
+      [ "GGMAConfig", "structggma_1_1_g_g_m_a_config.html", "structggma_1_1_g_g_m_a_config" ],
+      [ "KVCache", "structggma_1_1_k_v_cache.html", "structggma_1_1_k_v_cache" ],
+      [ "ModelConfig", "structggma_1_1_model_config.html", "structggma_1_1_model_config" ]
+    ] ],
     [ "hermes", "namespacehermes.html", [
       [ "Config", "structhermes_1_1_config.html", "structhermes_1_1_config" ],
       [ "ConsoleReporter", "structhermes_1_1_console_reporter.html", "structhermes_1_1_console_reporter" ],
@@ -2898,6 +2904,7 @@ var annotated_dup =
           [ "ops", "namespaceonert_1_1backend_1_1cpu_1_1ops.html", [
             [ "AddNLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_add_n_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_add_n_layer" ],
             [ "ArgMinMaxLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_arg_min_max_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_arg_min_max_layer" ],
+            [ "AttentionLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_attention_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_attention_layer" ],
             [ "BatchMatMulLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_mat_mul_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_mat_mul_layer" ],
             [ "BatchToSpaceNDLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer" ],
             [ "BinaryArithmeticLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_binary_arithmetic_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_binary_arithmetic_layer" ],
@@ -3187,6 +3194,7 @@ var annotated_dup =
         [ "operation", "namespaceonert_1_1ir_1_1operation.html", [
           [ "AddN", "classonert_1_1ir_1_1operation_1_1_add_n.html", "classonert_1_1ir_1_1operation_1_1_add_n" ],
           [ "ArgMinMax", "classonert_1_1ir_1_1operation_1_1_arg_min_max.html", "classonert_1_1ir_1_1operation_1_1_arg_min_max" ],
+          [ "Attention", "classonert_1_1ir_1_1operation_1_1_attention.html", "classonert_1_1ir_1_1operation_1_1_attention" ],
           [ "BatchMatMul", "classonert_1_1ir_1_1operation_1_1_batch_mat_mul.html", "classonert_1_1ir_1_1operation_1_1_batch_mat_mul" ],
           [ "BatchToSpaceND", "classonert_1_1ir_1_1operation_1_1_batch_to_space_n_d.html", "classonert_1_1ir_1_1operation_1_1_batch_to_space_n_d" ],
           [ "BCQFullyConnected", "classonert_1_1ir_1_1operation_1_1_b_c_q_fully_connected.html", "classonert_1_1ir_1_1operation_1_1_b_c_q_fully_connected" ],
@@ -3366,8 +3374,8 @@ var annotated_dup =
         [ "Set", "classonert_1_1util_1_1_set.html", "classonert_1_1util_1_1_set" ],
         [ "TracingCtx", "classonert_1_1util_1_1_tracing_ctx.html", "classonert_1_1util_1_1_tracing_ctx" ]
       ] ],
-      [ "InsufficientBufferSizeException", "classonert_1_1_insufficient_buffer_size_exception.html", "classonert_1_1_insufficient_buffer_size_exception" ],
-      [ "OnertException", "classonert_1_1_onert_exception.html", "classonert_1_1_onert_exception" ]
+      [ "Exception", "classonert_1_1_exception.html", "classonert_1_1_exception" ],
+      [ "InsufficientBufferSizeException", "classonert_1_1_insufficient_buffer_size_exception.html", "classonert_1_1_insufficient_buffer_size_exception" ]
     ] ],
     [ "onert_micro", "namespaceonert__micro.html", [
       [ "core", "namespaceonert__micro_1_1core.html", [

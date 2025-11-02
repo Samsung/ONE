@@ -190,16 +190,16 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00027">27</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html">Conv2DLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   28</span>  : <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a6b76b1e97f4e4d0b19568656e27a1296">_bias</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#aaa162c7b8f9a062a7d2fae5106e32176">_output</a>(<span class="keyword">nullptr</span>),</div>
-<div class="line"><span class="lineno">   29</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ab935c461cbe4c2e457bca9c30ce1fed5">_paddingType</a>(<a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693a440806ada035e97a59ec9d2ca6796cb3">ir::PaddingType::EXPLICIT</a>), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a9d0e6f8e6cf93f82a4ddf9c955ab2a00">_paddingLeft</a>(0), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a67e6141a55ba70ea64f82ae010a0dc9f">_paddingTop</a>(0), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ae548509f7078df8b958034f7ae3a921c">_paddingRight</a>(0),</div>
-<div class="line"><span class="lineno">   30</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a227a9ce44adadd992da651d8a45bb2ef">_paddingBottom</a>(0), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ad5b5f1a6a93fd9df743561a2dcc47e98">_strideWidth</a>(0), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a6011c088503e03446e75c435a9624294">_strideHeight</a>(0), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a9ff9c6e3f04abb66c2430dcc31889353">_dilationWidthFactor</a>(1),</div>
-<div class="line"><span class="lineno">   31</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ac2e0903949bb566a8ac9d0d91bcd65f5">_dilationHeightFactor</a>(1), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a639190666edb90a1e58de10cb73b8f4a">_activation</a>(<a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">ir::Activation::NONE</a>),</div>
-<div class="line"><span class="lineno">   32</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a28d9925d2fa0ae1ae5408b0961633907">_conv_kernel</a>(<span class="keyword">new</span> <a class="code hl_class" href="classnnfw_1_1cker_1_1_conv.html">nnfw::cker::Conv</a>()), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a0831a8cef7c51fb4e72a7287c15fa598">_prepare</a>(<span class="keyword">false</span>), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a2cdb4275e1e44b9b86104e66e77126e9">_is_cachable_weights</a>(<span class="keyword">false</span>),</div>
-<div class="line"><span class="lineno">   33</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a599733f29cddee04ce3784334f143c63">_is_hybrid</a>(<span class="keyword">false</span>)</div>
-<div class="line"><span class="lineno">   34</span>{</div>
-<div class="line"><span class="lineno">   35</span>  <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">   36</span>}</div>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00089">89</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html">Conv2DLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   90</span>  : <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a6b76b1e97f4e4d0b19568656e27a1296">_bias</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#aaa162c7b8f9a062a7d2fae5106e32176">_output</a>(<span class="keyword">nullptr</span>),</div>
+<div class="line"><span class="lineno">   91</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ab935c461cbe4c2e457bca9c30ce1fed5">_paddingType</a>(<a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693a440806ada035e97a59ec9d2ca6796cb3">ir::PaddingType::EXPLICIT</a>), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a9d0e6f8e6cf93f82a4ddf9c955ab2a00">_paddingLeft</a>(0), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a67e6141a55ba70ea64f82ae010a0dc9f">_paddingTop</a>(0), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ae548509f7078df8b958034f7ae3a921c">_paddingRight</a>(0),</div>
+<div class="line"><span class="lineno">   92</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a227a9ce44adadd992da651d8a45bb2ef">_paddingBottom</a>(0), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ad5b5f1a6a93fd9df743561a2dcc47e98">_strideWidth</a>(0), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a6011c088503e03446e75c435a9624294">_strideHeight</a>(0), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a9ff9c6e3f04abb66c2430dcc31889353">_dilationWidthFactor</a>(1),</div>
+<div class="line"><span class="lineno">   93</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ac2e0903949bb566a8ac9d0d91bcd65f5">_dilationHeightFactor</a>(1), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a639190666edb90a1e58de10cb73b8f4a">_activation</a>(<a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">ir::Activation::NONE</a>),</div>
+<div class="line"><span class="lineno">   94</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a28d9925d2fa0ae1ae5408b0961633907">_conv_kernel</a>(<span class="keyword">new</span> <a class="code hl_class" href="classnnfw_1_1cker_1_1_conv.html">nnfw::cker::Conv</a>()), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a0831a8cef7c51fb4e72a7287c15fa598">_prepare</a>(<span class="keyword">false</span>), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a2cdb4275e1e44b9b86104e66e77126e9">_is_cachable_weights</a>(<span class="keyword">false</span>),</div>
+<div class="line"><span class="lineno">   95</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a599733f29cddee04ce3784334f143c63">_is_hybrid</a>(<span class="keyword">false</span>)</div>
+<div class="line"><span class="lineno">   96</span>{</div>
+<div class="line"><span class="lineno">   97</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   98</span>}</div>
 <div class="ttc" id="aclassnnfw_1_1cker_1_1_conv_html"><div class="ttname"><a href="classnnfw_1_1cker_1_1_conv.html">nnfw::cker::Conv</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00055">Conv.h:56</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a0831a8cef7c51fb4e72a7287c15fa598"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a0831a8cef7c51fb4e72a7287c15fa598">onert::backend::cpu::ops::ConvolutionLayer::_prepare</a></div><div class="ttdeci">bool _prepare</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00083">Conv2DLayer.h:83</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a227a9ce44adadd992da651d8a45bb2ef"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a227a9ce44adadd992da651d8a45bb2ef">onert::backend::cpu::ops::ConvolutionLayer::_paddingBottom</a></div><div class="ttdeci">uint32_t _paddingBottom</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00071">Conv2DLayer.h:71</a></div></div>
@@ -354,26 +354,26 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00191">191</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html">Conv2DLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  200</span>{</div>
-<div class="line"><span class="lineno">  201</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a> = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
-<div class="line"><span class="lineno">  202</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a> = kernel;</div>
-<div class="line"><span class="lineno">  203</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a6b76b1e97f4e4d0b19568656e27a1296">_bias</a> = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc">bias</a>;</div>
-<div class="line"><span class="lineno">  204</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ab935c461cbe4c2e457bca9c30ce1fed5">_paddingType</a> = paddingType;</div>
-<div class="line"><span class="lineno">  205</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a9d0e6f8e6cf93f82a4ddf9c955ab2a00">_paddingLeft</a> = paddingLeft;</div>
-<div class="line"><span class="lineno">  206</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ae548509f7078df8b958034f7ae3a921c">_paddingRight</a> = paddingRight;</div>
-<div class="line"><span class="lineno">  207</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a67e6141a55ba70ea64f82ae010a0dc9f">_paddingTop</a> = paddingTop;</div>
-<div class="line"><span class="lineno">  208</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a227a9ce44adadd992da651d8a45bb2ef">_paddingBottom</a> = paddingBottom;</div>
-<div class="line"><span class="lineno">  209</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ad5b5f1a6a93fd9df743561a2dcc47e98">_strideWidth</a> = strideWidth;</div>
-<div class="line"><span class="lineno">  210</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a6011c088503e03446e75c435a9624294">_strideHeight</a> = strideHeight;</div>
-<div class="line"><span class="lineno">  211</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a9ff9c6e3f04abb66c2430dcc31889353">_dilationWidthFactor</a> = dilationWidthFactor;</div>
-<div class="line"><span class="lineno">  212</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ac2e0903949bb566a8ac9d0d91bcd65f5">_dilationHeightFactor</a> = dilationHeightFactor;</div>
-<div class="line"><span class="lineno">  213</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a639190666edb90a1e58de10cb73b8f4a">_activation</a> = activation;</div>
-<div class="line"><span class="lineno">  214</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#aaa162c7b8f9a062a7d2fae5106e32176">_output</a> = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
-<div class="line"><span class="lineno">  215</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a2cdb4275e1e44b9b86104e66e77126e9">_is_cachable_weights</a> = is_cachable_weights;</div>
-<div class="line"><span class="lineno">  216</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a599733f29cddee04ce3784334f143c63">_is_hybrid</a> = <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32 &amp;&amp;</div>
-<div class="line"><span class="lineno">  217</span>               <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_INT8_SYMM;</div>
-<div class="line"><span class="lineno">  218</span>}</div>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00253">253</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html">Conv2DLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  262</span>{</div>
+<div class="line"><span class="lineno">  263</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a> = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
+<div class="line"><span class="lineno">  264</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a> = kernel;</div>
+<div class="line"><span class="lineno">  265</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a6b76b1e97f4e4d0b19568656e27a1296">_bias</a> = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc">bias</a>;</div>
+<div class="line"><span class="lineno">  266</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ab935c461cbe4c2e457bca9c30ce1fed5">_paddingType</a> = paddingType;</div>
+<div class="line"><span class="lineno">  267</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a9d0e6f8e6cf93f82a4ddf9c955ab2a00">_paddingLeft</a> = paddingLeft;</div>
+<div class="line"><span class="lineno">  268</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ae548509f7078df8b958034f7ae3a921c">_paddingRight</a> = paddingRight;</div>
+<div class="line"><span class="lineno">  269</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a67e6141a55ba70ea64f82ae010a0dc9f">_paddingTop</a> = paddingTop;</div>
+<div class="line"><span class="lineno">  270</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a227a9ce44adadd992da651d8a45bb2ef">_paddingBottom</a> = paddingBottom;</div>
+<div class="line"><span class="lineno">  271</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ad5b5f1a6a93fd9df743561a2dcc47e98">_strideWidth</a> = strideWidth;</div>
+<div class="line"><span class="lineno">  272</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a6011c088503e03446e75c435a9624294">_strideHeight</a> = strideHeight;</div>
+<div class="line"><span class="lineno">  273</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a9ff9c6e3f04abb66c2430dcc31889353">_dilationWidthFactor</a> = dilationWidthFactor;</div>
+<div class="line"><span class="lineno">  274</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ac2e0903949bb566a8ac9d0d91bcd65f5">_dilationHeightFactor</a> = dilationHeightFactor;</div>
+<div class="line"><span class="lineno">  275</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a639190666edb90a1e58de10cb73b8f4a">_activation</a> = activation;</div>
+<div class="line"><span class="lineno">  276</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#aaa162c7b8f9a062a7d2fae5106e32176">_output</a> = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
+<div class="line"><span class="lineno">  277</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a2cdb4275e1e44b9b86104e66e77126e9">_is_cachable_weights</a> = is_cachable_weights;</div>
+<div class="line"><span class="lineno">  278</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a599733f29cddee04ce3784334f143c63">_is_hybrid</a> = <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32 &amp;&amp;</div>
+<div class="line"><span class="lineno">  279</span>               <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_INT8_SYMM;</div>
+<div class="line"><span class="lineno">  280</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aae73f75c41fa15f5ae2c391918fa09c5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor::data_type</a></div><div class="ttdeci">ir::DataType data_type() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00054">IPortableTensor.h:54</a></div></div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00096">gen_h5_explicit_inputs_all.py:96</a></div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc">mir_caffe::CaffeOpType::bias</a></div><div class="ttdeci">@ bias</div></div>
@@ -408,82 +408,82 @@ Protected Attributes</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classonert_1_1exec_1_1_i_function.html#a901ae0973ef08a6ca59f6a00bd3bac4c">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">278</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html">Conv2DLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  279</span>{</div>
-<div class="line"><span class="lineno">  280</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a0831a8cef7c51fb4e72a7287c15fa598">_prepare</a>)</div>
-<div class="line"><span class="lineno">  281</span>    <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  282</span> </div>
-<div class="line"><span class="lineno">  283</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a599733f29cddee04ce3784334f143c63">_is_hybrid</a>)</div>
-<div class="line"><span class="lineno">  284</span>  {</div>
-<div class="line"><span class="lineno">  285</span>    <span class="comment">// ensure weight is per-channel quantized.</span></div>
-<div class="line"><span class="lineno">  286</span>    int32_t kernel_output_channel = <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>).<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(0);</div>
-<div class="line"><span class="lineno">  287</span>    <span class="comment">// zero_points comes from flatbuffer vector. Its size is within uint32_t range.</span></div>
-<div class="line"><span class="lineno">  288</span>    <span class="keywordtype">size_t</span> kernel_zerop_cnt = <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a4347b0f51edc8533a73cd7458f46f7b0">data_scales</a>().size();</div>
-<div class="line"><span class="lineno">  289</span>    <span class="comment">// promote to int64_t to compare int32_t and uint32_t</span></div>
-<div class="line"><span class="lineno">  290</span>    <span class="keywordflow">if</span> ((int64_t)kernel_output_channel != (int64_t)kernel_zerop_cnt)</div>
-<div class="line"><span class="lineno">  291</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Conv2D hybrid supports only per-channel quantized weight.&quot;</span>};</div>
-<div class="line"><span class="lineno">  292</span> </div>
-<div class="line"><span class="lineno">  293</span>    <span class="comment">// allocate memory for activation quantization.</span></div>
-<div class="line"><span class="lineno">  294</span>    <span class="comment">// - quantized values (int8_t type and same shape of original input)</span></div>
-<div class="line"><span class="lineno">  295</span>    <span class="comment">// - quantization params (= scale/zeropoint for each input)</span></div>
-<div class="line"><span class="lineno">  296</span>    <span class="keyword">auto</span> input_shape = <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>);</div>
-<div class="line"><span class="lineno">  297</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> batch_size = input_shape.Dims(0);</div>
-<div class="line"><span class="lineno">  298</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> input_size = input_shape.FlatSize() / batch_size;</div>
-<div class="line"><span class="lineno">  299</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#abb26b2d9360ca82f970de1cb153302ab">_hybrid_arena</a> = std::make_unique&lt;nnfw::cker::ConvHybridTempArena&gt;(batch_size, input_size);</div>
-<div class="line"><span class="lineno">  300</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a0831a8cef7c51fb4e72a7287c15fa598">_prepare</a> = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  301</span>    <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  302</span>  }</div>
-<div class="line"><span class="lineno">  303</span> </div>
-<div class="line"><span class="lineno">  304</span>  <a class="code hl_class" href="classnnfw_1_1cker_1_1_conv.html">nnfw::cker::Conv</a> &amp;kernel = *<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a28d9925d2fa0ae1ae5408b0961633907">_conv_kernel</a>;</div>
-<div class="line"><span class="lineno">  305</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32 &amp;&amp; <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a2cdb4275e1e44b9b86104e66e77126e9">_is_cachable_weights</a>)</div>
-<div class="line"><span class="lineno">  306</span>  {</div>
-<div class="line"><span class="lineno">  307</span>    <span class="keywordtype">bool</span> is_transposed = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  308</span>    kernel.<a class="code hl_function" href="classnnfw_1_1cker_1_1_conv.html#ab674a1f2d92d6e7a09c517fa765ba048">prepareF32</a>(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>), getBuffer&lt;float&gt;(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5650844753363f826ab47f2e9a947983">getPaddingType</a>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ab935c461cbe4c2e457bca9c30ce1fed5">_paddingType</a>),</div>
-<div class="line"><span class="lineno">  309</span>                      is_transposed, <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a9ff9c6e3f04abb66c2430dcc31889353">_dilationWidthFactor</a>, <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ac2e0903949bb566a8ac9d0d91bcd65f5">_dilationHeightFactor</a>);</div>
-<div class="line"><span class="lineno">  310</span> </div>
-<div class="line"><span class="lineno">  311</span>    <span class="comment">// Decrease reference of _kernel(weights) only when _kernel is constant</span></div>
-<div class="line"><span class="lineno">  312</span>    <span class="keywordflow">if</span> (is_transposed)</div>
-<div class="line"><span class="lineno">  313</span>    {</div>
-<div class="line"><span class="lineno">  314</span>      <span class="keyword">auto</span> kernel_tensor = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code hl_class" href="class_tensor.html">Tensor</a> *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>);</div>
-<div class="line"><span class="lineno">  315</span>      <span class="keywordflow">if</span> (kernel_tensor)</div>
-<div class="line"><span class="lineno">  316</span>        <span class="comment">// TODO Remove const_cast</span></div>
-<div class="line"><span class="lineno">  317</span>        <span class="keyword">const_cast&lt;</span><a class="code hl_class" href="class_tensor.html">Tensor</a> *<span class="keyword">&gt;</span>(kernel_tensor)-&gt;decrease_ref();</div>
-<div class="line"><span class="lineno">  318</span>    }</div>
-<div class="line"><span class="lineno">  319</span>  }</div>
-<div class="line"><span class="lineno">  320</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_UINT8_ASYMM &amp;&amp; <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a2cdb4275e1e44b9b86104e66e77126e9">_is_cachable_weights</a> &amp;&amp;</div>
-<div class="line"><span class="lineno">  321</span>           !<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ae85cf7ba798b307fd40e09b736caf5c9">is_dynamic</a>() &amp;&amp; !<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#aaa162c7b8f9a062a7d2fae5106e32176">_output</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ae85cf7ba798b307fd40e09b736caf5c9">is_dynamic</a>())</div>
-<div class="line"><span class="lineno">  322</span>  {</div>
-<div class="line"><span class="lineno">  323</span>    <span class="keyword">const</span> <span class="keywordtype">bool</span> per_channel_quantized = <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a4347b0f51edc8533a73cd7458f46f7b0">data_scales</a>().size() &gt; 1;</div>
-<div class="line"><span class="lineno">  324</span>    <span class="keywordflow">if</span> (per_channel_quantized)</div>
-<div class="line"><span class="lineno">  325</span>    {</div>
-<div class="line"><span class="lineno">  326</span>      <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a27643fcea52ce22ee60ec37eea3f423f">GetQuantizedConvolutionMultipliersAndShifts</a>(</div>
-<div class="line"><span class="lineno">  327</span>        <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a56b8936eb8f5a8cbcf5cbe9d6c080ef9">data_scale</a>(), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#aaa162c7b8f9a062a7d2fae5106e32176">_output</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a56b8936eb8f5a8cbcf5cbe9d6c080ef9">data_scale</a>(), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a4347b0f51edc8533a73cd7458f46f7b0">data_scales</a>().data(),</div>
-<div class="line"><span class="lineno">  328</span>        <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a4347b0f51edc8533a73cd7458f46f7b0">data_scales</a>().size(), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>).<a class="code hl_struct" href="struct_dims.html">Dims</a>(0),</div>
-<div class="line"><span class="lineno">  329</span>        kernel.<a class="code hl_function" href="classnnfw_1_1cker_1_1_conv.html#ac596476e2b70dd336db0ebfd58920832">per_channel_output_multiplier</a>(), kernel.<a class="code hl_function" href="classnnfw_1_1cker_1_1_conv.html#a43a3d4538a5aed40e4b8d84cbc63987e">per_channel_output_shift</a>());</div>
-<div class="line"><span class="lineno">  330</span>    }</div>
-<div class="line"><span class="lineno">  331</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  332</span>    {</div>
-<div class="line"><span class="lineno">  333</span>      kernel.<a class="code hl_function" href="classnnfw_1_1cker_1_1_conv.html#a8b1c180a3eb9c7cd859c4e1622cbed0d">prepareQ8uPerTensor</a>(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#aaa162c7b8f9a062a7d2fae5106e32176">_output</a>),</div>
-<div class="line"><span class="lineno">  334</span>                                 <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ad5b5f1a6a93fd9df743561a2dcc47e98">_strideWidth</a>, <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a6011c088503e03446e75c435a9624294">_strideHeight</a>, <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a9ff9c6e3f04abb66c2430dcc31889353">_dilationWidthFactor</a>,</div>
-<div class="line"><span class="lineno">  335</span>                                 <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ac2e0903949bb566a8ac9d0d91bcd65f5">_dilationHeightFactor</a>);</div>
-<div class="line"><span class="lineno">  336</span>    }</div>
-<div class="line"><span class="lineno">  337</span>  }</div>
-<div class="line"><span class="lineno">  338</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_INT8_ASYMM)</div>
-<div class="line"><span class="lineno">  339</span>  {</div>
-<div class="line"><span class="lineno">  340</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a2cdb4275e1e44b9b86104e66e77126e9">_is_cachable_weights</a> &amp;&amp; !<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ae85cf7ba798b307fd40e09b736caf5c9">is_dynamic</a>() &amp;&amp; !<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#aaa162c7b8f9a062a7d2fae5106e32176">_output</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ae85cf7ba798b307fd40e09b736caf5c9">is_dynamic</a>())</div>
-<div class="line"><span class="lineno">  341</span>    {</div>
-<div class="line"><span class="lineno">  342</span>      <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a27643fcea52ce22ee60ec37eea3f423f">GetQuantizedConvolutionMultipliersAndShifts</a>(</div>
-<div class="line"><span class="lineno">  343</span>        <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a56b8936eb8f5a8cbcf5cbe9d6c080ef9">data_scale</a>(), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#aaa162c7b8f9a062a7d2fae5106e32176">_output</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a56b8936eb8f5a8cbcf5cbe9d6c080ef9">data_scale</a>(), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a4347b0f51edc8533a73cd7458f46f7b0">data_scales</a>().data(),</div>
-<div class="line"><span class="lineno">  344</span>        <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a4347b0f51edc8533a73cd7458f46f7b0">data_scales</a>().size(), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>).<a class="code hl_struct" href="struct_dims.html">Dims</a>(0),</div>
-<div class="line"><span class="lineno">  345</span>        kernel.<a class="code hl_function" href="classnnfw_1_1cker_1_1_conv.html#ac596476e2b70dd336db0ebfd58920832">per_channel_output_multiplier</a>(), kernel.<a class="code hl_function" href="classnnfw_1_1cker_1_1_conv.html#a43a3d4538a5aed40e4b8d84cbc63987e">per_channel_output_shift</a>());</div>
-<div class="line"><span class="lineno">  346</span>    }</div>
-<div class="line"><span class="lineno">  347</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  348</span>    {</div>
-<div class="line"><span class="lineno">  349</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Conv2D: Int8 dynamic weight is not supported&quot;</span>};</div>
-<div class="line"><span class="lineno">  350</span>    }</div>
-<div class="line"><span class="lineno">  351</span>  }</div>
-<div class="line"><span class="lineno">  352</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a0831a8cef7c51fb4e72a7287c15fa598">_prepare</a> = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  353</span>}</div>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00340">340</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html">Conv2DLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  341</span>{</div>
+<div class="line"><span class="lineno">  342</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a0831a8cef7c51fb4e72a7287c15fa598">_prepare</a>)</div>
+<div class="line"><span class="lineno">  343</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  344</span> </div>
+<div class="line"><span class="lineno">  345</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a599733f29cddee04ce3784334f143c63">_is_hybrid</a>)</div>
+<div class="line"><span class="lineno">  346</span>  {</div>
+<div class="line"><span class="lineno">  347</span>    <span class="comment">// ensure weight is per-channel quantized.</span></div>
+<div class="line"><span class="lineno">  348</span>    int32_t kernel_output_channel = <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>).<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(0);</div>
+<div class="line"><span class="lineno">  349</span>    <span class="comment">// zero_points comes from flatbuffer vector. Its size is within uint32_t range.</span></div>
+<div class="line"><span class="lineno">  350</span>    <span class="keywordtype">size_t</span> kernel_zerop_cnt = <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a4347b0f51edc8533a73cd7458f46f7b0">data_scales</a>().size();</div>
+<div class="line"><span class="lineno">  351</span>    <span class="comment">// promote to int64_t to compare int32_t and uint32_t</span></div>
+<div class="line"><span class="lineno">  352</span>    <span class="keywordflow">if</span> ((int64_t)kernel_output_channel != (int64_t)kernel_zerop_cnt)</div>
+<div class="line"><span class="lineno">  353</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Conv2D hybrid supports only per-channel quantized weight.&quot;</span>};</div>
+<div class="line"><span class="lineno">  354</span> </div>
+<div class="line"><span class="lineno">  355</span>    <span class="comment">// allocate memory for activation quantization.</span></div>
+<div class="line"><span class="lineno">  356</span>    <span class="comment">// - quantized values (int8_t type and same shape of original input)</span></div>
+<div class="line"><span class="lineno">  357</span>    <span class="comment">// - quantization params (= scale/zeropoint for each input)</span></div>
+<div class="line"><span class="lineno">  358</span>    <span class="keyword">auto</span> input_shape = <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>);</div>
+<div class="line"><span class="lineno">  359</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> batch_size = input_shape.Dims(0);</div>
+<div class="line"><span class="lineno">  360</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> input_size = input_shape.FlatSize() / batch_size;</div>
+<div class="line"><span class="lineno">  361</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#abb26b2d9360ca82f970de1cb153302ab">_hybrid_arena</a> = std::make_unique&lt;nnfw::cker::ConvHybridTempArena&gt;(batch_size, input_size);</div>
+<div class="line"><span class="lineno">  362</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a0831a8cef7c51fb4e72a7287c15fa598">_prepare</a> = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  363</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  364</span>  }</div>
+<div class="line"><span class="lineno">  365</span> </div>
+<div class="line"><span class="lineno">  366</span>  <a class="code hl_class" href="classnnfw_1_1cker_1_1_conv.html">nnfw::cker::Conv</a> &amp;kernel = *<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a28d9925d2fa0ae1ae5408b0961633907">_conv_kernel</a>;</div>
+<div class="line"><span class="lineno">  367</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32 &amp;&amp; <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a2cdb4275e1e44b9b86104e66e77126e9">_is_cachable_weights</a>)</div>
+<div class="line"><span class="lineno">  368</span>  {</div>
+<div class="line"><span class="lineno">  369</span>    <span class="keywordtype">bool</span> is_transposed = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  370</span>    kernel.<a class="code hl_function" href="classnnfw_1_1cker_1_1_conv.html#ab674a1f2d92d6e7a09c517fa765ba048">prepareF32</a>(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>), getBuffer&lt;float&gt;(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5650844753363f826ab47f2e9a947983">getPaddingType</a>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ab935c461cbe4c2e457bca9c30ce1fed5">_paddingType</a>),</div>
+<div class="line"><span class="lineno">  371</span>                      is_transposed, <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a9ff9c6e3f04abb66c2430dcc31889353">_dilationWidthFactor</a>, <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ac2e0903949bb566a8ac9d0d91bcd65f5">_dilationHeightFactor</a>);</div>
+<div class="line"><span class="lineno">  372</span> </div>
+<div class="line"><span class="lineno">  373</span>    <span class="comment">// Decrease reference of _kernel(weights) only when _kernel is constant</span></div>
+<div class="line"><span class="lineno">  374</span>    <span class="keywordflow">if</span> (is_transposed)</div>
+<div class="line"><span class="lineno">  375</span>    {</div>
+<div class="line"><span class="lineno">  376</span>      <span class="keyword">auto</span> kernel_tensor = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code hl_class" href="class_tensor.html">Tensor</a> *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>);</div>
+<div class="line"><span class="lineno">  377</span>      <span class="keywordflow">if</span> (kernel_tensor)</div>
+<div class="line"><span class="lineno">  378</span>        <span class="comment">// TODO Remove const_cast</span></div>
+<div class="line"><span class="lineno">  379</span>        <span class="keyword">const_cast&lt;</span><a class="code hl_class" href="class_tensor.html">Tensor</a> *<span class="keyword">&gt;</span>(kernel_tensor)-&gt;decrease_ref();</div>
+<div class="line"><span class="lineno">  380</span>    }</div>
+<div class="line"><span class="lineno">  381</span>  }</div>
+<div class="line"><span class="lineno">  382</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_UINT8_ASYMM &amp;&amp; <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a2cdb4275e1e44b9b86104e66e77126e9">_is_cachable_weights</a> &amp;&amp;</div>
+<div class="line"><span class="lineno">  383</span>           !<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ae85cf7ba798b307fd40e09b736caf5c9">is_dynamic</a>() &amp;&amp; !<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#aaa162c7b8f9a062a7d2fae5106e32176">_output</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ae85cf7ba798b307fd40e09b736caf5c9">is_dynamic</a>())</div>
+<div class="line"><span class="lineno">  384</span>  {</div>
+<div class="line"><span class="lineno">  385</span>    <span class="keyword">const</span> <span class="keywordtype">bool</span> per_channel_quantized = <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a4347b0f51edc8533a73cd7458f46f7b0">data_scales</a>().size() &gt; 1;</div>
+<div class="line"><span class="lineno">  386</span>    <span class="keywordflow">if</span> (per_channel_quantized)</div>
+<div class="line"><span class="lineno">  387</span>    {</div>
+<div class="line"><span class="lineno">  388</span>      <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a27643fcea52ce22ee60ec37eea3f423f">GetQuantizedConvolutionMultipliersAndShifts</a>(</div>
+<div class="line"><span class="lineno">  389</span>        <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a56b8936eb8f5a8cbcf5cbe9d6c080ef9">data_scale</a>(), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#aaa162c7b8f9a062a7d2fae5106e32176">_output</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a56b8936eb8f5a8cbcf5cbe9d6c080ef9">data_scale</a>(), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a4347b0f51edc8533a73cd7458f46f7b0">data_scales</a>().data(),</div>
+<div class="line"><span class="lineno">  390</span>        <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a4347b0f51edc8533a73cd7458f46f7b0">data_scales</a>().size(), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>).<a class="code hl_struct" href="struct_dims.html">Dims</a>(0),</div>
+<div class="line"><span class="lineno">  391</span>        kernel.<a class="code hl_function" href="classnnfw_1_1cker_1_1_conv.html#ac596476e2b70dd336db0ebfd58920832">per_channel_output_multiplier</a>(), kernel.<a class="code hl_function" href="classnnfw_1_1cker_1_1_conv.html#a43a3d4538a5aed40e4b8d84cbc63987e">per_channel_output_shift</a>());</div>
+<div class="line"><span class="lineno">  392</span>    }</div>
+<div class="line"><span class="lineno">  393</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  394</span>    {</div>
+<div class="line"><span class="lineno">  395</span>      kernel.<a class="code hl_function" href="classnnfw_1_1cker_1_1_conv.html#a8b1c180a3eb9c7cd859c4e1622cbed0d">prepareQ8uPerTensor</a>(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#aaa162c7b8f9a062a7d2fae5106e32176">_output</a>),</div>
+<div class="line"><span class="lineno">  396</span>                                 <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ad5b5f1a6a93fd9df743561a2dcc47e98">_strideWidth</a>, <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a6011c088503e03446e75c435a9624294">_strideHeight</a>, <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a9ff9c6e3f04abb66c2430dcc31889353">_dilationWidthFactor</a>,</div>
+<div class="line"><span class="lineno">  397</span>                                 <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ac2e0903949bb566a8ac9d0d91bcd65f5">_dilationHeightFactor</a>);</div>
+<div class="line"><span class="lineno">  398</span>    }</div>
+<div class="line"><span class="lineno">  399</span>  }</div>
+<div class="line"><span class="lineno">  400</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_INT8_ASYMM)</div>
+<div class="line"><span class="lineno">  401</span>  {</div>
+<div class="line"><span class="lineno">  402</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a2cdb4275e1e44b9b86104e66e77126e9">_is_cachable_weights</a> &amp;&amp; !<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ae85cf7ba798b307fd40e09b736caf5c9">is_dynamic</a>() &amp;&amp; !<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#aaa162c7b8f9a062a7d2fae5106e32176">_output</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ae85cf7ba798b307fd40e09b736caf5c9">is_dynamic</a>())</div>
+<div class="line"><span class="lineno">  403</span>    {</div>
+<div class="line"><span class="lineno">  404</span>      <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a27643fcea52ce22ee60ec37eea3f423f">GetQuantizedConvolutionMultipliersAndShifts</a>(</div>
+<div class="line"><span class="lineno">  405</span>        <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a56b8936eb8f5a8cbcf5cbe9d6c080ef9">data_scale</a>(), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#aaa162c7b8f9a062a7d2fae5106e32176">_output</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a56b8936eb8f5a8cbcf5cbe9d6c080ef9">data_scale</a>(), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a4347b0f51edc8533a73cd7458f46f7b0">data_scales</a>().data(),</div>
+<div class="line"><span class="lineno">  406</span>        <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a4347b0f51edc8533a73cd7458f46f7b0">data_scales</a>().size(), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>).<a class="code hl_struct" href="struct_dims.html">Dims</a>(0),</div>
+<div class="line"><span class="lineno">  407</span>        kernel.<a class="code hl_function" href="classnnfw_1_1cker_1_1_conv.html#ac596476e2b70dd336db0ebfd58920832">per_channel_output_multiplier</a>(), kernel.<a class="code hl_function" href="classnnfw_1_1cker_1_1_conv.html#a43a3d4538a5aed40e4b8d84cbc63987e">per_channel_output_shift</a>());</div>
+<div class="line"><span class="lineno">  408</span>    }</div>
+<div class="line"><span class="lineno">  409</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  410</span>    {</div>
+<div class="line"><span class="lineno">  411</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Conv2D: Int8 dynamic weight is not supported&quot;</span>};</div>
+<div class="line"><span class="lineno">  412</span>    }</div>
+<div class="line"><span class="lineno">  413</span>  }</div>
+<div class="line"><span class="lineno">  414</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a0831a8cef7c51fb4e72a7287c15fa598">_prepare</a> = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  415</span>}</div>
 <div class="ttc" id="aclass_tensor_html"><div class="ttname"><a href="class_tensor.html">Tensor</a></div><div class="ttdef"><b>Definition</b> <a href="tensor__gen_8cpp_source.html#l00031">tensor_gen.cpp:32</a></div></div>
 <div class="ttc" id="aclassnnfw_1_1cker_1_1_conv_html_a43a3d4538a5aed40e4b8d84cbc63987e"><div class="ttname"><a href="classnnfw_1_1cker_1_1_conv.html#a43a3d4538a5aed40e4b8d84cbc63987e">nnfw::cker::Conv::per_channel_output_shift</a></div><div class="ttdeci">std::vector&lt; int &gt; &amp; per_channel_output_shift()</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00151">Conv.h:151</a></div></div>
 <div class="ttc" id="aclassnnfw_1_1cker_1_1_conv_html_a8b1c180a3eb9c7cd859c4e1622cbed0d"><div class="ttname"><a href="classnnfw_1_1cker_1_1_conv.html#a8b1c180a3eb9c7cd859c4e1622cbed0d">nnfw::cker::Conv::prepareQ8uPerTensor</a></div><div class="ttdeci">void prepareQ8uPerTensor(const Shape &amp;input_shape, const Shape &amp;kernel_shape, const Shape &amp;output_shape, uint32_t stride_width, uint32_t stride_height, uint32_t dilation_width_factor, uint32_t dilation_height_factor)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00074">Conv.h:74</a></div></div>
@@ -501,7 +501,7 @@ Protected Attributes</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00080">_conv_kernel</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00076">_dilationHeightFactor</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00075">_dilationWidthFactor</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00081">_hybrid_arena</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00062">_input</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00084">_is_cachable_weights</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00085">_is_hybrid</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00063">_kernel</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00065">_output</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00067">_paddingType</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00083">_prepare</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00074">_strideHeight</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00073">_strideWidth</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00055">onert::backend::IPortableTensor::data_scale()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00057">onert::backend::IPortableTensor::data_scales()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00106">nnfw::cker::Shape::Dims()</a>, <a class="el" href="cpu_2ops_2_operation_utils_8cc_source.html#l00262">onert::backend::cpu::ops::getPaddingType()</a>, <a class="el" href="cpu_2ops_2_operation_utils_8cc_source.html#l00093">onert::backend::cpu::ops::GetQuantizedConvolutionMultipliersAndShifts()</a>, <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00089">onert::backend::cpu::ops::getShape()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00063">onert::backend::IPortableTensor::is_dynamic()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00150">nnfw::cker::Conv::per_channel_output_multiplier()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00151">nnfw::cker::Conv::per_channel_output_shift()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00060">nnfw::cker::Conv::prepareF32()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00074">nnfw::cker::Conv::prepareQ8uPerTensor()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00220">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00282">run()</a>.</p>
 
 </div>
 </div>
@@ -530,68 +530,68 @@ Protected Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_function.html#aedd6f5e12852d808abb97327b9d229e2">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00220">220</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html">Conv2DLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  221</span>{</div>
-<div class="line"><span class="lineno">  222</span>  <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a94c8dc4a85a3a2d405a9728bdbaa5107">prepare</a>();</div>
-<div class="line"><span class="lineno">  223</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ae85cf7ba798b307fd40e09b736caf5c9">is_dynamic</a>() || <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ae85cf7ba798b307fd40e09b736caf5c9">is_dynamic</a>())</div>
-<div class="line"><span class="lineno">  224</span>  {</div>
-<div class="line"><span class="lineno">  225</span>    <span class="keyword">const</span> <span class="keyword">auto</span> ifm_shape = <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">getShape</a>().asFeature();</div>
-<div class="line"><span class="lineno">  226</span>    <span class="keyword">const</span> <span class="keyword">auto</span> ofm_shape = <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#aaa162c7b8f9a062a7d2fae5106e32176">_output</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">getShape</a>().asFeature();</div>
-<div class="line"><span class="lineno">  227</span>    <span class="comment">// Kernel format is [depth_out, kernel_height, kernel_width, depth_in].</span></div>
-<div class="line"><span class="lineno">  228</span>    <span class="keyword">const</span> <span class="keyword">auto</span> ker_shape = <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">getShape</a>();</div>
-<div class="line"><span class="lineno">  229</span>    <span class="keyword">const</span> <span class="keyword">auto</span> ker_height = ker_shape.dim(1);</div>
-<div class="line"><span class="lineno">  230</span>    <span class="keyword">const</span> <span class="keyword">auto</span> ker_width = ker_shape.dim(2);</div>
-<div class="line"><span class="lineno">  231</span> </div>
-<div class="line"><span class="lineno">  232</span>    ir::Stride stride;</div>
-<div class="line"><span class="lineno">  233</span>    stride.vertical = <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ad5b5f1a6a93fd9df743561a2dcc47e98">_strideWidth</a>;</div>
-<div class="line"><span class="lineno">  234</span>    stride.horizontal = <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ad5b5f1a6a93fd9df743561a2dcc47e98">_strideWidth</a>;</div>
-<div class="line"><span class="lineno">  235</span> </div>
-<div class="line"><span class="lineno">  236</span>    ir::Padding param_padding;</div>
-<div class="line"><span class="lineno">  237</span>    param_padding.type = <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ab935c461cbe4c2e457bca9c30ce1fed5">_paddingType</a>;</div>
-<div class="line"><span class="lineno">  238</span>    param_padding.param.left = <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a9d0e6f8e6cf93f82a4ddf9c955ab2a00">_paddingLeft</a>;</div>
-<div class="line"><span class="lineno">  239</span>    param_padding.param.right = <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ae548509f7078df8b958034f7ae3a921c">_paddingRight</a>;</div>
-<div class="line"><span class="lineno">  240</span>    param_padding.param.top = <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a67e6141a55ba70ea64f82ae010a0dc9f">_paddingTop</a>;</div>
-<div class="line"><span class="lineno">  241</span>    param_padding.param.bottom = <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a227a9ce44adadd992da651d8a45bb2ef">_paddingBottom</a>;</div>
-<div class="line"><span class="lineno">  242</span> </div>
-<div class="line"><span class="lineno">  243</span>    <span class="keyword">const</span> <span class="keyword">auto</span> padding =</div>
-<div class="line"><span class="lineno">  244</span>      <a class="code hl_function" href="namespaceonert_1_1ir.html#a2ab58c9ae156f4ab01ecbe99b004ff85">ir::calculatePadding</a>(param_padding, ifm_shape, ofm_shape, stride, ker_width, ker_height,</div>
-<div class="line"><span class="lineno">  245</span>                           <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a9ff9c6e3f04abb66c2430dcc31889353">_dilationWidthFactor</a>, <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ac2e0903949bb566a8ac9d0d91bcd65f5">_dilationHeightFactor</a>);</div>
-<div class="line"><span class="lineno">  246</span> </div>
-<div class="line"><span class="lineno">  247</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a9d0e6f8e6cf93f82a4ddf9c955ab2a00">_paddingLeft</a> = padding.left;</div>
-<div class="line"><span class="lineno">  248</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ae548509f7078df8b958034f7ae3a921c">_paddingRight</a> = padding.right;</div>
-<div class="line"><span class="lineno">  249</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a67e6141a55ba70ea64f82ae010a0dc9f">_paddingTop</a> = padding.top;</div>
-<div class="line"><span class="lineno">  250</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a227a9ce44adadd992da651d8a45bb2ef">_paddingBottom</a> = padding.bottom;</div>
-<div class="line"><span class="lineno">  251</span>  }</div>
-<div class="line"><span class="lineno">  252</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a599733f29cddee04ce3784334f143c63">_is_hybrid</a>)</div>
-<div class="line"><span class="lineno">  253</span>  {</div>
-<div class="line"><span class="lineno">  254</span>    convQ8iHybridPerChannel();</div>
-<div class="line"><span class="lineno">  255</span>  }</div>
-<div class="line"><span class="lineno">  256</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32)</div>
-<div class="line"><span class="lineno">  257</span>  {</div>
-<div class="line"><span class="lineno">  258</span>    convFloat32();</div>
-<div class="line"><span class="lineno">  259</span>  }</div>
-<div class="line"><span class="lineno">  260</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_UINT8_ASYMM)</div>
-<div class="line"><span class="lineno">  261</span>  {</div>
-<div class="line"><span class="lineno">  262</span>    <span class="keyword">const</span> <span class="keywordtype">bool</span> per_channel_quantized = <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a4347b0f51edc8533a73cd7458f46f7b0">data_scales</a>().size() &gt; 1;</div>
-<div class="line"><span class="lineno">  263</span>    <span class="keywordflow">if</span> (per_channel_quantized)</div>
-<div class="line"><span class="lineno">  264</span>      convQ8uPerChannel();</div>
-<div class="line"><span class="lineno">  265</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  266</span>      convQ8uPerTensor();</div>
-<div class="line"><span class="lineno">  267</span>  }</div>
-<div class="line"><span class="lineno">  268</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_INT8_ASYMM)</div>
-<div class="line"><span class="lineno">  269</span>  {</div>
-<div class="line"><span class="lineno">  270</span>    convQ8i();</div>
-<div class="line"><span class="lineno">  271</span>  }</div>
-<div class="line"><span class="lineno">  272</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  273</span>  {</div>
-<div class="line"><span class="lineno">  274</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Conv: unsupported data type&quot;</span>};</div>
-<div class="line"><span class="lineno">  275</span>  }</div>
-<div class="line"><span class="lineno">  276</span>}</div>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00282">282</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html">Conv2DLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  283</span>{</div>
+<div class="line"><span class="lineno">  284</span>  <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a94c8dc4a85a3a2d405a9728bdbaa5107">prepare</a>();</div>
+<div class="line"><span class="lineno">  285</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ae85cf7ba798b307fd40e09b736caf5c9">is_dynamic</a>() || <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ae85cf7ba798b307fd40e09b736caf5c9">is_dynamic</a>())</div>
+<div class="line"><span class="lineno">  286</span>  {</div>
+<div class="line"><span class="lineno">  287</span>    <span class="keyword">const</span> <span class="keyword">auto</span> ifm_shape = <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">getShape</a>().asFeature();</div>
+<div class="line"><span class="lineno">  288</span>    <span class="keyword">const</span> <span class="keyword">auto</span> ofm_shape = <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#aaa162c7b8f9a062a7d2fae5106e32176">_output</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">getShape</a>().asFeature();</div>
+<div class="line"><span class="lineno">  289</span>    <span class="comment">// Kernel format is [depth_out, kernel_height, kernel_width, depth_in].</span></div>
+<div class="line"><span class="lineno">  290</span>    <span class="keyword">const</span> <span class="keyword">auto</span> ker_shape = <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">getShape</a>();</div>
+<div class="line"><span class="lineno">  291</span>    <span class="keyword">const</span> <span class="keyword">auto</span> ker_height = ker_shape.dim(1);</div>
+<div class="line"><span class="lineno">  292</span>    <span class="keyword">const</span> <span class="keyword">auto</span> ker_width = ker_shape.dim(2);</div>
+<div class="line"><span class="lineno">  293</span> </div>
+<div class="line"><span class="lineno">  294</span>    ir::Stride stride;</div>
+<div class="line"><span class="lineno">  295</span>    stride.vertical = <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ad5b5f1a6a93fd9df743561a2dcc47e98">_strideWidth</a>;</div>
+<div class="line"><span class="lineno">  296</span>    stride.horizontal = <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ad5b5f1a6a93fd9df743561a2dcc47e98">_strideWidth</a>;</div>
+<div class="line"><span class="lineno">  297</span> </div>
+<div class="line"><span class="lineno">  298</span>    ir::Padding param_padding;</div>
+<div class="line"><span class="lineno">  299</span>    param_padding.type = <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ab935c461cbe4c2e457bca9c30ce1fed5">_paddingType</a>;</div>
+<div class="line"><span class="lineno">  300</span>    param_padding.param.left = <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a9d0e6f8e6cf93f82a4ddf9c955ab2a00">_paddingLeft</a>;</div>
+<div class="line"><span class="lineno">  301</span>    param_padding.param.right = <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ae548509f7078df8b958034f7ae3a921c">_paddingRight</a>;</div>
+<div class="line"><span class="lineno">  302</span>    param_padding.param.top = <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a67e6141a55ba70ea64f82ae010a0dc9f">_paddingTop</a>;</div>
+<div class="line"><span class="lineno">  303</span>    param_padding.param.bottom = <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a227a9ce44adadd992da651d8a45bb2ef">_paddingBottom</a>;</div>
+<div class="line"><span class="lineno">  304</span> </div>
+<div class="line"><span class="lineno">  305</span>    <span class="keyword">const</span> <span class="keyword">auto</span> padding =</div>
+<div class="line"><span class="lineno">  306</span>      <a class="code hl_function" href="namespaceonert_1_1ir.html#a2ab58c9ae156f4ab01ecbe99b004ff85">ir::calculatePadding</a>(param_padding, ifm_shape, ofm_shape, stride, ker_width, ker_height,</div>
+<div class="line"><span class="lineno">  307</span>                           <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a9ff9c6e3f04abb66c2430dcc31889353">_dilationWidthFactor</a>, <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ac2e0903949bb566a8ac9d0d91bcd65f5">_dilationHeightFactor</a>);</div>
+<div class="line"><span class="lineno">  308</span> </div>
+<div class="line"><span class="lineno">  309</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a9d0e6f8e6cf93f82a4ddf9c955ab2a00">_paddingLeft</a> = padding.left;</div>
+<div class="line"><span class="lineno">  310</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ae548509f7078df8b958034f7ae3a921c">_paddingRight</a> = padding.right;</div>
+<div class="line"><span class="lineno">  311</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a67e6141a55ba70ea64f82ae010a0dc9f">_paddingTop</a> = padding.top;</div>
+<div class="line"><span class="lineno">  312</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a227a9ce44adadd992da651d8a45bb2ef">_paddingBottom</a> = padding.bottom;</div>
+<div class="line"><span class="lineno">  313</span>  }</div>
+<div class="line"><span class="lineno">  314</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a599733f29cddee04ce3784334f143c63">_is_hybrid</a>)</div>
+<div class="line"><span class="lineno">  315</span>  {</div>
+<div class="line"><span class="lineno">  316</span>    convQ8iHybridPerChannel();</div>
+<div class="line"><span class="lineno">  317</span>  }</div>
+<div class="line"><span class="lineno">  318</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32)</div>
+<div class="line"><span class="lineno">  319</span>  {</div>
+<div class="line"><span class="lineno">  320</span>    convFloat32();</div>
+<div class="line"><span class="lineno">  321</span>  }</div>
+<div class="line"><span class="lineno">  322</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_UINT8_ASYMM)</div>
+<div class="line"><span class="lineno">  323</span>  {</div>
+<div class="line"><span class="lineno">  324</span>    <span class="keyword">const</span> <span class="keywordtype">bool</span> per_channel_quantized = <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a4347b0f51edc8533a73cd7458f46f7b0">data_scales</a>().size() &gt; 1;</div>
+<div class="line"><span class="lineno">  325</span>    <span class="keywordflow">if</span> (per_channel_quantized)</div>
+<div class="line"><span class="lineno">  326</span>      convQ8uPerChannel();</div>
+<div class="line"><span class="lineno">  327</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  328</span>      convQ8uPerTensor();</div>
+<div class="line"><span class="lineno">  329</span>  }</div>
+<div class="line"><span class="lineno">  330</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_INT8_ASYMM)</div>
+<div class="line"><span class="lineno">  331</span>  {</div>
+<div class="line"><span class="lineno">  332</span>    convQ8i();</div>
+<div class="line"><span class="lineno">  333</span>  }</div>
+<div class="line"><span class="lineno">  334</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  335</span>  {</div>
+<div class="line"><span class="lineno">  336</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Conv: unsupported data type&quot;</span>};</div>
+<div class="line"><span class="lineno">  337</span>  }</div>
+<div class="line"><span class="lineno">  338</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_ad010d0f248f6e0e400485d81410ac158"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">onert::backend::IPortableTensor::getShape</a></div><div class="ttdeci">ir::Shape getShape() const override final</div><div class="ttdoc">Get ir::Shape of tensor.</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00064">IPortableTensor.h:64</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a94c8dc4a85a3a2d405a9728bdbaa5107"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a94c8dc4a85a3a2d405a9728bdbaa5107">onert::backend::cpu::ops::ConvolutionLayer::prepare</a></div><div class="ttdeci">void prepare() override</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">Conv2DLayer.cc:278</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a94c8dc4a85a3a2d405a9728bdbaa5107"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a94c8dc4a85a3a2d405a9728bdbaa5107">onert::backend::cpu::ops::ConvolutionLayer::prepare</a></div><div class="ttdeci">void prepare() override</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00340">Conv2DLayer.cc:340</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a2ab58c9ae156f4ab01ecbe99b004ff85"><div class="ttname"><a href="namespaceonert_1_1ir.html#a2ab58c9ae156f4ab01ecbe99b004ff85">onert::ir::calculatePadding</a></div><div class="ttdeci">const ExplicitPadding calculatePadding(const Padding &amp;padding, const FeatureShape &amp;ifm_shape, const FeatureShape &amp;ofm_shape, const Stride &amp;stride, uint32_t kw, uint32_t kh, uint32_t dwf=1, uint32_t dhf=1)</div><div class="ttdef"><b>Definition</b> <a href="_padding_8cc_source.html#l00131">Padding.cc:131</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00076">_dilationHeightFactor</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00075">_dilationWidthFactor</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00062">_input</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00085">_is_hybrid</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00063">_kernel</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00065">_output</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00071">_paddingBottom</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00068">_paddingLeft</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00070">_paddingRight</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00069">_paddingTop</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00067">_paddingType</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00073">_strideWidth</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00048">onert::ir::ExplicitPadding::bottom</a>, <a class="el" href="_padding_8cc_source.html#l00131">onert::ir::calculatePadding()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00057">onert::backend::IPortableTensor::data_scales()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00064">onert::backend::IPortableTensor::getShape()</a>, <a class="el" href="_internal_type_8h_source.html#l00038">onert::ir::Stride::horizontal</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00063">onert::backend::IPortableTensor::is_dynamic()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00045">onert::ir::ExplicitPadding::left</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00060">onert::ir::Padding::param</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">prepare()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00046">onert::ir::ExplicitPadding::right</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00047">onert::ir::ExplicitPadding::top</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00059">onert::ir::Padding::type</a>, and <a class="el" href="_internal_type_8h_source.html#l00037">onert::ir::Stride::vertical</a>.</p>
+<p class="reference">References <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00076">_dilationHeightFactor</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00075">_dilationWidthFactor</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00062">_input</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00085">_is_hybrid</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00063">_kernel</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00065">_output</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00071">_paddingBottom</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00068">_paddingLeft</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00070">_paddingRight</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00069">_paddingTop</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00067">_paddingType</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00073">_strideWidth</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00048">onert::ir::ExplicitPadding::bottom</a>, <a class="el" href="_padding_8cc_source.html#l00131">onert::ir::calculatePadding()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00057">onert::backend::IPortableTensor::data_scales()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00064">onert::backend::IPortableTensor::getShape()</a>, <a class="el" href="_internal_type_8h_source.html#l00038">onert::ir::Stride::horizontal</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00063">onert::backend::IPortableTensor::is_dynamic()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00045">onert::ir::ExplicitPadding::left</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00060">onert::ir::Padding::param</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00340">prepare()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00046">onert::ir::ExplicitPadding::right</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00047">onert::ir::ExplicitPadding::top</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00059">onert::ir::Padding::type</a>, and <a class="el" href="_internal_type_8h_source.html#l00037">onert::ir::Stride::vertical</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_convolution_layer_8cc_source.html#l00097">onert::backend::train::ops::ConvolutionLayer::forward()</a>.</p>
 
@@ -620,7 +620,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00078">78</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00191">configure()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00253">configure()</a>.</p>
 
 </div>
 </div>
@@ -646,7 +646,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00064">64</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00191">configure()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00253">configure()</a>.</p>
 
 </div>
 </div>
@@ -672,7 +672,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00080">80</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">prepare()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00340">prepare()</a>.</p>
 
 </div>
 </div>
@@ -698,7 +698,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00076">76</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00191">configure()</a>, <a class="el" href="_convolution_layer_8cc_source.html#l00062">onert::backend::train::ops::ConvolutionLayer::configureBackward()</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">prepare()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00220">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00253">configure()</a>, <a class="el" href="_convolution_layer_8cc_source.html#l00062">onert::backend::train::ops::ConvolutionLayer::configureBackward()</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00340">prepare()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00282">run()</a>.</p>
 
 </div>
 </div>
@@ -724,7 +724,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00075">75</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00191">configure()</a>, <a class="el" href="_convolution_layer_8cc_source.html#l00062">onert::backend::train::ops::ConvolutionLayer::configureBackward()</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">prepare()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00220">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00253">configure()</a>, <a class="el" href="_convolution_layer_8cc_source.html#l00062">onert::backend::train::ops::ConvolutionLayer::configureBackward()</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00340">prepare()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00282">run()</a>.</p>
 
 </div>
 </div>
@@ -750,7 +750,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00081">81</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">prepare()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00340">prepare()</a>.</p>
 
 </div>
 </div>
@@ -776,7 +776,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00062">62</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_convolution_layer_8cc_source.html#l00098">onert::backend::train::ops::ConvolutionLayer::backward()</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00191">configure()</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">prepare()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00220">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_convolution_layer_8cc_source.html#l00098">onert::backend::train::ops::ConvolutionLayer::backward()</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00253">configure()</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00340">prepare()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00282">run()</a>.</p>
 
 </div>
 </div>
@@ -802,7 +802,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00084">84</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00191">configure()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">prepare()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00253">configure()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00340">prepare()</a>.</p>
 
 </div>
 </div>
@@ -828,7 +828,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00085">85</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00191">configure()</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">prepare()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00220">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00253">configure()</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00340">prepare()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00282">run()</a>.</p>
 
 </div>
 </div>
@@ -854,7 +854,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00063">63</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00191">configure()</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">prepare()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00220">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00253">configure()</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00340">prepare()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00282">run()</a>.</p>
 
 </div>
 </div>
@@ -880,7 +880,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00065">65</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00191">configure()</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">prepare()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00220">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00253">configure()</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00340">prepare()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00282">run()</a>.</p>
 
 </div>
 </div>
@@ -906,7 +906,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00071">71</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00191">configure()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00220">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00253">configure()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00282">run()</a>.</p>
 
 </div>
 </div>
@@ -932,7 +932,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00068">68</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00191">configure()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00220">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00253">configure()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00282">run()</a>.</p>
 
 </div>
 </div>
@@ -958,7 +958,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00070">70</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00191">configure()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00220">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00253">configure()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00282">run()</a>.</p>
 
 </div>
 </div>
@@ -984,7 +984,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00069">69</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00191">configure()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00220">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00253">configure()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00282">run()</a>.</p>
 
 </div>
 </div>
@@ -1010,7 +1010,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00067">67</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00191">configure()</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">prepare()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00220">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00253">configure()</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00340">prepare()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00282">run()</a>.</p>
 
 </div>
 </div>
@@ -1036,7 +1036,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00083">83</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">prepare()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00340">prepare()</a>.</p>
 
 </div>
 </div>
@@ -1062,7 +1062,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00074">74</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00191">configure()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">prepare()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00253">configure()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00340">prepare()</a>.</p>
 
 </div>
 </div>
@@ -1088,7 +1088,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00073">73</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00191">configure()</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">prepare()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00220">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00253">configure()</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00340">prepare()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00282">run()</a>.</p>
 
 </div>
 </div>

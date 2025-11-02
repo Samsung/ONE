@@ -142,12 +142,12 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_resize_bilinear_layer_8cc_source.html#l00024">24</a> of file <a class="el" href="_resize_bilinear_layer_8cc_source.html">ResizeBilinearLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   25</span>  : _input(<span class="keyword">nullptr</span>), _output(<span class="keyword">nullptr</span>), _size(<span class="keyword">nullptr</span>), _output_height(0), _output_width(0),</div>
-<div class="line"><span class="lineno">   26</span>    _align_corners(<span class="keyword">false</span>), _half_pixel_centers(<span class="keyword">false</span>)</div>
-<div class="line"><span class="lineno">   27</span>{</div>
-<div class="line"><span class="lineno">   28</span>  <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">   29</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_resize_bilinear_layer_8cc_source.html#l00076">76</a> of file <a class="el" href="_resize_bilinear_layer_8cc_source.html">ResizeBilinearLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   77</span>  : _input(<span class="keyword">nullptr</span>), _output(<span class="keyword">nullptr</span>), _size(<span class="keyword">nullptr</span>), _output_height(0), _output_width(0),</div>
+<div class="line"><span class="lineno">   78</span>    _align_corners(<span class="keyword">false</span>), _half_pixel_centers(<span class="keyword">false</span>)</div>
+<div class="line"><span class="lineno">   79</span>{</div>
+<div class="line"><span class="lineno">   80</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   81</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -202,26 +202,26 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_resize_bilinear_layer_8cc_source.html#l00043">43</a> of file <a class="el" href="_resize_bilinear_layer_8cc_source.html">ResizeBilinearLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   46</span>{</div>
-<div class="line"><span class="lineno">   47</span>  assert(_size == <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   48</span>  <span class="keywordflow">if</span> (output_height &lt; 0)</div>
-<div class="line"><span class="lineno">   49</span>  {</div>
-<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;ResizeBilinear: size value must be positive value, output_height = &quot;</span> +</div>
-<div class="line"><span class="lineno">   51</span>                             std::to_string(output_height)};</div>
-<div class="line"><span class="lineno">   52</span>  }</div>
-<div class="line"><span class="lineno">   53</span>  <span class="keywordflow">if</span> (output_width &lt; 0)</div>
-<div class="line"><span class="lineno">   54</span>  {</div>
-<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;ResizeBilinear: size value must be positive value, output_width = &quot;</span> +</div>
-<div class="line"><span class="lineno">   56</span>                             std::to_string(output_width)};</div>
-<div class="line"><span class="lineno">   57</span>  }</div>
-<div class="line"><span class="lineno">   58</span>  _input = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
-<div class="line"><span class="lineno">   59</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
-<div class="line"><span class="lineno">   60</span>  _output_height = output_height;</div>
-<div class="line"><span class="lineno">   61</span>  _output_width = output_width;</div>
-<div class="line"><span class="lineno">   62</span>  _align_corners = align_corners;</div>
-<div class="line"><span class="lineno">   63</span>  _half_pixel_centers = half_pixel_centers;</div>
-<div class="line"><span class="lineno">   64</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_resize_bilinear_layer_8cc_source.html#l00095">95</a> of file <a class="el" href="_resize_bilinear_layer_8cc_source.html">ResizeBilinearLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   98</span>{</div>
+<div class="line"><span class="lineno">   99</span>  assert(_size == <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  100</span>  <span class="keywordflow">if</span> (output_height &lt; 0)</div>
+<div class="line"><span class="lineno">  101</span>  {</div>
+<div class="line"><span class="lineno">  102</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;ResizeBilinear: size value must be positive value, output_height = &quot;</span> +</div>
+<div class="line"><span class="lineno">  103</span>                             std::to_string(output_height)};</div>
+<div class="line"><span class="lineno">  104</span>  }</div>
+<div class="line"><span class="lineno">  105</span>  <span class="keywordflow">if</span> (output_width &lt; 0)</div>
+<div class="line"><span class="lineno">  106</span>  {</div>
+<div class="line"><span class="lineno">  107</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;ResizeBilinear: size value must be positive value, output_width = &quot;</span> +</div>
+<div class="line"><span class="lineno">  108</span>                             std::to_string(output_width)};</div>
+<div class="line"><span class="lineno">  109</span>  }</div>
+<div class="line"><span class="lineno">  110</span>  _input = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
+<div class="line"><span class="lineno">  111</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
+<div class="line"><span class="lineno">  112</span>  _output_height = output_height;</div>
+<div class="line"><span class="lineno">  113</span>  _output_width = output_width;</div>
+<div class="line"><span class="lineno">  114</span>  _align_corners = align_corners;</div>
+<div class="line"><span class="lineno">  115</span>  _half_pixel_centers = half_pixel_centers;</div>
+<div class="line"><span class="lineno">  116</span>}</div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00096">gen_h5_explicit_inputs_all.py:96</a></div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 </div><!-- fragment -->
@@ -271,15 +271,15 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_resize_bilinear_layer_8cc_source.html#l00031">31</a> of file <a class="el" href="_resize_bilinear_layer_8cc_source.html">ResizeBilinearLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   34</span>{</div>
-<div class="line"><span class="lineno">   35</span>  assert(!<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>-&gt;is_constant());</div>
-<div class="line"><span class="lineno">   36</span>  _input = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
-<div class="line"><span class="lineno">   37</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
-<div class="line"><span class="lineno">   38</span>  _size = <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>;</div>
-<div class="line"><span class="lineno">   39</span>  _align_corners = align_corners;</div>
-<div class="line"><span class="lineno">   40</span>  _half_pixel_centers = half_pixel_centers;</div>
-<div class="line"><span class="lineno">   41</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_resize_bilinear_layer_8cc_source.html#l00083">83</a> of file <a class="el" href="_resize_bilinear_layer_8cc_source.html">ResizeBilinearLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   86</span>{</div>
+<div class="line"><span class="lineno">   87</span>  assert(!<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>-&gt;is_constant());</div>
+<div class="line"><span class="lineno">   88</span>  _input = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
+<div class="line"><span class="lineno">   89</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
+<div class="line"><span class="lineno">   90</span>  _size = <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>;</div>
+<div class="line"><span class="lineno">   91</span>  _align_corners = align_corners;</div>
+<div class="line"><span class="lineno">   92</span>  _half_pixel_centers = half_pixel_centers;</div>
+<div class="line"><span class="lineno">   93</span>}</div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
@@ -311,52 +311,52 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_function.html#aedd6f5e12852d808abb97327b9d229e2">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_resize_bilinear_layer_8cc_source.html#l00066">66</a> of file <a class="el" href="_resize_bilinear_layer_8cc_source.html">ResizeBilinearLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   67</span>{</div>
-<div class="line"><span class="lineno">   68</span>  <a class="code hl_struct" href="structnnfw_1_1cker_1_1_resize_bilinear_params.html">nnfw::cker::ResizeBilinearParams</a> params;</div>
-<div class="line"><span class="lineno">   69</span>  <span class="keywordflow">if</span> (_size == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   70</span>  {</div>
-<div class="line"><span class="lineno">   71</span>    params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_resize_bilinear_params.html#a9b4eaacd16a327f905d6ba90171e9f96">output_height</a> = _output_height;</div>
-<div class="line"><span class="lineno">   72</span>    params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_resize_bilinear_params.html#a82f386fc29cfd03331a19b7fbaf41bbd">output_width</a> = _output_width;</div>
-<div class="line"><span class="lineno">   73</span>  }</div>
-<div class="line"><span class="lineno">   74</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   75</span>  {</div>
-<div class="line"><span class="lineno">   76</span>    <span class="keyword">const</span> <span class="keyword">auto</span> size_buf = getBuffer&lt;int32_t&gt;(_size);</div>
-<div class="line"><span class="lineno">   77</span>    params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_resize_bilinear_params.html#a9b4eaacd16a327f905d6ba90171e9f96">output_height</a> = size_buf[0];</div>
-<div class="line"><span class="lineno">   78</span>    params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_resize_bilinear_params.html#a82f386fc29cfd03331a19b7fbaf41bbd">output_width</a> = size_buf[1];</div>
-<div class="line"><span class="lineno">   79</span>  }</div>
-<div class="line"><span class="lineno">   80</span>  params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_resize_bilinear_params.html#a17783197d3517e87acc1b62d871dd234">align_corners</a> = _align_corners;</div>
-<div class="line"><span class="lineno">   81</span>  params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_resize_bilinear_params.html#ae763670f31b050ad3aad4ca5da1ca6e4">half_pixel_centers</a> = _half_pixel_centers;</div>
-<div class="line"><span class="lineno">   82</span> </div>
-<div class="line"><span class="lineno">   83</span>  <span class="keywordflow">switch</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>())</div>
-<div class="line"><span class="lineno">   84</span>  {</div>
-<div class="line"><span class="lineno">   85</span>    <span class="keywordflow">case</span> OperandType::FLOAT32:</div>
-<div class="line"><span class="lineno">   86</span>      <a class="code hl_function" href="namespacennfw_1_1cker.html#a577637576392218c2d08117e3ad00ab7">nnfw::cker::ResizeBilinear</a>(params, <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_input), getBuffer&lt;float&gt;(_input),</div>
-<div class="line"><span class="lineno">   87</span>                                 <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_output), getBuffer&lt;float&gt;(_output));</div>
-<div class="line"><span class="lineno">   88</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   89</span> </div>
-<div class="line"><span class="lineno">   90</span>    <span class="keywordflow">case</span> OperandType::QUANT_UINT8_ASYMM:</div>
-<div class="line"><span class="lineno">   91</span>      <a class="code hl_function" href="namespacennfw_1_1cker.html#a577637576392218c2d08117e3ad00ab7">nnfw::cker::ResizeBilinear</a>(params, <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_input), getBuffer&lt;uint8_t&gt;(_input),</div>
-<div class="line"><span class="lineno">   92</span>                                 <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_output), getBuffer&lt;uint8_t&gt;(_output));</div>
-<div class="line"><span class="lineno">   93</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   94</span> </div>
-<div class="line"><span class="lineno">   95</span>    <span class="keywordflow">case</span> OperandType::QUANT_INT8_ASYMM:</div>
-<div class="line"><span class="lineno">   96</span>      <a class="code hl_function" href="namespacennfw_1_1cker.html#a577637576392218c2d08117e3ad00ab7">nnfw::cker::ResizeBilinear</a>(params, <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_input), getBuffer&lt;int8_t&gt;(_input),</div>
-<div class="line"><span class="lineno">   97</span>                                 <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_output), getBuffer&lt;int8_t&gt;(_output));</div>
-<div class="line"><span class="lineno">   98</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   99</span> </div>
-<div class="line"><span class="lineno">  100</span>    <span class="keywordflow">case</span> OperandType::UINT8:</div>
-<div class="line"><span class="lineno">  101</span>    <span class="keywordflow">case</span> OperandType::BOOL8:</div>
-<div class="line"><span class="lineno">  102</span>    <span class="keywordflow">case</span> OperandType::FLOAT16:</div>
-<div class="line"><span class="lineno">  103</span>    <span class="keywordflow">case</span> OperandType::INT32:</div>
-<div class="line"><span class="lineno">  104</span>    <span class="keywordflow">case</span> OperandType::INT64:</div>
-<div class="line"><span class="lineno">  105</span>    <span class="keywordflow">case</span> OperandType::QUANT_INT8_SYMM:</div>
-<div class="line"><span class="lineno">  106</span>      std::runtime_error(<span class="stringliteral">&quot;ResizeBilinear NYI&quot;</span>);</div>
-<div class="line"><span class="lineno">  107</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  109</span>      std::runtime_error(<span class="stringliteral">&quot;ResizeBilinear unsupported data type&quot;</span>);</div>
-<div class="line"><span class="lineno">  110</span>  }</div>
-<div class="line"><span class="lineno">  111</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_resize_bilinear_layer_8cc_source.html#l00118">118</a> of file <a class="el" href="_resize_bilinear_layer_8cc_source.html">ResizeBilinearLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  119</span>{</div>
+<div class="line"><span class="lineno">  120</span>  <a class="code hl_struct" href="structnnfw_1_1cker_1_1_resize_bilinear_params.html">nnfw::cker::ResizeBilinearParams</a> params;</div>
+<div class="line"><span class="lineno">  121</span>  <span class="keywordflow">if</span> (_size == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  122</span>  {</div>
+<div class="line"><span class="lineno">  123</span>    params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_resize_bilinear_params.html#a9b4eaacd16a327f905d6ba90171e9f96">output_height</a> = _output_height;</div>
+<div class="line"><span class="lineno">  124</span>    params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_resize_bilinear_params.html#a82f386fc29cfd03331a19b7fbaf41bbd">output_width</a> = _output_width;</div>
+<div class="line"><span class="lineno">  125</span>  }</div>
+<div class="line"><span class="lineno">  126</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  127</span>  {</div>
+<div class="line"><span class="lineno">  128</span>    <span class="keyword">const</span> <span class="keyword">auto</span> size_buf = getBuffer&lt;int32_t&gt;(_size);</div>
+<div class="line"><span class="lineno">  129</span>    params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_resize_bilinear_params.html#a9b4eaacd16a327f905d6ba90171e9f96">output_height</a> = size_buf[0];</div>
+<div class="line"><span class="lineno">  130</span>    params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_resize_bilinear_params.html#a82f386fc29cfd03331a19b7fbaf41bbd">output_width</a> = size_buf[1];</div>
+<div class="line"><span class="lineno">  131</span>  }</div>
+<div class="line"><span class="lineno">  132</span>  params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_resize_bilinear_params.html#a17783197d3517e87acc1b62d871dd234">align_corners</a> = _align_corners;</div>
+<div class="line"><span class="lineno">  133</span>  params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_resize_bilinear_params.html#ae763670f31b050ad3aad4ca5da1ca6e4">half_pixel_centers</a> = _half_pixel_centers;</div>
+<div class="line"><span class="lineno">  134</span> </div>
+<div class="line"><span class="lineno">  135</span>  <span class="keywordflow">switch</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>())</div>
+<div class="line"><span class="lineno">  136</span>  {</div>
+<div class="line"><span class="lineno">  137</span>    <span class="keywordflow">case</span> OperandType::FLOAT32:</div>
+<div class="line"><span class="lineno">  138</span>      <a class="code hl_function" href="namespacennfw_1_1cker.html#a577637576392218c2d08117e3ad00ab7">nnfw::cker::ResizeBilinear</a>(params, <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_input), getBuffer&lt;float&gt;(_input),</div>
+<div class="line"><span class="lineno">  139</span>                                 <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_output), getBuffer&lt;float&gt;(_output));</div>
+<div class="line"><span class="lineno">  140</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  141</span> </div>
+<div class="line"><span class="lineno">  142</span>    <span class="keywordflow">case</span> OperandType::QUANT_UINT8_ASYMM:</div>
+<div class="line"><span class="lineno">  143</span>      <a class="code hl_function" href="namespacennfw_1_1cker.html#a577637576392218c2d08117e3ad00ab7">nnfw::cker::ResizeBilinear</a>(params, <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_input), getBuffer&lt;uint8_t&gt;(_input),</div>
+<div class="line"><span class="lineno">  144</span>                                 <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_output), getBuffer&lt;uint8_t&gt;(_output));</div>
+<div class="line"><span class="lineno">  145</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  146</span> </div>
+<div class="line"><span class="lineno">  147</span>    <span class="keywordflow">case</span> OperandType::QUANT_INT8_ASYMM:</div>
+<div class="line"><span class="lineno">  148</span>      <a class="code hl_function" href="namespacennfw_1_1cker.html#a577637576392218c2d08117e3ad00ab7">nnfw::cker::ResizeBilinear</a>(params, <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_input), getBuffer&lt;int8_t&gt;(_input),</div>
+<div class="line"><span class="lineno">  149</span>                                 <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_output), getBuffer&lt;int8_t&gt;(_output));</div>
+<div class="line"><span class="lineno">  150</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  151</span> </div>
+<div class="line"><span class="lineno">  152</span>    <span class="keywordflow">case</span> OperandType::UINT8:</div>
+<div class="line"><span class="lineno">  153</span>    <span class="keywordflow">case</span> OperandType::BOOL8:</div>
+<div class="line"><span class="lineno">  154</span>    <span class="keywordflow">case</span> OperandType::FLOAT16:</div>
+<div class="line"><span class="lineno">  155</span>    <span class="keywordflow">case</span> OperandType::INT32:</div>
+<div class="line"><span class="lineno">  156</span>    <span class="keywordflow">case</span> OperandType::INT64:</div>
+<div class="line"><span class="lineno">  157</span>    <span class="keywordflow">case</span> OperandType::QUANT_INT8_SYMM:</div>
+<div class="line"><span class="lineno">  158</span>      std::runtime_error(<span class="stringliteral">&quot;ResizeBilinear NYI&quot;</span>);</div>
+<div class="line"><span class="lineno">  159</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  160</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  161</span>      std::runtime_error(<span class="stringliteral">&quot;ResizeBilinear unsupported data type&quot;</span>);</div>
+<div class="line"><span class="lineno">  162</span>  }</div>
+<div class="line"><span class="lineno">  163</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aae73f75c41fa15f5ae2c391918fa09c5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor::data_type</a></div><div class="ttdeci">ir::DataType data_type() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00054">IPortableTensor.h:54</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_a577637576392218c2d08117e3ad00ab7"><div class="ttname"><a href="namespacennfw_1_1cker.html#a577637576392218c2d08117e3ad00ab7">nnfw::cker::ResizeBilinear</a></div><div class="ttdeci">void ResizeBilinear(ResizeBilinearParams &amp;params, const Shape &amp;input_shape, const float *input_data, const Shape &amp;output_shape, float *output_data)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2operation_2_resize_bilinear_8h_source.html#l00213">ResizeBilinear.h:213</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a1cfb53087f7fc161b9162d65aa5520d9"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">onert::backend::cpu::ops::getShape</a></div><div class="ttdeci">nnfw::cker::Shape getShape(const IPortableTensor *tensor)</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_operation_utils_8h_source.html#l00089">OperationUtils.h:89</a></div></div>

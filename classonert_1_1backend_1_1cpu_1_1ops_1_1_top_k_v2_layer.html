@@ -140,10 +140,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_top_k_v2_layer_8cc_source.html#l00026">26</a> of file <a class="el" href="_top_k_v2_layer_8cc_source.html">TopKV2Layer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   27</span>  : _input(<span class="keyword">nullptr</span>), _output_value(<span class="keyword">nullptr</span>), _output_indices(<span class="keyword">nullptr</span>), _k(0)</div>
-<div class="line"><span class="lineno">   28</span>{</div>
-<div class="line"><span class="lineno">   29</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_top_k_v2_layer_8cc_source.html#l00056">56</a> of file <a class="el" href="_top_k_v2_layer_8cc_source.html">TopKV2Layer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   57</span>  : _input(<span class="keyword">nullptr</span>), _output_value(<span class="keyword">nullptr</span>), _output_indices(<span class="keyword">nullptr</span>), _k(0)</div>
+<div class="line"><span class="lineno">   58</span>{</div>
+<div class="line"><span class="lineno">   59</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -186,14 +186,14 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_top_k_v2_layer_8cc_source.html#l00031">31</a> of file <a class="el" href="_top_k_v2_layer_8cc_source.html">TopKV2Layer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   33</span>{</div>
-<div class="line"><span class="lineno">   34</span>  _input = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
-<div class="line"><span class="lineno">   35</span>  _output_value = output_value;</div>
-<div class="line"><span class="lineno">   36</span>  _output_indices = output_indices;</div>
-<div class="line"><span class="lineno">   37</span> </div>
-<div class="line"><span class="lineno">   38</span>  _k = <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(k);</div>
-<div class="line"><span class="lineno">   39</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_top_k_v2_layer_8cc_source.html#l00061">61</a> of file <a class="el" href="_top_k_v2_layer_8cc_source.html">TopKV2Layer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   63</span>{</div>
+<div class="line"><span class="lineno">   64</span>  _input = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
+<div class="line"><span class="lineno">   65</span>  _output_value = output_value;</div>
+<div class="line"><span class="lineno">   66</span>  _output_indices = output_indices;</div>
+<div class="line"><span class="lineno">   67</span> </div>
+<div class="line"><span class="lineno">   68</span>  _k = <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(k);</div>
+<div class="line"><span class="lineno">   69</span>}</div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 </div><!-- fragment -->
 </div>
@@ -223,34 +223,34 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_function.html#aedd6f5e12852d808abb97327b9d229e2">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_top_k_v2_layer_8cc_source.html#l00041">41</a> of file <a class="el" href="_top_k_v2_layer_8cc_source.html">TopKV2Layer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   42</span>{</div>
-<div class="line"><span class="lineno">   43</span>  <span class="keywordflow">if</span> (_output_indices-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() != OperandType::INT32)</div>
-<div class="line"><span class="lineno">   44</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;TopKV2: unsupported output indices type&quot;</span>};</div>
-<div class="line"><span class="lineno">   45</span> </div>
-<div class="line"><span class="lineno">   46</span>  <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32)</div>
-<div class="line"><span class="lineno">   47</span>  {</div>
-<div class="line"><span class="lineno">   48</span>    nnfw::cker::TopKV2&lt;float, int32_t&gt;(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_input), getBuffer&lt;float&gt;(_input), _k,</div>
-<div class="line"><span class="lineno">   49</span>                                       getBuffer&lt;float&gt;(_output_value),</div>
-<div class="line"><span class="lineno">   50</span>                                       getBuffer&lt;int32_t&gt;(_output_indices));</div>
-<div class="line"><span class="lineno">   51</span>  }</div>
-<div class="line"><span class="lineno">   52</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::INT32)</div>
-<div class="line"><span class="lineno">   53</span>  {</div>
-<div class="line"><span class="lineno">   54</span>    nnfw::cker::TopKV2&lt;int32_t, int32_t&gt;(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_input), getBuffer&lt;int32_t&gt;(_input), _k,</div>
-<div class="line"><span class="lineno">   55</span>                                         getBuffer&lt;int32_t&gt;(_output_value),</div>
-<div class="line"><span class="lineno">   56</span>                                         getBuffer&lt;int32_t&gt;(_output_indices));</div>
-<div class="line"><span class="lineno">   57</span>  }</div>
-<div class="line"><span class="lineno">   58</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_UINT8_ASYMM)</div>
-<div class="line"><span class="lineno">   59</span>  {</div>
-<div class="line"><span class="lineno">   60</span>    nnfw::cker::TopKV2&lt;uint8_t, int32_t&gt;(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_input), getBuffer&lt;uint8_t&gt;(_input), _k,</div>
-<div class="line"><span class="lineno">   61</span>                                         getBuffer&lt;uint8_t&gt;(_output_value),</div>
-<div class="line"><span class="lineno">   62</span>                                         getBuffer&lt;int32_t&gt;(_output_indices));</div>
-<div class="line"><span class="lineno">   63</span>  }</div>
-<div class="line"><span class="lineno">   64</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   65</span>  {</div>
-<div class="line"><span class="lineno">   66</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;TopKV2: unsupported data type&quot;</span>};</div>
-<div class="line"><span class="lineno">   67</span>  }</div>
-<div class="line"><span class="lineno">   68</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_top_k_v2_layer_8cc_source.html#l00071">71</a> of file <a class="el" href="_top_k_v2_layer_8cc_source.html">TopKV2Layer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   72</span>{</div>
+<div class="line"><span class="lineno">   73</span>  <span class="keywordflow">if</span> (_output_indices-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() != OperandType::INT32)</div>
+<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;TopKV2: unsupported output indices type&quot;</span>};</div>
+<div class="line"><span class="lineno">   75</span> </div>
+<div class="line"><span class="lineno">   76</span>  <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32)</div>
+<div class="line"><span class="lineno">   77</span>  {</div>
+<div class="line"><span class="lineno">   78</span>    nnfw::cker::TopKV2&lt;float, int32_t&gt;(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_input), getBuffer&lt;float&gt;(_input), _k,</div>
+<div class="line"><span class="lineno">   79</span>                                       getBuffer&lt;float&gt;(_output_value),</div>
+<div class="line"><span class="lineno">   80</span>                                       getBuffer&lt;int32_t&gt;(_output_indices));</div>
+<div class="line"><span class="lineno">   81</span>  }</div>
+<div class="line"><span class="lineno">   82</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::INT32)</div>
+<div class="line"><span class="lineno">   83</span>  {</div>
+<div class="line"><span class="lineno">   84</span>    nnfw::cker::TopKV2&lt;int32_t, int32_t&gt;(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_input), getBuffer&lt;int32_t&gt;(_input), _k,</div>
+<div class="line"><span class="lineno">   85</span>                                         getBuffer&lt;int32_t&gt;(_output_value),</div>
+<div class="line"><span class="lineno">   86</span>                                         getBuffer&lt;int32_t&gt;(_output_indices));</div>
+<div class="line"><span class="lineno">   87</span>  }</div>
+<div class="line"><span class="lineno">   88</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_UINT8_ASYMM)</div>
+<div class="line"><span class="lineno">   89</span>  {</div>
+<div class="line"><span class="lineno">   90</span>    nnfw::cker::TopKV2&lt;uint8_t, int32_t&gt;(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_input), getBuffer&lt;uint8_t&gt;(_input), _k,</div>
+<div class="line"><span class="lineno">   91</span>                                         getBuffer&lt;uint8_t&gt;(_output_value),</div>
+<div class="line"><span class="lineno">   92</span>                                         getBuffer&lt;int32_t&gt;(_output_indices));</div>
+<div class="line"><span class="lineno">   93</span>  }</div>
+<div class="line"><span class="lineno">   94</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   95</span>  {</div>
+<div class="line"><span class="lineno">   96</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;TopKV2: unsupported data type&quot;</span>};</div>
+<div class="line"><span class="lineno">   97</span>  }</div>
+<div class="line"><span class="lineno">   98</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aae73f75c41fa15f5ae2c391918fa09c5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor::data_type</a></div><div class="ttdeci">ir::DataType data_type() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00054">IPortableTensor.h:54</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a1cfb53087f7fc161b9162d65aa5520d9"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">onert::backend::cpu::ops::getShape</a></div><div class="ttdeci">nnfw::cker::Shape getShape(const IPortableTensor *tensor)</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_operation_utils_8h_source.html#l00089">OperationUtils.h:89</a></div></div>
 </div><!-- fragment -->

@@ -378,10 +378,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 
 <p class="definition">Definition at line <a class="el" href="_n_n_pkg_8h_source.html#l00183">183</a> of file <a class="el" href="_n_n_pkg_8h_source.html">NNPkg.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  184</span>  {</div>
-<div class="line"><span class="lineno">  185</span>    std::cout &lt;&lt; from &lt;&lt; <span class="stringliteral">&quot; -&gt; &quot;</span> &lt;&lt; to &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  186</span>    _edges.<a class="code hl_variable" href="structonert_1_1ir_1_1_model_edges.html#a8e0e70000be73bdd1a1522bc9f3a0b83">edges</a>.insert(ModelEdge{from, to});</div>
-<div class="line"><span class="lineno">  187</span>  }</div>
+<div class="fragment"><div class="line"><span class="lineno">  183</span>{ _edges.<a class="code hl_variable" href="structonert_1_1ir_1_1_model_edges.html#a8e0e70000be73bdd1a1522bc9f3a0b83">edges</a>.insert(ModelEdge{from, to}); }</div>
 <div class="ttc" id="astructonert_1_1ir_1_1_model_edges_html_a8e0e70000be73bdd1a1522bc9f3a0b83"><div class="ttname"><a href="structonert_1_1ir_1_1_model_edges.html#a8e0e70000be73bdd1a1522bc9f3a0b83">onert::ir::ModelEdges::edges</a></div><div class="ttdeci">ModelEdgeSet edges</div><div class="ttdef"><b>Definition</b> <a href="_n_n_pkg_8h_source.html#l00080">NNPkg.h:80</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_n_n_pkg_8h_source.html#l00080">onert::ir::ModelEdges::edges</a>.</p>
@@ -502,21 +499,21 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_n_n_pkg_8h_source.html#l00314">314</a> of file <a class="el" href="_n_n_pkg_8h_source.html">NNPkg.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  315</span>  {</div>
-<div class="line"><span class="lineno">  316</span>    <span class="keywordflow">if</span> (_models.size() == 1)</div>
-<div class="line"><span class="lineno">  317</span>    {</div>
-<div class="line"><span class="lineno">  318</span>      <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a> = <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#a26715290d61b2707e5006f2afa78fb0c">primary_model</a>()-&gt;primary_subgraph();</div>
-<div class="line"><span class="lineno">  319</span>      <span class="keyword">auto</span> <span class="keyword">const</span> operand_index = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;getInputs().at(index);</div>
-<div class="line"><span class="lineno">  320</span>      <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;changeShape(operand_index, new_shape);</div>
-<div class="line"><span class="lineno">  321</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  322</span>    }</div>
-<div class="line"><span class="lineno">  323</span> </div>
-<div class="line"><span class="lineno">  324</span>    <span class="keyword">auto</span> <span class="keyword">const</span> &amp;desc = <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#aa465f8e7b5a585b81f8743e103a02992">input</a>(index);</div>
-<div class="line"><span class="lineno">  325</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a> = <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#a31089b86cbb99b26d9dcd7eddb1387fa">model</a>(std::get&lt;ModelIndex&gt;(desc))-&gt;primary_subgraph();</div>
-<div class="line"><span class="lineno">  326</span>    <span class="keyword">auto</span> <span class="keyword">const</span> operand_index = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;getInputs().at(std::get&lt;IOIndex&gt;(desc).value());</div>
-<div class="line"><span class="lineno">  327</span>    <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;changeShape(operand_index, new_shape);</div>
-<div class="line"><span class="lineno">  328</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_n_n_pkg_8h_source.html#l00310">310</a> of file <a class="el" href="_n_n_pkg_8h_source.html">NNPkg.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  311</span>  {</div>
+<div class="line"><span class="lineno">  312</span>    <span class="keywordflow">if</span> (_models.size() == 1)</div>
+<div class="line"><span class="lineno">  313</span>    {</div>
+<div class="line"><span class="lineno">  314</span>      <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a> = <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#a26715290d61b2707e5006f2afa78fb0c">primary_model</a>()-&gt;primary_subgraph();</div>
+<div class="line"><span class="lineno">  315</span>      <span class="keyword">auto</span> <span class="keyword">const</span> operand_index = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;getInputs().at(index);</div>
+<div class="line"><span class="lineno">  316</span>      <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;changeShape(operand_index, new_shape);</div>
+<div class="line"><span class="lineno">  317</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  318</span>    }</div>
+<div class="line"><span class="lineno">  319</span> </div>
+<div class="line"><span class="lineno">  320</span>    <span class="keyword">auto</span> <span class="keyword">const</span> &amp;desc = <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#aa465f8e7b5a585b81f8743e103a02992">input</a>(index);</div>
+<div class="line"><span class="lineno">  321</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a> = <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#a31089b86cbb99b26d9dcd7eddb1387fa">model</a>(std::get&lt;ModelIndex&gt;(desc))-&gt;primary_subgraph();</div>
+<div class="line"><span class="lineno">  322</span>    <span class="keyword">auto</span> <span class="keyword">const</span> operand_index = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;getInputs().at(std::get&lt;IOIndex&gt;(desc).value());</div>
+<div class="line"><span class="lineno">  323</span>    <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;changeShape(operand_index, new_shape);</div>
+<div class="line"><span class="lineno">  324</span>  }</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_n_n_pkg_html_a26715290d61b2707e5006f2afa78fb0c"><div class="ttname"><a href="classonert_1_1ir_1_1_n_n_pkg.html#a26715290d61b2707e5006f2afa78fb0c">onert::ir::NNPkg::primary_model</a></div><div class="ttdeci">std::shared_ptr&lt; Model &gt; primary_model() const</div><div class="ttdef"><b>Definition</b> <a href="_n_n_pkg_8h_source.html#l00103">NNPkg.h:103</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_ac7f0f74f10011f31ef450dc70f8918af"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">GenH5RandomInputs.graph</a></div><div class="ttdeci">graph</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00048">GenH5RandomInputs.py:48</a></div></div>
 </div><!-- fragment -->
@@ -564,16 +561,16 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_n_n_pkg_8h_source.html#l00330">330</a> of file <a class="el" href="_n_n_pkg_8h_source.html">NNPkg.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  331</span>  {</div>
-<div class="line"><span class="lineno">  332</span>    <span class="comment">// signature entry is supported for single model only</span></div>
-<div class="line"><span class="lineno">  333</span>    assert(_models.size() == 1);</div>
-<div class="line"><span class="lineno">  334</span> </div>
-<div class="line"><span class="lineno">  335</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a> = <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#a26715290d61b2707e5006f2afa78fb0c">primary_model</a>()-&gt;at(subg_index);</div>
-<div class="line"><span class="lineno">  336</span>    <span class="keyword">auto</span> <span class="keyword">const</span> operand_index = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;getInputs().at(index);</div>
-<div class="line"><span class="lineno">  337</span>    <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;changeShape(operand_index, new_shape);</div>
-<div class="line"><span class="lineno">  338</span>    <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  339</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_n_n_pkg_8h_source.html#l00326">326</a> of file <a class="el" href="_n_n_pkg_8h_source.html">NNPkg.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  327</span>  {</div>
+<div class="line"><span class="lineno">  328</span>    <span class="comment">// signature entry is supported for single model only</span></div>
+<div class="line"><span class="lineno">  329</span>    assert(_models.size() == 1);</div>
+<div class="line"><span class="lineno">  330</span> </div>
+<div class="line"><span class="lineno">  331</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a> = <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#a26715290d61b2707e5006f2afa78fb0c">primary_model</a>()-&gt;at(subg_index);</div>
+<div class="line"><span class="lineno">  332</span>    <span class="keyword">auto</span> <span class="keyword">const</span> operand_index = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;getInputs().at(index);</div>
+<div class="line"><span class="lineno">  333</span>    <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;changeShape(operand_index, new_shape);</div>
+<div class="line"><span class="lineno">  334</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  335</span>  }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_n_n_pkg_8h_source.html#l00103">primary_model()</a>.</p>
 
@@ -658,7 +655,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_n_n_pkg_8h_source.html#l00078">onert::ir::ModelEdges::pkg_inputs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_n_n_pkg_8h_source.html#l00154">addInput()</a>, <a class="el" href="_n_n_pkg_8h_source.html#l00314">changeInputShape()</a>, and <a class="el" href="_n_n_pkg_8h_source.html#l00260">inputInfo()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_n_n_pkg_8h_source.html#l00154">addInput()</a>, <a class="el" href="_n_n_pkg_8h_source.html#l00310">changeInputShape()</a>, and <a class="el" href="_n_n_pkg_8h_source.html#l00256">inputInfo()</a>.</p>
 
 </div>
 </div>
@@ -688,20 +685,20 @@ Public Member Functions</h2></td></tr>
 
 <p>Get model input info. </p>
 
-<p class="definition">Definition at line <a class="el" href="_n_n_pkg_8h_source.html#l00260">260</a> of file <a class="el" href="_n_n_pkg_8h_source.html">NNPkg.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  261</span>  {</div>
-<div class="line"><span class="lineno">  262</span>    <span class="keywordflow">if</span> (_models.size() == 1)</div>
-<div class="line"><span class="lineno">  263</span>    {</div>
-<div class="line"><span class="lineno">  264</span>      <span class="keyword">auto</span> <span class="keyword">const</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a> = <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#a26715290d61b2707e5006f2afa78fb0c">primary_model</a>()-&gt;primary_subgraph();</div>
-<div class="line"><span class="lineno">  265</span>      <span class="keyword">auto</span> <span class="keyword">const</span> operand_index = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;getInputs().at(index);</div>
-<div class="line"><span class="lineno">  266</span>      <span class="keywordflow">return</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;operands().at(operand_index).info();</div>
-<div class="line"><span class="lineno">  267</span>    }</div>
-<div class="line"><span class="lineno">  268</span> </div>
-<div class="line"><span class="lineno">  269</span>    <span class="keyword">auto</span> <span class="keyword">const</span> &amp;desc = <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#aa465f8e7b5a585b81f8743e103a02992">input</a>(index);</div>
-<div class="line"><span class="lineno">  270</span>    <span class="keyword">auto</span> <span class="keyword">const</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a> = <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#a31089b86cbb99b26d9dcd7eddb1387fa">model</a>(std::get&lt;ModelIndex&gt;(desc))-&gt;primary_subgraph();</div>
-<div class="line"><span class="lineno">  271</span>    <span class="keyword">auto</span> <span class="keyword">const</span> operand_index = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;getInputs().at(std::get&lt;IOIndex&gt;(desc).value());</div>
-<div class="line"><span class="lineno">  272</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;operands().at(operand_index).info();</div>
-<div class="line"><span class="lineno">  273</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_n_n_pkg_8h_source.html#l00256">256</a> of file <a class="el" href="_n_n_pkg_8h_source.html">NNPkg.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  257</span>  {</div>
+<div class="line"><span class="lineno">  258</span>    <span class="keywordflow">if</span> (_models.size() == 1)</div>
+<div class="line"><span class="lineno">  259</span>    {</div>
+<div class="line"><span class="lineno">  260</span>      <span class="keyword">auto</span> <span class="keyword">const</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a> = <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#a26715290d61b2707e5006f2afa78fb0c">primary_model</a>()-&gt;primary_subgraph();</div>
+<div class="line"><span class="lineno">  261</span>      <span class="keyword">auto</span> <span class="keyword">const</span> operand_index = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;getInputs().at(index);</div>
+<div class="line"><span class="lineno">  262</span>      <span class="keywordflow">return</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;operands().at(operand_index).info();</div>
+<div class="line"><span class="lineno">  263</span>    }</div>
+<div class="line"><span class="lineno">  264</span> </div>
+<div class="line"><span class="lineno">  265</span>    <span class="keyword">auto</span> <span class="keyword">const</span> &amp;desc = <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#aa465f8e7b5a585b81f8743e103a02992">input</a>(index);</div>
+<div class="line"><span class="lineno">  266</span>    <span class="keyword">auto</span> <span class="keyword">const</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a> = <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#a31089b86cbb99b26d9dcd7eddb1387fa">model</a>(std::get&lt;ModelIndex&gt;(desc))-&gt;primary_subgraph();</div>
+<div class="line"><span class="lineno">  267</span>    <span class="keyword">auto</span> <span class="keyword">const</span> operand_index = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;getInputs().at(std::get&lt;IOIndex&gt;(desc).value());</div>
+<div class="line"><span class="lineno">  268</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;operands().at(operand_index).info();</div>
+<div class="line"><span class="lineno">  269</span>  }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_n_n_pkg_8h_source.html#l00141">input()</a>, <a class="el" href="_n_n_pkg_8h_source.html#l00126">model()</a>, and <a class="el" href="_n_n_pkg_8h_source.html#l00103">primary_model()</a>.</p>
 
@@ -741,15 +738,15 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_n_n_pkg_8h_source.html#l00275">275</a> of file <a class="el" href="_n_n_pkg_8h_source.html">NNPkg.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  276</span>  {</div>
-<div class="line"><span class="lineno">  277</span>    <span class="comment">// signature entry is supported for single model only</span></div>
-<div class="line"><span class="lineno">  278</span>    assert(_models.size() == 1);</div>
-<div class="line"><span class="lineno">  279</span> </div>
-<div class="line"><span class="lineno">  280</span>    <span class="keyword">auto</span> <span class="keyword">const</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a> = <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#a26715290d61b2707e5006f2afa78fb0c">primary_model</a>()-&gt;at(subg_index);</div>
-<div class="line"><span class="lineno">  281</span>    <span class="keyword">auto</span> <span class="keyword">const</span> operand_index = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;getInputs().at(index);</div>
-<div class="line"><span class="lineno">  282</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;operands().at(operand_index).info();</div>
-<div class="line"><span class="lineno">  283</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_n_n_pkg_8h_source.html#l00271">271</a> of file <a class="el" href="_n_n_pkg_8h_source.html">NNPkg.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  272</span>  {</div>
+<div class="line"><span class="lineno">  273</span>    <span class="comment">// signature entry is supported for single model only</span></div>
+<div class="line"><span class="lineno">  274</span>    assert(_models.size() == 1);</div>
+<div class="line"><span class="lineno">  275</span> </div>
+<div class="line"><span class="lineno">  276</span>    <span class="keyword">auto</span> <span class="keyword">const</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a> = <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#a26715290d61b2707e5006f2afa78fb0c">primary_model</a>()-&gt;at(subg_index);</div>
+<div class="line"><span class="lineno">  277</span>    <span class="keyword">auto</span> <span class="keyword">const</span> operand_index = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;getInputs().at(index);</div>
+<div class="line"><span class="lineno">  278</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;operands().at(operand_index).info();</div>
+<div class="line"><span class="lineno">  279</span>  }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_n_n_pkg_8h_source.html#l00103">primary_model()</a>.</p>
 
@@ -780,11 +777,11 @@ Public Member Functions</h2></td></tr>
 
 <p>Get model input size. </p>
 
-<p class="definition">Definition at line <a class="el" href="_n_n_pkg_8h_source.html#l00228">228</a> of file <a class="el" href="_n_n_pkg_8h_source.html">NNPkg.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  229</span>  {</div>
-<div class="line"><span class="lineno">  230</span>    <span class="keywordflow">return</span> _models.size() == 1 ? <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#a26715290d61b2707e5006f2afa78fb0c">primary_model</a>()-&gt;primary_subgraph()-&gt;getInputs().size()</div>
-<div class="line"><span class="lineno">  231</span>                               : _edges.<a class="code hl_variable" href="structonert_1_1ir_1_1_model_edges.html#acaa752d9c353dd7e50917566a7ca1a64">pkg_inputs</a>.size();</div>
-<div class="line"><span class="lineno">  232</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_n_n_pkg_8h_source.html#l00224">224</a> of file <a class="el" href="_n_n_pkg_8h_source.html">NNPkg.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  225</span>  {</div>
+<div class="line"><span class="lineno">  226</span>    <span class="keywordflow">return</span> _models.size() == 1 ? <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#a26715290d61b2707e5006f2afa78fb0c">primary_model</a>()-&gt;primary_subgraph()-&gt;getInputs().size()</div>
+<div class="line"><span class="lineno">  227</span>                               : _edges.<a class="code hl_variable" href="structonert_1_1ir_1_1_model_edges.html#acaa752d9c353dd7e50917566a7ca1a64">pkg_inputs</a>.size();</div>
+<div class="line"><span class="lineno">  228</span>  }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_n_n_pkg_8h_source.html#l00078">onert::ir::ModelEdges::pkg_inputs</a>, and <a class="el" href="_n_n_pkg_8h_source.html#l00103">primary_model()</a>.</p>
 
@@ -814,12 +811,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_n_n_pkg_8h_source.html#l00234">234</a> of file <a class="el" href="_n_n_pkg_8h_source.html">NNPkg.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  235</span>  {</div>
-<div class="line"><span class="lineno">  236</span>    <span class="comment">// signature entry is supported for single model only</span></div>
-<div class="line"><span class="lineno">  237</span>    assert(_models.size() == 1);</div>
-<div class="line"><span class="lineno">  238</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#a26715290d61b2707e5006f2afa78fb0c">primary_model</a>()-&gt;at(subg_index)-&gt;getInputs().size();</div>
-<div class="line"><span class="lineno">  239</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_n_n_pkg_8h_source.html#l00230">230</a> of file <a class="el" href="_n_n_pkg_8h_source.html">NNPkg.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  231</span>  {</div>
+<div class="line"><span class="lineno">  232</span>    <span class="comment">// signature entry is supported for single model only</span></div>
+<div class="line"><span class="lineno">  233</span>    assert(_models.size() == 1);</div>
+<div class="line"><span class="lineno">  234</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#a26715290d61b2707e5006f2afa78fb0c">primary_model</a>()-&gt;at(subg_index)-&gt;getInputs().size();</div>
+<div class="line"><span class="lineno">  235</span>  }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_n_n_pkg_8h_source.html#l00103">primary_model()</a>.</p>
 
@@ -899,7 +896,7 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_n_n_pkg_8h_source.html#l00126">126</a> of file <a class="el" href="_n_n_pkg_8h_source.html">NNPkg.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  126</span>{ <span class="keywordflow">return</span> _models.at(index); }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_n_n_pkg_8h_source.html#l00314">changeInputShape()</a>, <a class="el" href="_n_n_pkg_8h_source.html#l00260">inputInfo()</a>, <a class="el" href="_n_n_pkg_8h_source.html#l00093">NNPkg()</a>, <a class="el" href="_n_n_pkg_8h_source.html#l00288">outputInfo()</a>, <a class="el" href="_n_n_pkg_8h_source.html#l00111">push()</a>, and <a class="el" href="_n_n_pkg_8h_source.html#l00348">replaceModel()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_n_n_pkg_8h_source.html#l00310">changeInputShape()</a>, <a class="el" href="_n_n_pkg_8h_source.html#l00256">inputInfo()</a>, <a class="el" href="_n_n_pkg_8h_source.html#l00093">NNPkg()</a>, <a class="el" href="_n_n_pkg_8h_source.html#l00284">outputInfo()</a>, <a class="el" href="_n_n_pkg_8h_source.html#l00111">push()</a>, and <a class="el" href="_n_n_pkg_8h_source.html#l00344">replaceModel()</a>.</p>
 
 </div>
 </div>
@@ -960,8 +957,8 @@ Public Member Functions</h2></td></tr>
 <p>Get model edge set. </p>
 <dl class="section return"><dt>Returns</dt><dd>Edge set reference </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_n_n_pkg_8h_source.html#l00192">192</a> of file <a class="el" href="_n_n_pkg_8h_source.html">NNPkg.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  192</span>{ <span class="keywordflow">return</span> _edges; }</div>
+<p class="definition">Definition at line <a class="el" href="_n_n_pkg_8h_source.html#l00188">188</a> of file <a class="el" href="_n_n_pkg_8h_source.html">NNPkg.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  188</span>{ <span class="keywordflow">return</span> _edges; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1095,7 +1092,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_n_n_pkg_8h_source.html#l00079">onert::ir::ModelEdges::pkg_outputs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_n_n_pkg_8h_source.html#l00175">addOutput()</a>, and <a class="el" href="_n_n_pkg_8h_source.html#l00288">outputInfo()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_n_n_pkg_8h_source.html#l00175">addOutput()</a>, and <a class="el" href="_n_n_pkg_8h_source.html#l00284">outputInfo()</a>.</p>
 
 </div>
 </div>
@@ -1125,20 +1122,20 @@ Public Member Functions</h2></td></tr>
 
 <p>Get model output info. </p>
 
-<p class="definition">Definition at line <a class="el" href="_n_n_pkg_8h_source.html#l00288">288</a> of file <a class="el" href="_n_n_pkg_8h_source.html">NNPkg.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  289</span>  {</div>
-<div class="line"><span class="lineno">  290</span>    <span class="keywordflow">if</span> (_models.size() == 1)</div>
-<div class="line"><span class="lineno">  291</span>    {</div>
-<div class="line"><span class="lineno">  292</span>      <span class="keyword">auto</span> <span class="keyword">const</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a> = <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#a26715290d61b2707e5006f2afa78fb0c">primary_model</a>()-&gt;primary_subgraph();</div>
-<div class="line"><span class="lineno">  293</span>      <span class="keyword">auto</span> <span class="keyword">const</span> operand_index = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;getOutputs().at(index);</div>
-<div class="line"><span class="lineno">  294</span>      <span class="keywordflow">return</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;operands().at(operand_index).info();</div>
-<div class="line"><span class="lineno">  295</span>    }</div>
-<div class="line"><span class="lineno">  296</span> </div>
-<div class="line"><span class="lineno">  297</span>    <span class="keyword">auto</span> <span class="keyword">const</span> &amp;desc = <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#ad701795803dcc5838194853abc4d2866">output</a>(index);</div>
-<div class="line"><span class="lineno">  298</span>    <span class="keyword">auto</span> <span class="keyword">const</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a> = <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#a31089b86cbb99b26d9dcd7eddb1387fa">model</a>(std::get&lt;ModelIndex&gt;(desc))-&gt;primary_subgraph();</div>
-<div class="line"><span class="lineno">  299</span>    <span class="keyword">auto</span> <span class="keyword">const</span> operand_index = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;getOutputs().at(std::get&lt;IOIndex&gt;(desc).value());</div>
-<div class="line"><span class="lineno">  300</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;operands().at(operand_index).info();</div>
-<div class="line"><span class="lineno">  301</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_n_n_pkg_8h_source.html#l00284">284</a> of file <a class="el" href="_n_n_pkg_8h_source.html">NNPkg.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  285</span>  {</div>
+<div class="line"><span class="lineno">  286</span>    <span class="keywordflow">if</span> (_models.size() == 1)</div>
+<div class="line"><span class="lineno">  287</span>    {</div>
+<div class="line"><span class="lineno">  288</span>      <span class="keyword">auto</span> <span class="keyword">const</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a> = <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#a26715290d61b2707e5006f2afa78fb0c">primary_model</a>()-&gt;primary_subgraph();</div>
+<div class="line"><span class="lineno">  289</span>      <span class="keyword">auto</span> <span class="keyword">const</span> operand_index = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;getOutputs().at(index);</div>
+<div class="line"><span class="lineno">  290</span>      <span class="keywordflow">return</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;operands().at(operand_index).info();</div>
+<div class="line"><span class="lineno">  291</span>    }</div>
+<div class="line"><span class="lineno">  292</span> </div>
+<div class="line"><span class="lineno">  293</span>    <span class="keyword">auto</span> <span class="keyword">const</span> &amp;desc = <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#ad701795803dcc5838194853abc4d2866">output</a>(index);</div>
+<div class="line"><span class="lineno">  294</span>    <span class="keyword">auto</span> <span class="keyword">const</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a> = <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#a31089b86cbb99b26d9dcd7eddb1387fa">model</a>(std::get&lt;ModelIndex&gt;(desc))-&gt;primary_subgraph();</div>
+<div class="line"><span class="lineno">  295</span>    <span class="keyword">auto</span> <span class="keyword">const</span> operand_index = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;getOutputs().at(std::get&lt;IOIndex&gt;(desc).value());</div>
+<div class="line"><span class="lineno">  296</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;operands().at(operand_index).info();</div>
+<div class="line"><span class="lineno">  297</span>  }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_n_n_pkg_8h_source.html#l00126">model()</a>, <a class="el" href="_n_n_pkg_8h_source.html#l00162">output()</a>, and <a class="el" href="_n_n_pkg_8h_source.html#l00103">primary_model()</a>.</p>
 
@@ -1178,16 +1175,16 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_n_n_pkg_8h_source.html#l00303">303</a> of file <a class="el" href="_n_n_pkg_8h_source.html">NNPkg.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  304</span>  {</div>
-<div class="line"><span class="lineno">  305</span>    <span class="comment">// signature entry is supported for single model only</span></div>
-<div class="line"><span class="lineno">  306</span>    assert(_models.size() == 1);</div>
-<div class="line"><span class="lineno">  307</span> </div>
-<div class="line"><span class="lineno">  308</span>    <span class="keyword">auto</span> <span class="keyword">const</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a> = <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#a26715290d61b2707e5006f2afa78fb0c">primary_model</a>()-&gt;at(subg_index);</div>
-<div class="line"><span class="lineno">  309</span> </div>
-<div class="line"><span class="lineno">  310</span>    <span class="keyword">auto</span> <span class="keyword">const</span> operand_index = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;getOutputs().at(index);</div>
-<div class="line"><span class="lineno">  311</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;operands().at(operand_index).info();</div>
-<div class="line"><span class="lineno">  312</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_n_n_pkg_8h_source.html#l00299">299</a> of file <a class="el" href="_n_n_pkg_8h_source.html">NNPkg.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  300</span>  {</div>
+<div class="line"><span class="lineno">  301</span>    <span class="comment">// signature entry is supported for single model only</span></div>
+<div class="line"><span class="lineno">  302</span>    assert(_models.size() == 1);</div>
+<div class="line"><span class="lineno">  303</span> </div>
+<div class="line"><span class="lineno">  304</span>    <span class="keyword">auto</span> <span class="keyword">const</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a> = <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#a26715290d61b2707e5006f2afa78fb0c">primary_model</a>()-&gt;at(subg_index);</div>
+<div class="line"><span class="lineno">  305</span> </div>
+<div class="line"><span class="lineno">  306</span>    <span class="keyword">auto</span> <span class="keyword">const</span> operand_index = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;getOutputs().at(index);</div>
+<div class="line"><span class="lineno">  307</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;operands().at(operand_index).info();</div>
+<div class="line"><span class="lineno">  308</span>  }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_n_n_pkg_8h_source.html#l00103">primary_model()</a>.</p>
 
@@ -1218,11 +1215,11 @@ Public Member Functions</h2></td></tr>
 
 <p>Get model output size. </p>
 
-<p class="definition">Definition at line <a class="el" href="_n_n_pkg_8h_source.html#l00244">244</a> of file <a class="el" href="_n_n_pkg_8h_source.html">NNPkg.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  245</span>  {</div>
-<div class="line"><span class="lineno">  246</span>    <span class="keywordflow">return</span> _models.size() == 1 ? <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#a26715290d61b2707e5006f2afa78fb0c">primary_model</a>()-&gt;primary_subgraph()-&gt;getOutputs().size()</div>
-<div class="line"><span class="lineno">  247</span>                               : _edges.<a class="code hl_variable" href="structonert_1_1ir_1_1_model_edges.html#a8a94976cfe947e0f2de6903d5d18e363">pkg_outputs</a>.size();</div>
-<div class="line"><span class="lineno">  248</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_n_n_pkg_8h_source.html#l00240">240</a> of file <a class="el" href="_n_n_pkg_8h_source.html">NNPkg.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  241</span>  {</div>
+<div class="line"><span class="lineno">  242</span>    <span class="keywordflow">return</span> _models.size() == 1 ? <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#a26715290d61b2707e5006f2afa78fb0c">primary_model</a>()-&gt;primary_subgraph()-&gt;getOutputs().size()</div>
+<div class="line"><span class="lineno">  243</span>                               : _edges.<a class="code hl_variable" href="structonert_1_1ir_1_1_model_edges.html#a8a94976cfe947e0f2de6903d5d18e363">pkg_outputs</a>.size();</div>
+<div class="line"><span class="lineno">  244</span>  }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_n_n_pkg_8h_source.html#l00079">onert::ir::ModelEdges::pkg_outputs</a>, and <a class="el" href="_n_n_pkg_8h_source.html#l00103">primary_model()</a>.</p>
 
@@ -1252,12 +1249,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_n_n_pkg_8h_source.html#l00250">250</a> of file <a class="el" href="_n_n_pkg_8h_source.html">NNPkg.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  251</span>  {</div>
-<div class="line"><span class="lineno">  252</span>    <span class="comment">// signature entry is supported for single model only</span></div>
-<div class="line"><span class="lineno">  253</span>    assert(_models.size() == 1);</div>
-<div class="line"><span class="lineno">  254</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#a26715290d61b2707e5006f2afa78fb0c">primary_model</a>()-&gt;at(subg_index)-&gt;getOutputs().size();</div>
-<div class="line"><span class="lineno">  255</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_n_n_pkg_8h_source.html#l00246">246</a> of file <a class="el" href="_n_n_pkg_8h_source.html">NNPkg.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  247</span>  {</div>
+<div class="line"><span class="lineno">  248</span>    <span class="comment">// signature entry is supported for single model only</span></div>
+<div class="line"><span class="lineno">  249</span>    assert(_models.size() == 1);</div>
+<div class="line"><span class="lineno">  250</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#a26715290d61b2707e5006f2afa78fb0c">primary_model</a>()-&gt;at(subg_index)-&gt;getOutputs().size();</div>
+<div class="line"><span class="lineno">  251</span>  }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_n_n_pkg_8h_source.html#l00103">primary_model()</a>.</p>
 
@@ -1290,7 +1287,7 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  103</span>{ <span class="keywordflow">return</span> _models.at(<a class="code hl_class" href="classonert_1_1util_1_1_index.html">onert::ir::ModelIndex</a>{0}); }</div>
 <div class="ttc" id="aclassonert_1_1util_1_1_index_html"><div class="ttname"><a href="classonert_1_1util_1_1_index.html">onert::util::Index&lt; uint16_t, ModelIndexTag &gt;</a></div></div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_n_n_pkg_8h_source.html#l00314">changeInputShape()</a>, <a class="el" href="_n_n_pkg_8h_source.html#l00330">changeInputShape()</a>, <a class="el" href="_n_n_pkg_8h_source.html#l00260">inputInfo()</a>, <a class="el" href="_n_n_pkg_8h_source.html#l00275">inputInfo()</a>, <a class="el" href="_n_n_pkg_8h_source.html#l00228">inputSize()</a>, <a class="el" href="_n_n_pkg_8h_source.html#l00234">inputSize()</a>, <a class="el" href="_n_n_pkg_8h_source.html#l00288">outputInfo()</a>, <a class="el" href="_n_n_pkg_8h_source.html#l00303">outputInfo()</a>, <a class="el" href="_n_n_pkg_8h_source.html#l00244">outputSize()</a>, and <a class="el" href="_n_n_pkg_8h_source.html#l00250">outputSize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_n_n_pkg_8h_source.html#l00310">changeInputShape()</a>, <a class="el" href="_n_n_pkg_8h_source.html#l00326">changeInputShape()</a>, <a class="el" href="_n_n_pkg_8h_source.html#l00256">inputInfo()</a>, <a class="el" href="_n_n_pkg_8h_source.html#l00271">inputInfo()</a>, <a class="el" href="_n_n_pkg_8h_source.html#l00224">inputSize()</a>, <a class="el" href="_n_n_pkg_8h_source.html#l00230">inputSize()</a>, <a class="el" href="_n_n_pkg_8h_source.html#l00284">outputInfo()</a>, <a class="el" href="_n_n_pkg_8h_source.html#l00299">outputInfo()</a>, <a class="el" href="_n_n_pkg_8h_source.html#l00240">outputSize()</a>, and <a class="el" href="_n_n_pkg_8h_source.html#l00246">outputSize()</a>.</p>
 
 </div>
 </div>
@@ -1377,8 +1374,8 @@ Public Member Functions</h2></td></tr>
 </dl>
 <p>TODO: Support multiple models </p>
 
-<p class="definition">Definition at line <a class="el" href="_n_n_pkg_8h_source.html#l00348">348</a> of file <a class="el" href="_n_n_pkg_8h_source.html">NNPkg.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  348</span>{ _models[<a class="code hl_typedef" href="namespaceonert_1_1ir.html#ade411191d6afc15a55a4384b8cea2ac9">ModelIndex</a>{0}] = <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#a31089b86cbb99b26d9dcd7eddb1387fa">model</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="_n_n_pkg_8h_source.html#l00344">344</a> of file <a class="el" href="_n_n_pkg_8h_source.html">NNPkg.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  344</span>{ _models[<a class="code hl_typedef" href="namespaceonert_1_1ir.html#ade411191d6afc15a55a4384b8cea2ac9">ModelIndex</a>{0}] = <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#a31089b86cbb99b26d9dcd7eddb1387fa">model</a>; }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_n_n_pkg_8h_source.html#l00126">model()</a>.</p>
 
@@ -1410,29 +1407,29 @@ Public Member Functions</h2></td></tr>
 
 <p>Verify NNPkg. </p>
 
-<p class="definition">Definition at line <a class="el" href="_n_n_pkg_8h_source.html#l00198">198</a> of file <a class="el" href="_n_n_pkg_8h_source.html">NNPkg.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  199</span>  {</div>
-<div class="line"><span class="lineno">  200</span>    <span class="comment">// Verify edges information</span></div>
-<div class="line"><span class="lineno">  201</span>    <span class="comment">//</span></div>
-<div class="line"><span class="lineno">  202</span>    <span class="comment">// Only duplicates of nnpkg output and Edge `from` are possible.</span></div>
-<div class="line"><span class="lineno">  203</span>    <span class="comment">// | Whether duplicates are possible   | Edge `to` | Edge `from` |</span></div>
-<div class="line"><span class="lineno">  204</span>    <span class="comment">// | nnpkg input  (input of subgraph)  | X (*1)    | X (*2)      |</span></div>
-<div class="line"><span class="lineno">  205</span>    <span class="comment">// | nnpkg output (output of subgraph) | X (*2)    | O           |</span></div>
-<div class="line"><span class="lineno">  206</span>    <span class="comment">// *1. The subjects who determine values of each buffer are different.</span></div>
-<div class="line"><span class="lineno">  207</span>    <span class="comment">//    - nnpkg input : user input</span></div>
-<div class="line"><span class="lineno">  208</span>    <span class="comment">//    - Edge `to`   : output of another subgraph</span></div>
-<div class="line"><span class="lineno">  209</span>    <span class="comment">// *2. `IOIndex` of inputs and outputs of subgraph is distinct.</span></div>
-<div class="line"><span class="lineno">  210</span>    <span class="comment">//</span></div>
-<div class="line"><span class="lineno">  211</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;edge : _edges.edges)</div>
-<div class="line"><span class="lineno">  212</span>    {</div>
-<div class="line"><span class="lineno">  213</span>      <span class="keywordflow">if</span> (std::find(_edges.<a class="code hl_variable" href="structonert_1_1ir_1_1_model_edges.html#acaa752d9c353dd7e50917566a7ca1a64">pkg_inputs</a>.begin(), _edges.<a class="code hl_variable" href="structonert_1_1ir_1_1_model_edges.html#acaa752d9c353dd7e50917566a7ca1a64">pkg_inputs</a>.end(), edge.to) !=</div>
-<div class="line"><span class="lineno">  214</span>          _edges.<a class="code hl_variable" href="structonert_1_1ir_1_1_model_edges.html#acaa752d9c353dd7e50917566a7ca1a64">pkg_inputs</a>.end())</div>
-<div class="line"><span class="lineno">  215</span>      {</div>
-<div class="line"><span class="lineno">  216</span>        <span class="keywordflow">throw</span> std::runtime_error{</div>
-<div class="line"><span class="lineno">  217</span>          <span class="stringliteral">&quot;Invalid edge information. NNPkg inputs and Edge `to` cannot be duplicated&quot;</span>};</div>
-<div class="line"><span class="lineno">  218</span>      }</div>
-<div class="line"><span class="lineno">  219</span>    }</div>
-<div class="line"><span class="lineno">  220</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_n_n_pkg_8h_source.html#l00194">194</a> of file <a class="el" href="_n_n_pkg_8h_source.html">NNPkg.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  195</span>  {</div>
+<div class="line"><span class="lineno">  196</span>    <span class="comment">// Verify edges information</span></div>
+<div class="line"><span class="lineno">  197</span>    <span class="comment">//</span></div>
+<div class="line"><span class="lineno">  198</span>    <span class="comment">// Only duplicates of nnpkg output and Edge `from` are possible.</span></div>
+<div class="line"><span class="lineno">  199</span>    <span class="comment">// | Whether duplicates are possible   | Edge `to` | Edge `from` |</span></div>
+<div class="line"><span class="lineno">  200</span>    <span class="comment">// | nnpkg input  (input of subgraph)  | X (*1)    | X (*2)      |</span></div>
+<div class="line"><span class="lineno">  201</span>    <span class="comment">// | nnpkg output (output of subgraph) | X (*2)    | O           |</span></div>
+<div class="line"><span class="lineno">  202</span>    <span class="comment">// *1. The subjects who determine values of each buffer are different.</span></div>
+<div class="line"><span class="lineno">  203</span>    <span class="comment">//    - nnpkg input : user input</span></div>
+<div class="line"><span class="lineno">  204</span>    <span class="comment">//    - Edge `to`   : output of another subgraph</span></div>
+<div class="line"><span class="lineno">  205</span>    <span class="comment">// *2. `IOIndex` of inputs and outputs of subgraph is distinct.</span></div>
+<div class="line"><span class="lineno">  206</span>    <span class="comment">//</span></div>
+<div class="line"><span class="lineno">  207</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;edge : _edges.edges)</div>
+<div class="line"><span class="lineno">  208</span>    {</div>
+<div class="line"><span class="lineno">  209</span>      <span class="keywordflow">if</span> (std::find(_edges.<a class="code hl_variable" href="structonert_1_1ir_1_1_model_edges.html#acaa752d9c353dd7e50917566a7ca1a64">pkg_inputs</a>.begin(), _edges.<a class="code hl_variable" href="structonert_1_1ir_1_1_model_edges.html#acaa752d9c353dd7e50917566a7ca1a64">pkg_inputs</a>.end(), edge.to) !=</div>
+<div class="line"><span class="lineno">  210</span>          _edges.<a class="code hl_variable" href="structonert_1_1ir_1_1_model_edges.html#acaa752d9c353dd7e50917566a7ca1a64">pkg_inputs</a>.end())</div>
+<div class="line"><span class="lineno">  211</span>      {</div>
+<div class="line"><span class="lineno">  212</span>        <span class="keywordflow">throw</span> std::runtime_error{</div>
+<div class="line"><span class="lineno">  213</span>          <span class="stringliteral">&quot;Invalid edge information. NNPkg inputs and Edge `to` cannot be duplicated&quot;</span>};</div>
+<div class="line"><span class="lineno">  214</span>      }</div>
+<div class="line"><span class="lineno">  215</span>    }</div>
+<div class="line"><span class="lineno">  216</span>  }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_n_n_pkg_8h_source.html#l00080">onert::ir::ModelEdges::edges</a>, and <a class="el" href="_n_n_pkg_8h_source.html#l00078">onert::ir::ModelEdges::pkg_inputs</a>.</p>
 

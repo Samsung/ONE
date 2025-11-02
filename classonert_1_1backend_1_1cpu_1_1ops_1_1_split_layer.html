@@ -143,11 +143,11 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_split_layer_8cc_source.html#l00026">26</a> of file <a class="el" href="_split_layer_8cc_source.html">SplitLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   26</span>                       : _input(<span class="keyword">nullptr</span>), _axis(<span class="keyword">nullptr</span>), _num_splits(0), _outputs()</div>
-<div class="line"><span class="lineno">   27</span>{</div>
-<div class="line"><span class="lineno">   28</span>  <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">   29</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_split_layer_8cc_source.html#l00057">57</a> of file <a class="el" href="_split_layer_8cc_source.html">SplitLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   57</span>                       : _input(<span class="keyword">nullptr</span>), _axis(<span class="keyword">nullptr</span>), _num_splits(0), _outputs()</div>
+<div class="line"><span class="lineno">   58</span>{</div>
+<div class="line"><span class="lineno">   59</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   60</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -190,15 +190,15 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_split_layer_8cc_source.html#l00059">59</a> of file <a class="el" href="_split_layer_8cc_source.html">SplitLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   61</span>{</div>
-<div class="line"><span class="lineno">   62</span>  assert(input != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   63</span> </div>
-<div class="line"><span class="lineno">   64</span>  _num_splits = num_splits;</div>
-<div class="line"><span class="lineno">   65</span>  _input = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
-<div class="line"><span class="lineno">   66</span>  _axis = axis;</div>
-<div class="line"><span class="lineno">   67</span>  _outputs = outputs;</div>
-<div class="line"><span class="lineno">   68</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_split_layer_8cc_source.html#l00090">90</a> of file <a class="el" href="_split_layer_8cc_source.html">SplitLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   92</span>{</div>
+<div class="line"><span class="lineno">   93</span>  assert(input != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   94</span> </div>
+<div class="line"><span class="lineno">   95</span>  _num_splits = num_splits;</div>
+<div class="line"><span class="lineno">   96</span>  _input = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
+<div class="line"><span class="lineno">   97</span>  _axis = axis;</div>
+<div class="line"><span class="lineno">   98</span>  _outputs = outputs;</div>
+<div class="line"><span class="lineno">   99</span>}</div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 </div><!-- fragment -->
 </div>
@@ -228,29 +228,29 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_function.html#aedd6f5e12852d808abb97327b9d229e2">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_split_layer_8cc_source.html#l00070">70</a> of file <a class="el" href="_split_layer_8cc_source.html">SplitLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   71</span>{</div>
-<div class="line"><span class="lineno">   72</span>  <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32)</div>
-<div class="line"><span class="lineno">   73</span>  {</div>
-<div class="line"><span class="lineno">   74</span>    split&lt;float&gt;();</div>
-<div class="line"><span class="lineno">   75</span>  }</div>
-<div class="line"><span class="lineno">   76</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_UINT8_ASYMM)</div>
-<div class="line"><span class="lineno">   77</span>  {</div>
-<div class="line"><span class="lineno">   78</span>    split&lt;uint8_t&gt;();</div>
-<div class="line"><span class="lineno">   79</span>  }</div>
-<div class="line"><span class="lineno">   80</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::INT32)</div>
-<div class="line"><span class="lineno">   81</span>  {</div>
-<div class="line"><span class="lineno">   82</span>    split&lt;int32_t&gt;();</div>
-<div class="line"><span class="lineno">   83</span>  }</div>
-<div class="line"><span class="lineno">   84</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::INT64)</div>
-<div class="line"><span class="lineno">   85</span>  {</div>
-<div class="line"><span class="lineno">   86</span>    split&lt;int64_t&gt;();</div>
-<div class="line"><span class="lineno">   87</span>  }</div>
-<div class="line"><span class="lineno">   88</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   89</span>  {</div>
-<div class="line"><span class="lineno">   90</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Split: unsupported input type&quot;</span>};</div>
-<div class="line"><span class="lineno">   91</span>  }</div>
-<div class="line"><span class="lineno">   92</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_split_layer_8cc_source.html#l00101">101</a> of file <a class="el" href="_split_layer_8cc_source.html">SplitLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  102</span>{</div>
+<div class="line"><span class="lineno">  103</span>  <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32)</div>
+<div class="line"><span class="lineno">  104</span>  {</div>
+<div class="line"><span class="lineno">  105</span>    split&lt;float&gt;();</div>
+<div class="line"><span class="lineno">  106</span>  }</div>
+<div class="line"><span class="lineno">  107</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_UINT8_ASYMM)</div>
+<div class="line"><span class="lineno">  108</span>  {</div>
+<div class="line"><span class="lineno">  109</span>    split&lt;uint8_t&gt;();</div>
+<div class="line"><span class="lineno">  110</span>  }</div>
+<div class="line"><span class="lineno">  111</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::INT32)</div>
+<div class="line"><span class="lineno">  112</span>  {</div>
+<div class="line"><span class="lineno">  113</span>    split&lt;int32_t&gt;();</div>
+<div class="line"><span class="lineno">  114</span>  }</div>
+<div class="line"><span class="lineno">  115</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::INT64)</div>
+<div class="line"><span class="lineno">  116</span>  {</div>
+<div class="line"><span class="lineno">  117</span>    split&lt;int64_t&gt;();</div>
+<div class="line"><span class="lineno">  118</span>  }</div>
+<div class="line"><span class="lineno">  119</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  120</span>  {</div>
+<div class="line"><span class="lineno">  121</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Split: unsupported input type&quot;</span>};</div>
+<div class="line"><span class="lineno">  122</span>  }</div>
+<div class="line"><span class="lineno">  123</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aae73f75c41fa15f5ae2c391918fa09c5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor::data_type</a></div><div class="ttdeci">ir::DataType data_type() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00054">IPortableTensor.h:54</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>.</p>
@@ -275,33 +275,33 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_split_layer_8cc_source.html#l00031">31</a> of file <a class="el" href="_split_layer_8cc_source.html">SplitLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   32</span>{</div>
-<div class="line"><span class="lineno">   33</span>  <a class="code hl_struct" href="structnnfw_1_1cker_1_1_split_params.html">nnfw::cker::SplitParams</a> op_params;</div>
-<div class="line"><span class="lineno">   34</span>  <span class="keywordflow">if</span> (_axis-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a52fa5a71552928aebcb47eafa1a7b182">total_size</a>() != <span class="keyword">sizeof</span>(int32_t))</div>
-<div class="line"><span class="lineno">   35</span>  {</div>
-<div class="line"><span class="lineno">   36</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;ArgMinMax: wrong shape of axis&quot;</span>);</div>
-<div class="line"><span class="lineno">   37</span>  }</div>
-<div class="line"><span class="lineno">   38</span>  <span class="keyword">auto</span> axis = *getBuffer&lt;int32_t&gt;(_axis);</div>
-<div class="line"><span class="lineno">   39</span>  <span class="keywordflow">if</span> (axis &lt; 0)</div>
-<div class="line"><span class="lineno">   40</span>  {</div>
-<div class="line"><span class="lineno">   41</span>    axis += _input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">getShape</a>().rank();</div>
-<div class="line"><span class="lineno">   42</span>  }</div>
-<div class="line"><span class="lineno">   43</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_split_params.html#a0b8c27bbb17f2f0d3d959a6e9099ee0a">axis</a> = axis;</div>
-<div class="line"><span class="lineno">   44</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_split_params.html#a5132e379895c8d000da09644a96346b9">num_split</a> = _num_splits;</div>
-<div class="line"><span class="lineno">   45</span> </div>
-<div class="line"><span class="lineno">   46</span>  std::vector&lt;T *&gt; outputPtrs;</div>
-<div class="line"><span class="lineno">   47</span> </div>
-<div class="line"><span class="lineno">   48</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> output : _outputs)</div>
-<div class="line"><span class="lineno">   49</span>  {</div>
-<div class="line"><span class="lineno">   50</span>    assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;total_size() == <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5698db9da4bb6ebb7fb8c86cb9576c5d">sizeOfData</a>(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;data_type(), <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;getShape().dims()));</div>
-<div class="line"><span class="lineno">   51</span>    outputPtrs.emplace_back(getBuffer&lt;T&gt;(output));</div>
-<div class="line"><span class="lineno">   52</span>  }</div>
-<div class="line"><span class="lineno">   53</span> </div>
-<div class="line"><span class="lineno">   54</span>  assert(_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a52fa5a71552928aebcb47eafa1a7b182">total_size</a>() == <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5698db9da4bb6ebb7fb8c86cb9576c5d">sizeOfData</a>(_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>(), _input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">getShape</a>().dims()));</div>
-<div class="line"><span class="lineno">   55</span>  nnfw::cker::Split&lt;T&gt;(op_params, <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_input), getBuffer&lt;T&gt;(_input), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_outputs[0]),</div>
-<div class="line"><span class="lineno">   56</span>                       outputPtrs.data());</div>
-<div class="line"><span class="lineno">   57</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_split_layer_8cc_source.html#l00062">62</a> of file <a class="el" href="_split_layer_8cc_source.html">SplitLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   63</span>{</div>
+<div class="line"><span class="lineno">   64</span>  <a class="code hl_struct" href="structnnfw_1_1cker_1_1_split_params.html">nnfw::cker::SplitParams</a> op_params;</div>
+<div class="line"><span class="lineno">   65</span>  <span class="keywordflow">if</span> (_axis-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a52fa5a71552928aebcb47eafa1a7b182">total_size</a>() != <span class="keyword">sizeof</span>(int32_t))</div>
+<div class="line"><span class="lineno">   66</span>  {</div>
+<div class="line"><span class="lineno">   67</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;ArgMinMax: wrong shape of axis&quot;</span>);</div>
+<div class="line"><span class="lineno">   68</span>  }</div>
+<div class="line"><span class="lineno">   69</span>  <span class="keyword">auto</span> axis = *getBuffer&lt;int32_t&gt;(_axis);</div>
+<div class="line"><span class="lineno">   70</span>  <span class="keywordflow">if</span> (axis &lt; 0)</div>
+<div class="line"><span class="lineno">   71</span>  {</div>
+<div class="line"><span class="lineno">   72</span>    axis += _input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">getShape</a>().rank();</div>
+<div class="line"><span class="lineno">   73</span>  }</div>
+<div class="line"><span class="lineno">   74</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_split_params.html#a0b8c27bbb17f2f0d3d959a6e9099ee0a">axis</a> = axis;</div>
+<div class="line"><span class="lineno">   75</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_split_params.html#a5132e379895c8d000da09644a96346b9">num_split</a> = _num_splits;</div>
+<div class="line"><span class="lineno">   76</span> </div>
+<div class="line"><span class="lineno">   77</span>  std::vector&lt;T *&gt; outputPtrs;</div>
+<div class="line"><span class="lineno">   78</span> </div>
+<div class="line"><span class="lineno">   79</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> output : _outputs)</div>
+<div class="line"><span class="lineno">   80</span>  {</div>
+<div class="line"><span class="lineno">   81</span>    assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;total_size() == <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5698db9da4bb6ebb7fb8c86cb9576c5d">sizeOfData</a>(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;data_type(), <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;getShape().dims()));</div>
+<div class="line"><span class="lineno">   82</span>    outputPtrs.emplace_back(getBuffer&lt;T&gt;(output));</div>
+<div class="line"><span class="lineno">   83</span>  }</div>
+<div class="line"><span class="lineno">   84</span> </div>
+<div class="line"><span class="lineno">   85</span>  assert(_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a52fa5a71552928aebcb47eafa1a7b182">total_size</a>() == <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5698db9da4bb6ebb7fb8c86cb9576c5d">sizeOfData</a>(_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>(), _input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">getShape</a>().dims()));</div>
+<div class="line"><span class="lineno">   86</span>  nnfw::cker::Split&lt;T&gt;(op_params, <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_input), getBuffer&lt;T&gt;(_input), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_outputs[0]),</div>
+<div class="line"><span class="lineno">   87</span>                       outputPtrs.data());</div>
+<div class="line"><span class="lineno">   88</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_a52fa5a71552928aebcb47eafa1a7b182"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#a52fa5a71552928aebcb47eafa1a7b182">onert::backend::IPortableTensor::total_size</a></div><div class="ttdeci">size_t total_size() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00052">IPortableTensor.h:52</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_ad010d0f248f6e0e400485d81410ac158"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">onert::backend::IPortableTensor::getShape</a></div><div class="ttdeci">ir::Shape getShape() const override final</div><div class="ttdoc">Get ir::Shape of tensor.</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00064">IPortableTensor.h:64</a></div></div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00096">gen_h5_explicit_inputs_all.py:96</a></div></div>

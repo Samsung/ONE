@@ -115,7 +115,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a6c905279e4e76400447afe58dc515dad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f1845bbea279cb2b8c571ce10c6ae8b" id="r_a7f1845bbea279cb2b8c571ce10c6ae8b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_runtime_module.html#a7f1845bbea279cb2b8c571ce10c6ae8b">addGraph</a> (<a class="el" href="namespaceluci__interpreter.html#a9f6d3069ae5a00cda9601b213a0d2548">MemoryManager</a> *<a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">memory_manager</a>)</td></tr>
 <tr class="separator:a7f1845bbea279cb2b8c571ce10c6ae8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16812d12e8ae90bb4b1b08f0c117b744" id="r_a16812d12e8ae90bb4b1b08f0c117b744"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceluci__interpreter.html#a536f70436969ec0208abfe68640bfc71">BaseRuntimeGraph</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_runtime_module.html#a16812d12e8ae90bb4b1b08f0c117b744">getRuntimeGraphAt</a> (<a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">uint32_t</a> <a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">pos</a>)</td></tr>
+<tr class="memitem:a16812d12e8ae90bb4b1b08f0c117b744" id="r_a16812d12e8ae90bb4b1b08f0c117b744"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceluci__interpreter.html#a536f70436969ec0208abfe68640bfc71">BaseRuntimeGraph</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_runtime_module.html#a16812d12e8ae90bb4b1b08f0c117b744">getRuntimeGraphAt</a> (<a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">uint32_t</a> pos)</td></tr>
 <tr class="separator:a16812d12e8ae90bb4b1b08f0c117b744"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42b1be3557e227d6cfcc393836d8c2f1" id="r_a42b1be3557e227d6cfcc393836d8c2f1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_runtime_module.html#a42b1be3557e227d6cfcc393836d8c2f1">execute</a> ()</td></tr>
 <tr class="separator:a42b1be3557e227d6cfcc393836d8c2f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -495,10 +495,8 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_module_8h_source.html#l00067">67</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_module_8h_source.html">RuntimeModule.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   67</span>{ <span class="keywordflow">return</span> &amp;_graphs.at(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">pos</a>); }</div>
+<div class="fragment"><div class="line"><span class="lineno">   67</span>{ <span class="keywordflow">return</span> &amp;_graphs.at(pos); }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">luci::must_cast()</a>.</p>
-
 <p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2_module_loader_8cpp_source.html#l00024">luci_interpreter::ModuleLoader::load()</a>.</p>
 
 </div>
