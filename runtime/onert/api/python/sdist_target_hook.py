@@ -14,7 +14,9 @@ class SDistBuildHook(BuildHookInterface):
         THIS_FILE_DIR = os.path.dirname(os.path.abspath(__file__))
         self.DEFAULT_PRODUCT_DIR = os.path.normpath(
             os.path.join(THIS_FILE_DIR, "../../../../Product"))
-        self.product_dir = os.environ.get("PRODUCT_DIR", self.DEFAULT_PRODUCT_DIR)
+        
+        # default values for the variables that affect and control the build of the wheel
+        self.product_dir = self.DEFAULT_PRODUCT_DIR
         self.platform = "x86_64"
 
         # read the environment variables that can be used to override some build settings
@@ -26,18 +28,23 @@ class SDistBuildHook(BuildHookInterface):
 
         # this is the path where the native libraries are expected to land in the wheel
         # the files copied to this location will eventually be added to the wheel by the build system
+        # the whole structure of subdirectories will be reflected in the final wheel
         self.whl_binaries_target_dir = os.path.join(tmp_build_dir, 'native')
 
         # gather the required binaries in the temporary build directory
         self.prepare_binaries()
 
         # include all contents of the build directory in the 'onert' subdirectory in the wheel
-        # at this point the build directory should be populated with the required files
+        # at this point the temporary build directory should be populated with the required files
         build_data["force_include"][tmp_build_dir] = "onert"
 
     def read_env(self):
+        '''Read the relevant environment variables or use the defaults'''
+
         self.platform = os.environ.get("PLATFORM", self.platform)
         #TODO add the platform value validation
+
+        self.product_dir = os.environ.get("PRODUCT_DIR", self.product_dir)
 
     def prepare_binaries(self):
         # the main directory in the runtime's build tree containing the .so files
@@ -51,6 +58,7 @@ class SDistBuildHook(BuildHookInterface):
         self.copy_libraries(src_libs_base_dir, self.whl_binaries_target_dir, "nnfw/odc")
 
     def get_libs_dir(self):
+        '''Retrieve the path of a directory where the required shared libraries are'''
         runtime_build_dir = self.get_runtime_build_dir()
         print(f" |> runtime_build_dir={runtime_build_dir}")
 
@@ -63,15 +71,21 @@ class SDistBuildHook(BuildHookInterface):
         raise FileNotFoundError(f"No lib directory found in {runtime_build_dir}")
 
     def get_runtime_build_dir(self):
-        # top-level directory containing the build of the runtime
-        # this can be overridden by setting the PRODUCT_DIR environment variable
+        '''Retrieve the path of a directory where the runtime's binaries are (the build tree's root)'''
+        
         if self.product_dir != self.DEFAULT_PRODUCT_DIR:
+            # In case the product directory was passed as an environment variable use this path
+            # as a custom root directory of the build tree
             return self.product_dir
         else:
             # TODO - add the debug build support (via env variables)
             return os.path.join(self.product_dir, f"{self.platform}-linux.release/out")
 
     def copy_libraries(self, src_dir, target_dir, subdir=None):
+        '''
+        Copy all .so files found in src_dir to the target_dir
+        If subdir is provided copy from src_dir/subdir to target_dir/subdir
+        '''
         if subdir != None:
             src_dir = os.path.join(src_dir, subdir)
             target_dir = os.path.join(target_dir, subdir)
@@ -85,6 +99,7 @@ class SDistBuildHook(BuildHookInterface):
             print(f" |> Copied {src_path} to {tgt_path}")
 
     def recreate_dir(self, dir_path):
+        '''Delete a directory (if it exists) and create it again but empty'''
         if os.path.exists(dir_path):
             print(f" |> Deleting existing directory '{dir_path}'...")
             shutil.rmtree(dir_path)
