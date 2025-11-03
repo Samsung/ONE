@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include "config.h"
-#include "kv_cache.h"
+#include "Config.h"
+#include "KVCache.h"
 
 #include <cstring>
 #include <stdexcept>

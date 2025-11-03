@@ -17,29 +17,19 @@
 #include <cstdlib>
 
 /**
- * @file  ggma_macro.h
+ * @file  Macro.h
  * @brief Common macros for GGMA error handling and utilities
  */
-#ifndef __GGMA_GGMA_MACRO_H__
-#define __GGMA_GGMA_MACRO_H__
+#ifndef __GGMA_MACRO_H__
+#define __GGMA_MACRO_H__
 
-#define GGMA_ENSURE(a)               \
-  do                                 \
-  {                                  \
-    if ((a) != GGMA_STATUS_NO_ERROR) \
-    {                                \
-      exit(-1);                      \
-    }                                \
+#define GGMA_RETURN_ERROR_IF_NULL(p)      \
+  do                                      \
+  {                                       \
+    if ((p) == NULL)                      \
+      return GGMA_STATUS_UNEXPECTED_NULL; \
   } while (0)
 
 #define GGMA_UNUSED(x) (void)(x)
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif // __GGMA_GGMA_MACRO_H__
+#endif // __GGMA_MACRO_H__

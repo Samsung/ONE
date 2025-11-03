@@ -8,7 +8,7 @@ set(GGMA_DEV ggma-dev)
 add_library(${GGMA_DEV} SHARED ${API_SRC})
 
 # Public headers to publish
-set(GGMA_API_HEADERS include/ggma_api.h include/ggma_macro.h include/ggma_types.h
+set(GGMA_API_HEADERS include/ggma_api.h include/ggma_types.h
                      include/ggma_context.h include/ggma_generate.h)
 
 # GGMA install directory (same as ONERT_INSTALL_APIDIR)

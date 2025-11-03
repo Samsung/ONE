@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-#include "config.h"
-#include "context.h"
-#include "kv_cache.h"
+#include "Config.h"
+#include "Context.h"
+#include "KVCache.h"
 
 #include <algorithm>
 #include <cassert>
@@ -75,37 +75,13 @@ uint64_t bufsize_for(const nnfw_tensorinfo *ti)
   return elmsize[ti->dtype] * num_elems(ti);
 }
 
-ggma::context::context(const char *package_path) : _package_path(package_path)
+ggma::Context::Context(const char *package_path) : _package_path(package_path)
 {
   _cfg = load_config(_package_path);
   _cache.init(_cfg, _cfg.cache_size);
 }
 
-GGMA_STATUS context::from_package(ggma_context **session, const char *package_path)
-{
-  if (session == nullptr)
-    return GGMA_STATUS_UNEXPECTED_NULL;
-  try
-  {
-    auto new_session = std::unique_ptr<context>(new context(package_path));
-    *session = reinterpret_cast<ggma_context *>(new_session.release());
-  }
-  catch (const std::bad_alloc &e)
-  {
-    std::cerr << "Error during session creation" << std::endl;
-    *session = nullptr; // Set nullptr on error to keep the old behavior
-    return GGMA_STATUS_OUT_OF_MEMORY;
-  }
-  catch (const std::exception &e)
-  {
-    std::cerr << "Error during session initialization : " << e.what() << std::endl;
-    *session = nullptr; // Set nullptr on error to keep the old behavior
-    return GGMA_STATUS_ERROR;
-  }
-  return GGMA_STATUS_NO_ERROR;
-}
-
-ggma::GGMAConfig ggma::context::load_config(const std::string &package_path)
+ggma::GGMAConfig ggma::Context::load_config(const std::string &package_path)
 {
   GGMAConfig config;
 
@@ -116,7 +92,7 @@ ggma::GGMAConfig ggma::context::load_config(const std::string &package_path)
   return config;
 }
 
-void context::prefill(ggma_token *tokens, size_t n_tokens, std::vector<uint8_t> &hidden_state)
+void Context::prefill(ggma_token *tokens, size_t n_tokens, std::vector<uint8_t> &hidden_state)
 {
   std::filesystem::path nnpkg_path = std::filesystem::path(_package_path) / "prefill";
   nnfw_session *session = create_and_prepare_session(nnpkg_path.string());
@@ -182,7 +158,7 @@ void context::prefill(ggma_token *tokens, size_t n_tokens, std::vector<uint8_t> 
   nnfw_close_session(session);
 }
 
-void context::unemb(std::vector<uint8_t> &hidden_state, size_t n_tokens, std::vector<float> &logits)
+void Context::unemb(std::vector<uint8_t> &hidden_state, size_t n_tokens, std::vector<float> &logits)
 {
   std::filesystem::path nnpkg_path = std::filesystem::path(_package_path) / "unemb";
   nnfw_session *session = create_and_prepare_session(nnpkg_path.string());
@@ -228,7 +204,7 @@ void context::unemb(std::vector<uint8_t> &hidden_state, size_t n_tokens, std::ve
 
 // Template implementation to eliminate code duplication
 template <bool ReturnLogits, typename OutputType>
-void context::decode_impl(ggma_token token_id, OutputType &output)
+void Context::decode_impl(ggma_token token_id, OutputType &output)
 {
   std::filesystem::path nnpkg_path = std::filesystem::path(_package_path) / "decode";
   nnfw_session *session = create_and_prepare_session(nnpkg_path.string());
@@ -297,25 +273,25 @@ void context::decode_impl(ggma_token token_id, OutputType &output)
 }
 
 // Public interface functions - delegate to template implementation
-void context::decode(ggma_token token_id, std::vector<uint8_t> &hidden_state)
+void Context::decode(ggma_token token_id, std::vector<uint8_t> &hidden_state)
 {
   decode_impl<false, std::vector<uint8_t>>(token_id, hidden_state);
 }
 
-void context::decode(ggma_token token_id, std::vector<float> &logits)
+void Context::decode(ggma_token token_id, std::vector<float> &logits)
 {
   decode_impl<true, std::vector<float>>(token_id, logits);
 }
 
 // Template instantiation (required for template implementation in .cpp file)
-template void context::decode_impl<false, std::vector<uint8_t>>(ggma_token token_id,
+template void Context::decode_impl<false, std::vector<uint8_t>>(ggma_token token_id,
                                                                 std::vector<uint8_t> &output);
-template void context::decode_impl<true, std::vector<float>>(ggma_token token_id,
+template void Context::decode_impl<true, std::vector<float>>(ggma_token token_id,
                                                              std::vector<float> &output);
 
 // Sample token from logits using greedy sampling
 // Input shape: [n_seq, vocab_size], sample from last token
-ggma_token context::sample(const std::vector<float> &logits)
+ggma_token Context::sample(const std::vector<float> &logits)
 {
   if (logits.empty())
     throw std::runtime_error("Empty logits tensor");

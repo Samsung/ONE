@@ -14,37 +14,15 @@
  * limitations under the License.
  */
 
-#include "context.h"
-#include "ggma_api.h"
+#include "ggma_generate.h"
 
-#include <cstring>
-#include <iostream>
-
-// Double-check enum value changes
-
-#define GGMA_RETURN_ERROR_IF_NULL(p)      \
-  do                                      \
-  {                                       \
-    if ((p) == NULL)                      \
-      return GGMA_STATUS_UNEXPECTED_NULL; \
-  } while (0)
-
-GGMA_STATUS ggma_create_context(ggma_context **context, const char *package_path)
-{
-  GGMA_RETURN_ERROR_IF_NULL(context);
-  return ggma::context::from_package(context, package_path);
-}
-
-GGMA_STATUS ggma_free_context(ggma_context *context)
-{
-  delete reinterpret_cast<ggma::context *>(context);
-  return GGMA_STATUS_NO_ERROR;
-}
+#include "Context.h"
+#include "Macro.h"
 
 GGMA_STATUS ggma_generate(ggma_context *context, ggma_token *tokens, size_t n_tokens,
                           size_t n_tokens_max, size_t *n_tokens_out)
 {
   GGMA_RETURN_ERROR_IF_NULL(context);
-  return reinterpret_cast<ggma::context *>(context)->generate(tokens, n_tokens, n_tokens_max,
+  return reinterpret_cast<ggma::Context *>(context)->generate(tokens, n_tokens, n_tokens_max,
                                                               n_tokens_out);
 }
