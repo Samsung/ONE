@@ -5,7 +5,7 @@ import os
 import shutil
 
 from hatchling.builders.hooks.plugin.interface import BuildHookInterface
-
+from hook_utils import read_env
 
 class SDistBuildHook(BuildHookInterface):
     def initialize(self, version, build_data):
@@ -41,10 +41,8 @@ class SDistBuildHook(BuildHookInterface):
     def read_env(self):
         '''Read the relevant environment variables or use the defaults'''
 
-        self.platform = os.environ.get("PLATFORM", self.platform)
-        #TODO add the platform value validation
-
-        self.product_dir = os.environ.get("PRODUCT_DIR", self.product_dir)
+        self.product_dir = read_env("PRODUCT_DIR", self.product_dir)
+        self.platform = read_env("PLATFORM", self.platform)
 
     def prepare_binaries(self):
         # the main directory in the runtime's build tree containing the .so files
