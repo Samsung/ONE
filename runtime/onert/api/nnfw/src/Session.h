@@ -36,7 +36,10 @@
 #include <thread>
 #include <vector>
 
-struct nnfw_session
+namespace onert::api
+{
+
+struct Session
 {
 private:
   /**
@@ -94,17 +97,17 @@ private:
 
 public:
   /**
-   * @brief Factory method. It creates and initialize nnfw_session
+   * @brief Factory method. It creates and initialize Session
    *
    * @note  Use factory instead of constructor to get status
    */
-  static NNFW_STATUS create(nnfw_session **session);
+  static NNFW_STATUS create(Session **session);
 
 private:
-  nnfw_session();
+  Session();
 
 public:
-  ~nnfw_session();
+  ~Session();
   NNFW_STATUS load_model_from_path(const char *path);
   NNFW_STATUS prepare();
   NNFW_STATUS run();
@@ -236,5 +239,7 @@ private:
   std::unordered_map<onert::ir::SubgraphIndex, std::string> _signature_map;
   onert::ir::SubgraphIndex _selected_signature;
 };
+
+} // namespace onert::api
 
 #endif // __API_NNFW_SESSION_H__
