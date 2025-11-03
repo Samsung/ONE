@@ -17,20 +17,11 @@
 #include <cstdlib>
 
 /**
- * @file  ggma_macro.h
+ * @file  Macro.h
  * @brief Common macros for GGMA error handling and utilities
  */
-#ifndef __GGMA_GGMA_MACRO_H__
-#define __GGMA_GGMA_MACRO_H__
-
-#define GGMA_ENSURE(a)               \
-  do                                 \
-  {                                  \
-    if ((a) != GGMA_STATUS_NO_ERROR) \
-    {                                \
-      exit(-1);                      \
-    }                                \
-  } while (0)
+#ifndef __GGMA_MACRO_H__
+#define __GGMA_MACRO_H__
 
 #define GGMA_RETURN_ERROR_IF_NULL(p)      \
   do                                      \
@@ -41,4 +32,4 @@
 
 #define GGMA_UNUSED(x) (void)(x)
 
-#endif // __GGMA_GGMA_MACRO_H__
+#endif // __GGMA_MACRO_H__

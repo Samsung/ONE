@@ -15,7 +15,6 @@
  */
 
 #include "ggma_context.h"
-#include "ggma_macro.h"
 #include "Context.h"
 #include <iostream>
 

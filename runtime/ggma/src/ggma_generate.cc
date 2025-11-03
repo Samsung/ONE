@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-#include "ggma_api.h"
-#include "ggma_macro.h"
+#include "ggma_generate.h"
 
 #include "Context.h"
+#include "Macro.h"
 
 GGMA_STATUS ggma_generate(ggma_context *context, ggma_token *tokens, size_t n_tokens,
                           size_t n_tokens_max, size_t *n_tokens_out)
