@@ -4,6 +4,7 @@ from packaging.tags import sys_tags
 import os
 import shutil
 
+
 class WheelBuildHook(BuildHookInterface):
     def initialize(self, version, build_data):
         super().initialize(version, build_data)
@@ -11,7 +12,7 @@ class WheelBuildHook(BuildHookInterface):
         THIS_FILE_DIR = os.path.dirname(os.path.abspath(__file__))
         self.DEFAULT_PRODUCT_DIR = os.path.normpath(
             os.path.join(THIS_FILE_DIR, "../../../../Product"))
-        
+
         # default values for the variables that affect and control the build of the wheel
         self.product_dir = self.DEFAULT_PRODUCT_DIR
         self.platform = "x86_64"
@@ -46,7 +47,7 @@ class WheelBuildHook(BuildHookInterface):
         self.product_dir = self._read_env("PRODUCT_DIR", self.product_dir)
         self.platform = self._read_env("PLATFORM", self.platform)
         self.glibc_version = self._read_env("GLIBC_VERSION", self.glibc_version)
-    
+
     def prepare_binaries(self):
         # the main directory in the runtime's build tree containing the .so files
         # those files need to be copied to whl_binaries_target_dir before they are added to the wheel
@@ -73,7 +74,7 @@ class WheelBuildHook(BuildHookInterface):
 
     def get_runtime_build_dir(self):
         '''Retrieve the path of a directory where the runtime's binaries are (the build tree's root)'''
-        
+
         if self.product_dir != self.DEFAULT_PRODUCT_DIR:
             # In case the product directory was passed as an environment variable use this path
             # as a custom root directory of the build tree
@@ -105,15 +106,15 @@ class WheelBuildHook(BuildHookInterface):
             print(f" |> Deleting existing directory '{dir_path}'...")
             shutil.rmtree(dir_path)
         os.makedirs(dir_path)
-    
+
     def create_build_tag(self):
         '''Create the most appropriate build tag that will be used to name the wheel'''
 
         # first get the tag using the usual way build backends do it
         tag = next(sys_tags())
-        
+
         # now create the part of the build tag that will be overridden
-        # use 'manylinux' + glibc version (if provided) + the platform string 
+        # use 'manylinux' + glibc version (if provided) + the platform string
         tag_platform = "manylinux"
         if self.glibc_version is not None:
             tag_platform = f"{tag_platform}_{self.glibc_version}_{self.platform}"
@@ -124,7 +125,7 @@ class WheelBuildHook(BuildHookInterface):
         build_tag = f"{tag.interpreter}-{tag.abi}-{tag_platform}"
         print(f" |> Created build_tag: {build_tag}")
         return build_tag
-    
+
     def _read_env(self, env_var_name, default_value):
         validators = {
             "PLATFORM": self._validate_platform,
