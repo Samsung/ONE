@@ -16,6 +16,7 @@
 
 #include "nnfw.h"
 #include "nnfw_experimental.h"
+#include "nnfw_internal.h"
 #include "nnfw_version.h"
 
 #include "Session.h"
@@ -425,4 +426,37 @@ NNFW_STATUS nnfw_reset_execute_config(nnfw_session *session)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
   return reinterpret_cast<Session *>(session)->reset_execute_config();
+}
+
+// Internal API
+
+NNFW_STATUS nnfw_set_config(nnfw_session *session, const char *key, const char *value)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return reinterpret_cast<Session *>(session)->set_config(key, value);
+}
+
+NNFW_STATUS nnfw_get_config(nnfw_session *session, const char *key, char *value, size_t value_size)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return reinterpret_cast<Session *>(session)->get_config(key, value, value_size);
+}
+
+NNFW_STATUS nnfw_load_circle_from_buffer(nnfw_session *session, uint8_t *buffer, size_t size)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return reinterpret_cast<Session *>(session)->load_circle_from_buffer(buffer, size);
+}
+
+NNFW_STATUS nnfw_train_export_circleplus(nnfw_session *session, const char *path)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return reinterpret_cast<Session *>(session)->train_export_circleplus(path);
+}
+
+NNFW_STATUS nnfw_get_output(nnfw_session *session, uint32_t index, nnfw_tensorinfo *out_info,
+                            const void **out_buffer)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return reinterpret_cast<Session *>(session)->get_output(index, out_info, out_buffer);
 }
