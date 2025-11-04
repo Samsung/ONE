@@ -25,6 +25,6 @@ if(SentencePiece_FOUND)
 
     # Add log library for Android
     if(ANDROID)
-        target_link_libraries(ggma_tokenize PUBLIC log)
+        target_link_libraries(sentencepiece log)
     endif()
 endif()
