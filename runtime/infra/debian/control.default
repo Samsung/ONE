@@ -49,3 +49,9 @@ Architecture: amd64
 Multi-Arch: same
 Depends: onert, ${shlibs:Depends}, ${misc:Depends}
 Description: one-runtime train package
+
+Package: ggma
+Architecture: amd64
+Multi-Arch: same
+Depends: onert, onert-dev, ${shlibs:Depends}, ${misc:Depends}
+Description: GGMA (Generative Model API) package
