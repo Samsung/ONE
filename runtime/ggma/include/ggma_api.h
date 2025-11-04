@@ -24,6 +24,7 @@
 /* Include all GGMA API headers */
 #include "ggma_context.h"
 #include "ggma_generate.h"
+#include "ggma_tokenize.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -102,6 +102,7 @@ GGMA package for on-device generative AI framework
 %defattr(-,root,root,-)
 %ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
 %{_libdir}/ggma/libggma_api.so
+%{_libdir}/ggma/libggma_tokenize.so
 %{_includedir}/ggma/*
 %{_libdir}/pkgconfig/ggma.pc
 %endif
