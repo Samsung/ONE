@@ -3,7 +3,7 @@
 NNCC_SCRIPT_RPATH="scripts"
 NNCC_COMMAND_RPATH="infra/nncc/command"
 
-NNCC_PROJECT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+NNCC_PROJECT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 NNCC_COMMAND_PATH="${NNCC_PROJECT_PATH}/${NNCC_COMMAND_RPATH}"
 NNCC_SCRIPT_PATH="${NNCC_PROJECT_PATH}/${NNCC_SCRIPT_RPATH}"
 

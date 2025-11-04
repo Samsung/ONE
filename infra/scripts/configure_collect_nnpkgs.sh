@@ -4,7 +4,7 @@
 
 set -eo pipefail
 
-CURRENT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+CURRENT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 ROOT_PATH="$CURRENT_PATH/../../"
 
 source ${CURRENT_PATH}/compiler_modules.sh

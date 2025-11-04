@@ -2,7 +2,7 @@
 
 NNAS_CONFIG_RPATH="infra/config"
 NNAS_COMMAND_RPATH="infra/command"
-NNAS_PROJECT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+NNAS_PROJECT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 NNAS_COMMAND_PATH="${NNAS_PROJECT_PATH}/${NNAS_COMMAND_RPATH}"
 
 function Usage()
