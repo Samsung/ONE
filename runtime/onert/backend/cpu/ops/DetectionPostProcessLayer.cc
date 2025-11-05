@@ -16,11 +16,66 @@
 
 #include "DetectionPostProcessLayer.h"
 
+#include "../KernelGenerator.h"
+#include "../Validator.h"
+
 #include "ndarray/Array.h"
 
 #include <numeric>
 #include <utility>
 #include <cmath>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::DetectionPostProcess &) { _supported = true; }
+
+void KernelGenerator::visit(const ir::operation::DetectionPostProcess &node)
+{
+  using NMS = ir::operation::DetectionPostProcess;
+
+  ops::DetectionPostProcessLayer::DetectionPostProcessParameters parameters;
+  parameters.scales.y = node.param().scale.y_scale;
+  parameters.scales.x = node.param().scale.x_scale;
+  parameters.scales.w = node.param().scale.w_scale;
+  parameters.scales.h = node.param().scale.h_scale;
+
+  parameters.iou_threshold = node.param().iou_threshold;
+  parameters.score_threshold = node.param().score_threshold;
+  parameters.max_boxes_per_class = node.param().max_boxes_per_class;
+  parameters.max_detections = node.param().max_detections;
+  parameters.num_classes = node.param().num_classes;
+  parameters.center_box_format = node.param().center_size_boxes;
+  parameters.max_classes_per_detection = node.param().max_classes_per_detection;
+
+  auto boxes_index = node.getInputs().at(NMS::Input::BOXES);
+  auto scores_index = node.getInputs().at(NMS::Input::SCORES);
+  auto anchors_index = node.getInputs().at(NMS::Input::INPUT_ANCHORS);
+
+  auto o_classes_index = node.getOutputs().at(NMS::Output::BOX_CLASSES);
+  auto o_coords_index = node.getOutputs().at(NMS::Output::BOX_COORDS);
+  auto o_scores_index = node.getOutputs().at(NMS::Output::BOX_SCORES);
+  auto o_num_selected_index = node.getOutputs().at(NMS::Output::NUM_SELECTED);
+
+  parameters.boxes_descr = _ctx.at(boxes_index).shape().dims();
+  parameters.scrores_descr = _ctx.at(scores_index).shape().dims();
+
+  parameters.boxes_input = _tensor_reg->getPortableTensor(boxes_index);
+  parameters.scores_input = _tensor_reg->getPortableTensor(scores_index);
+  parameters.anchors_input = _tensor_reg->getPortableTensor(anchors_index);
+
+  parameters.box_classes_output = _tensor_reg->getPortableTensor(o_classes_index);
+  parameters.box_coords_output = _tensor_reg->getPortableTensor(o_coords_index);
+  parameters.box_scores_output = _tensor_reg->getPortableTensor(o_scores_index);
+  parameters.num_selections_output = _tensor_reg->getPortableTensor(o_num_selected_index);
+
+  auto fn = std::make_unique<ops::DetectionPostProcessLayer>();
+  fn->configure(std::move(parameters));
+
+  _return_fn = std::move(fn);
+}
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

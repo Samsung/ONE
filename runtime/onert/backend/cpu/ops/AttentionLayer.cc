@@ -15,15 +15,68 @@
  */
 
 #include "AttentionLayer.h"
+
+#include "../KernelGenerator.h"
+#include "../Validator.h"
+
 #include "cker/operation/BatchMatMul.h"
 #include "cker/operation/FullyConnected.h"
 #include "cker/operation/RoPE.h"
 #include "cker/operation/SoftMax.h"
 #include "cker/operation/Transpose.h"
 #include "cker/Shape.h"
+
 #include <cassert>
 #include <stdexcept>
 #include <vector>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::Attention &) { _supported = true; }
+
+void KernelGenerator::visit(const ir::operation::Attention &node)
+{
+  using ir::operation::Attention;
+
+  const auto input_index{node.getInputs().at(Attention::Input::INPUT)};
+  const auto wq_index{node.getInputs().at(Attention::Input::WQ)};
+  const auto wk_index{node.getInputs().at(Attention::Input::WK)};
+  const auto wv_index{node.getInputs().at(Attention::Input::WV)};
+  const auto wo_index{node.getInputs().at(Attention::Input::WO)};
+  const auto cos_index = node.getInputs().at(Attention::Input::COS);
+  const auto sin_index = node.getInputs().at(Attention::Input::SIN);
+  const auto mask_index = node.getInputs().at(Attention::Input::MASK);
+  const auto k_cache_index = node.getInputs().at(Attention::Input::K_CACHE);
+  const auto v_cache_index = node.getInputs().at(Attention::Input::V_CACHE);
+  const auto pos_index = node.getInputs().at(Attention::Input::POS);
+
+  const auto output_index{node.getOutputs().at(0)};
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
+  auto wq_tensor = _tensor_reg->getPortableTensor(wq_index);
+  auto wk_tensor = _tensor_reg->getPortableTensor(wk_index);
+  auto wv_tensor = _tensor_reg->getPortableTensor(wv_index);
+  auto wo_tensor = _tensor_reg->getPortableTensor(wo_index);
+  auto cos_tensor = cos_index.undefined() ? nullptr : _tensor_reg->getPortableTensor(cos_index);
+  auto sin_tensor = sin_index.undefined() ? nullptr : _tensor_reg->getPortableTensor(sin_index);
+  auto mask_tensor = mask_index.undefined() ? nullptr : _tensor_reg->getPortableTensor(mask_index);
+  auto k_cache_tensor =
+    k_cache_index.undefined() ? nullptr : _tensor_reg->getPortableTensor(k_cache_index);
+  auto v_cache_tensor =
+    v_cache_index.undefined() ? nullptr : _tensor_reg->getPortableTensor(v_cache_index);
+  auto pos_tensor = pos_index.undefined() ? nullptr : _tensor_reg->getPortableTensor(pos_index);
+
+  auto fn = std::make_unique<ops::AttentionLayer>();
+
+  fn->configure(input_tensor, wq_tensor, wk_tensor, wv_tensor, wo_tensor, cos_tensor, sin_tensor,
+                mask_tensor, k_cache_tensor, v_cache_tensor, pos_tensor, output_tensor);
+
+  _return_fn = std::move(fn);
+}
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

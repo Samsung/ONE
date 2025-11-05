@@ -17,8 +17,43 @@
 #include "StridedSliceLayer.h"
 
 #include "OperationUtils.h"
+#include "../KernelGenerator.h"
+#include "../Validator.h"
 
 #include <cker/operation/StridedSlice.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::StridedSlice &) { _supported = true; }
+
+void KernelGenerator::visit(const ir::operation::StridedSlice &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::StridedSlice::Input::INPUT)};
+  const auto starts_index{node.getInputs().at(ir::operation::StridedSlice::Input::STARTS)};
+  const auto ends_index{node.getInputs().at(ir::operation::StridedSlice::Input::ENDS)};
+  const auto strides_index{node.getInputs().at(ir::operation::StridedSlice::Input::STRIDES)};
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
+  auto starts_tensor = _tensor_reg->getPortableTensor(starts_index);
+  auto ends_tensor = _tensor_reg->getPortableTensor(ends_index);
+  auto strides_tensor = _tensor_reg->getPortableTensor(strides_index);
+
+  auto begin_mask = node.param().begin_mask;
+  auto end_mask = node.param().end_mask;
+  auto shrink_axis_mask = node.param().shrink_axis_mask;
+
+  auto fn = std::make_unique<ops::StridedSliceLayer>();
+
+  fn->configure(input_tensor, starts_tensor, ends_tensor, strides_tensor, output_tensor, begin_mask,
+                end_mask, shrink_axis_mask);
+
+  _return_fn = std::move(fn);
+}
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

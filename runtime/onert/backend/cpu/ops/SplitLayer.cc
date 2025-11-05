@@ -17,8 +17,39 @@
 #include "SplitLayer.h"
 
 #include "OperationUtils.h"
+#include "../KernelGenerator.h"
+#include "../Validator.h"
 
 #include <cker/operation/Split.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::Split &) { _supported = true; }
+
+void KernelGenerator::visit(const ir::operation::Split &node)
+{
+  const auto num_splits = node.param().num_splits;
+  assert(num_splits == static_cast<int>(node.getOutputs().size()));
+
+  const auto input_idx{node.getInputs().at(ir::operation::Split::Input::INPUT)};
+  const auto axis_idx{node.getInputs().at(ir::operation::Split::Input::AXIS)};
+
+  auto in_tensor = _tensor_reg->getPortableTensor(input_idx);
+  auto axis_tensor = _tensor_reg->getPortableTensor(axis_idx);
+
+  std::vector<IPortableTensor *> out_tensors;
+  for (const auto &output_idx : node.getOutputs())
+    out_tensors.emplace_back(_tensor_reg->getPortableTensor(output_idx));
+
+  auto fn = std::make_unique<ops::SplitLayer>();
+
+  fn->configure(in_tensor, axis_tensor, num_splits, out_tensors);
+
+  _return_fn = std::move(fn);
+}
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

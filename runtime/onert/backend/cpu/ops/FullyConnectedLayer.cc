@@ -17,11 +17,44 @@
 #include "FullyConnectedLayer.h"
 
 #include "GGMLHelper.h"
-
 #include "../Tensor.h"
+#include "../KernelGenerator.h"
+#include "../Validator.h"
+
 #include <cker/operation/FullyConnected.h>
 #include <cker/TensorUtils.h>
 #include <misc/polymorphic_downcast.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::FullyConnected &) { _supported = true; }
+
+void KernelGenerator::visit(const ir::operation::FullyConnected &node)
+{
+  using ir::operation::FullyConnected;
+
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(FullyConnected::Input::INPUT)};
+  const auto weight_index{node.getInputs().at(FullyConnected::Input::WEIGHT)};
+  const auto bias_index{node.getInputs().at(FullyConnected::Input::BIAS)};
+  const auto activation = node.param().activation;
+  const auto weights_format = node.param().weights_format;
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
+  auto weight_tensor = _tensor_reg->getPortableTensor(weight_index);
+  auto bias_tensor = bias_index.undefined() ? nullptr : _tensor_reg->getPortableTensor(bias_index);
+
+  auto fn = std::make_unique<ops::FullyConnectedLayer>();
+
+  fn->configure(input_tensor, weight_tensor, bias_tensor, activation, weights_format, output_tensor,
+                _external_context);
+
+  _return_fn = std::move(fn);
+}
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

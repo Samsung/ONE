@@ -17,8 +17,33 @@
 #include "SquaredDifferenceLayer.h"
 
 #include "OperationUtils.h"
+#include "../KernelGenerator.h"
+#include "../Validator.h"
 
 #include <cker/operation/SqDiff.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::SquaredDifference &) { _supported = true; }
+
+void KernelGenerator::visit(const ir::operation::SquaredDifference &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+  const auto lhs_index{node.getInputs().at(ir::operation::SquaredDifference::Input::LHS)};
+  const auto rhs_index{node.getInputs().at(ir::operation::SquaredDifference::Input::RHS)};
+
+  auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index);
+  auto lhs_tensor = _tensor_reg->getPortableTensor(lhs_index);
+  auto rhs_tensor = _tensor_reg->getPortableTensor(rhs_index);
+
+  auto fn = std::make_unique<ops::SqDiffLayer>();
+
+  fn->configure(lhs_tensor, rhs_tensor, ofm_tensor);
+  _return_fn = std::move(fn);
+}
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

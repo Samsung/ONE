@@ -17,8 +17,33 @@
 #include "TileLayer.h"
 
 #include "OperationUtils.h"
+#include "../KernelGenerator.h"
+#include "../Validator.h"
 
 #include <cker/operation/Tile.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::Tile &) { _supported = true; }
+
+void KernelGenerator::visit(const ir::operation::Tile &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::Tile::INPUT)};
+  const auto multiples_index{node.getInputs().at(ir::operation::Tile::MULTIPLES)};
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
+  auto multiples_tensor = _tensor_reg->getPortableTensor(multiples_index);
+
+  auto fn = std::make_unique<ops::TileLayer>();
+
+  fn->configure(input_tensor, multiples_tensor, output_tensor);
+  _return_fn = std::move(fn);
+}
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

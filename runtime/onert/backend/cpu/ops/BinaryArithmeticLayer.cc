@@ -16,7 +16,55 @@
 
 #include "BinaryArithmeticLayer.h"
 
+#include "../KernelGenerator.h"
+#include "../Validator.h"
+
 #include <cker/operation/BinaryArithmeticOps.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::BinaryArithmetic &) { _supported = true; }
+
+ops::ArithmeticType
+convertArithmeticType(ir::operation::BinaryArithmetic::ArithmeticType arithmetic_type_ir)
+{
+  switch (arithmetic_type_ir)
+  {
+    case ir::operation::BinaryArithmetic::ArithmeticType::ADD:
+      return ops::ArithmeticType::kAdd;
+    case ir::operation::BinaryArithmetic::ArithmeticType::SUB:
+      return ops::ArithmeticType::kSub;
+    case ir::operation::BinaryArithmetic::ArithmeticType::MUL:
+      return ops::ArithmeticType::kMul;
+    case ir::operation::BinaryArithmetic::ArithmeticType::DIV:
+      return ops::ArithmeticType::kDiv;
+    default:
+      throw std::runtime_error("cpu KernelGenerator : Not supported operation yet");
+  }
+}
+
+void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+  const auto lhs_index{node.getInputs().at(ir::operation::BinaryArithmetic::Input::LHS)};
+  const auto rhs_index{node.getInputs().at(ir::operation::BinaryArithmetic::Input::RHS)};
+
+  const auto activation = node.param().activation;
+
+  auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index);
+  auto lhs_tensor = _tensor_reg->getPortableTensor(lhs_index);
+  auto rhs_tensor = _tensor_reg->getPortableTensor(rhs_index);
+
+  auto fn = std::make_unique<ops::BinaryArithmeticLayer>();
+
+  fn->configure(lhs_tensor, rhs_tensor, ofm_tensor, activation,
+                convertArithmeticType(node.param().arithmetic_type));
+
+  _return_fn = std::move(fn);
+}
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

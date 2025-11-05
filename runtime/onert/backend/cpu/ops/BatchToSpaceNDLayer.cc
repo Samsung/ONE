@@ -16,7 +16,43 @@
 
 #include "BatchToSpaceNDLayer.h"
 
+#include "../KernelGenerator.h"
+#include "../Validator.h"
+
 #include <cker/operation/BatchToSpaceND.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::BatchToSpaceND &) { _supported = true; }
+
+void KernelGenerator::visit(const ir::operation::BatchToSpaceND &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::BatchToSpaceND::INPUT)};
+  const auto block_size_index{node.getInputs().at(ir::operation::BatchToSpaceND::BLOCK_SIZE)};
+
+  auto output_alloc = _tensor_reg->getPortableTensor(output_index);
+  auto input_alloc = _tensor_reg->getPortableTensor(input_index);
+  auto block_size_alloc = _tensor_reg->getPortableTensor(block_size_index);
+
+  auto fn = std::make_unique<ops::BatchToSpaceNDLayer>();
+
+  IPortableTensor *crops_alloc = nullptr;
+  const auto NNApiInputs = 2;
+
+  if (node.getInputs().size() != NNApiInputs)
+  {
+    const auto crops_data_index{node.getInputs().at(ir::operation::BatchToSpaceND::CROPS_DATA)};
+    crops_alloc = _tensor_reg->getPortableTensor(crops_data_index);
+  }
+
+  fn->configure(input_alloc, output_alloc, block_size_alloc, crops_alloc);
+
+  _return_fn = std::move(fn);
+}
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

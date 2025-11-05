@@ -17,8 +17,43 @@
 #include "OneHotLayer.h"
 
 #include "OperationUtils.h"
+#include "../KernelGenerator.h"
+#include "../Validator.h"
 
 #include <cker/operation/OneHot.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::OneHot &) { _supported = true; }
+
+void KernelGenerator::visit(const ir::operation::OneHot &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto indices_index{node.getInputs().at(ir::operation::OneHot::INDICES)};
+  const auto depth_index{node.getInputs().at(ir::operation::OneHot::Input::DEPTH)};
+  const auto onvalue_index{node.getInputs().at(ir::operation::OneHot::Input::ON_VALUE)};
+  const auto offvalue_index{node.getInputs().at(ir::operation::OneHot::Input::OFF_VALUE)};
+
+  const auto axis = node.param().axis;
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto indices_tensor = _tensor_reg->getPortableTensor(indices_index);
+  auto depth_tensor = _tensor_reg->getPortableTensor(depth_index);
+  auto onvalue_tensor = _tensor_reg->getPortableTensor(onvalue_index);
+  auto offvalue_tensor = _tensor_reg->getPortableTensor(offvalue_index);
+
+  assert(indices_tensor->data_type() == OperandType::INT32);
+  assert(axis <= static_cast<int>(indices_tensor->getShape().rank()));
+
+  auto fn = std::make_unique<ops::OneHotLayer>();
+
+  fn->configure(indices_tensor, depth_tensor, onvalue_tensor, offvalue_tensor, output_tensor, axis);
+
+  _return_fn = std::move(fn);
+}
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

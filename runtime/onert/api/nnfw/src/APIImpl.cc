@@ -16,9 +16,10 @@
 
 #include "nnfw.h"
 #include "nnfw_experimental.h"
+#include "nnfw_internal.h"
 #include "nnfw_version.h"
 
-#include "nnfw_session.h"
+#include "Session.h"
 
 // Double-check enum value changes
 
@@ -55,136 +56,141 @@ STATIC_ASSERT_ENUM_CHECK(NNFW_INFO_ID_VERSION, 0);
       return NNFW_STATUS_UNEXPECTED_NULL; \
   } while (0)
 
-NNFW_STATUS nnfw_create_session(nnfw_session **session) { return nnfw_session::create(session); }
+using Session = onert::api::Session;
+
+NNFW_STATUS nnfw_create_session(nnfw_session **session)
+{
+  return Session::create(reinterpret_cast<Session **>(session));
+}
 
 NNFW_STATUS nnfw_close_session(nnfw_session *session)
 {
-  delete session;
+  delete reinterpret_cast<Session *>(session);
   return NNFW_STATUS_NO_ERROR;
 }
 
 NNFW_STATUS nnfw_load_model_from_file(nnfw_session *session, const char *path)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->load_model_from_path(path);
+  return reinterpret_cast<Session *>(session)->load_model_from_path(path);
 }
 
 NNFW_STATUS nnfw_prepare(nnfw_session *session)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->prepare();
+  return reinterpret_cast<Session *>(session)->prepare();
 }
 
 NNFW_STATUS nnfw_run(nnfw_session *session)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->run();
+  return reinterpret_cast<Session *>(session)->run();
 }
 
 NNFW_STATUS nnfw_run_async(nnfw_session *session)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->run_async();
+  return reinterpret_cast<Session *>(session)->run_async();
 }
 
 NNFW_STATUS nnfw_await(nnfw_session *session)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->await();
+  return reinterpret_cast<Session *>(session)->await();
 }
 
 NNFW_STATUS nnfw_set_input(nnfw_session *session, uint32_t index, NNFW_TYPE type,
                            const void *buffer, size_t length)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->set_input(index, type, buffer, length);
+  return reinterpret_cast<Session *>(session)->set_input(index, type, buffer, length);
 }
 
 NNFW_STATUS nnfw_set_output(nnfw_session *session, uint32_t index, NNFW_TYPE type, void *buffer,
                             size_t length)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->set_output(index, type, buffer, length);
+  return reinterpret_cast<Session *>(session)->set_output(index, type, buffer, length);
 }
 
 NNFW_STATUS nnfw_input_size(nnfw_session *session, uint32_t *number)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->input_size(number);
+  return reinterpret_cast<Session *>(session)->input_size(number);
 }
 
 NNFW_STATUS nnfw_output_size(nnfw_session *session, uint32_t *number)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->output_size(number);
+  return reinterpret_cast<Session *>(session)->output_size(number);
 }
 
 NNFW_STATUS nnfw_set_input_layout(nnfw_session *session, uint32_t index, NNFW_LAYOUT layout)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->set_input_layout(index, layout);
+  return reinterpret_cast<Session *>(session)->set_input_layout(index, layout);
 }
 
 NNFW_STATUS nnfw_set_output_layout(nnfw_session *session, uint32_t index, NNFW_LAYOUT layout)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->set_output_layout(index, layout);
+  return reinterpret_cast<Session *>(session)->set_output_layout(index, layout);
 }
 
 NNFW_STATUS nnfw_set_input_type(nnfw_session *session, uint32_t index, NNFW_TYPE type)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->set_input_type(index, type);
+  return reinterpret_cast<Session *>(session)->set_input_type(index, type);
 }
 
 NNFW_STATUS nnfw_set_output_type(nnfw_session *session, uint32_t index, NNFW_TYPE type)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->set_output_type(index, type);
+  return reinterpret_cast<Session *>(session)->set_output_type(index, type);
 }
 
 NNFW_STATUS nnfw_input_tensorinfo(nnfw_session *session, uint32_t index,
                                   nnfw_tensorinfo *tensor_info)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->input_tensorinfo(index, tensor_info);
+  return reinterpret_cast<Session *>(session)->input_tensorinfo(index, tensor_info);
 }
 
 NNFW_STATUS nnfw_output_tensorinfo(nnfw_session *session, uint32_t index,
                                    nnfw_tensorinfo *tensor_info)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->output_tensorinfo(index, tensor_info);
+  return reinterpret_cast<Session *>(session)->output_tensorinfo(index, tensor_info);
 }
 
 NNFW_STATUS nnfw_register_custom_op_info(nnfw_session *session, const char *id,
                                          custom_kernel_registration_info *info)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->register_custom_operation(id, info->eval_function);
+  return reinterpret_cast<Session *>(session)->register_custom_operation(id, info->eval_function);
 }
 
 NNFW_STATUS nnfw_apply_tensorinfo(nnfw_session *, uint32_t, nnfw_tensorinfo)
 {
-  return nnfw_session::deprecated("nnfw_apply_tensorinfo: Deprecated");
+  return Session::deprecated("nnfw_apply_tensorinfo: Deprecated");
 }
 
 NNFW_STATUS nnfw_set_input_tensorinfo(nnfw_session *session, uint32_t index,
                                       const nnfw_tensorinfo *tensor_info)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->set_input_tensorinfo(index, tensor_info);
+  return reinterpret_cast<Session *>(session)->set_input_tensorinfo(index, tensor_info);
 }
 
 NNFW_STATUS nnfw_set_available_backends(nnfw_session *session, const char *backends)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->set_available_backends(backends);
+  return reinterpret_cast<Session *>(session)->set_available_backends(backends);
 }
 
 NNFW_STATUS nnfw_set_op_backend(nnfw_session *, const char *, const char *)
 {
-  return nnfw_session::deprecated("nnfw_set_op_backend: Deprecated");
+  return Session::deprecated("nnfw_set_op_backend: Deprecated");
 }
 
 NNFW_STATUS nnfw_query_info_u32(nnfw_session *session, NNFW_INFO_ID id, uint32_t *val)
@@ -209,52 +215,52 @@ NNFW_STATUS nnfw_query_info_u32(nnfw_session *session, NNFW_INFO_ID id, uint32_t
 NNFW_STATUS nnfw_input_tensorindex(nnfw_session *session, const char *tensorname, uint32_t *index)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->input_tensorindex(tensorname, index);
+  return reinterpret_cast<Session *>(session)->input_tensorindex(tensorname, index);
 }
 
 NNFW_STATUS nnfw_output_tensorindex(nnfw_session *session, const char *tensorname, uint32_t *index)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->output_tensorindex(tensorname, index);
+  return reinterpret_cast<Session *>(session)->output_tensorindex(tensorname, index);
 }
 
 NNFW_STATUS nnfw_set_backends_per_operation(nnfw_session *session, const char *backend_settings)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->set_backends_per_operation(backend_settings);
+  return reinterpret_cast<Session *>(session)->set_backends_per_operation(backend_settings);
 }
 
 NNFW_STATUS nnfw_prepare_pipeline(nnfw_session *, const char *)
 {
-  return nnfw_session::deprecated("nnfw_prepare_pipeline: Deprecated");
+  return Session::deprecated("nnfw_prepare_pipeline: Deprecated");
 }
 
 NNFW_STATUS nnfw_push_pipeline_input(nnfw_session *, void *, void *)
 {
-  return nnfw_session::deprecated("nnfw_push_pipeline_input: Deprecated");
+  return Session::deprecated("nnfw_push_pipeline_input: Deprecated");
 }
 
 NNFW_STATUS nnfw_pop_pipeline_output(nnfw_session *, void *)
 {
-  return nnfw_session::deprecated("nnfw_pop_pipeline_output: Deprecated");
+  return Session::deprecated("nnfw_pop_pipeline_output: Deprecated");
 }
 
 NNFW_STATUS nnfw_set_workspace(nnfw_session *session, const char *dir)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->set_workspace(dir);
+  return reinterpret_cast<Session *>(session)->set_workspace(dir);
 }
 
 NNFW_STATUS nnfw_configure_signature(nnfw_session *session, const char *signature)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->configure_signature(signature);
+  return reinterpret_cast<Session *>(session)->configure_signature(signature);
 }
 
 NNFW_STATUS nnfw_set_signature_run(nnfw_session *session, const char *signature)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->set_signature_run(signature);
+  return reinterpret_cast<Session *>(session)->set_signature_run(signature);
 }
 
 // Training
@@ -262,84 +268,84 @@ NNFW_STATUS nnfw_set_signature_run(nnfw_session *session, const char *signature)
 NNFW_STATUS nnfw_train_get_traininfo(nnfw_session *session, nnfw_train_info *info)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->train_get_traininfo(info);
+  return reinterpret_cast<Session *>(session)->train_get_traininfo(info);
 }
 
 NNFW_STATUS nnfw_train_set_traininfo(nnfw_session *session, const nnfw_train_info *info)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->train_set_traininfo(info);
+  return reinterpret_cast<Session *>(session)->train_set_traininfo(info);
 }
 
 NNFW_STATUS nnfw_train_prepare(nnfw_session *session)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->train_prepare();
+  return reinterpret_cast<Session *>(session)->train_prepare();
 }
 
 NNFW_STATUS nnfw_train_input_tensorinfo(nnfw_session *session, uint32_t index,
                                         nnfw_tensorinfo *info)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->train_input_tensorinfo(index, info);
+  return reinterpret_cast<Session *>(session)->train_input_tensorinfo(index, info);
 }
 
 NNFW_STATUS nnfw_train_expected_tensorinfo(nnfw_session *session, uint32_t index,
                                            nnfw_tensorinfo *info)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->train_expected_tensorinfo(index, info);
+  return reinterpret_cast<Session *>(session)->train_expected_tensorinfo(index, info);
 }
 
 NNFW_STATUS nnfw_train_set_input(nnfw_session *session, uint32_t index, const void *input,
                                  const nnfw_tensorinfo *input_info)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->train_set_input(index, input, input_info);
+  return reinterpret_cast<Session *>(session)->train_set_input(index, input, input_info);
 }
 
 NNFW_STATUS nnfw_train_set_expected(nnfw_session *session, uint32_t index, const void *expected,
                                     const nnfw_tensorinfo *expected_info)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->train_set_expected(index, expected, expected_info);
+  return reinterpret_cast<Session *>(session)->train_set_expected(index, expected, expected_info);
 }
 
 NNFW_STATUS nnfw_train_set_output(nnfw_session *session, uint32_t index, NNFW_TYPE type,
                                   void *buffer, size_t length)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->train_set_output(index, type, buffer, length);
+  return reinterpret_cast<Session *>(session)->train_set_output(index, type, buffer, length);
 }
 
 NNFW_STATUS nnfw_train(nnfw_session *session, bool update_weights)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->train_run(update_weights);
+  return reinterpret_cast<Session *>(session)->train_run(update_weights);
 }
 
 NNFW_STATUS nnfw_train_get_loss(nnfw_session *session, uint32_t index, float *loss)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->train_get_loss(index, loss);
+  return reinterpret_cast<Session *>(session)->train_get_loss(index, loss);
 }
 
 NNFW_STATUS nnfw_train_export_circle(nnfw_session *session, const char *path)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->train_export_circle(path);
+  return reinterpret_cast<Session *>(session)->train_export_circle(path);
 }
 
 NNFW_STATUS nnfw_train_import_checkpoint(nnfw_session *session, const char *path)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->train_import_checkpoint(path);
+  return reinterpret_cast<Session *>(session)->train_import_checkpoint(path);
 }
 
 NNFW_STATUS nnfw_train_export_checkpoint(nnfw_session *session, const char *path)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->train_export_checkpoint(path);
+  return reinterpret_cast<Session *>(session)->train_export_checkpoint(path);
 }
 
 // Quantization
@@ -347,50 +353,51 @@ NNFW_STATUS nnfw_train_export_checkpoint(nnfw_session *session, const char *path
 NNFW_STATUS nnfw_set_quantization_type(nnfw_session *session, NNFW_QUANTIZE_TYPE qtype)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->set_quantization_type(qtype);
+  return reinterpret_cast<Session *>(session)->set_quantization_type(qtype);
 }
 
 NNFW_STATUS nnfw_set_quantized_model_path(nnfw_session *session, const char *path)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->set_quantized_model_path(path);
+  return reinterpret_cast<Session *>(session)->set_quantized_model_path(path);
 }
 
 NNFW_STATUS nnfw_quantize(nnfw_session *session)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->quantize();
+  return reinterpret_cast<Session *>(session)->quantize();
 }
 
 NNFW_STATUS nnfw_set_codegen_model_path(nnfw_session *session, const char *path)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->set_codegen_model_path(path);
+  return reinterpret_cast<Session *>(session)->set_codegen_model_path(path);
 }
 
 NNFW_STATUS nnfw_codegen(nnfw_session *session, const char *target, NNFW_CODEGEN_PREF pref)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->codegen(target, pref);
+  return reinterpret_cast<Session *>(session)->codegen(target, pref);
 }
 
 NNFW_STATUS nnfw_set_odc_param_minmax_records_count(nnfw_session *session, int minmax_records_count)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->set_odc_param_minmax_records_count(minmax_records_count);
+  return reinterpret_cast<Session *>(session)->set_odc_param_minmax_records_count(
+    minmax_records_count);
 }
 
 NNFW_STATUS nnfw_odc_delete_minmax_file(nnfw_session *session)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->delete_odc_minmax_file();
+  return reinterpret_cast<Session *>(session)->delete_odc_minmax_file();
 }
 
 NNFW_STATUS nnfw_run_with_auto_compilation(nnfw_session *session, const char *target,
                                            NNFW_CODEGEN_PREF pref)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->run_with_auto_compilation(target, pref);
+  return reinterpret_cast<Session *>(session)->run_with_auto_compilation(target, pref);
 }
 
 // Configuration
@@ -399,24 +406,57 @@ NNFW_STATUS nnfw_set_prepare_config(nnfw_session *session, const NNFW_PREPARE_CO
                                     const char *value)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->set_prepare_config(key, value);
+  return reinterpret_cast<Session *>(session)->set_prepare_config(key, value);
 }
 
 NNFW_STATUS nnfw_reset_prepare_config(nnfw_session *session)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->reset_prepare_config();
+  return reinterpret_cast<Session *>(session)->reset_prepare_config();
 }
 
 NNFW_STATUS nnfw_set_execute_config(nnfw_session *session, const NNFW_RUN_CONFIG key,
                                     const char *value)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->set_execute_config(key, value);
+  return reinterpret_cast<Session *>(session)->set_execute_config(key, value);
 }
 
 NNFW_STATUS nnfw_reset_execute_config(nnfw_session *session)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->reset_execute_config();
+  return reinterpret_cast<Session *>(session)->reset_execute_config();
+}
+
+// Internal API
+
+NNFW_STATUS nnfw_set_config(nnfw_session *session, const char *key, const char *value)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return reinterpret_cast<Session *>(session)->set_config(key, value);
+}
+
+NNFW_STATUS nnfw_get_config(nnfw_session *session, const char *key, char *value, size_t value_size)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return reinterpret_cast<Session *>(session)->get_config(key, value, value_size);
+}
+
+NNFW_STATUS nnfw_load_circle_from_buffer(nnfw_session *session, uint8_t *buffer, size_t size)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return reinterpret_cast<Session *>(session)->load_circle_from_buffer(buffer, size);
+}
+
+NNFW_STATUS nnfw_train_export_circleplus(nnfw_session *session, const char *path)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return reinterpret_cast<Session *>(session)->train_export_circleplus(path);
+}
+
+NNFW_STATUS nnfw_get_output(nnfw_session *session, uint32_t index, nnfw_tensorinfo *out_info,
+                            const void **out_buffer)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return reinterpret_cast<Session *>(session)->get_output(index, out_info, out_buffer);
 }

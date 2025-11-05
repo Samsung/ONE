@@ -3,14 +3,15 @@
 NNCC_SCRIPT_RPATH="scripts"
 NNCC_COMMAND_RPATH="infra/nncc/command"
 
-NNCC_PROJECT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+NNCC_PROJECT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
+NNCC_COMMAND_PATH="${NNCC_PROJECT_PATH}/${NNCC_COMMAND_RPATH}"
 NNCC_SCRIPT_PATH="${NNCC_PROJECT_PATH}/${NNCC_SCRIPT_RPATH}"
 
 function Usage()
 {
   echo "Usage: $0 [COMMAND] ..."
   echo "Command:"
-  for file in "$NNCC_COMMAND_RPATH"/*;
+  for file in "$NNCC_COMMAND_PATH"/*;
   do
     echo "  $(basename "$file")"
   done
@@ -24,7 +25,7 @@ if [[ -z "${COMMAND}" ]]; then
   exit 255
 fi
 
-COMMAND_FILE="${NNCC_PROJECT_PATH}/${NNCC_COMMAND_RPATH}/${COMMAND}"
+COMMAND_FILE="${NNCC_COMMAND_PATH}/${COMMAND}"
 
 if [[ ! -f "${COMMAND_FILE}" ]]; then
   echo "ERROR: '${COMMAND}' is not supported"

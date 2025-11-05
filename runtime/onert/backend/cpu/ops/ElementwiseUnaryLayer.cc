@@ -17,6 +17,8 @@
 #include "ElementwiseUnaryLayer.h"
 
 #include "OperationUtils.h"
+#include "../KernelGenerator.h"
+#include "../Validator.h"
 
 #include <cker/operation/Dequantize.h>
 #include <cker/operation/Elementwise.h>
@@ -25,6 +27,78 @@
 #include <cker/operation/LogicalNot.h>
 #include <cker/operation/Round.h>
 #include <cker/operation/Quantize.h>
+
+namespace onert::backend::cpu
+{
+
+void Validator::visit(const ir::operation::ElementwiseUnary &) { _supported = true; }
+
+ops::ElementwiseUnaryType convertElementwiseUnaryType(ir::operation::ElementwiseUnary::Type type_ir)
+{
+  switch (type_ir)
+  {
+    case ir::operation::ElementwiseUnary::Type::ABS:
+      return ops::ElementwiseUnaryType::kAbs;
+    case ir::operation::ElementwiseUnary::Type::CAST:
+      return ops::ElementwiseUnaryType::kCast;
+    case ir::operation::ElementwiseUnary::Type::COS:
+      return ops::ElementwiseUnaryType::kCos;
+    case ir::operation::ElementwiseUnary::Type::DEQUANTIZE:
+      return ops::ElementwiseUnaryType::kDequantize;
+    case ir::operation::ElementwiseUnary::Type::ERF:
+      return ops::ElementwiseUnaryType::kErf;
+    case ir::operation::ElementwiseUnary::Type::EXP:
+      return ops::ElementwiseUnaryType::kExp;
+    case ir::operation::ElementwiseUnary::Type::FLOOR:
+      return ops::ElementwiseUnaryType::kFloor;
+    case ir::operation::ElementwiseUnary::Type::LOG:
+      return ops::ElementwiseUnaryType::kLog;
+    case ir::operation::ElementwiseUnary::Type::LOGICAL_NOT:
+      return ops::ElementwiseUnaryType::kLogicalNot;
+    case ir::operation::ElementwiseUnary::Type::NEG:
+      return ops::ElementwiseUnaryType::kNeg;
+    case ir::operation::ElementwiseUnary::Type::QUANTIZE:
+      return ops::ElementwiseUnaryType::kQuantize;
+    case ir::operation::ElementwiseUnary::Type::ROUND:
+      return ops::ElementwiseUnaryType::kRound;
+    case ir::operation::ElementwiseUnary::Type::RSQRT:
+      return ops::ElementwiseUnaryType::kRSqrt;
+    case ir::operation::ElementwiseUnary::Type::SIN:
+      return ops::ElementwiseUnaryType::kSin;
+    case ir::operation::ElementwiseUnary::Type::SQRT:
+      return ops::ElementwiseUnaryType::kSqrt;
+    case ir::operation::ElementwiseUnary::Type::SQUARE:
+      return ops::ElementwiseUnaryType::kSquare;
+    case ir::operation::ElementwiseUnary::Type::ZEROS_LIKE:
+      return ops::ElementwiseUnaryType::kZerosLike;
+    default:
+      throw std::runtime_error("cpu KernelGenerator : Not supported operation yet");
+  }
+}
+
+void KernelGenerator::visit(const ir::operation::ElementwiseUnary &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::ElementwiseUnary::Input::INPUT)};
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
+
+  if (node.param().op_type == ir::operation::ElementwiseUnary::Type::QUANTIZE)
+  {
+    auto fn = std::make_unique<ops::QuantizeLayer>();
+    fn->configure(input_tensor, output_tensor);
+    _return_fn = std::move(fn);
+  }
+  else
+  {
+    auto fn = std::make_unique<ops::ElementwiseUnaryLayer>();
+    fn->configure(input_tensor, output_tensor, convertElementwiseUnaryType(node.param().op_type));
+    _return_fn = std::move(fn);
+  }
+}
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {
