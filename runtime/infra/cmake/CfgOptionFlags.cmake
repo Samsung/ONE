@@ -94,6 +94,8 @@ option(DOWNLOAD_FXDIV "Download fxdiv source" ON)
 option(BUILD_FXDIV "Build fxdiv library from the source" ON)
 option(DOWNLOAD_PYBIND11 "Download Pybind11 source" OFF)
 option(BUILD_PYTHON_BINDING "Build python binding" OFF)
+option(DOWNLOAD_SENTENCEPIECE "Download SentencePiece source" ON)
+option(BUILD_SENTENCEPIECE "Build SentencePiece library from the source" ON)
 option(HDF5_USE_STATIC_LIBRARIES "Determine whether or not static linking for HDF5" ON)
 
 #
