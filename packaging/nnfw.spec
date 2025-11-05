@@ -11,6 +11,7 @@ Source1001: CPUINFO.tar.gz
 Source1002: EIGEN.tar.gz
 Source1003: GEMMLOWP.tar.gz
 Source1004: RUY.tar.gz
+Source1005: SENTENCEPIECE.tar.gz
 Source2001: EXTERNALS_FOR_ODC.tar.gz
 
 %{!?build_type:     %define build_type      Release}
@@ -101,8 +102,7 @@ GGMA package for on-device generative AI framework
 %manifest %{name}.manifest
 %defattr(-,root,root,-)
 %ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
-%{_libdir}/ggma/libggma_api.so
-%{_libdir}/ggma/libggma_tokenize.so
+%{_libdir}/ggma/lib*
 %{_includedir}/ggma/*
 %{_libdir}/pkgconfig/ggma.pc
 %endif
@@ -182,6 +182,10 @@ tar -xf %{SOURCE1004} -C ./runtime/externals
 mkdir ./externals
 tar -xf %{SOURCE2001} -C ./externals
 %endif # odc_build
+
+%if %{ggma_build} == 1
+tar -xf %{SOURCE1005} -C ./runtime/externals
+%endif # ggma_build
 
 %build
 %ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
