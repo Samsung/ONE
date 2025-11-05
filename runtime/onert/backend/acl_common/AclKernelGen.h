@@ -17,28 +17,22 @@
 #ifndef __ONERT_BACKEND_ACL_COMMON_ACL_KERNEL_GEN_H_
 #define __ONERT_BACKEND_ACL_COMMON_ACL_KERNEL_GEN_H_
 
+#include "Convert.h"
+#include "IACLTensor.h"
+
 #include <exec/IFunction.h>
 #include <ir/Operands.h>
-
+#include <ir/operation/FullyConnected.h>
 #include <ir/operation/LSTM.h>
+
 #include <arm_compute/runtime/CL/CLFunctions.h>
+#include <arm_compute/runtime/CL/CLFunctionsEx.h>
 
 namespace onert::backend::acl_common
 {
 
-void enableDimCorrection(IACLTensor *tensor)
-{
-  size_t input_rank = tensor->getShape().rank();
-  const_cast<arm_compute::TensorShape &>(tensor->info()->tensor_shape())
-    .set(input_rank - 1, tensor->info()->dimension(input_rank - 1), true);
-}
-
-void disableDimCorrection(IACLTensor *tensor)
-{
-  size_t input_rank = tensor->getShape().rank();
-  const_cast<arm_compute::TensorShape &>(tensor->info()->tensor_shape())
-    .set(input_rank - 1, tensor->info()->dimension(input_rank - 1), false);
-}
+void enableDimCorrection(IACLTensor *tensor);
+void disableDimCorrection(IACLTensor *tensor);
 
 template <typename Layer, typename... Args>
 std::unique_ptr<arm_compute::IFunction> generateLayer(Args &&...args)
