@@ -63,7 +63,8 @@ class WheelBuildHook(BuildHookInterface):
         '''Retrieve the path of a directory where the required shared libraries are'''
         runtime_build_dir = self.get_runtime_build_dir()
         if not os.path.exists(runtime_build_dir):
-            raise FileExistsError(f"The expected runtime build dir does not exist: {runtime_build_dir}")
+            raise FileExistsError(
+                f"The expected runtime build dir does not exist: {runtime_build_dir}")
 
         print(f" |> runtime_build_dir={runtime_build_dir}")
 
@@ -160,7 +161,7 @@ class WheelBuildHook(BuildHookInterface):
     def _validate_product_dir(self, value):
         if value is None:
             value = self.DEFAULT_PRODUCT_DIR
-        
+
         if not os.path.exists(value):
             raise FileNotFoundError(f"The path with the build does not exist: '{value}'")
         else:
@@ -169,7 +170,7 @@ class WheelBuildHook(BuildHookInterface):
     def _validate_glibc_version(self, value):
         if value is None:
             return value
-        
+
         # accept the X.Y format
         m = re.search(r"^[0-9]+\.[0-9]+$", value)
         if m is not None:
