@@ -16,9 +16,6 @@
 
 #include "KernelGenerator.h"
 
-#include "ops/Conv2DLayer.h"
-#include "ops/FullyConnectedLayer.h"
-
 #include <backend/Backend.h>
 #include <backend/IConfig.h>
 #include <memory>
@@ -72,79 +69,6 @@ KernelGenerator::KernelGenerator(const ir::Graph &graph,
   // DO NOTHING
 }
 
-void KernelGenerator::visit(const ir::operation::Conv2D &node)
-{
-  using ir::operation::Conv2D;
-
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(Conv2D::Input::INPUT)};
-  const auto ker_index{node.getInputs().at(Conv2D::Input::KERNEL)};
-  const auto bias_index{node.getInputs().at(Conv2D::Input::BIAS)};
-
-  auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index);
-  auto ifm_tensor = _tensor_reg->getPortableTensor(ifm_index);
-  auto ker_tensor = _tensor_reg->getPortableTensor(ker_index);
-  auto bias_tensor = _tensor_reg->getPortableTensor(bias_index);
-
-  const auto stride = node.param().stride;
-  const auto activation = node.param().activation;
-  const auto &param_padding = node.param().padding;
-  const auto dilation = node.param().dilation;
-  auto fn = std::make_unique<ops::ConvolutionLayer>();
-
-  if (_ctx.at(ifm_index).info().isDynamic() || _ctx.at(ker_index).info().isDynamic())
-  {
-    fn->configure(ifm_tensor, ker_tensor, bias_tensor, param_padding.type, param_padding.param.left,
-                  param_padding.param.right, param_padding.param.top, param_padding.param.bottom,
-                  stride.horizontal, stride.vertical, dilation.width_factor, dilation.height_factor,
-                  activation, ofm_tensor, _external_context);
-
-    _return_fn = std::move(fn);
-    return;
-  }
-  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature();
-  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature();
-  // Kernel format is [depth_out, kernel_height, kernel_width, depth_in].
-  const auto &ker_shape = _ctx.at(ker_index).shape();
-  const auto ker_height = ker_shape.dim(1);
-  const auto ker_width = ker_shape.dim(2);
-
-  const auto padding =
-    ir::calculatePadding(param_padding, ifm_shape, ofm_shape, stride, ker_width, ker_height,
-                         dilation.width_factor, dilation.height_factor);
-
-  fn->configure(ifm_tensor, ker_tensor, bias_tensor, param_padding.type, padding.left,
-                padding.right, padding.top, padding.bottom, stride.horizontal, stride.vertical,
-                dilation.width_factor, dilation.height_factor, activation, ofm_tensor,
-                _external_context);
-
-  _return_fn = std::move(fn);
-}
-
-void KernelGenerator::visit(const ir::operation::FullyConnected &node)
-{
-  using ir::operation::FullyConnected;
-
-  const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(FullyConnected::Input::INPUT)};
-  const auto weight_index{node.getInputs().at(FullyConnected::Input::WEIGHT)};
-  const auto bias_index{node.getInputs().at(FullyConnected::Input::BIAS)};
-  const auto activation = node.param().activation;
-  const auto weights_format = node.param().weights_format;
-  if (weights_format != ir::FullyConnectedWeightsFormat::Default)
-    throw std::runtime_error("Unsupported FullyConnected Weights Format");
-
-  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
-  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
-  auto weight_tensor = _tensor_reg->getPortableTensor(weight_index);
-  auto bias_tensor = bias_index.undefined() ? nullptr : _tensor_reg->getPortableTensor(bias_index);
-
-  auto fn = std::make_unique<ops::FullyConnectedLayer>();
-
-  fn->configure(input_tensor, weight_tensor, bias_tensor, activation, output_tensor,
-                _external_context);
-
-  _return_fn = std::move(fn);
-}
+// Visitors for each operation is in ops/<InternalName>Layer.cc file
 
 } // namespace onert::backend::ruy
