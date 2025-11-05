@@ -13,7 +13,6 @@ function(_SentencePiece_import)
     return()
   endif(NOT SentencePieceSource_FOUND)
 
-  include_directories(${SentencePieceSource_DIR})
   nnfw_include(ExternalProjectTools)
   add_extdirectory(${SentencePieceSource_DIR} sentencepiece EXCLUDE_FROM_ALL)
   if(NOT TARGET sentencepiece)
@@ -21,7 +20,7 @@ function(_SentencePiece_import)
     return()
   endif()
 
-  set_property(TARGET sentencepiece PROPERTY POSITION_INDEPENDENT_CODE ON)
+  target_include_directories(sentencepiece PRIVATE ${SentencePieceSource_DIR})
   add_library(sentencepiece::sentencepiece ALIAS sentencepiece)
 
   # Install SentencePiece library to the same directory as ggma
