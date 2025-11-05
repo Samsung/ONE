@@ -3,6 +3,7 @@ from hatchling.builders.hooks.plugin.interface import BuildHookInterface
 from packaging.tags import sys_tags
 import os
 import shutil
+import re
 
 
 class WheelBuildHook(BuildHookInterface):
@@ -13,9 +14,8 @@ class WheelBuildHook(BuildHookInterface):
         self.DEFAULT_PRODUCT_DIR = os.path.normpath(
             os.path.join(THIS_FILE_DIR, "../../../../Product"))
 
-        # default values for the variables that affect and control the build of the wheel
-        self.product_dir = self.DEFAULT_PRODUCT_DIR
-        self.platform = "x86_64"
+        self.product_dir = None
+        self.platform = None
         self.glibc_version = None
 
         # read the environment variables that can be used to override some build settings
@@ -44,9 +44,9 @@ class WheelBuildHook(BuildHookInterface):
     def read_env(self):
         '''Read the relevant environment variables or use the defaults'''
 
-        self.product_dir = self._read_env("PRODUCT_DIR", self.product_dir)
-        self.platform = self._read_env("PLATFORM", self.platform)
-        self.glibc_version = self._read_env("GLIBC_VERSION", self.glibc_version)
+        self.product_dir = self._read_env("PRODUCT_DIR")
+        self.platform = self._read_env("PLATFORM")
+        self.glibc_version = self._read_env("GLIBC_VERSION")
 
     def prepare_binaries(self):
         # the main directory in the runtime's build tree containing the .so files
@@ -62,6 +62,9 @@ class WheelBuildHook(BuildHookInterface):
     def get_libs_dir(self):
         '''Retrieve the path of a directory where the required shared libraries are'''
         runtime_build_dir = self.get_runtime_build_dir()
+        if not os.path.exists(runtime_build_dir):
+            raise FileExistsError(f"The expected runtime build dir does not exist: {runtime_build_dir}")
+
         print(f" |> runtime_build_dir={runtime_build_dir}")
 
         possible_lib_dirs = ["lib64", "lib32", "lib"]
@@ -126,24 +129,57 @@ class WheelBuildHook(BuildHookInterface):
         print(f" |> Created build_tag: {build_tag}")
         return build_tag
 
-    def _read_env(self, env_var_name, default_value):
+    def _read_env(self, env_var_name):
         validators = {
             "PLATFORM": self._validate_platform,
-            "GLIBC_VERSION": self._validate_glibc_version
+            "GLIBC_VERSION": self._validate_glibc_version,
+            "PRODUCT_DIR": self._validate_product_dir
         }
 
         value = os.environ.get(env_var_name, None)
-        if value is None:
-            return default_value
+        validate = validators.get(env_var_name, None)
+        if validate is not None:
+            return validate(value)
         else:
-            validate = validators.get(env_var_name, None)
-            if validate is not None:
-                return validate(value)
-            else:
-                return value
+            return value
 
     def _validate_platform(self, value):
-        return value
+        supported_platforms = ["x86_64", "armv7l", "aarch64"]
+        if value is None:
+            print(
+                f" |> No platform specified. Creating a wheel for '{supported_platforms[0]}'"
+            )
+            return supported_platforms[0]
+        elif value not in supported_platforms:
+            raise ValueError(f"""Unsupported platform detected: {value}. 
+                Please use one of the following values: {','.join(supported_platforms)}"""
+                             )
+        else:
+            return value
+
+    def _validate_product_dir(self, value):
+        if value is None:
+            value = self.DEFAULT_PRODUCT_DIR
+        
+        if not os.path.exists(value):
+            raise FileNotFoundError(f"The path with the build does not exist: '{value}'")
+        else:
+            return value
 
     def _validate_glibc_version(self, value):
-        return value
+        if value is None:
+            return value
+        
+        # accept the X.Y format
+        m = re.search(r"^[0-9]+\.[0-9]+$", value)
+        if m is not None:
+            return value.replace(".", "_")
+
+        # or look for X_Y if the previous test failed
+        m = re.search(r"^[0-9]+_[0-9]+$", value)
+        if m is None:
+            raise ValueError(
+                "Incorrect version of glibc specified. Please use the following format: X_Y or X.Y"
+            )
+        else:
+            return value
