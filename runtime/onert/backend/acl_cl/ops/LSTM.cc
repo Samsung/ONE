@@ -14,27 +14,20 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_ACL_CL_VALIDATOR_H__
-#define __ONERT_BACKEND_ACL_CL_VALIDATOR_H__
+#include "../KernelGenerator.h"
+#include "../Validator.h"
 
-#include <backend/ValidatorBase.h>
+#include <AclKernelGen.h>
 
 namespace onert::backend::acl_cl
 {
 
-// TODO Validate inputs, outputs, and parameters of each operation
-class Validator : public backend::ValidatorBase
-{
-public:
-  virtual ~Validator() = default;
-  Validator(const ir::Graph &graph) : backend::ValidatorBase(graph) {}
+void Validator::visit(const ir::operation::LSTM &) { _supported = true; }
 
-private:
-#define OP(InternalName) void visit(const ir::operation::InternalName &) override;
-#include "Operation.lst"
-#undef OP
-};
+void KernelGenerator::visit(const ir::operation::LSTM &node)
+{
+  _return_fn = acl_common::kernelGenLSTM<acl_common::AclFunction, ::arm_compute::ICLTensor,
+                                         ::arm_compute::CLLSTMLayer>(node, _ctx, _tensor_reg);
+}
 
 } // namespace onert::backend::acl_cl
-
-#endif // __ONERT_BACKEND_ACL_CL_VALIDATOR_H__
