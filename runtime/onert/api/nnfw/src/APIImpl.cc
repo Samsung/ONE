@@ -69,6 +69,13 @@ NNFW_STATUS nnfw_close_session(nnfw_session *session)
   return NNFW_STATUS_NO_ERROR;
 }
 
+const char *nnfw_get_last_error_message(nnfw_session *session)
+{
+  if (session == NULL)
+    return "Session is NULL";
+  return reinterpret_cast<Session *>(session)->get_last_error_message().c_str();
+}
+
 NNFW_STATUS nnfw_load_model_from_file(nnfw_session *session, const char *path)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
