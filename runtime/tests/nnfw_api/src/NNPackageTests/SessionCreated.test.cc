@@ -42,7 +42,10 @@ TEST_F(ValidationTestSessionCreated, neg_load_session_1)
 
 TEST_F(ValidationTestSessionCreated, neg_load_session_2)
 {
+  char buffer[256];
   ASSERT_EQ(nnfw_load_model_from_file(_session, nullptr), NNFW_STATUS_UNEXPECTED_NULL);
+  NNFW_ENSURE_SUCCESS(nnfw_get_last_error_message(_session, buffer, sizeof(buffer)));
+  ASSERT_STREQ(buffer, "Invalid argument : path is NULL");
 }
 
 TEST_F(ValidationTestSessionCreated, neg_load_session_3)
