@@ -9,7 +9,3 @@ option(ENVVAR_ONERT_CONFIG "Use environment variable for onert configuration" OF
 
 option(BUILD_XNNPACK "Build XNNPACK" OFF)
 
-option(BUILD_GGMA_API "Build GGMA API for Generative AI" OFF)
-option(BUILD_GGMA_RUN "Build ggma_run test driver" OFF)
-option(DOWNLOAD_SENTENCEPIECE "Download SentencePiece source" OFF)
-option(BUILD_SENTENCEPIECE "Build SentencePiece library from the source" OFF)
