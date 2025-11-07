@@ -199,21 +199,11 @@ void fillTensorInfo(nnfw_tensorinfo *ti, const onert::ir::Shape &shape,
 std::unique_ptr<onert::ir::Model> loadModel(const std::string filename,
                                             const std::string model_type)
 {
-  try
-  {
-    if (model_type == "tflite")
-      return onert::loader::loadTFLiteModel(filename.c_str());
-    if (model_type == "circle")
-      return onert::loader::loadCircleModel(filename.c_str());
-
-    return onert::loader::loadModel(filename, model_type);
-  }
-  catch (const std::exception &e)
-  {
-    std::cerr << "Fail to load model: " << e.what() << '\n';
-  }
-
-  return std::unique_ptr<onert::ir::Model>(nullptr);
+  if (model_type == "tflite")
+    return onert::loader::loadTFLiteModel(filename.c_str());
+  if (model_type == "circle")
+    return onert::loader::loadCircleModel(filename.c_str());
+  return onert::loader::loadModel(filename, model_type);
 }
 
 std::unique_ptr<onert::ir::train::TrainingInfo>
@@ -417,8 +407,6 @@ NNFW_STATUS Session::load_model_from_path(const char *path)
       }
 
       auto model = loadModel(model_file_path.string(), model_type);
-      if (model == nullptr)
-        return NNFW_STATUS_ERROR;
       _model_path = model_file_path; // TODO Support multiple models
       model->bindKernelBuilder(_kernel_registry->getBuilder());
       _nnpkg->push(onert::ir::ModelIndex{i}, std::move(model));
@@ -1216,13 +1204,19 @@ uint32_t Session::getOutputSize()
 NNFW_STATUS Session::loadModelFile(const std::string &model_file_path,
                                    const std::string &model_type)
 {
-  auto model = loadModel(model_file_path, model_type);
-  if (model == nullptr)
+  try
+  {
+    auto model = loadModel(model_file_path, model_type);
+    _signature_map = model->signatureMap();
+    _nnpkg = std::make_unique<onert::ir::NNPkg>(std::move(model));
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Fail to load model: " << e.what() << '\n';
     return NNFW_STATUS_ERROR;
+  }
 
-  _signature_map = model->signatureMap();
   _selected_signature = onert::ir::SubgraphIndex{};
-  _nnpkg = std::make_unique<onert::ir::NNPkg>(std::move(model));
   _model_path = std::filesystem::path(model_file_path);
   _compiler_artifact.reset();
   _execution.reset();
