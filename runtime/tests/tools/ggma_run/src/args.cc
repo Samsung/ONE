@@ -50,6 +50,10 @@ Args::Args(const int argc, char **argv)
 void Args::initialize(void)
 {
   _arser.add_argument("path").type(arser::DataType::STR).help("nnpackage path");
+  _arser.add_argument("-p", "--prompt")
+    .type(arser::DataType::STR)
+    .default_value("Lily picked up a flower.")
+    .help("input prompt text");
   arser::Helper::add_version(_arser, print_version);
 }
 
@@ -79,6 +83,11 @@ void Args::parse(const int argc, char **argv)
         std::cerr << "Cannot find: " << path << "\n";
         exit(1);
       }
+    }
+
+    if (_arser["--prompt"])
+    {
+      _prompt = _arser.get<std::string>("--prompt");
     }
   }
   catch (const std::bad_cast &e)

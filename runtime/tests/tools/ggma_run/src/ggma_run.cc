@@ -38,7 +38,7 @@ int main(const int argc, char **argv)
   {
     Args args(argc, argv);
 
-    std::string prompt = "Lily picked up a flower.";
+    std::string prompt = args.prompt();
     constexpr size_t n_tokens_max = 32;
     ggma_token tokens[n_tokens_max];
     size_t n_tokens;

@@ -4,13 +4,19 @@
 
 It takes GGMA package as input. It uses **GGMA API** internally.
 
+## Options
+
+- `-p, --prompt`: Specify the input prompt text (default: "Lily picked up a flower.")
+
 ## Usage
 
 ```
 $ ./ggma_run path_to_ggma_package
+$ ./ggma_run path_to_ggma_package -p "Your custom prompt here"
+$ ./ggma_run path_to_ggma_package --prompt "What is the weather today?"
 ```
 
-It will run a GGML package to generate the output using the default prompt.
+It will run a GGMA package to generate the output.
 
 ## Example
 
