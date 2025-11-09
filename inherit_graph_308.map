@@ -1,9 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,78,81,104"/>
-<area shape="rect" id="Node000001" href="$classarm__compute_1_1_c_l_direct_transpose_conv_layer.html" title=" " alt="" coords="129,5,347,46"/>
-<area shape="poly" id="edge282_Node000000_Node000001" title=" " alt="" coords="92,70,128,56,166,44,168,49,130,62,93,75"/>
-<area shape="rect" id="Node000002" href="$classarm__compute_1_1_c_l_fully_connected_hybrid_layer.html" title=" " alt="" coords="132,71,344,111"/>
-<area shape="poly" id="edge283_Node000000_Node000002" title=" " alt="" coords="96,88,131,88,131,94,96,94"/>
-<area shape="rect" id="Node000003" href="$classarm__compute_1_1_c_l_fully_connected_layer_ex.html" title=" " alt="" coords="132,136,344,177"/>
-<area shape="poly" id="edge284_Node000000_Node000003" title=" " alt="" coords="93,107,130,120,168,133,166,138,128,126,92,112"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,5,141,31"/>
+<area shape="rect" id="Node000001" href="$classarm__compute_1_1_c_l_cast_bool_kernel.html" title="Class for the kernel converting boolean type." alt="" coords="189,5,402,31"/>
+<area shape="poly" id="edge280_Node000000_Node000001" title=" " alt="" coords="156,16,188,16,188,21,156,21"/>
 </map>

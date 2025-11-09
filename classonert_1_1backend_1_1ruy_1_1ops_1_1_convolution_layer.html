@@ -144,15 +144,15 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html#l00024">24</a> of file <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html">Conv2DLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   25</span>  : _input(<span class="keyword">nullptr</span>), _kernel(<span class="keyword">nullptr</span>), _bias(<span class="keyword">nullptr</span>), _output(<span class="keyword">nullptr</span>),</div>
-<div class="line"><span class="lineno">   26</span>    _paddingType(<a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693a440806ada035e97a59ec9d2ca6796cb3">ir::PaddingType::EXPLICIT</a>), _paddingLeft(0), _paddingTop(0), _paddingRight(0),</div>
-<div class="line"><span class="lineno">   27</span>    _paddingBottom(0), _strideWidth(0), _strideHeight(0), _dilationWidthFactor(1),</div>
-<div class="line"><span class="lineno">   28</span>    _dilationHeightFactor(1), _activation(<a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">ir::Activation::NONE</a>),</div>
-<div class="line"><span class="lineno">   29</span>    _conv_kernel(<span class="keyword">new</span> <a class="code hl_class" href="classnnfw_1_1ruy_1_1_conv.html">nnfw::ruy::Conv</a>()), _prepare(<span class="keyword">false</span>)</div>
-<div class="line"><span class="lineno">   30</span>{</div>
-<div class="line"><span class="lineno">   31</span>  <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">   32</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html#l00083">83</a> of file <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html">Conv2DLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   84</span>  : _input(<span class="keyword">nullptr</span>), _kernel(<span class="keyword">nullptr</span>), _bias(<span class="keyword">nullptr</span>), _output(<span class="keyword">nullptr</span>),</div>
+<div class="line"><span class="lineno">   85</span>    _paddingType(<a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693a440806ada035e97a59ec9d2ca6796cb3">ir::PaddingType::EXPLICIT</a>), _paddingLeft(0), _paddingTop(0), _paddingRight(0),</div>
+<div class="line"><span class="lineno">   86</span>    _paddingBottom(0), _strideWidth(0), _strideHeight(0), _dilationWidthFactor(1),</div>
+<div class="line"><span class="lineno">   87</span>    _dilationHeightFactor(1), _activation(<a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">ir::Activation::NONE</a>),</div>
+<div class="line"><span class="lineno">   88</span>    _conv_kernel(<span class="keyword">new</span> <a class="code hl_class" href="classnnfw_1_1ruy_1_1_conv.html">nnfw::ruy::Conv</a>()), _prepare(<span class="keyword">false</span>)</div>
+<div class="line"><span class="lineno">   89</span>{</div>
+<div class="line"><span class="lineno">   90</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   91</span>}</div>
 <div class="ttc" id="aclassnnfw_1_1ruy_1_1_conv_html"><div class="ttname"><a href="classnnfw_1_1ruy_1_1_conv.html">nnfw::ruy::Conv</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2ruy_2include_2ruy_2operation_2_conv_8h_source.html#l00036">Conv.h:37</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693"><div class="ttname"><a href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">onert::ir::Activation::NONE</a></div><div class="ttdeci">@ NONE</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_acc4661130ea3f46e70a67cbf429c8693a440806ada035e97a59ec9d2ca6796cb3"><div class="ttname"><a href="namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693a440806ada035e97a59ec9d2ca6796cb3">onert::ir::PaddingType::EXPLICIT</a></div><div class="ttdeci">@ EXPLICIT</div></div>
@@ -289,24 +289,24 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html#l00060">60</a> of file <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html">Conv2DLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   69</span>{</div>
-<div class="line"><span class="lineno">   70</span>  _input = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
-<div class="line"><span class="lineno">   71</span>  _kernel = kernel;</div>
-<div class="line"><span class="lineno">   72</span>  _bias = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc">bias</a>;</div>
-<div class="line"><span class="lineno">   73</span>  _paddingType = paddingType;</div>
-<div class="line"><span class="lineno">   74</span>  _paddingLeft = paddingLeft;</div>
-<div class="line"><span class="lineno">   75</span>  _paddingRight = paddingRight;</div>
-<div class="line"><span class="lineno">   76</span>  _paddingTop = paddingTop;</div>
-<div class="line"><span class="lineno">   77</span>  _paddingBottom = paddingBottom;</div>
-<div class="line"><span class="lineno">   78</span>  _strideWidth = strideWidth;</div>
-<div class="line"><span class="lineno">   79</span>  _strideHeight = strideHeight;</div>
-<div class="line"><span class="lineno">   80</span>  _dilationWidthFactor = dilationWidthFactor;</div>
-<div class="line"><span class="lineno">   81</span>  _dilationHeightFactor = dilationHeightFactor;</div>
-<div class="line"><span class="lineno">   82</span>  _activation = activation;</div>
-<div class="line"><span class="lineno">   83</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
-<div class="line"><span class="lineno">   84</span>  _external_context = external_context;</div>
-<div class="line"><span class="lineno">   85</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html#l00119">119</a> of file <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html">Conv2DLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  128</span>{</div>
+<div class="line"><span class="lineno">  129</span>  _input = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
+<div class="line"><span class="lineno">  130</span>  _kernel = kernel;</div>
+<div class="line"><span class="lineno">  131</span>  _bias = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc">bias</a>;</div>
+<div class="line"><span class="lineno">  132</span>  _paddingType = paddingType;</div>
+<div class="line"><span class="lineno">  133</span>  _paddingLeft = paddingLeft;</div>
+<div class="line"><span class="lineno">  134</span>  _paddingRight = paddingRight;</div>
+<div class="line"><span class="lineno">  135</span>  _paddingTop = paddingTop;</div>
+<div class="line"><span class="lineno">  136</span>  _paddingBottom = paddingBottom;</div>
+<div class="line"><span class="lineno">  137</span>  _strideWidth = strideWidth;</div>
+<div class="line"><span class="lineno">  138</span>  _strideHeight = strideHeight;</div>
+<div class="line"><span class="lineno">  139</span>  _dilationWidthFactor = dilationWidthFactor;</div>
+<div class="line"><span class="lineno">  140</span>  _dilationHeightFactor = dilationHeightFactor;</div>
+<div class="line"><span class="lineno">  141</span>  _activation = activation;</div>
+<div class="line"><span class="lineno">  142</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
+<div class="line"><span class="lineno">  143</span>  _external_context = external_context;</div>
+<div class="line"><span class="lineno">  144</span>}</div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00096">gen_h5_explicit_inputs_all.py:96</a></div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc">mir_caffe::CaffeOpType::bias</a></div><div class="ttdeci">@ bias</div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
@@ -328,29 +328,29 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html#l00036">36</a> of file <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html">Conv2DLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   37</span>{</div>
-<div class="line"><span class="lineno">   38</span>  <span class="keywordtype">float</span> output_activation_min = 0, output_activation_max = 0;</div>
-<div class="line"><span class="lineno">   39</span>  <a class="code hl_function" href="namespaceonert_1_1util.html#a9aac61f35b6d507552fea7bd8ac070ab">CalculateActivationRange</a>(_activation, &amp;output_activation_min, &amp;output_activation_max);</div>
-<div class="line"><span class="lineno">   40</span> </div>
-<div class="line"><span class="lineno">   41</span>  <a class="code hl_struct" href="structnnfw_1_1ruy_1_1_conv_params.html">nnfw::ruy::ConvParams</a> op_params;</div>
-<div class="line"><span class="lineno">   42</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_conv_params.html#a0e3493e2ce491fae2771da351735d339">padding_type</a> = <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5650844753363f826ab47f2e9a947983">getPaddingType</a>(_paddingType);</div>
-<div class="line"><span class="lineno">   43</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_conv_params.html#a1e6ea8c3dbf27068d5d6ea2d42583e61">padding_values</a>.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_padding_values.html#ac4b3817526f08ce587b1880fe42c3937">width</a> = _paddingLeft;</div>
-<div class="line"><span class="lineno">   44</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_conv_params.html#a1e6ea8c3dbf27068d5d6ea2d42583e61">padding_values</a>.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_padding_values.html#a85fb24d87c88e4a2efa173307eb1e798">height</a> = _paddingTop;</div>
-<div class="line"><span class="lineno">   45</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_conv_params.html#ab0212b7e051d5a680c25669ddf2ce572">stride_width</a> = _strideWidth;</div>
-<div class="line"><span class="lineno">   46</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_conv_params.html#aef97d78bc786af07e9fd95a8468e9be2">stride_height</a> = _strideHeight;</div>
-<div class="line"><span class="lineno">   47</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_conv_params.html#ab1e417804a63bec3da2ea117ca442898">dilation_width_factor</a> = _dilationWidthFactor;</div>
-<div class="line"><span class="lineno">   48</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_conv_params.html#a9d4615d084b1170d470edf20df7a2f73">dilation_height_factor</a> = _dilationHeightFactor;</div>
-<div class="line"><span class="lineno">   49</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_conv_params.html#a4fa9573961d7a4447661fb1af0c855d9">float_activation_min</a> = output_activation_min;</div>
-<div class="line"><span class="lineno">   50</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_conv_params.html#a0295b9307145aade8b34be346eb53385">float_activation_max</a> = output_activation_max;</div>
-<div class="line"><span class="lineno">   51</span> </div>
-<div class="line"><span class="lineno">   52</span>  <a class="code hl_class" href="classnnfw_1_1ruy_1_1_conv.html">nnfw::ruy::Conv</a> &amp;kernel = *_conv_kernel;</div>
-<div class="line"><span class="lineno">   53</span>  kernel(op_params, <a class="code hl_function" href="namespaceonert_1_1backend_1_1ruy_1_1ops.html#acdf7de4e26e95e404f9e451a8bc98f86">getTensorShape</a>(_input), <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">buffer</a>()),</div>
-<div class="line"><span class="lineno">   54</span>         <a class="code hl_function" href="namespaceonert_1_1backend_1_1ruy_1_1ops.html#acdf7de4e26e95e404f9e451a8bc98f86">getTensorShape</a>(_kernel), <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(_kernel-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">buffer</a>()),</div>
-<div class="line"><span class="lineno">   55</span>         <a class="code hl_function" href="namespaceonert_1_1backend_1_1ruy_1_1ops.html#acdf7de4e26e95e404f9e451a8bc98f86">getTensorShape</a>(_bias), <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(_bias-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">buffer</a>()),</div>
-<div class="line"><span class="lineno">   56</span>         <a class="code hl_function" href="namespaceonert_1_1backend_1_1ruy_1_1ops.html#acdf7de4e26e95e404f9e451a8bc98f86">getTensorShape</a>(_output), <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">buffer</a>()),</div>
-<div class="line"><span class="lineno">   57</span>         _external_context-&gt;ruy_context());</div>
-<div class="line"><span class="lineno">   58</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html#l00095">95</a> of file <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html">Conv2DLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   96</span>{</div>
+<div class="line"><span class="lineno">   97</span>  <span class="keywordtype">float</span> output_activation_min = 0, output_activation_max = 0;</div>
+<div class="line"><span class="lineno">   98</span>  <a class="code hl_function" href="namespaceonert_1_1util.html#a9aac61f35b6d507552fea7bd8ac070ab">CalculateActivationRange</a>(_activation, &amp;output_activation_min, &amp;output_activation_max);</div>
+<div class="line"><span class="lineno">   99</span> </div>
+<div class="line"><span class="lineno">  100</span>  <a class="code hl_struct" href="structnnfw_1_1ruy_1_1_conv_params.html">nnfw::ruy::ConvParams</a> op_params;</div>
+<div class="line"><span class="lineno">  101</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_conv_params.html#a0e3493e2ce491fae2771da351735d339">padding_type</a> = <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5650844753363f826ab47f2e9a947983">getPaddingType</a>(_paddingType);</div>
+<div class="line"><span class="lineno">  102</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_conv_params.html#a1e6ea8c3dbf27068d5d6ea2d42583e61">padding_values</a>.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_padding_values.html#ac4b3817526f08ce587b1880fe42c3937">width</a> = _paddingLeft;</div>
+<div class="line"><span class="lineno">  103</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_conv_params.html#a1e6ea8c3dbf27068d5d6ea2d42583e61">padding_values</a>.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_padding_values.html#a85fb24d87c88e4a2efa173307eb1e798">height</a> = _paddingTop;</div>
+<div class="line"><span class="lineno">  104</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_conv_params.html#ab0212b7e051d5a680c25669ddf2ce572">stride_width</a> = _strideWidth;</div>
+<div class="line"><span class="lineno">  105</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_conv_params.html#aef97d78bc786af07e9fd95a8468e9be2">stride_height</a> = _strideHeight;</div>
+<div class="line"><span class="lineno">  106</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_conv_params.html#ab1e417804a63bec3da2ea117ca442898">dilation_width_factor</a> = _dilationWidthFactor;</div>
+<div class="line"><span class="lineno">  107</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_conv_params.html#a9d4615d084b1170d470edf20df7a2f73">dilation_height_factor</a> = _dilationHeightFactor;</div>
+<div class="line"><span class="lineno">  108</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_conv_params.html#a4fa9573961d7a4447661fb1af0c855d9">float_activation_min</a> = output_activation_min;</div>
+<div class="line"><span class="lineno">  109</span>  op_params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_conv_params.html#a0295b9307145aade8b34be346eb53385">float_activation_max</a> = output_activation_max;</div>
+<div class="line"><span class="lineno">  110</span> </div>
+<div class="line"><span class="lineno">  111</span>  <a class="code hl_class" href="classnnfw_1_1ruy_1_1_conv.html">nnfw::ruy::Conv</a> &amp;kernel = *_conv_kernel;</div>
+<div class="line"><span class="lineno">  112</span>  kernel(op_params, <a class="code hl_function" href="namespaceonert_1_1backend_1_1ruy_1_1ops.html#acdf7de4e26e95e404f9e451a8bc98f86">getTensorShape</a>(_input), <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">buffer</a>()),</div>
+<div class="line"><span class="lineno">  113</span>         <a class="code hl_function" href="namespaceonert_1_1backend_1_1ruy_1_1ops.html#acdf7de4e26e95e404f9e451a8bc98f86">getTensorShape</a>(_kernel), <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(_kernel-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">buffer</a>()),</div>
+<div class="line"><span class="lineno">  114</span>         <a class="code hl_function" href="namespaceonert_1_1backend_1_1ruy_1_1ops.html#acdf7de4e26e95e404f9e451a8bc98f86">getTensorShape</a>(_bias), <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(_bias-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">buffer</a>()),</div>
+<div class="line"><span class="lineno">  115</span>         <a class="code hl_function" href="namespaceonert_1_1backend_1_1ruy_1_1ops.html#acdf7de4e26e95e404f9e451a8bc98f86">getTensorShape</a>(_output), <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">buffer</a>()),</div>
+<div class="line"><span class="lineno">  116</span>         _external_context-&gt;ruy_context());</div>
+<div class="line"><span class="lineno">  117</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_tensor_html_ac42a9739e80a0e11be18c0e0a61ccf85"><div class="ttname"><a href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">onert::backend::ITensor::buffer</a></div><div class="ttdeci">virtual uint8_t * buffer() const =0</div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a5650844753363f826ab47f2e9a947983"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5650844753363f826ab47f2e9a947983">onert::backend::cpu::ops::getPaddingType</a></div><div class="ttdeci">nnfw::cker::PaddingType getPaddingType(ir::PaddingType ir_padding_type)</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_operation_utils_8cc_source.html#l00262">OperationUtils.cc:262</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1ruy_1_1ops_html_acdf7de4e26e95e404f9e451a8bc98f86"><div class="ttname"><a href="namespaceonert_1_1backend_1_1ruy_1_1ops.html#acdf7de4e26e95e404f9e451a8bc98f86">onert::backend::ruy::ops::getTensorShape</a></div><div class="ttdeci">nnfw::ruy::Shape getTensorShape(const IPortableTensor *tensor)</div><div class="ttdef"><b>Definition</b> <a href="ruy_2ops_2_operation_utils_8h_source.html#l00036">OperationUtils.h:36</a></div></div>
@@ -369,7 +369,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">onert::backend::ITensor::buffer()</a>, <a class="el" href="_calculate_activation_range_8h_source.html#l00028">onert::util::CalculateActivationRange()</a>, <a class="el" href="runtime_2compute_2ruy_2include_2ruy_2_types_8h_source.html#l00064">nnfw::ruy::ConvParams::dilation_height_factor</a>, <a class="el" href="runtime_2compute_2ruy_2include_2ruy_2_types_8h_source.html#l00063">nnfw::ruy::ConvParams::dilation_width_factor</a>, <a class="el" href="runtime_2compute_2ruy_2include_2ruy_2_types_8h_source.html#l00077">nnfw::ruy::ConvParams::float_activation_max</a>, <a class="el" href="runtime_2compute_2ruy_2include_2ruy_2_types_8h_source.html#l00076">nnfw::ruy::ConvParams::float_activation_min</a>, <a class="el" href="ruy_2ops_2_operation_utils_8h_source.html#l00036">onert::backend::ruy::ops::getTensorShape()</a>, <a class="el" href="runtime_2compute_2ruy_2include_2ruy_2_types_8h_source.html#l00053">nnfw::ruy::PaddingValues::height</a>, <a class="el" href="runtime_2compute_2ruy_2include_2ruy_2_types_8h_source.html#l00058">nnfw::ruy::ConvParams::padding_type</a>, <a class="el" href="runtime_2compute_2ruy_2include_2ruy_2_types_8h_source.html#l00059">nnfw::ruy::ConvParams::padding_values</a>, <a class="el" href="runtime_2compute_2ruy_2include_2ruy_2_types_8h_source.html#l00062">nnfw::ruy::ConvParams::stride_height</a>, <a class="el" href="runtime_2compute_2ruy_2include_2ruy_2_types_8h_source.html#l00061">nnfw::ruy::ConvParams::stride_width</a>, and <a class="el" href="runtime_2compute_2ruy_2include_2ruy_2_types_8h_source.html#l00052">nnfw::ruy::PaddingValues::width</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html#l00087">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html#l00146">run()</a>.</p>
 
 </div>
 </div>
@@ -398,26 +398,26 @@ Public Member Functions</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classonert_1_1exec_1_1_i_function.html#a901ae0973ef08a6ca59f6a00bd3bac4c">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html#l00130">130</a> of file <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html">Conv2DLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  131</span>{</div>
-<div class="line"><span class="lineno">  132</span>  <span class="keywordflow">if</span> (_prepare)</div>
-<div class="line"><span class="lineno">  133</span>    <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  134</span> </div>
-<div class="line"><span class="lineno">  135</span>  <a class="code hl_class" href="classnnfw_1_1ruy_1_1_conv.html">nnfw::ruy::Conv</a> &amp;kernel = *_conv_kernel;</div>
-<div class="line"><span class="lineno">  136</span>  <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32 &amp;&amp; _kernel-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aea60bbe865c4ce194daf9b61d7353052">is_constant</a>())</div>
-<div class="line"><span class="lineno">  137</span>  {</div>
-<div class="line"><span class="lineno">  138</span>    kernel.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_conv.html#af25311c044eda6d73546d215c11eda72">prepare</a>(<a class="code hl_function" href="namespaceonert_1_1backend_1_1ruy_1_1ops.html#acdf7de4e26e95e404f9e451a8bc98f86">getTensorShape</a>(_input), <a class="code hl_function" href="namespaceonert_1_1backend_1_1ruy_1_1ops.html#acdf7de4e26e95e404f9e451a8bc98f86">getTensorShape</a>(_kernel), <a class="code hl_function" href="namespaceonert_1_1backend_1_1ruy_1_1ops.html#acdf7de4e26e95e404f9e451a8bc98f86">getTensorShape</a>(_output),</div>
-<div class="line"><span class="lineno">  139</span>                   _strideWidth, _strideHeight, _dilationWidthFactor, _dilationHeightFactor);</div>
-<div class="line"><span class="lineno">  140</span>  }</div>
-<div class="line"><span class="lineno">  141</span>  _prepare = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  142</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html#l00189">189</a> of file <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html">Conv2DLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  190</span>{</div>
+<div class="line"><span class="lineno">  191</span>  <span class="keywordflow">if</span> (_prepare)</div>
+<div class="line"><span class="lineno">  192</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  193</span> </div>
+<div class="line"><span class="lineno">  194</span>  <a class="code hl_class" href="classnnfw_1_1ruy_1_1_conv.html">nnfw::ruy::Conv</a> &amp;kernel = *_conv_kernel;</div>
+<div class="line"><span class="lineno">  195</span>  <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32 &amp;&amp; _kernel-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aea60bbe865c4ce194daf9b61d7353052">is_constant</a>())</div>
+<div class="line"><span class="lineno">  196</span>  {</div>
+<div class="line"><span class="lineno">  197</span>    kernel.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_conv.html#af25311c044eda6d73546d215c11eda72">prepare</a>(<a class="code hl_function" href="namespaceonert_1_1backend_1_1ruy_1_1ops.html#acdf7de4e26e95e404f9e451a8bc98f86">getTensorShape</a>(_input), <a class="code hl_function" href="namespaceonert_1_1backend_1_1ruy_1_1ops.html#acdf7de4e26e95e404f9e451a8bc98f86">getTensorShape</a>(_kernel), <a class="code hl_function" href="namespaceonert_1_1backend_1_1ruy_1_1ops.html#acdf7de4e26e95e404f9e451a8bc98f86">getTensorShape</a>(_output),</div>
+<div class="line"><span class="lineno">  198</span>                   _strideWidth, _strideHeight, _dilationWidthFactor, _dilationHeightFactor);</div>
+<div class="line"><span class="lineno">  199</span>  }</div>
+<div class="line"><span class="lineno">  200</span>  _prepare = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  201</span>}</div>
 <div class="ttc" id="aclassnnfw_1_1ruy_1_1_conv_html_af25311c044eda6d73546d215c11eda72"><div class="ttname"><a href="classnnfw_1_1ruy_1_1_conv.html#af25311c044eda6d73546d215c11eda72">nnfw::ruy::Conv::prepare</a></div><div class="ttdeci">void prepare(const Shape &amp;input_shape, const Shape &amp;kernel_shape, const Shape &amp;output_shape, uint32_t stride_width, uint32_t stride_height, uint32_t dilation_width_factor, uint32_t dilation_height_factor)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2ruy_2include_2ruy_2operation_2_conv_8h_source.html#l00041">Conv.h:41</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aae73f75c41fa15f5ae2c391918fa09c5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor::data_type</a></div><div class="ttdeci">ir::DataType data_type() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00054">IPortableTensor.h:54</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aea60bbe865c4ce194daf9b61d7353052"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aea60bbe865c4ce194daf9b61d7353052">onert::backend::IPortableTensor::is_constant</a></div><div class="ttdeci">bool is_constant() const override final</div><div class="ttdoc">Return true if the tensor is constant.</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00062">IPortableTensor.h:62</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>, <a class="el" href="ruy_2ops_2_operation_utils_8h_source.html#l00036">onert::backend::ruy::ops::getTensorShape()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00062">onert::backend::IPortableTensor::is_constant()</a>, and <a class="el" href="runtime_2compute_2ruy_2include_2ruy_2operation_2_conv_8h_source.html#l00041">nnfw::ruy::Conv::prepare()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html#l00087">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html#l00146">run()</a>.</p>
 
 </div>
 </div>
@@ -446,55 +446,55 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_function.html#aedd6f5e12852d808abb97327b9d229e2">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html#l00087">87</a> of file <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html">Conv2DLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   88</span>{</div>
-<div class="line"><span class="lineno">   89</span>  <a class="code hl_function" href="classonert_1_1backend_1_1ruy_1_1ops_1_1_convolution_layer.html#ab7814b75b12ace33db80110274a0ab75">prepare</a>();</div>
-<div class="line"><span class="lineno">   90</span> </div>
-<div class="line"><span class="lineno">   91</span>  <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ae85cf7ba798b307fd40e09b736caf5c9">is_dynamic</a>() || _kernel-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ae85cf7ba798b307fd40e09b736caf5c9">is_dynamic</a>())</div>
-<div class="line"><span class="lineno">   92</span>  {</div>
-<div class="line"><span class="lineno">   93</span>    <span class="keyword">const</span> <span class="keyword">auto</span> ifm_shape = _input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">getShape</a>().asFeature();</div>
-<div class="line"><span class="lineno">   94</span>    <span class="keyword">const</span> <span class="keyword">auto</span> ofm_shape = _output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">getShape</a>().asFeature();</div>
-<div class="line"><span class="lineno">   95</span>    <span class="comment">// Kernel format is [depth_out, kernel_height, kernel_width, depth_in].</span></div>
-<div class="line"><span class="lineno">   96</span>    <span class="keyword">const</span> <span class="keyword">auto</span> ker_shape = _kernel-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">getShape</a>();</div>
-<div class="line"><span class="lineno">   97</span>    <span class="keyword">const</span> <span class="keyword">auto</span> ker_height = ker_shape.dim(1);</div>
-<div class="line"><span class="lineno">   98</span>    <span class="keyword">const</span> <span class="keyword">auto</span> ker_width = ker_shape.dim(2);</div>
-<div class="line"><span class="lineno">   99</span> </div>
-<div class="line"><span class="lineno">  100</span>    ir::Stride stride;</div>
-<div class="line"><span class="lineno">  101</span>    stride.vertical = _strideWidth;</div>
-<div class="line"><span class="lineno">  102</span>    stride.horizontal = _strideWidth;</div>
-<div class="line"><span class="lineno">  103</span> </div>
-<div class="line"><span class="lineno">  104</span>    ir::Padding param_padding;</div>
-<div class="line"><span class="lineno">  105</span>    param_padding.type = _paddingType;</div>
-<div class="line"><span class="lineno">  106</span>    param_padding.param.left = _paddingLeft;</div>
-<div class="line"><span class="lineno">  107</span>    param_padding.param.right = _paddingRight;</div>
-<div class="line"><span class="lineno">  108</span>    param_padding.param.top = _paddingTop;</div>
-<div class="line"><span class="lineno">  109</span>    param_padding.param.bottom = _paddingBottom;</div>
-<div class="line"><span class="lineno">  110</span> </div>
-<div class="line"><span class="lineno">  111</span>    <span class="keyword">const</span> <span class="keyword">auto</span> padding =</div>
-<div class="line"><span class="lineno">  112</span>      <a class="code hl_function" href="namespaceonert_1_1ir.html#a2ab58c9ae156f4ab01ecbe99b004ff85">ir::calculatePadding</a>(param_padding, ifm_shape, ofm_shape, stride, ker_width, ker_height,</div>
-<div class="line"><span class="lineno">  113</span>                           _dilationWidthFactor, _dilationHeightFactor);</div>
-<div class="line"><span class="lineno">  114</span> </div>
-<div class="line"><span class="lineno">  115</span>    _paddingLeft = padding.left;</div>
-<div class="line"><span class="lineno">  116</span>    _paddingRight = padding.right;</div>
-<div class="line"><span class="lineno">  117</span>    _paddingTop = padding.top;</div>
-<div class="line"><span class="lineno">  118</span>    _paddingBottom = padding.bottom;</div>
-<div class="line"><span class="lineno">  119</span>  }</div>
-<div class="line"><span class="lineno">  120</span>  <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32)</div>
-<div class="line"><span class="lineno">  121</span>  {</div>
-<div class="line"><span class="lineno">  122</span>    <a class="code hl_function" href="classonert_1_1backend_1_1ruy_1_1ops_1_1_convolution_layer.html#af556257bbf60f1ac469eccfc32f8d03b">convFloat32</a>();</div>
-<div class="line"><span class="lineno">  123</span>  }</div>
-<div class="line"><span class="lineno">  124</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  125</span>  {</div>
-<div class="line"><span class="lineno">  126</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Conv: unsupported data type&quot;</span>};</div>
-<div class="line"><span class="lineno">  127</span>  }</div>
-<div class="line"><span class="lineno">  128</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html#l00146">146</a> of file <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html">Conv2DLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  147</span>{</div>
+<div class="line"><span class="lineno">  148</span>  <a class="code hl_function" href="classonert_1_1backend_1_1ruy_1_1ops_1_1_convolution_layer.html#ab7814b75b12ace33db80110274a0ab75">prepare</a>();</div>
+<div class="line"><span class="lineno">  149</span> </div>
+<div class="line"><span class="lineno">  150</span>  <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ae85cf7ba798b307fd40e09b736caf5c9">is_dynamic</a>() || _kernel-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ae85cf7ba798b307fd40e09b736caf5c9">is_dynamic</a>())</div>
+<div class="line"><span class="lineno">  151</span>  {</div>
+<div class="line"><span class="lineno">  152</span>    <span class="keyword">const</span> <span class="keyword">auto</span> ifm_shape = _input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">getShape</a>().asFeature();</div>
+<div class="line"><span class="lineno">  153</span>    <span class="keyword">const</span> <span class="keyword">auto</span> ofm_shape = _output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">getShape</a>().asFeature();</div>
+<div class="line"><span class="lineno">  154</span>    <span class="comment">// Kernel format is [depth_out, kernel_height, kernel_width, depth_in].</span></div>
+<div class="line"><span class="lineno">  155</span>    <span class="keyword">const</span> <span class="keyword">auto</span> ker_shape = _kernel-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">getShape</a>();</div>
+<div class="line"><span class="lineno">  156</span>    <span class="keyword">const</span> <span class="keyword">auto</span> ker_height = ker_shape.dim(1);</div>
+<div class="line"><span class="lineno">  157</span>    <span class="keyword">const</span> <span class="keyword">auto</span> ker_width = ker_shape.dim(2);</div>
+<div class="line"><span class="lineno">  158</span> </div>
+<div class="line"><span class="lineno">  159</span>    ir::Stride stride;</div>
+<div class="line"><span class="lineno">  160</span>    stride.vertical = _strideWidth;</div>
+<div class="line"><span class="lineno">  161</span>    stride.horizontal = _strideWidth;</div>
+<div class="line"><span class="lineno">  162</span> </div>
+<div class="line"><span class="lineno">  163</span>    ir::Padding param_padding;</div>
+<div class="line"><span class="lineno">  164</span>    param_padding.type = _paddingType;</div>
+<div class="line"><span class="lineno">  165</span>    param_padding.param.left = _paddingLeft;</div>
+<div class="line"><span class="lineno">  166</span>    param_padding.param.right = _paddingRight;</div>
+<div class="line"><span class="lineno">  167</span>    param_padding.param.top = _paddingTop;</div>
+<div class="line"><span class="lineno">  168</span>    param_padding.param.bottom = _paddingBottom;</div>
+<div class="line"><span class="lineno">  169</span> </div>
+<div class="line"><span class="lineno">  170</span>    <span class="keyword">const</span> <span class="keyword">auto</span> padding =</div>
+<div class="line"><span class="lineno">  171</span>      <a class="code hl_function" href="namespaceonert_1_1ir.html#a2ab58c9ae156f4ab01ecbe99b004ff85">ir::calculatePadding</a>(param_padding, ifm_shape, ofm_shape, stride, ker_width, ker_height,</div>
+<div class="line"><span class="lineno">  172</span>                           _dilationWidthFactor, _dilationHeightFactor);</div>
+<div class="line"><span class="lineno">  173</span> </div>
+<div class="line"><span class="lineno">  174</span>    _paddingLeft = padding.left;</div>
+<div class="line"><span class="lineno">  175</span>    _paddingRight = padding.right;</div>
+<div class="line"><span class="lineno">  176</span>    _paddingTop = padding.top;</div>
+<div class="line"><span class="lineno">  177</span>    _paddingBottom = padding.bottom;</div>
+<div class="line"><span class="lineno">  178</span>  }</div>
+<div class="line"><span class="lineno">  179</span>  <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32)</div>
+<div class="line"><span class="lineno">  180</span>  {</div>
+<div class="line"><span class="lineno">  181</span>    <a class="code hl_function" href="classonert_1_1backend_1_1ruy_1_1ops_1_1_convolution_layer.html#af556257bbf60f1ac469eccfc32f8d03b">convFloat32</a>();</div>
+<div class="line"><span class="lineno">  182</span>  }</div>
+<div class="line"><span class="lineno">  183</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  184</span>  {</div>
+<div class="line"><span class="lineno">  185</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Conv: unsupported data type&quot;</span>};</div>
+<div class="line"><span class="lineno">  186</span>  }</div>
+<div class="line"><span class="lineno">  187</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_ad010d0f248f6e0e400485d81410ac158"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">onert::backend::IPortableTensor::getShape</a></div><div class="ttdeci">ir::Shape getShape() const override final</div><div class="ttdoc">Get ir::Shape of tensor.</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00064">IPortableTensor.h:64</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_ae85cf7ba798b307fd40e09b736caf5c9"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#ae85cf7ba798b307fd40e09b736caf5c9">onert::backend::IPortableTensor::is_dynamic</a></div><div class="ttdeci">bool is_dynamic() const override final</div><div class="ttdoc">Return true if the tensor needs dynamic allocation, meaning that during compile-time the outpus shape...</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00063">IPortableTensor.h:63</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1ruy_1_1ops_1_1_convolution_layer_html_ab7814b75b12ace33db80110274a0ab75"><div class="ttname"><a href="classonert_1_1backend_1_1ruy_1_1ops_1_1_convolution_layer.html#ab7814b75b12ace33db80110274a0ab75">onert::backend::ruy::ops::ConvolutionLayer::prepare</a></div><div class="ttdeci">void prepare() override</div><div class="ttdef"><b>Definition</b> <a href="ruy_2ops_2_conv2_d_layer_8cc_source.html#l00130">Conv2DLayer.cc:130</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1ruy_1_1ops_1_1_convolution_layer_html_af556257bbf60f1ac469eccfc32f8d03b"><div class="ttname"><a href="classonert_1_1backend_1_1ruy_1_1ops_1_1_convolution_layer.html#af556257bbf60f1ac469eccfc32f8d03b">onert::backend::ruy::ops::ConvolutionLayer::convFloat32</a></div><div class="ttdeci">void convFloat32()</div><div class="ttdef"><b>Definition</b> <a href="ruy_2ops_2_conv2_d_layer_8cc_source.html#l00036">Conv2DLayer.cc:36</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1ruy_1_1ops_1_1_convolution_layer_html_ab7814b75b12ace33db80110274a0ab75"><div class="ttname"><a href="classonert_1_1backend_1_1ruy_1_1ops_1_1_convolution_layer.html#ab7814b75b12ace33db80110274a0ab75">onert::backend::ruy::ops::ConvolutionLayer::prepare</a></div><div class="ttdeci">void prepare() override</div><div class="ttdef"><b>Definition</b> <a href="ruy_2ops_2_conv2_d_layer_8cc_source.html#l00189">Conv2DLayer.cc:189</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1ruy_1_1ops_1_1_convolution_layer_html_af556257bbf60f1ac469eccfc32f8d03b"><div class="ttname"><a href="classonert_1_1backend_1_1ruy_1_1ops_1_1_convolution_layer.html#af556257bbf60f1ac469eccfc32f8d03b">onert::backend::ruy::ops::ConvolutionLayer::convFloat32</a></div><div class="ttdeci">void convFloat32()</div><div class="ttdef"><b>Definition</b> <a href="ruy_2ops_2_conv2_d_layer_8cc_source.html#l00095">Conv2DLayer.cc:95</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a2ab58c9ae156f4ab01ecbe99b004ff85"><div class="ttname"><a href="namespaceonert_1_1ir.html#a2ab58c9ae156f4ab01ecbe99b004ff85">onert::ir::calculatePadding</a></div><div class="ttdeci">const ExplicitPadding calculatePadding(const Padding &amp;padding, const FeatureShape &amp;ifm_shape, const FeatureShape &amp;ofm_shape, const Stride &amp;stride, uint32_t kw, uint32_t kh, uint32_t dwf=1, uint32_t dhf=1)</div><div class="ttdef"><b>Definition</b> <a href="_padding_8cc_source.html#l00131">Padding.cc:131</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00048">onert::ir::ExplicitPadding::bottom</a>, <a class="el" href="_padding_8cc_source.html#l00131">onert::ir::calculatePadding()</a>, <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html#l00036">convFloat32()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00064">onert::backend::IPortableTensor::getShape()</a>, <a class="el" href="_internal_type_8h_source.html#l00038">onert::ir::Stride::horizontal</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00063">onert::backend::IPortableTensor::is_dynamic()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00045">onert::ir::ExplicitPadding::left</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00060">onert::ir::Padding::param</a>, <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html#l00130">prepare()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00046">onert::ir::ExplicitPadding::right</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00047">onert::ir::ExplicitPadding::top</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00059">onert::ir::Padding::type</a>, and <a class="el" href="_internal_type_8h_source.html#l00037">onert::ir::Stride::vertical</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00048">onert::ir::ExplicitPadding::bottom</a>, <a class="el" href="_padding_8cc_source.html#l00131">onert::ir::calculatePadding()</a>, <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html#l00095">convFloat32()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00064">onert::backend::IPortableTensor::getShape()</a>, <a class="el" href="_internal_type_8h_source.html#l00038">onert::ir::Stride::horizontal</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00063">onert::backend::IPortableTensor::is_dynamic()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00045">onert::ir::ExplicitPadding::left</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00060">onert::ir::Padding::param</a>, <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html#l00189">prepare()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00046">onert::ir::ExplicitPadding::right</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00047">onert::ir::ExplicitPadding::top</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00059">onert::ir::Padding::type</a>, and <a class="el" href="_internal_type_8h_source.html#l00037">onert::ir::Stride::vertical</a>.</p>
 
 </div>
 </div>

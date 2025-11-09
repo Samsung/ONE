@@ -618,10 +618,13 @@ var annotated_dup =
       [ "FileLoader", "classfoder_1_1_file_loader.html", "classfoder_1_1_file_loader" ]
     ] ],
     [ "ggma", "namespaceggma.html", [
-      [ "context", "classggma_1_1context.html", "classggma_1_1context" ],
+      [ "Context", "classggma_1_1_context.html", "classggma_1_1_context" ],
       [ "GGMAConfig", "structggma_1_1_g_g_m_a_config.html", "structggma_1_1_g_g_m_a_config" ],
       [ "KVCache", "structggma_1_1_k_v_cache.html", "structggma_1_1_k_v_cache" ],
-      [ "ModelConfig", "structggma_1_1_model_config.html", "structggma_1_1_model_config" ]
+      [ "ModelConfig", "structggma_1_1_model_config.html", "structggma_1_1_model_config" ],
+      [ "SentencePieceTokenizer", "classggma_1_1_sentence_piece_tokenizer.html", "classggma_1_1_sentence_piece_tokenizer" ],
+      [ "Tokenizer", "classggma_1_1_tokenizer.html", "classggma_1_1_tokenizer" ],
+      [ "TokenizerFactory", "classggma_1_1_tokenizer_factory.html", "classggma_1_1_tokenizer_factory" ]
     ] ],
     [ "hermes", "namespacehermes.html", [
       [ "Config", "structhermes_1_1_config.html", "structhermes_1_1_config" ],
@@ -2805,7 +2808,8 @@ var annotated_dup =
         [ "APIConverter", "classonert_1_1api_1_1_a_p_i_converter.html", null ],
         [ "CustomKernel", "classonert_1_1api_1_1_custom_kernel.html", "classonert_1_1api_1_1_custom_kernel" ],
         [ "CustomKernelRegistry", "classonert_1_1api_1_1_custom_kernel_registry.html", "classonert_1_1api_1_1_custom_kernel_registry" ],
-        [ "KernelBuilder", "classonert_1_1api_1_1_kernel_builder.html", "classonert_1_1api_1_1_kernel_builder" ]
+        [ "KernelBuilder", "classonert_1_1api_1_1_kernel_builder.html", "classonert_1_1api_1_1_kernel_builder" ],
+        [ "Session", "structonert_1_1api_1_1_session.html", "structonert_1_1api_1_1_session" ]
       ] ],
       [ "backend", "namespaceonert_1_1backend.html", [
         [ "acl_cl", "namespaceonert_1_1backend_1_1acl__cl.html", [

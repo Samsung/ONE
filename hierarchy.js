@@ -1610,7 +1610,7 @@ var hierarchy =
     [ "ConstGenLayer", "struct_const_gen_layer.html", null ],
     [ "circle_eval_diff::CircleEvalDiff::Context", "structcircle__eval__diff_1_1_circle_eval_diff_1_1_context.html", null ],
     [ "fme_detect::EqualizePatternFinder::Context", "structfme__detect_1_1_equalize_pattern_finder_1_1_context.html", null ],
-    [ "ggma::context", "classggma_1_1context.html", null ],
+    [ "ggma::Context", "classggma_1_1_context.html", null ],
     [ "GraphBuilder::Context", "class_graph_builder_1_1_context.html", null ],
     [ "kuma::Context< Alg >", "classkuma_1_1_context.html", null ],
     [ "loco::ShapeInferenceRule::Context", "structloco_1_1_shape_inference_rule_1_1_context.html", null ],
@@ -4943,6 +4943,7 @@ var hierarchy =
     [ "nnfw::cker::SequentialTensorWriter< T >", "classnnfw_1_1cker_1_1_sequential_tensor_writer.html", null ],
     [ "luci::SerializedModelData", "structluci_1_1_serialized_model_data.html", null ],
     [ "locomotiv::Session", "classlocomotiv_1_1_session.html", null ],
+    [ "onert::api::Session", "structonert_1_1api_1_1_session.html", null ],
     [ "onert::util::Set< Element >", "classonert_1_1util_1_1_set.html", null ],
     [ "onert::util::Set< const backend::Backend * >", "classonert_1_1util_1_1_set.html", null ],
     [ "onert::util::Set< onert::backend::train::DisposableTensorIndex >", "classonert_1_1util_1_1_set.html", null ],
@@ -6162,6 +6163,10 @@ var hierarchy =
     ] ],
     [ "luci_interpreter::kernels::TISOData", "structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html", null ],
     [ "luci_interpreter::kernels::TISOKernel", "classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html", null ],
+    [ "ggma::Tokenizer", "classggma_1_1_tokenizer.html", [
+      [ "ggma::SentencePieceTokenizer", "classggma_1_1_sentence_piece_tokenizer.html", null ]
+    ] ],
+    [ "ggma::TokenizerFactory", "classggma_1_1_tokenizer_factory.html", null ],
     [ "nnfw::cker::TopContainer< T, Tidx >", "classnnfw_1_1cker_1_1_top_container.html", null ],
     [ "nnfw::rt::optimized_ops::TopContainer< T >", "classnnfw_1_1rt_1_1optimized__ops_1_1_top_container.html", null ],
     [ "TopologicalSortHelper.TopologicalSortHelper", "class_topological_sort_helper_1_1_topological_sort_helper.html", null ],

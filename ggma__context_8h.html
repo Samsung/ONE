@@ -179,15 +179,36 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>GGMA_STATUS_NO_ERROR</code> on success, or an appropriate error code on failure. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ggma__api_8cc_source.html#l00032">32</a> of file <a class="el" href="ggma__api_8cc_source.html">ggma_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   33</span>{</div>
-<div class="line"><span class="lineno">   34</span>  <a class="code hl_define" href="ggma__api_8cc.html#a6bfffffecca6ad761cf76e9a0ce4fc27">GGMA_RETURN_ERROR_IF_NULL</a>(context);</div>
-<div class="line"><span class="lineno">   35</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classggma_1_1context.html#ab5643a48142085ff35e6316c75720714">ggma::context::from_package</a>(context, package_path);</div>
-<div class="line"><span class="lineno">   36</span>}</div>
-<div class="ttc" id="aclassggma_1_1context_html_ab5643a48142085ff35e6316c75720714"><div class="ttname"><a href="classggma_1_1context.html#ab5643a48142085ff35e6316c75720714">ggma::context::from_package</a></div><div class="ttdeci">static GGMA_STATUS from_package(ggma_context **session, const char *package_path)</div><div class="ttdoc">Factory method. It creates and initialize ggma_context.</div><div class="ttdef"><b>Definition</b> <a href="context_8cc_source.html#l00084">context.cc:84</a></div></div>
-<div class="ttc" id="aggma__api_8cc_html_a6bfffffecca6ad761cf76e9a0ce4fc27"><div class="ttname"><a href="ggma__api_8cc.html#a6bfffffecca6ad761cf76e9a0ce4fc27">GGMA_RETURN_ERROR_IF_NULL</a></div><div class="ttdeci">#define GGMA_RETURN_ERROR_IF_NULL(p)</div><div class="ttdef"><b>Definition</b> <a href="ggma__api_8cc_source.html#l00025">ggma_api.cc:25</a></div></div>
+<p class="definition">Definition at line <a class="el" href="ggma__context_8cc_source.html#l00023">23</a> of file <a class="el" href="ggma__context_8cc_source.html">ggma_context.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   24</span>{</div>
+<div class="line"><span class="lineno">   25</span>  <span class="keywordflow">if</span> (context == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   26</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="ggma__types_8h.html#ac2c64efce8493ae271fbca000858b7b1a3714d12ee544214b895a2a90877def27">GGMA_STATUS_UNEXPECTED_NULL</a>;</div>
+<div class="line"><span class="lineno">   27</span>  <span class="keywordflow">try</span></div>
+<div class="line"><span class="lineno">   28</span>  {</div>
+<div class="line"><span class="lineno">   29</span>    *context = <span class="keyword">reinterpret_cast&lt;</span><a class="code hl_typedef" href="ggma__context_8h.html#a9f70ed2900d0b5f59a8d74c6b64059b0">ggma_context</a> *<span class="keyword">&gt;</span>(<span class="keyword">new</span> <a class="code hl_class" href="classggma_1_1_context.html">ggma::Context</a>(package_path));</div>
+<div class="line"><span class="lineno">   30</span>  }</div>
+<div class="line"><span class="lineno">   31</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::bad_alloc &amp;e)</div>
+<div class="line"><span class="lineno">   32</span>  {</div>
+<div class="line"><span class="lineno">   33</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during context creation&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">   34</span>    *context = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   35</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="ggma__types_8h.html#ac2c64efce8493ae271fbca000858b7b1afab16e23bffd30b7705ee5ea5e167bfd">GGMA_STATUS_OUT_OF_MEMORY</a>;</div>
+<div class="line"><span class="lineno">   36</span>  }</div>
+<div class="line"><span class="lineno">   37</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e)</div>
+<div class="line"><span class="lineno">   38</span>  {</div>
+<div class="line"><span class="lineno">   39</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during context initialization : &quot;</span> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">   40</span>    *context = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   41</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="ggma__types_8h.html#ac2c64efce8493ae271fbca000858b7b1ab561613f5d1da593df6277b9493de297">GGMA_STATUS_ERROR</a>;</div>
+<div class="line"><span class="lineno">   42</span>  }</div>
+<div class="line"><span class="lineno">   43</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="ggma__types_8h.html#ac2c64efce8493ae271fbca000858b7b1a09285233eaed564cac0963c08700e325">GGMA_STATUS_NO_ERROR</a>;</div>
+<div class="line"><span class="lineno">   44</span>}</div>
+<div class="ttc" id="aclassggma_1_1_context_html"><div class="ttname"><a href="classggma_1_1_context.html">ggma::Context</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2ggma_2src_2_context_8h_source.html#l00032">Context.h:33</a></div></div>
+<div class="ttc" id="aggma__context_8h_html_a9f70ed2900d0b5f59a8d74c6b64059b0"><div class="ttname"><a href="ggma__context_8h.html#a9f70ed2900d0b5f59a8d74c6b64059b0">ggma_context</a></div><div class="ttdeci">struct ggma_context ggma_context</div><div class="ttdoc">Opaque handle to a GGMA inference context.</div><div class="ttdef"><b>Definition</b> <a href="ggma__context_8h_source.html#l00036">ggma_context.h:36</a></div></div>
+<div class="ttc" id="aggma__types_8h_html_ac2c64efce8493ae271fbca000858b7b1a09285233eaed564cac0963c08700e325"><div class="ttname"><a href="ggma__types_8h.html#ac2c64efce8493ae271fbca000858b7b1a09285233eaed564cac0963c08700e325">GGMA_STATUS_NO_ERROR</a></div><div class="ttdeci">@ GGMA_STATUS_NO_ERROR</div><div class="ttdef"><b>Definition</b> <a href="ggma__types_8h_source.html#l00037">ggma_types.h:37</a></div></div>
+<div class="ttc" id="aggma__types_8h_html_ac2c64efce8493ae271fbca000858b7b1a3714d12ee544214b895a2a90877def27"><div class="ttname"><a href="ggma__types_8h.html#ac2c64efce8493ae271fbca000858b7b1a3714d12ee544214b895a2a90877def27">GGMA_STATUS_UNEXPECTED_NULL</a></div><div class="ttdeci">@ GGMA_STATUS_UNEXPECTED_NULL</div><div class="ttdef"><b>Definition</b> <a href="ggma__types_8h_source.html#l00044">ggma_types.h:44</a></div></div>
+<div class="ttc" id="aggma__types_8h_html_ac2c64efce8493ae271fbca000858b7b1ab561613f5d1da593df6277b9493de297"><div class="ttname"><a href="ggma__types_8h.html#ac2c64efce8493ae271fbca000858b7b1ab561613f5d1da593df6277b9493de297">GGMA_STATUS_ERROR</a></div><div class="ttdeci">@ GGMA_STATUS_ERROR</div><div class="ttdef"><b>Definition</b> <a href="ggma__types_8h_source.html#l00042">ggma_types.h:42</a></div></div>
+<div class="ttc" id="aggma__types_8h_html_ac2c64efce8493ae271fbca000858b7b1afab16e23bffd30b7705ee5ea5e167bfd"><div class="ttname"><a href="ggma__types_8h.html#ac2c64efce8493ae271fbca000858b7b1afab16e23bffd30b7705ee5ea5e167bfd">GGMA_STATUS_OUT_OF_MEMORY</a></div><div class="ttdeci">@ GGMA_STATUS_OUT_OF_MEMORY</div><div class="ttdef"><b>Definition</b> <a href="ggma__types_8h_source.html#l00046">ggma_types.h:46</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="context_8cc_source.html#l00084">ggma::context::from_package()</a>, and <a class="el" href="ggma__api_8cc_source.html#l00025">GGMA_RETURN_ERROR_IF_NULL</a>.</p>
+<p class="reference">References <a class="el" href="ggma__types_8h_source.html#l00042">GGMA_STATUS_ERROR</a>, <a class="el" href="ggma__types_8h_source.html#l00037">GGMA_STATUS_NO_ERROR</a>, <a class="el" href="ggma__types_8h_source.html#l00046">GGMA_STATUS_OUT_OF_MEMORY</a>, and <a class="el" href="ggma__types_8h_source.html#l00044">GGMA_STATUS_UNEXPECTED_NULL</a>.</p>
 
 </div>
 </div>
@@ -217,13 +238,11 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>GGMA_STATUS_NO_ERROR</code> on success, or an appropriate error code on failure. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ggma__api_8cc_source.html#l00038">38</a> of file <a class="el" href="ggma__api_8cc_source.html">ggma_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   39</span>{</div>
-<div class="line"><span class="lineno">   40</span>  <span class="keyword">delete</span> <span class="keyword">reinterpret_cast&lt;</span><a class="code hl_class" href="classggma_1_1context.html">ggma::context</a> *<span class="keyword">&gt;</span>(context);</div>
-<div class="line"><span class="lineno">   41</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="ggma__types_8h.html#ac2c64efce8493ae271fbca000858b7b1a09285233eaed564cac0963c08700e325">GGMA_STATUS_NO_ERROR</a>;</div>
-<div class="line"><span class="lineno">   42</span>}</div>
-<div class="ttc" id="aclassggma_1_1context_html"><div class="ttname"><a href="classggma_1_1context.html">ggma::context</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2ggma_2src_2_context_8h_source.html#l00033">context.h:34</a></div></div>
-<div class="ttc" id="aggma__types_8h_html_ac2c64efce8493ae271fbca000858b7b1a09285233eaed564cac0963c08700e325"><div class="ttname"><a href="ggma__types_8h.html#ac2c64efce8493ae271fbca000858b7b1a09285233eaed564cac0963c08700e325">GGMA_STATUS_NO_ERROR</a></div><div class="ttdeci">@ GGMA_STATUS_NO_ERROR</div><div class="ttdef"><b>Definition</b> <a href="ggma__types_8h_source.html#l00037">ggma_types.h:37</a></div></div>
+<p class="definition">Definition at line <a class="el" href="ggma__context_8cc_source.html#l00046">46</a> of file <a class="el" href="ggma__context_8cc_source.html">ggma_context.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   47</span>{</div>
+<div class="line"><span class="lineno">   48</span>  <span class="keyword">delete</span> <span class="keyword">reinterpret_cast&lt;</span><a class="code hl_class" href="classggma_1_1_context.html">ggma::Context</a> *<span class="keyword">&gt;</span>(context);</div>
+<div class="line"><span class="lineno">   49</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="ggma__types_8h.html#ac2c64efce8493ae271fbca000858b7b1a09285233eaed564cac0963c08700e325">GGMA_STATUS_NO_ERROR</a>;</div>
+<div class="line"><span class="lineno">   50</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="ggma__types_8h_source.html#l00037">GGMA_STATUS_NO_ERROR</a>.</p>
 

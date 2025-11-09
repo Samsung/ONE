@@ -170,16 +170,16 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>GGMA_STATUS_NO_ERROR</code> on success, or an appropriate error code on failure. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ggma__api_8cc_source.html#l00044">44</a> of file <a class="el" href="ggma__api_8cc_source.html">ggma_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   46</span>{</div>
-<div class="line"><span class="lineno">   47</span>  <a class="code hl_define" href="ggma__api_8cc.html#a6bfffffecca6ad761cf76e9a0ce4fc27">GGMA_RETURN_ERROR_IF_NULL</a>(context);</div>
-<div class="line"><span class="lineno">   48</span>  <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span><a class="code hl_class" href="classggma_1_1context.html">ggma::context</a> *<span class="keyword">&gt;</span>(context)-&gt;generate(tokens, n_tokens, n_tokens_max,</div>
-<div class="line"><span class="lineno">   49</span>                                                              n_tokens_out);</div>
-<div class="line"><span class="lineno">   50</span>}</div>
-<div class="ttc" id="aclassggma_1_1context_html"><div class="ttname"><a href="classggma_1_1context.html">ggma::context</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2ggma_2src_2_context_8h_source.html#l00033">context.h:34</a></div></div>
-<div class="ttc" id="aggma__api_8cc_html_a6bfffffecca6ad761cf76e9a0ce4fc27"><div class="ttname"><a href="ggma__api_8cc.html#a6bfffffecca6ad761cf76e9a0ce4fc27">GGMA_RETURN_ERROR_IF_NULL</a></div><div class="ttdeci">#define GGMA_RETURN_ERROR_IF_NULL(p)</div><div class="ttdef"><b>Definition</b> <a href="ggma__api_8cc_source.html#l00025">ggma_api.cc:25</a></div></div>
+<p class="definition">Definition at line <a class="el" href="ggma__generate_8cc_source.html#l00022">22</a> of file <a class="el" href="ggma__generate_8cc_source.html">ggma_generate.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   24</span>{</div>
+<div class="line"><span class="lineno">   25</span>  <a class="code hl_define" href="runtime_2ggma_2src_2_macro_8h.html#a6bfffffecca6ad761cf76e9a0ce4fc27">GGMA_RETURN_ERROR_IF_NULL</a>(context);</div>
+<div class="line"><span class="lineno">   26</span>  <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span><a class="code hl_class" href="classggma_1_1_context.html">ggma::Context</a> *<span class="keyword">&gt;</span>(context)-&gt;generate(tokens, n_tokens, n_tokens_max,</div>
+<div class="line"><span class="lineno">   27</span>                                                              n_tokens_out);</div>
+<div class="line"><span class="lineno">   28</span>}</div>
+<div class="ttc" id="aclassggma_1_1_context_html"><div class="ttname"><a href="classggma_1_1_context.html">ggma::Context</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2ggma_2src_2_context_8h_source.html#l00032">Context.h:33</a></div></div>
+<div class="ttc" id="aruntime_2ggma_2src_2_macro_8h_html_a6bfffffecca6ad761cf76e9a0ce4fc27"><div class="ttname"><a href="runtime_2ggma_2src_2_macro_8h.html#a6bfffffecca6ad761cf76e9a0ce4fc27">GGMA_RETURN_ERROR_IF_NULL</a></div><div class="ttdeci">#define GGMA_RETURN_ERROR_IF_NULL(p)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2ggma_2src_2_macro_8h_source.html#l00026">Macro.h:26</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="ggma__api_8cc_source.html#l00025">GGMA_RETURN_ERROR_IF_NULL</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2ggma_2src_2_macro_8h_source.html#l00026">GGMA_RETURN_ERROR_IF_NULL</a>.</p>
 
 </div>
 </div>

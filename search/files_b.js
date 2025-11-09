@@ -19,6 +19,6 @@ var searchData=
   ['knob_2eh_16',['knob.h',['../moco-tf_2src_2_knob_8h.html',1,'(Global Namespace)'],['../exo_2src_2_knob_8h.html',1,'(Global Namespace)']]],
   ['kuma_2ecpp_17',['kuma.cpp',['../kuma_8cpp.html',1,'']]],
   ['kuma_2eh_18',['kuma.h',['../kuma_8h.html',1,'']]],
-  ['kv_5fcache_2ecc_19',['kv_cache.cc',['../kv__cache_8cc.html',1,'']]],
-  ['kv_5fcache_2eh_20',['kv_cache.h',['../kv__cache_8h.html',1,'']]]
+  ['kvcache_2ecc_19',['KVCache.cc',['../_k_v_cache_8cc.html',1,'']]],
+  ['kvcache_2eh_20',['KVCache.h',['../_k_v_cache_8h.html',1,'']]]
 ];

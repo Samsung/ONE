@@ -32,5 +32,6 @@ var searchData=
   ['consumerset_29',['ConsumerSet',['../classcoco_1_1_object.html#a60c6335673ed9c9f9bd912b361171c3e',1,'coco::Object']]],
   ['converterfunc_30',['ConverterFunc',['../classmir__onnx_1_1_node_converter_registry.html#abe63d6844673750e09acc6e115edc8ff',1,'mir_onnx::NodeConverterRegistry']]],
   ['cpudevice_31',['cpudevice',['../namespacennfw_1_1cker_1_1depthwise__conv__op.html#a59e3ee0b0d7cafe5a2bc7217c5b8eb4f',1,'nnfw::cker::depthwise_conv_op::CPUDevice'],['../namespacennfw_1_1cker_1_1training__ops.html#a667a5d591e975225bf026521f5af79d0',1,'nnfw::cker::training_ops::CPUDevice'],['../namespacennfw_1_1cker_1_1xent__ops.html#ae9c39146621477319fc2bcf6dc4ab103',1,'nnfw::cker::xent_ops::CPUDevice'],['../namespacennfw_1_1cker_1_1functor.html#a2775020c056e7ec2305d27b4dad94929',1,'nnfw::cker::functor::CPUDevice'],['../namespacennfw_1_1cker.html#ab3f3f3369d99105c245b3382d62a5de1',1,'nnfw::cker::CPUDevice']]],
-  ['customoptionsformat_32',['CustomOptionsFormat',['../classonert_1_1loader_1_1_base_loader.html#a9ff7401e97a9d239e05a4f1f90205eb2',1,'onert::loader::BaseLoader']]]
+  ['creator_32',['Creator',['../classggma_1_1_tokenizer_factory.html#ac6a2023e9e8421a4b5b5f55f357c0712',1,'ggma::TokenizerFactory']]],
+  ['customoptionsformat_33',['CustomOptionsFormat',['../classonert_1_1loader_1_1_base_loader.html#a9ff7401e97a9d239e05a4f1f90205eb2',1,'onert::loader::BaseLoader']]]
 ];

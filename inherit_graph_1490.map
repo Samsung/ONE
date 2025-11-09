@@ -1,21 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,258,104,284"/>
-<area shape="rect" id="Node000001" href="$structis___variadic_arity_3_01_circle_add_n_01_4.html" title=" " alt="" coords="177,5,333,46"/>
-<area shape="poly" id="edge3403_Node000000_Node000001" title=" " alt="" coords="58,242,69,201,87,152,113,101,130,78,150,57,175,41,178,45,153,61,134,81,118,104,92,154,74,203,64,244"/>
-<area shape="rect" id="Node000002" href="$structis___variadic_arity_3_01_circle_concatenation_01_4.html" title=" " alt="" coords="177,71,333,111"/>
-<area shape="poly" id="edge3404_Node000000_Node000002" title=" " alt="" coords="64,243,97,182,121,150,150,122,175,107,178,112,153,126,125,154,101,185,69,245"/>
-<area shape="rect" id="Node000003" href="$structis___variadic_arity_3_01_circle_custom_01_4.html" title=" " alt="" coords="177,136,333,177"/>
-<area shape="poly" id="edge3405_Node000000_Node000003" title=" " alt="" coords="76,245,110,215,150,186,176,174,178,179,153,191,113,219,80,249"/>
-<area shape="rect" id="Node000004" href="$structis___variadic_arity_3_01_circle_if_01_4.html" title=" " alt="" coords="168,201,342,227"/>
-<area shape="poly" id="edge3406_Node000000_Node000004" title=" " alt="" coords="107,250,151,236,196,225,197,230,152,242,109,255"/>
-<area shape="rect" id="Node000005" href="$structis___variadic_arity_3_01_circle_pack_01_4.html" title=" " alt="" coords="177,251,333,291"/>
-<area shape="poly" id="edge3407_Node000000_Node000005" title=" " alt="" coords="119,268,177,268,177,274,119,274"/>
-<area shape="rect" id="Node000006" href="$structis___variadic_arity_3_01_circle_while_01_4.html" title=" " alt="" coords="177,316,333,357"/>
-<area shape="poly" id="edge3408_Node000000_Node000006" title=" " alt="" coords="111,287,153,300,190,313,189,318,151,306,109,292"/>
-<area shape="rect" id="Node000007" href="$structis___variadic_out_3_01_circle_custom_01_4.html" title=" " alt="" coords="152,381,358,407"/>
-<area shape="poly" id="edge3409_Node000000_Node000007" title=" " alt="" coords="76,294,109,332,153,366,180,378,178,383,150,371,106,336,72,298"/>
-<area shape="rect" id="Node000008" href="$structis___variadic_out_3_01_circle_if_01_4.html" title=" " alt="" coords="170,430,340,456"/>
-<area shape="poly" id="edge3410_Node000000_Node000008" title=" " alt="" coords="68,297,100,358,124,390,153,417,172,427,170,432,150,421,120,394,96,361,64,299"/>
-<area shape="rect" id="Node000009" href="$structis___variadic_out_3_01_circle_while_01_4.html" title=" " alt="" coords="158,480,352,505"/>
-<area shape="poly" id="edge3411_Node000000_Node000009" title=" " alt="" coords="64,298,75,337,92,382,118,428,153,466,170,477,168,481,150,470,114,431,87,385,70,338,59,300"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,13,135,39"/>
+<area shape="rect" id="Node000001" href="$classflatbuffers_1_1numeric__limits.html" title=" " alt="" coords="183,5,312,46"/>
+<area shape="poly" id="edge3395_Node000000_Node000001" title=" " alt="" coords="150,23,182,23,182,28,150,28"/>
 </map>
