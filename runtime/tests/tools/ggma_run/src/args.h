@@ -33,6 +33,7 @@ public:
   void print(void);
 
   const std::string &packagePath() const { return _package_path; }
+  const std::string &prompt() const { return _prompt; }
   bool printVersion() const { return _print_version; }
 
 private:
@@ -43,6 +44,7 @@ private:
   arser::Arser _arser;
 
   std::string _package_path;
+  std::string _prompt;
   bool _print_version = false;
 };
 
