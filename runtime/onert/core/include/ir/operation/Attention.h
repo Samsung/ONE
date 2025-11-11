@@ -43,7 +43,6 @@ public:
 
   struct Param
   {
-    int layer_idx;
   };
 
 public:
