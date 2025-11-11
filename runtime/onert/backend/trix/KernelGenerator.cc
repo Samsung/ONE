@@ -68,7 +68,7 @@ void KernelGenerator::visit(const ir::operation::Bulk &node)
 
   auto fn = std::make_unique<ops::BulkLayer>();
 
-  fn->configure(input_tensors, output_tensors, binary_path, _dev_context);
+  fn->configure(input_tensors, output_tensors, binary_path.front(), _dev_context);
 
   _return_fn = std::move(fn);
 }

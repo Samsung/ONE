@@ -337,7 +337,9 @@ void CircleLoader::loadRunModel(const Operator *op, ir::Graph &subg)
   auto model_base_path = std::filesystem::path(_file_path).parent_path();
   auto *options = op->builtin_options_as_RunModelOptions();
   auto location = options->location()->str();
-  auto model_path = model_base_path / location;
+  // Multiple files can be specified as ';' separated string
+  auto model_path = (location.find(';') == std::string::npos) ? model_base_path / location
+                                                              : std::filesystem::path(location);
   auto extension_path = model_path.extension();
   if (extension_path.empty())
   {
