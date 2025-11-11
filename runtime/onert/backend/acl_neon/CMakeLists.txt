@@ -10,8 +10,7 @@ file(GLOB SOURCES "*.cc")
 file(GLOB OPERAND_SOURCES "operand/*.cc")
 list(APPEND SOURCES ${OPERAND_SOURCES})
 macro(OP NAME)
-  # ACL_NEON backend doesn't have separate operation files,
-  # but we include the macro for consistency with other backend pattern
+  list(APPEND SOURCES ops/${NAME}.cc)
 endmacro(OP)
 include(Operation.lst)
 

@@ -21,12 +21,15 @@
 #include "IACLTensor.h"
 
 #include <exec/IFunction.h>
+#include <exec/NopFunction.h>
 #include <ir/Operands.h>
 #include <ir/operation/FullyConnected.h>
 #include <ir/operation/LSTM.h>
 
 #include <arm_compute/runtime/CL/CLFunctions.h>
 #include <arm_compute/runtime/CL/CLFunctionsEx.h>
+#include <arm_compute/runtime/NEON/NEFunctions.h>
+#include <arm_compute/runtime/NEON/NEFunctionsEx.h>
 
 namespace onert::backend::acl_common
 {
