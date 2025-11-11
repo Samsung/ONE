@@ -66,11 +66,18 @@ void KernelGenerator::visit(const ir::operation::Bulk &node)
   // parameters
   const auto &binary_path = node.param().binary_path;
 
-  auto fn = std::make_unique<ops::BulkLayer>();
-
-  fn->configure(input_tensors, output_tensors, binary_path, _dev_context);
-
-  _return_fn = std::move(fn);
+  if (binary_path.size() == 1)
+  {
+    // For single model execution
+    auto fn = std::make_unique<ops::BulkLayer>();
+    fn->configure(input_tensors, output_tensors, binary_path.front(), _dev_context);
+    _return_fn = std::move(fn);
+  }
+  else
+  {
+    // TODO: Implement multiple model execution
+    throw std::runtime_error("NYI: multiple model execution");
+  }
 }
 
 } // namespace onert::backend::trix

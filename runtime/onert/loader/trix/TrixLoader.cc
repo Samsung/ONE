@@ -93,18 +93,16 @@ private:
    */
   void loadModel(std::unique_ptr<ir::Model> &model);
   std::unique_ptr<ir::Graph> loadSubgraph();
-  void loadOperands(ir::Graph &subg);
-  ir::OperandIndex loadOperandFromInput(uint32_t i, ir::Graph &subg);
-  ir::OperandIndex loadOperandFromOutput(uint32_t i, ir::Graph &subg);
   void loadBulk(ir::Graph &subg);
-  void loadOperationIO(ir::OperandIndexSequence &inputs, ir::OperandIndexSequence &outputs);
   ir::OperandIndex inputIdxToOperandIdx(uint32_t i) const;
   ir::OperandIndex outputIdxToOperandIdx(uint32_t i) const;
   ir::DataType toDataType(const data_type type) const;
+  void loadInputOperands(TrixMetaReader &meta, ir::Graph &subg);
+  void loadOutputOperands(TrixMetaReader &meta, ir::Graph &subg);
 
 private:
   /** path to model (e.g. tvn) */
-  std::string _model_path;
+  std::vector<std::string> _model_path;
   /** original IO shapes */
   std::vector<ir::Shape> _origin_input_shapes;
   std::vector<ir::Shape> _origin_output_shapes;
@@ -130,20 +128,6 @@ ir::OperandIndex TrixLoader::outputIdxToOperandIdx(uint32_t i) const
   return ir::OperandIndex(_meta.input_seg_num() + i);
 }
 
-void TrixLoader::loadOperationIO(ir::OperandIndexSequence &inputs,
-                                 ir::OperandIndexSequence &outputs)
-{
-  for (uint32_t i = 0; i < _meta.input_seg_num(); ++i)
-  {
-    inputs.append(inputIdxToOperandIdx(i));
-  }
-
-  for (uint32_t i = 0; i < _meta.output_seg_num(); ++i)
-  {
-    outputs.append(outputIdxToOperandIdx(i));
-  }
-}
-
 void TrixLoader::loadBulk(ir::Graph &subg)
 {
   ir::operation::Bulk::Param param;
@@ -151,81 +135,73 @@ void TrixLoader::loadBulk(ir::Graph &subg)
   param.origin_input_shapes = _origin_input_shapes;
   param.origin_output_shapes = _origin_output_shapes;
 
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(inputs, outputs);
-
-  std::unique_ptr<ir::operation::Bulk> bulk(new ir::operation::Bulk(inputs, outputs, param));
+  std::unique_ptr<ir::operation::Bulk> bulk(
+    new ir::operation::Bulk(subg.getInputs(), subg.getOutputs(), param));
   subg.addOperation(std::move(bulk));
 }
 
-ir::OperandIndex TrixLoader::loadOperandFromInput(uint32_t idx, ir::Graph &subg)
+void TrixLoader::loadInputOperands(TrixMetaReader &meta, ir::Graph &subg)
 {
-  // Shape
-  ir::Shape shape;
-  for (uint32_t d = 0; d < MAX_RANK; ++d)
-    shape.append(_meta.input_seg_dims(idx, d));
-
-  // TypeInfo
-  ir::TypeInfo type_info(toDataType(_meta.input_seg_quant_type(idx)),
-                         _meta.input_seg_quant_scale(idx), _meta.input_seg_quant_zp(idx));
-
-  _origin_input_shapes.push_back(shape);
-  // Create operand
-  const auto operand_index = subg.addOperand(shape, type_info);
-  return operand_index;
-}
-
-ir::OperandIndex TrixLoader::loadOperandFromOutput(uint32_t idx, ir::Graph &subg)
-{
-  // Shape
-  ir::Shape shape;
-  for (uint32_t d = 0; d < MAX_RANK; ++d)
-    shape.append(_meta.output_seg_dims(idx, d));
-
-  // TypeInfo
-  ir::TypeInfo type_info(toDataType(_meta.output_seg_quant_type(idx)),
-                         _meta.output_seg_quant_scale(idx), _meta.output_seg_quant_zp(idx));
-
-  _origin_output_shapes.push_back(shape);
-  // Create operand
-  const auto operand_index = subg.addOperand(shape, type_info);
-  return operand_index;
-}
-
-void TrixLoader::loadOperands(ir::Graph &subg)
-{
-  auto in_num = _meta.input_seg_num();
-  for (uint32_t i = 0; i < in_num; ++i)
+  for (uint32_t i = 0; i < meta.input_seg_num(); ++i)
   {
-    loadOperandFromInput(i, subg);
+    // Shape
+    ir::Shape shape;
+    for (uint32_t d = 0; d < MAX_RANK; ++d)
+      shape.append(meta.input_seg_dims(i, d));
+
+    // TypeInfo
+    ir::TypeInfo type_info(toDataType(meta.input_seg_quant_type(i)), meta.input_seg_quant_scale(i),
+                           meta.input_seg_quant_zp(i));
+
+    _origin_input_shapes.push_back(shape);
+    // Create operand
+    subg.addOperand(shape, type_info);
+    subg.addInput(ir::OperandIndex(i), "tvn_input" + std::to_string(i));
   }
-  auto out_num = _meta.output_seg_num();
-  for (uint32_t i = 0; i < out_num; ++i)
+}
+
+void TrixLoader::loadOutputOperands(TrixMetaReader &meta, ir::Graph &subg)
+{
+  for (uint32_t i = 0; i < meta.output_seg_num(); ++i)
   {
-    loadOperandFromOutput(i, subg);
+    // Shape
+    ir::Shape shape;
+    for (uint32_t d = 0; d < MAX_RANK; ++d)
+      shape.append(meta.output_seg_dims(i, d));
+
+    // TypeInfo
+    ir::TypeInfo type_info(toDataType(meta.output_seg_quant_type(i)),
+                           meta.output_seg_quant_scale(i), meta.output_seg_quant_zp(i));
+
+    _origin_output_shapes.push_back(shape);
+    // Create operand
+    subg.addOperand(shape, type_info);
+    subg.addOutput(ir::OperandIndex(subg.getInputs().size() + i), "tvn_out" + std::to_string(i));
   }
 }
 
 std::unique_ptr<ir::Graph> TrixLoader::loadSubgraph()
 {
   auto subg = std::make_unique<ir::Graph>();
-  _meta.init(_model_path.c_str());
 
-  // Load tensors
-  loadOperands(*subg);
+  if (_model_path.size() == 1)
+  {
+    // Single model
+    TrixMetaReader meta;
+    meta.init(_model_path.front().c_str());
+    loadInputOperands(meta, *subg);
+    loadOutputOperands(meta, *subg);
+  }
+  else
+  {
+    // Multiple models
+    TrixMetaReader head_model_meta, tail_model_meta;
+    head_model_meta.init(_model_path.front().c_str());
+    tail_model_meta.init(_model_path.back().c_str());
+    loadInputOperands(head_model_meta, *subg);
+    loadOutputOperands(tail_model_meta, *subg);
+  }
 
-  // Set inputs
-  for (uint32_t i = 0; i < _meta.input_seg_num(); ++i)
-  {
-    subg->addInput(inputIdxToOperandIdx(i), "tvn_input" + std::to_string(i));
-  }
-  // Set outputs
-  for (uint32_t i = 0; i < _meta.output_seg_num(); ++i)
-  {
-    subg->addOutput(outputIdxToOperandIdx(i), "tvn_out" + std::to_string(i));
-  }
   // Create operations
   loadBulk(*subg);
 
@@ -243,11 +219,18 @@ void TrixLoader::loadModel(std::unique_ptr<ir::Model> &model)
 std::unique_ptr<ir::Model> TrixLoader::loadFromFile(const std::string &file_path)
 {
   auto model = std::make_unique<ir::Model>();
-  // model path will be used to set Bulk param
-  _model_path = file_path;
-  // metadata is initialized from model path since it is loadFromFile
-  _meta.init(_model_path.c_str());
+
+  std::stringstream ss{file_path};
+  std::string path;
+  while (std::getline(ss, path, ';'))
+  {
+    // model path will be used to set Bulk param
+    // , and it can be more than one for multiple models
+    _model_path.push_back(path);
+  }
+
   loadModel(model);
+
   return model;
 }
 

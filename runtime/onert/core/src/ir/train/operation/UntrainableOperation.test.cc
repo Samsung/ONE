@@ -85,7 +85,7 @@ operation::BroadcastTo generateBroadcastTo()
 operation::Bulk generateBulk()
 {
   operation::Bulk::Param param;
-  param.binary_path = "";
+  param.binary_path = {};
   param.origin_input_shapes = std::vector<onert::ir::Shape>{};
   param.origin_output_shapes = std::vector<onert::ir::Shape>{};
 
