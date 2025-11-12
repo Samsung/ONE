@@ -77,32 +77,6 @@ onert::ir::Layout convertLayout(NNFW_LAYOUT layout)
   return onert::ir::Layout::UNKNOWN;
 }
 
-NNFW_STATUS getTensorIndexImpl(const onert::ir::IGraph &graph, const char *tensorname,
-                               uint32_t *index, bool is_input)
-{
-  if (!tensorname || !index)
-    return NNFW_STATUS_UNEXPECTED_NULL;
-
-  if (!null_terminating(tensorname, MAX_TENSOR_NAME_LENGTH))
-  {
-    std::cerr << "nnpackage path is too long" << std::endl;
-    return NNFW_STATUS_ERROR;
-  }
-
-  auto ind_found = is_input ? graph.getInputIndex(tensorname) : graph.getOutputIndex(tensorname);
-
-  if (ind_found.undefined())
-  {
-    // Not found
-    return NNFW_STATUS_ERROR;
-  }
-  else
-  {
-    *index = ind_found.value();
-    return NNFW_STATUS_NO_ERROR;
-  }
-}
-
 std::string trim(std::string_view value)
 {
   constexpr std::string_view whitespace = " \t";
@@ -1341,6 +1315,30 @@ bool Session::isStateFinishedRun()
 }
 
 bool Session::isStatePreparedOrFinishedRun() { return isStatePrepared() || isStateFinishedRun(); }
+
+NNFW_STATUS Session::getTensorIndexImpl(const onert::ir::IGraph &graph, const char *tensorname,
+                                        uint32_t *index, bool is_input)
+{
+  if (!tensorname || !index)
+    return NNFW_STATUS_UNEXPECTED_NULL;
+
+  if (!null_terminating(tensorname, MAX_TENSOR_NAME_LENGTH))
+  {
+    std::cerr << "nnpackage path is too long" << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  auto ind_found = is_input ? graph.getInputIndex(tensorname) : graph.getOutputIndex(tensorname);
+
+  if (ind_found.undefined())
+  {
+    // Not found
+    return NNFW_STATUS_ERROR;
+  }
+
+  *index = ind_found.value();
+  return NNFW_STATUS_NO_ERROR;
+}
 
 NNFW_STATUS Session::input_tensorindex(const char *tensorname, uint32_t *index)
 {
