@@ -202,6 +202,8 @@ private:
   uint32_t getInputSize();
   uint32_t getOutputSize();
   NNFW_STATUS loadModelFile(const std::string &model_file_path, const std::string &model_type);
+  NNFW_STATUS getTensorIndexImpl(const onert::ir::IGraph &graph, const char *tensorname,
+                                 uint32_t *index, bool is_input);
 
   bool isStateInitialized();
   bool isStateModelLoaded();
