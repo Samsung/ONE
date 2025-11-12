@@ -170,9 +170,10 @@ NNFW_STATUS nnfw_register_custom_op_info(nnfw_session *session, const char *id,
   return reinterpret_cast<Session *>(session)->register_custom_operation(id, info->eval_function);
 }
 
-NNFW_STATUS nnfw_apply_tensorinfo(nnfw_session *, uint32_t, nnfw_tensorinfo)
+NNFW_STATUS nnfw_apply_tensorinfo(nnfw_session *session, uint32_t, nnfw_tensorinfo)
 {
-  return Session::deprecated("nnfw_apply_tensorinfo: Deprecated");
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return reinterpret_cast<Session *>(session)->deprecated("nnfw_apply_tensorinfo: Deprecated");
 }
 
 NNFW_STATUS nnfw_set_input_tensorinfo(nnfw_session *session, uint32_t index,
@@ -188,9 +189,10 @@ NNFW_STATUS nnfw_set_available_backends(nnfw_session *session, const char *backe
   return reinterpret_cast<Session *>(session)->set_available_backends(backends);
 }
 
-NNFW_STATUS nnfw_set_op_backend(nnfw_session *, const char *, const char *)
+NNFW_STATUS nnfw_set_op_backend(nnfw_session *session, const char *, const char *)
 {
-  return Session::deprecated("nnfw_set_op_backend: Deprecated");
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return reinterpret_cast<Session *>(session)->deprecated("nnfw_set_op_backend: Deprecated");
 }
 
 NNFW_STATUS nnfw_query_info_u32(nnfw_session *session, NNFW_INFO_ID id, uint32_t *val)
@@ -230,19 +232,22 @@ NNFW_STATUS nnfw_set_backends_per_operation(nnfw_session *session, const char *b
   return reinterpret_cast<Session *>(session)->set_backends_per_operation(backend_settings);
 }
 
-NNFW_STATUS nnfw_prepare_pipeline(nnfw_session *, const char *)
+NNFW_STATUS nnfw_prepare_pipeline(nnfw_session *session, const char *)
 {
-  return Session::deprecated("nnfw_prepare_pipeline: Deprecated");
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return reinterpret_cast<Session *>(session)->deprecated("nnfw_prepare_pipeline: Deprecated");
 }
 
-NNFW_STATUS nnfw_push_pipeline_input(nnfw_session *, void *, void *)
+NNFW_STATUS nnfw_push_pipeline_input(nnfw_session *session, void *, void *)
 {
-  return Session::deprecated("nnfw_push_pipeline_input: Deprecated");
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return reinterpret_cast<Session *>(session)->deprecated("nnfw_push_pipeline_input: Deprecated");
 }
 
-NNFW_STATUS nnfw_pop_pipeline_output(nnfw_session *, void *)
+NNFW_STATUS nnfw_pop_pipeline_output(nnfw_session *session, void *)
 {
-  return Session::deprecated("nnfw_pop_pipeline_output: Deprecated");
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return reinterpret_cast<Session *>(session)->deprecated("nnfw_pop_pipeline_output: Deprecated");
 }
 
 NNFW_STATUS nnfw_set_workspace(nnfw_session *session, const char *dir)

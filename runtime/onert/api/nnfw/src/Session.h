@@ -137,7 +137,7 @@ public:
   NNFW_STATUS configure_signature(const char *signature);
   NNFW_STATUS set_signature_run(const char *signature);
 
-  static NNFW_STATUS deprecated(const char *msg);
+  NNFW_STATUS deprecated(const char *msg);
 
   //
   // Internal-only API
