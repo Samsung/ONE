@@ -436,7 +436,7 @@ void CircleLoader::loadAttention(const Operator *op, ir::Graph &subg)
 
   loadOperationIO(op, inputs, outputs);
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Attention(inputs, outputs, {}));
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::Attention(inputs, outputs));
   subg.addOperation(std::move(new_op));
 }
 
