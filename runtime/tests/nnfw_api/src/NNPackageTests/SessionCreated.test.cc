@@ -149,3 +149,12 @@ TEST_F(ValidationTestSessionCreated, neg_set_execute_config_with_no_workspace)
             NNFW_STATUS_ERROR);
   EXPECT_EQ(nnfw_set_execute_config(_session, NNFW_RUN_CONFIG_TRACE, nullptr), NNFW_STATUS_ERROR);
 }
+
+TEST_F(ValidationTestSessionCreated, neg_deprecated_api)
+{
+  EXPECT_EQ(nnfw_apply_tensorinfo(_session, 0, nnfw_tensorinfo{}), NNFW_STATUS_DEPRECATED_API);
+  EXPECT_EQ(nnfw_prepare_pipeline(_session, nullptr), NNFW_STATUS_DEPRECATED_API);
+  EXPECT_EQ(nnfw_push_pipeline_input(_session, nullptr, nullptr), NNFW_STATUS_DEPRECATED_API);
+  EXPECT_EQ(nnfw_pop_pipeline_output(_session, nullptr), NNFW_STATUS_DEPRECATED_API);
+  EXPECT_EQ(nnfw_set_op_backend(_session, nullptr, nullptr), NNFW_STATUS_DEPRECATED_API);
+}
