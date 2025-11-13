@@ -16,6 +16,7 @@
 
 #include "KernelGenerator.h"
 
+#include "ops/BulkPipeLayer.h"
 #include "ops/BulkLayer.h"
 
 #include <backend/Backend.h>
@@ -66,11 +67,20 @@ void KernelGenerator::visit(const ir::operation::Bulk &node)
   // parameters
   const auto &binary_path = node.param().binary_path;
 
-  auto fn = std::make_unique<ops::BulkLayer>();
-
-  fn->configure(input_tensors, output_tensors, binary_path, _dev_context);
-
-  _return_fn = std::move(fn);
+  if (binary_path.size() == 1)
+  {
+    // For single model execution
+    auto fn = std::make_unique<ops::BulkLayer>();
+    fn->configure(input_tensors, output_tensors, binary_path.front(), _dev_context);
+    _return_fn = std::move(fn);
+  }
+  else
+  {
+    // For pipeline execution (multiple models)
+    auto fn = std::make_unique<ops::BulkPipeLayer>();
+    fn->configure(input_tensors, output_tensors, binary_path);
+    _return_fn = std::move(fn);
+  }
 }
 
 } // namespace onert::backend::trix
