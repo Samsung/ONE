@@ -41,23 +41,10 @@ public:
     POS = 10,
   };
 
-  struct Param
-  {
-  };
+  Attention(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs);
 
-public:
-  Attention(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
-            const Param &param);
-
-public:
   void accept(OperationVisitor &v) const override;
   OpCode opcode() const final { return OpCode::Attention; }
-
-public:
-  const Param &param() const { return _param; }
-
-private:
-  Param _param;
 };
 
 } // namespace onert::ir::operation

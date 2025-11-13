@@ -22,9 +22,8 @@ namespace onert::ir::operation
 
 void Attention::accept(OperationVisitor &v) const { v.visit(*this); }
 
-Attention::Attention(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
-                     const Param &param)
-  : Operation{OperandConstraint::createExact(11u), inputs, outputs}, _param{param}
+Attention::Attention(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs)
+  : Operation{OperandConstraint::createExact(11u), inputs, outputs}
 {
 }
 
