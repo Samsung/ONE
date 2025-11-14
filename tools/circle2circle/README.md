@@ -121,9 +121,9 @@ Selectively removes operators from a Circle model based on their index range. Th
 
 ##
 
-### `remove.unused_tensors.py`
+### `gc.py`
 
-Identifies and removes unused tensors from all subgraphs within a Circle model. A tensor is considered "unused" if it is not an input to any operator and not an output of its containing subgraph. This helps in cleaning up the model and potentially reducing its size. The script can either list unused tensors or modify the model to remove them.
+Performs garbage collection by removing unreachable tensors and buffers, reducing model size and memory consumption.
 
 ##
 
