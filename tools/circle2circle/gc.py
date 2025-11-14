@@ -56,6 +56,63 @@ def find_unused_tensors_in_subgraph(subgraph):
     return unused_indices
 
 
+def find_unused_buffers(model):
+    """
+    Finds and returns the indices of unused buffers in the model.
+    This function works with both Native API (read-only) and Object API (mutable) model objects.
+
+    Args:
+        model: The Circle model object (read-only or mutable).
+
+    Returns:
+        list: A list of integer indices representing unused buffers.
+    """
+    # Handle both Native API and Object API
+    if hasattr(model, 'BuffersLength'):
+        # Native API
+        if not model.BuffersLength():
+            return []
+
+        used_buffer_indices = set()
+
+        # Collect buffer indices from all tensors in all subgraphs
+        for i in range(model.SubgraphsLength()):
+            subgraph = model.Subgraphs(i)
+            if subgraph:
+                for j in range(subgraph.TensorsLength()):
+                    tensor = subgraph.Tensors(j)
+                    if tensor and tensor.Buffer() != -1:  # -1 indicates no buffer
+                        used_buffer_indices.add(tensor.Buffer())
+
+        # A buffer is unused if it's not referenced by any tensor
+        unused_indices = []
+        for i in range(model.BuffersLength()):
+            if i not in used_buffer_indices:
+                unused_indices.append(i)
+
+        return unused_indices
+    else:
+        # Object API
+        if not model.buffers:
+            return []
+
+        used_buffer_indices = set()
+
+        # Collect buffer indices from all tensors in all subgraphs
+        for subgraph in model.subgraphs:
+            for tensor in subgraph.tensors:
+                if tensor.buffer != -1:  # -1 indicates no buffer
+                    used_buffer_indices.add(tensor.buffer)
+
+        # A buffer is unused if it's not referenced by any tensor
+        unused_indices = []
+        for i in range(len(model.buffers)):
+            if i not in used_buffer_indices:
+                unused_indices.append(i)
+
+        return unused_indices
+
+
 def remove_tensors_and_update_model(model, subgraph_index_to_modify,
                                     tensor_indices_to_remove):
     """
@@ -158,6 +215,61 @@ def remove_tensors_and_update_model(model, subgraph_index_to_modify,
     return sorted(removed_indices)
 
 
+def remove_buffers_and_update_model(model, buffer_indices_to_remove):
+    """
+    Removes specified buffers from the model and updates all tensor references.
+    This function uses the Object API for mutable model objects.
+
+    Args:
+        model: The mutable Circle model object (ModelT).
+        buffer_indices_to_remove (list): A list of buffer indices to remove.
+                                        Must be sorted in descending order.
+
+    Returns:
+        list: The list of buffer indices that were actually removed.
+    """
+    if not model.buffers:
+        o2o.log("Model has no buffers to remove.")
+        return []
+
+    removed_indices = []
+
+    # Sort in descending order to avoid index shifting issues during removal
+    for buffer_idx in sorted(buffer_indices_to_remove, reverse=True):
+        if 0 <= buffer_idx < len(model.buffers):
+            o2o.log(f"  Removing buffer at index {buffer_idx}")
+            del model.buffers[buffer_idx]
+            removed_indices.append(buffer_idx)
+        else:
+            o2o.log(f"  Warning: Buffer index {buffer_idx} out of bounds, skipping.")
+
+    if not removed_indices:
+        return []
+
+    # Create a map for old index to new index after removal
+    new_indices_map = {}
+    current_new_idx = 0
+    # Iterate over original buffer count
+    original_buffer_count = len(model.buffers) + len(removed_indices)
+    for old_idx in range(original_buffer_count):
+        if old_idx not in buffer_indices_to_remove:
+            new_indices_map[old_idx] = current_new_idx
+            current_new_idx += 1
+
+    # Update tensor buffer references in all subgraphs
+    for subgraph_idx, subgraph in enumerate(model.subgraphs):
+        for tensor_idx, tensor in enumerate(subgraph.tensors):
+            if tensor.buffer != -1:  # -1 indicates no buffer
+                if tensor.buffer in new_indices_map:
+                    old_buffer_idx = tensor.buffer
+                    tensor.buffer = new_indices_map[old_buffer_idx]
+                # If tensor.buffer was removed, set to -1 (no buffer)
+                elif tensor.buffer in buffer_indices_to_remove:
+                    tensor.buffer = -1
+
+    return sorted(removed_indices)
+
+
 def main():
     # Read the entire model from stdin
     data = sys.stdin.buffer.read()
@@ -203,11 +315,27 @@ def main():
         f"\nTotal unused tensors found across all subgraphs: {total_unused_tensors_count}"
     )
 
+    # After removing tensors, now process unused buffers
+    # Use the mutable model directly since find_unused_buffers now supports both APIs
+    unused_buffers = find_unused_buffers(model)
+    if unused_buffers:
+        o2o.log(
+            f"Found {len(unused_buffers)} unused buffer(s): {', '.join(map(str, sorted(unused_buffers)))}"
+        )
+        actually_removed_buffers = remove_buffers_and_update_model(model, unused_buffers)
+        if actually_removed_buffers:
+            o2o.log(f"Removed {len(actually_removed_buffers)} buffer(s).")
+            model_changed = True
+        else:
+            o2o.log("No buffers were actually removed during the process.")
+    else:
+        o2o.log("No unused buffers found.")
+
     if model_changed:
         o2o.log("\nSaving modified model to stdout...")
     else:
         o2o.log(
-            "\nNo tensors were actually removed from any subgraph. Saving original model to stdout."
+            "\nNo tensors or buffers were actually removed. Saving original model to stdout."
         )
     o2o.save_model_to_stdout(model)
 
