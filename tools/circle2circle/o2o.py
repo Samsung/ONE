@@ -126,6 +126,7 @@ def get_tensor_index_by_name(subgraph, name):
             return i
     return -1  # Not found
 
+
 def parse_operator_indices(indices_str):
     """Parse operator index string into a list of indices.
 

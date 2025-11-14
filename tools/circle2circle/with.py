@@ -2,6 +2,7 @@
 import sys
 import pathlib
 
+
 def main():
     if len(sys.argv) < 2:
         sys.stderr.write("Usage: with.py <input.circle>\\n")
@@ -15,6 +16,7 @@ def main():
     # Read the binary content of the circle file and write it to stdout
     with input_path.open('rb') as f:
         sys.stdout.buffer.write(f.read())
+
 
 if __name__ == "__main__":
     main()
