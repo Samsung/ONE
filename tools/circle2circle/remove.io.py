@@ -65,6 +65,7 @@ def remove_io_tensors(io_type, names_to_keep):
     # Save the model using utility function
     o2o.save_model_to_stdout(model)
 
+
 def remove_io_tensors_by_id(io_type, ids_to_keep):
     """Remove input or output tensors, keeping only specified tensor indices (IDs)"""
     model = o2o.load_model_from_stdin()
