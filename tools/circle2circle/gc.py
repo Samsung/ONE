@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 
 import sys
-# import argparse  # Removed: script now uses stdin/stdout instead of file arguments
-import flatbuffers
 import circle
-import o2o  # For saving the model
+import o2o
 
 
 def get_tensor_name(tensor):

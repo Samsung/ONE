@@ -2,7 +2,6 @@
 
 import o2o
 import circle
-import sys
 
 
 def retype_input_ids():
