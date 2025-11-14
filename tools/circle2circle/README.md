@@ -21,7 +21,9 @@ An example:
 Filters example:
 
 ```bash
-./rename.io.remove_namespace.py < in.circle | ./rename.io.remove_prefix.py past_key_values_ > out.circle
+./with.py in.circle |
+    ./select.op.py --by_id 0-181 |
+    ./gc.py > new.circle
 ```
 
 <br>
@@ -35,7 +37,10 @@ Removes input or output tensors from a Circle model, keeping only the tensors at
 #### Arguments
 
 *   `io_type` (required): Specifies whether to process `input` or `output` tensors.
-*   `--keep_by_name` (required): A string defining the names of the tensors to keep. It supports comma‑separated tensor names (e.g., "input1,input2").
+*   `--keep_by_name` (optional): A string defining the names of the tensors to keep. It supports comma‑separated tensor names (e.g., "input1,input2").
+*   `--keep_by_id` (optional): Specifies the tensor indices to keep. Supports multiple ranges separated by commas and individual indices (e.g., "0,2-4").
+
+**Note:** Exactly one of `--keep_by_name` or `--keep_by_id` must be provided.
 
 ##
 

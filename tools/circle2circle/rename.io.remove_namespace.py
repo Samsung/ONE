@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import sys
-import re
 import circle
 import flatbuffers
 import o2o

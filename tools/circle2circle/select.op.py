@@ -2,7 +2,6 @@
 
 import sys
 import argparse
-import flatbuffers
 import o2o
 
 

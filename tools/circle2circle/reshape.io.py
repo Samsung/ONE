@@ -2,7 +2,6 @@
 
 import sys
 import argparse
-import circle
 import o2o
 
 
