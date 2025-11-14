@@ -19,7 +19,7 @@ def retype_input_ids():
             tensor_name = o2o.get_tensor_name(tensor)
 
             # Check if this is the input_ids tensor
-            if tensor_name == "input_ids":
+            if tensor_name == "tico::input_ids":
                 # Check if current type is int64
                 if tensor.type == circle.TensorType.INT64:
                     old_type = "int64"
