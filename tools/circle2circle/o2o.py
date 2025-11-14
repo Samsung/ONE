@@ -126,6 +126,63 @@ def get_tensor_index_by_name(subgraph, name):
             return i
     return -1  # Not found
 
+def parse_operator_indices(indices_str):
+    """Parse operator index string into a list of indices.
+
+    Supports formats like:
+    - "0-181" (range)
+    - "0,5,10-15" (mixed)
+    - "0" (single index)
+
+    Args:
+        indices_str (str): String containing operator indices
+
+    Returns:
+        list: Sorted list of unique operator indices
+    """
+    if not indices_str:
+        return []
+
+    indices = set()
+
+    # Split by comma first
+    parts = indices_str.split(',')
+
+    for part in parts:
+        part = part.strip()
+        if not part:
+            continue
+
+        # Check if it's a range
+        if '-' in part:
+            try:
+                start, end = part.split('-', 1)
+                start_idx = int(start.strip())
+                end_idx = int(end.strip())
+
+                if start_idx < 0 or end_idx < 0:
+                    raise ValueError("Indices must be non-negative")
+
+                if start_idx > end_idx:
+                    raise ValueError(f"Invalid range: {start_idx} > {end_idx}")
+
+                indices.update(range(start_idx, end_idx + 1))
+            except ValueError as e:
+                log(f"Error parsing range '{part}': {e}")
+                sys.exit(1)
+        else:
+            # Single index
+            try:
+                idx = int(part)
+                if idx < 0:
+                    raise ValueError("Index must be non-negative")
+                indices.add(idx)
+            except ValueError as e:
+                log(f"Error parsing index '{part}': {e}")
+                sys.exit(1)
+
+    return sorted(list(indices))
+
 
 def is_tensor_constant(tensor, model_buffers):
     """Check if a tensor is constant by verifying its buffer."""
