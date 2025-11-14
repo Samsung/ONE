@@ -111,6 +111,46 @@ def rename_tensor_if_matches(tensor, pattern, replacement_func):
     return False, None, None
 
 
+def get_tensor_by_index(subgraph, index):
+    """Safely get tensor by its index."""
+    if 0 <= index < len(subgraph.tensors):
+        return subgraph.tensors[index]
+    return None
+
+
+def get_tensor_index_by_name(subgraph, name):
+    """Find tensor index by name, handling byte strings."""
+    name_bytes = name.encode('utf-8')  # Convert str to bytes for comparison
+    for i, tensor in enumerate(subgraph.tensors):
+        if tensor.name and tensor.name == name_bytes:
+            return i
+    return -1  # Not found
+
+
+def is_tensor_constant(tensor, model_buffers):
+    """Check if a tensor is constant by verifying its buffer."""
+    if tensor and tensor.buffer != 0 and 0 <= tensor.buffer - 1 < len(model_buffers):
+        # A non-zero buffer index that points to a valid buffer typically means it's constant.
+        # The 0th buffer is always an empty buffer.
+        return True
+    return False
+
+
+def get_or_create_operator_code(model, builtin_op_type):
+    """Get the index of an operator code, or create it if it doesn't exist."""
+    for i, op_code in enumerate(model.operatorCodes):
+        if op_code.builtinCode == builtin_op_type:
+            return i
+
+    # If not found, create a new one
+    new_op_code = circle.OperatorCodeT()
+    new_op_code.builtinCode = builtin_op_type
+    new_op_code.deprecatedBuiltinCode = builtin_op_type
+    new_op_code.version = 1  # Default version
+    model.operatorCodes.append(new_op_code)
+    return len(model.operatorCodes) - 1
+
+
 def safe_execute(main_func,
                  input_file,
                  output_file,

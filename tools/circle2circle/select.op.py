@@ -48,7 +48,7 @@ def parse_operator_indices(indices_str):
 
                 indices.update(range(start_idx, end_idx + 1))
             except ValueError as e:
-                o2o.log(f"Error parsing range '{part}': {e}", file=sys.stderr)
+                o2o.log(f"Error parsing range '{part}': {e}")
                 sys.exit(1)
         else:
             # Single index
@@ -58,7 +58,7 @@ def parse_operator_indices(indices_str):
                     raise ValueError("Index must be non-negative")
                 indices.add(idx)
             except ValueError as e:
-                o2o.log(f"Error parsing index '{part}': {e}", file=sys.stderr)
+                o2o.log(f"Error parsing index '{part}': {e}")
                 sys.exit(1)
 
     return sorted(list(indices))
@@ -129,7 +129,7 @@ def select_operators_and_update_model(model, subgraph_index, operator_indices_to
         tuple: (removed_operators_count, removed_operator_codes_count)
     """
     if not model.subgraphs or subgraph_index >= len(model.subgraphs):
-        o2o.log(f"Error: Invalid subgraph index {subgraph_index}", file=sys.stderr)
+        o2o.log(f"Error: Invalid subgraph index {subgraph_index}")
         return 0, 0
 
     subgraph = model.subgraphs[subgraph_index]
@@ -141,13 +141,13 @@ def select_operators_and_update_model(model, subgraph_index, operator_indices_to
     ]
     if invalid_indices:
         o2o.log(
-            f"Error: Operator indices {invalid_indices} exceed maximum index {max_operator_index}",
-            file=sys.stderr)
+            f"Error: Operator indices {invalid_indices} exceed maximum index {max_operator_index}"
+        )
         sys.exit(1)
 
     o2o.log(
-        f"Subgraph {subgraph_index}: Keeping {len(operator_indices_to_keep)} operator(s): {operator_indices_to_keep}",
-        file=sys.stderr)
+        f"Subgraph {subgraph_index}: Keeping {len(operator_indices_to_keep)} operator(s): {operator_indices_to_keep}"
+    )
 
     # Step 1: Determine which operators to remove
     total_operators = len(subgraph.operators)
@@ -157,8 +157,8 @@ def select_operators_and_update_model(model, subgraph_index, operator_indices_to
             operator_indices_to_remove.append(i)
 
     o2o.log(
-        f"Will remove {len(operator_indices_to_remove)} operator(s): {operator_indices_to_remove}",
-        file=sys.stderr)
+        f"Will remove {len(operator_indices_to_remove)} operator(s): {operator_indices_to_remove}"
+    )
 
     # Step 2: Analyze tensor connections BEFORE removing operators
     connections = analyze_tensor_connections(subgraph)
@@ -198,8 +198,8 @@ def select_operators_and_update_model(model, subgraph_index, operator_indices_to
         ]
         subgraph.inputs = new_inputs
         o2o.log(
-            f"Removed {len(inputs_to_remove)} subgraph inputs: {sorted(inputs_to_remove)}",
-            file=sys.stderr)
+            f"Removed {len(inputs_to_remove)} subgraph inputs: {sorted(inputs_to_remove)}"
+        )
 
     # Update subgraph outputs
     if outputs_to_remove:
@@ -208,8 +208,8 @@ def select_operators_and_update_model(model, subgraph_index, operator_indices_to
         ]
         subgraph.outputs = new_outputs
         o2o.log(
-            f"Removed {len(outputs_to_remove)} subgraph outputs: {sorted(outputs_to_remove)}",
-            file=sys.stderr)
+            f"Removed {len(outputs_to_remove)} subgraph outputs: {sorted(outputs_to_remove)}"
+        )
 
     # Step 5: Update operator inputs that reference outputs of removed operators
     for op_idx, operator in enumerate(subgraph.operators):
@@ -222,8 +222,8 @@ def select_operators_and_update_model(model, subgraph_index, operator_indices_to
                         # This input comes from a removed operator, set to -1
                         updated_inputs.append(-1)
                         o2o.log(
-                            f"  Operator {op_idx}: Breaking input connection from removed operator {producer_idx}",
-                            file=sys.stderr)
+                            f"  Operator {op_idx}: Breaking input connection from removed operator {producer_idx}"
+                        )
                     else:
                         updated_inputs.append(input_idx)
                 else:
@@ -251,8 +251,7 @@ def select_operators_and_update_model(model, subgraph_index, operator_indices_to
             op_name = f"builtin_code={operator_code.builtinCode}"
         else:
             op_name = f"custom_code={operator_code.customCode}"
-        o2o.log(f"  Removing unused OperatorCode at index {code_idx}: {op_name}",
-                file=sys.stderr)
+        o2o.log(f"  Removing unused OperatorCode at index {code_idx}: {op_name}")
         del model.operatorCodes[code_idx]
         removed_operator_codes.append(code_idx)
 
@@ -298,8 +297,8 @@ def select_operators_and_update_model(model, subgraph_index, operator_indices_to
     # First check tensors that are in tensor_use_count
     for tensor_idx, use_count in tensor_use_count.items():
         if use_count == 0 and tensor_idx not in current_outputs:
-            if subgraph.outputs is None:
-                subgraph.outputs = []
+            subgraph.outputs = list(
+                subgraph.outputs) if subgraph.outputs is not None else []
             subgraph.outputs.append(tensor_idx)
             added_outputs.append(tensor_idx)
 
@@ -311,28 +310,25 @@ def select_operators_and_update_model(model, subgraph_index, operator_indices_to
                     use_count = tensor_use_count.get(
                         output_idx, 0)  # Default to 0 if not in use_count
                     if use_count == 0 and output_idx not in current_outputs and output_idx not in added_outputs:
-                        if subgraph.outputs is None:
-                            subgraph.outputs = []
+                        subgraph.outputs = list(
+                            subgraph.outputs) if subgraph.outputs is not None else []
                         subgraph.outputs.append(output_idx)
                         added_outputs.append(output_idx)
 
     if added_outputs:
-        o2o.log(f"Added tensors to subgraph outputs: {sorted(added_outputs)}",
-                file=sys.stderr)
+        o2o.log(f"Added tensors to subgraph outputs: {sorted(added_outputs)}")
 
     # Add tensors with def_count == 0 to subgraph inputs
     added_inputs = []
     current_inputs = set(subgraph.inputs) if subgraph.inputs is not None else set()
     for tensor_idx, def_count in tensor_def_count.items():
         if def_count == 0 and tensor_idx not in current_inputs:
-            if subgraph.inputs is None:
-                subgraph.inputs = []
+            subgraph.inputs = list(subgraph.inputs) if subgraph.inputs is not None else []
             subgraph.inputs.append(tensor_idx)
             added_inputs.append(tensor_idx)
 
     if added_inputs:
-        o2o.log(f"Added tensors to subgraph inputs: {sorted(added_inputs)}",
-                file=sys.stderr)
+        o2o.log(f"Added tensors to subgraph inputs: {sorted(added_inputs)}")
 
     return len(removed_operators), len(removed_operator_codes)
 
@@ -350,13 +346,13 @@ def main():
     # Parse the operator indices
     try:
         operator_indices_to_keep = parse_operator_indices(args.by_id)
-        o2o.log(f"Operator indices to keep: {operator_indices_to_keep}", file=sys.stderr)
+        o2o.log(f"Operator indices to keep: {operator_indices_to_keep}")
     except ValueError as e:
-        o2o.log(f"Error parsing operator indices: {e}", file=sys.stderr)
+        o2o.log(f"Error parsing operator indices: {e}")
         sys.exit(1)
 
     if not operator_indices_to_keep:
-        o2o.log("No valid operator indices specified", file=sys.stderr)
+        o2o.log("No valid operator indices specified")
         sys.exit(1)
 
     # Load the model
@@ -366,20 +362,18 @@ def main():
     subgraph_index = 0
 
     if not model.subgraphs or subgraph_index >= len(model.subgraphs):
-        o2o.log(f"Error: Model has no subgraph at index {subgraph_index}",
-                file=sys.stderr)
+        o2o.log(f"Error: Model has no subgraph at index {subgraph_index}")
         sys.exit(1)
 
-    o2o.log(f"Model has {len(model.subgraphs[subgraph_index].operators)} operators",
-            file=sys.stderr)
+    o2o.log(f"Model has {len(model.subgraphs[subgraph_index].operators)} operators")
 
     # Select operators (keep only specified ones)
     removed_ops_count, removed_codes_count = select_operators_and_update_model(
         model, subgraph_index, operator_indices_to_keep)
 
     o2o.log(
-        f"Removed {removed_ops_count} operators and {removed_codes_count} unused OperatorCode entries",
-        file=sys.stderr)
+        f"Removed {removed_ops_count} operators and {removed_codes_count} unused OperatorCode entries"
+    )
 
     # Save the model directly to stdout
     o2o.save_model_to_stdout(model)
