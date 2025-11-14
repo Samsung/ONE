@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2025 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CPU_EXTERNAL_CONTEXT_H__
-#define __ONERT_BACKEND_CPU_EXTERNAL_CONTEXT_H__
+#ifndef __ONERT_BACKEND_GGML_EXTERNAL_CONTEXT_H__
+#define __ONERT_BACKEND_GGML_EXTERNAL_CONTEXT_H__
 
 #include <util/ConfigSource.h>
-#include <ruy/context.h>
+#include <ggml.h>
 
 #include <memory>
 
-namespace onert::backend::cpu
+namespace onert::backend::ggml
 {
 
 class ExternalContext
@@ -35,13 +35,11 @@ public:
 
   int32_t maxNumThreads() const { return _max_num_threads; }
 
-  ruy::Context *ruy_context() const { return _ruy_context.get(); }
-
 private:
   int32_t _max_num_threads;
-  const std::unique_ptr<ruy::Context> _ruy_context;
+  std::unique_ptr<ggml_context, decltype(&ggml_free)> _ggml_context{nullptr, &ggml_free};
 };
 
-} // namespace onert::backend::cpu
+} // namespace onert::backend::ggml
 
-#endif // __ONERT_BACKEND_CPU_EXTERNAL_CONTEXT_H__
+#endif // __ONERT_BACKEND_GGML_EXTERNAL_CONTEXT_H__

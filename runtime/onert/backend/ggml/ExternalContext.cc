@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2025 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,18 +56,16 @@ int32_t countPhysicalCores()
 
 } // namespace
 
-namespace onert::backend::cpu
+namespace onert::backend::ggml
 {
 
-ExternalContext::ExternalContext() : _ruy_context(new ruy::Context)
+ExternalContext::ExternalContext()
+  : _max_num_threads(onert::util::getConfigInt(onert::util::config::NUM_THREADS)),
+    _ggml_context(std::unique_ptr<ggml_context, decltype(&ggml_free)>(
+      ggml_init({.mem_size = 0, .mem_buffer = nullptr, .no_alloc = true}), &ggml_free))
 {
-  setMaxNumThreads(onert::util::getConfigInt(onert::util::config::NUM_THREADS));
+  if (_max_num_threads <= -1)
+    countPhysicalCores();
 }
 
-void ExternalContext::setMaxNumThreads(int max_num_threads)
-{
-  _max_num_threads = max_num_threads > -1 ? max_num_threads : countPhysicalCores();
-  _ruy_context->set_max_num_threads(_max_num_threads);
-}
-
-} // namespace onert::backend::cpu
+} // namespace onert::backend::ggml
