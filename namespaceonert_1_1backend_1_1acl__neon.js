@@ -7,7 +7,7 @@ var namespaceonert_1_1backend_1_1acl__neon =
     [ "KernelGenerator", "classonert_1_1backend_1_1acl__neon_1_1_kernel_generator.html", "classonert_1_1backend_1_1acl__neon_1_1_kernel_generator" ],
     [ "Optimizer", "classonert_1_1backend_1_1acl__neon_1_1_optimizer.html", "classonert_1_1backend_1_1acl__neon_1_1_optimizer" ],
     [ "Validator", "classonert_1_1backend_1_1acl__neon_1_1_validator.html", "classonert_1_1backend_1_1acl__neon_1_1_validator" ],
-    [ "ActivationBuilder", "namespaceonert_1_1backend_1_1acl__neon.html#a83fd8486280d570d411be80445e45c91", null ],
+    [ "ActivationBuilder", "namespaceonert_1_1backend_1_1acl__neon.html#a8ea9eef59a04b3242240910898601d44", null ],
     [ "BackendContext", "namespaceonert_1_1backend_1_1acl__neon.html#a309a2ebd9f348b47fc2dbf7de6ed4a5a", null ],
     [ "InternalBufferManager", "namespaceonert_1_1backend_1_1acl__neon.html#a0c1cc420c8f31334a4b40d530f3ce468", null ],
     [ "LinearMemoryManager", "namespaceonert_1_1backend_1_1acl__neon.html#a9742e6f86906d1614e331bd0190cb98c", null ],

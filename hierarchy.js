@@ -4361,7 +4361,6 @@ var hierarchy =
     ] ],
     [ "onert::exec::ParallelScheduler", "classonert_1_1exec_1_1_parallel_scheduler.html", null ],
     [ "onert::ir::operation::ArgMinMax::Param", "structonert_1_1ir_1_1operation_1_1_arg_min_max_1_1_param.html", null ],
-    [ "onert::ir::operation::Attention::Param", "structonert_1_1ir_1_1operation_1_1_attention_1_1_param.html", null ],
     [ "onert::ir::operation::BatchMatMul::Param", "structonert_1_1ir_1_1operation_1_1_batch_mat_mul_1_1_param.html", null ],
     [ "onert::ir::operation::BCQFullyConnected::Param", "structonert_1_1ir_1_1operation_1_1_b_c_q_fully_connected_1_1_param.html", null ],
     [ "onert::ir::operation::BCQGather::Param", "structonert_1_1ir_1_1operation_1_1_b_c_q_gather_1_1_param.html", null ],

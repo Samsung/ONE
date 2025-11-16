@@ -1,6 +1,7 @@
 var dir_7168cb05a877c3c9a0a60e97bbd3408c =
 [
     [ "operand", "dir_996d2215b77c1eec828777ea2e3297d7.html", "dir_996d2215b77c1eec828777ea2e3297d7" ],
+    [ "ops", "dir_2457ebee2b370de99ae0ac6ea68aad13.html", "dir_2457ebee2b370de99ae0ac6ea68aad13" ],
     [ "acl_neon.cc", "acl__neon_8cc.html", "acl__neon_8cc" ],
     [ "Backend.h", "runtime_2onert_2backend_2acl__neon_2_backend_8h.html", "runtime_2onert_2backend_2acl__neon_2_backend_8h" ],
     [ "BackendContext.h", "backend_2acl__neon_2_backend_context_8h.html", "backend_2acl__neon_2_backend_context_8h" ],

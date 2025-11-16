@@ -210,26 +210,26 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classggma_1_1_tokenizer.html#af48c38a0c886a622478da6ff70e63cea">ggma::Tokenizer</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_tokenizer_sentence_piece_8cc_source.html#l00095">95</a> of file <a class="el" href="_tokenizer_sentence_piece_8cc_source.html">TokenizerSentencePiece.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   97</span>{</div>
-<div class="line"><span class="lineno">   98</span>  <span class="keywordflow">if</span> (!tokens || !text || n_tokens == 0 || text_len == 0 || !_processor)</div>
-<div class="line"><span class="lineno">   99</span>    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><span class="lineno">  100</span> </div>
-<div class="line"><span class="lineno">  101</span>  std::vector&lt;int&gt; piece_ids;</div>
-<div class="line"><span class="lineno">  102</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n_tokens; ++i)</div>
-<div class="line"><span class="lineno">  103</span>    piece_ids.push_back(tokens[i]);</div>
-<div class="line"><span class="lineno">  104</span> </div>
-<div class="line"><span class="lineno">  105</span>  std::string decoded_text;</div>
-<div class="line"><span class="lineno">  106</span>  <span class="keyword">auto</span> status = _processor-&gt;Decode(piece_ids, &amp;decoded_text);</div>
-<div class="line"><span class="lineno">  107</span>  <span class="keywordflow">if</span> (!status.ok())</div>
-<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><span class="lineno">  109</span> </div>
-<div class="line"><span class="lineno">  110</span>  <span class="keywordtype">size_t</span> copy_len = std::min(decoded_text.length(), text_len - 1);</div>
-<div class="line"><span class="lineno">  111</span>  memcpy(text, decoded_text.c_str(), copy_len);</div>
-<div class="line"><span class="lineno">  112</span>  text[copy_len] = <span class="charliteral">&#39;\0&#39;</span>;</div>
-<div class="line"><span class="lineno">  113</span> </div>
-<div class="line"><span class="lineno">  114</span>  <span class="keywordflow">return</span> copy_len;</div>
-<div class="line"><span class="lineno">  115</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_tokenizer_sentence_piece_8cc_source.html#l00096">96</a> of file <a class="el" href="_tokenizer_sentence_piece_8cc_source.html">TokenizerSentencePiece.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   98</span>{</div>
+<div class="line"><span class="lineno">   99</span>  <span class="keywordflow">if</span> (!tokens || !text || n_tokens == 0 || text_len == 0 || !_processor)</div>
+<div class="line"><span class="lineno">  100</span>    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><span class="lineno">  101</span> </div>
+<div class="line"><span class="lineno">  102</span>  std::vector&lt;int&gt; piece_ids;</div>
+<div class="line"><span class="lineno">  103</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n_tokens; ++i)</div>
+<div class="line"><span class="lineno">  104</span>    piece_ids.push_back(tokens[i]);</div>
+<div class="line"><span class="lineno">  105</span> </div>
+<div class="line"><span class="lineno">  106</span>  std::string decoded_text;</div>
+<div class="line"><span class="lineno">  107</span>  <span class="keyword">auto</span> status = _processor-&gt;Decode(piece_ids, &amp;decoded_text);</div>
+<div class="line"><span class="lineno">  108</span>  <span class="keywordflow">if</span> (!status.ok())</div>
+<div class="line"><span class="lineno">  109</span>    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><span class="lineno">  110</span> </div>
+<div class="line"><span class="lineno">  111</span>  <span class="keywordtype">size_t</span> copy_len = std::min(decoded_text.length(), text_len - 1);</div>
+<div class="line"><span class="lineno">  112</span>  memcpy(text, decoded_text.c_str(), copy_len);</div>
+<div class="line"><span class="lineno">  113</span>  text[copy_len] = <span class="charliteral">&#39;\0&#39;</span>;</div>
+<div class="line"><span class="lineno">  114</span> </div>
+<div class="line"><span class="lineno">  115</span>  <span class="keywordflow">return</span> copy_len;</div>
+<div class="line"><span class="lineno">  116</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -344,21 +344,22 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   76</span>  <span class="keywordtype">int</span> bos_id = _processor-&gt;bos_id();</div>
 <div class="line"><span class="lineno">   77</span>  <span class="keywordtype">size_t</span> bos_offset = 0;</div>
 <div class="line"><span class="lineno">   78</span> </div>
-<div class="line"><span class="lineno">   79</span>  <span class="keywordflow">if</span> (bos_id &gt;= 0 &amp;&amp; max_tokens &gt; 0)</div>
-<div class="line"><span class="lineno">   80</span>  {</div>
-<div class="line"><span class="lineno">   81</span>    tokens[0] = 1;  <span class="comment">// Add BOS token</span></div>
-<div class="line"><span class="lineno">   82</span>    bos_offset = 1; <span class="comment">// Start actual tokens from index 1</span></div>
-<div class="line"><span class="lineno">   83</span>  }</div>
-<div class="line"><span class="lineno">   84</span> </div>
-<div class="line"><span class="lineno">   85</span>  <span class="keywordtype">size_t</span> available_space = max_tokens - bos_offset;</div>
-<div class="line"><span class="lineno">   86</span>  <span class="keywordtype">size_t</span> token_count = std::min(piece_ids.size(), available_space);</div>
-<div class="line"><span class="lineno">   87</span> </div>
-<div class="line"><span class="lineno">   88</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; token_count; ++i)</div>
-<div class="line"><span class="lineno">   89</span>    tokens[bos_offset + i] = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(piece_ids[i]);</div>
-<div class="line"><span class="lineno">   90</span> </div>
-<div class="line"><span class="lineno">   91</span>  *n_tokens = bos_offset + token_count;</div>
-<div class="line"><span class="lineno">   92</span>  <span class="keywordflow">return</span> bos_offset + token_count;</div>
-<div class="line"><span class="lineno">   93</span>}</div>
+<div class="line"><span class="lineno">   79</span>  <span class="comment">// TODO: Make BOS token prepending configurable</span></div>
+<div class="line"><span class="lineno">   80</span>  <span class="keywordflow">if</span> (bos_id &gt;= 0 &amp;&amp; max_tokens &gt; 0)</div>
+<div class="line"><span class="lineno">   81</span>  {</div>
+<div class="line"><span class="lineno">   82</span>    tokens[0] = bos_id; <span class="comment">// Add BOS token</span></div>
+<div class="line"><span class="lineno">   83</span>    bos_offset = 1;     <span class="comment">// Start actual tokens from index 1</span></div>
+<div class="line"><span class="lineno">   84</span>  }</div>
+<div class="line"><span class="lineno">   85</span> </div>
+<div class="line"><span class="lineno">   86</span>  <span class="keywordtype">size_t</span> available_space = max_tokens - bos_offset;</div>
+<div class="line"><span class="lineno">   87</span>  <span class="keywordtype">size_t</span> token_count = std::min(piece_ids.size(), available_space);</div>
+<div class="line"><span class="lineno">   88</span> </div>
+<div class="line"><span class="lineno">   89</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; token_count; ++i)</div>
+<div class="line"><span class="lineno">   90</span>    tokens[bos_offset + i] = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(piece_ids[i]);</div>
+<div class="line"><span class="lineno">   91</span> </div>
+<div class="line"><span class="lineno">   92</span>  *n_tokens = bos_offset + token_count;</div>
+<div class="line"><span class="lineno">   93</span>  <span class="keywordflow">return</span> bos_offset + token_count;</div>
+<div class="line"><span class="lineno">   94</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -180,56 +180,57 @@ $(document).ready(function(){initNavTree('_tokenizer_sentence_piece_8cc_source.h
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keywordtype">int</span> bos_id = _processor-&gt;bos_id();</div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="keywordtype">size_t</span> bos_offset = 0;</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="keywordflow">if</span> (bos_id &gt;= 0 &amp;&amp; max_tokens &gt; 0)</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  {</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    tokens[0] = 1;  <span class="comment">// Add BOS token</span></div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    bos_offset = 1; <span class="comment">// Start actual tokens from index 1</span></div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  }</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <span class="keywordtype">size_t</span> available_space = max_tokens - bos_offset;</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <span class="keywordtype">size_t</span> token_count = std::min(piece_ids.size(), available_space);</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; token_count; ++i)</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    tokens[bos_offset + i] = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(piece_ids[i]);</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  *n_tokens = bos_offset + token_count;</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  <span class="keywordflow">return</span> bos_offset + token_count;</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>}</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="comment">// TODO: Make BOS token prepending configurable</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="keywordflow">if</span> (bos_id &gt;= 0 &amp;&amp; max_tokens &gt; 0)</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  {</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    tokens[0] = bos_id; <span class="comment">// Add BOS token</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    bos_offset = 1;     <span class="comment">// Start actual tokens from index 1</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  }</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <span class="keywordtype">size_t</span> available_space = max_tokens - bos_offset;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <span class="keywordtype">size_t</span> token_count = std::min(piece_ids.size(), available_space);</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; token_count; ++i)</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    tokens[bos_offset + i] = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(piece_ids[i]);</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  *n_tokens = bos_offset + token_count;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <span class="keywordflow">return</span> bos_offset + token_count;</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>}</div>
 </div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="foldopen" id="foldopen00095" data-start="{" data-end="}">
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="classggma_1_1_sentence_piece_tokenizer.html#a2c424e248edeeaf2fbf41cd9ecf1e78a">   95</a></span><span class="keywordtype">size_t</span> <a class="code hl_function" href="classggma_1_1_sentence_piece_tokenizer.html#a2c424e248edeeaf2fbf41cd9ecf1e78a">SentencePieceTokenizer::detokenize</a>(<span class="keyword">const</span> int32_t *tokens, <span class="keywordtype">size_t</span> n_tokens, <span class="keywordtype">char</span> *text,</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>                                          <span class="keywordtype">size_t</span> text_len)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  <span class="keywordflow">if</span> (!tokens || !text || n_tokens == 0 || text_len == 0 || !_processor)</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  std::vector&lt;int&gt; piece_ids;</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n_tokens; ++i)</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    piece_ids.push_back(tokens[i]);</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  std::string decoded_text;</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  <span class="keyword">auto</span> status = _processor-&gt;Decode(piece_ids, &amp;decoded_text);</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  <span class="keywordflow">if</span> (!status.ok())</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  <span class="keywordtype">size_t</span> copy_len = std::min(decoded_text.length(), text_len - 1);</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  memcpy(text, decoded_text.c_str(), copy_len);</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  text[copy_len] = <span class="charliteral">&#39;\0&#39;</span>;</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <span class="keywordflow">return</span> copy_len;</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>}</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="foldopen" id="foldopen00096" data-start="{" data-end="}">
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno"><a class="line" href="classggma_1_1_sentence_piece_tokenizer.html#a2c424e248edeeaf2fbf41cd9ecf1e78a">   96</a></span><span class="keywordtype">size_t</span> <a class="code hl_function" href="classggma_1_1_sentence_piece_tokenizer.html#a2c424e248edeeaf2fbf41cd9ecf1e78a">SentencePieceTokenizer::detokenize</a>(<span class="keyword">const</span> int32_t *tokens, <span class="keywordtype">size_t</span> n_tokens, <span class="keywordtype">char</span> *text,</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>                                          <span class="keywordtype">size_t</span> text_len)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  <span class="keywordflow">if</span> (!tokens || !text || n_tokens == 0 || text_len == 0 || !_processor)</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  std::vector&lt;int&gt; piece_ids;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n_tokens; ++i)</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    piece_ids.push_back(tokens[i]);</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  std::string decoded_text;</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  <span class="keyword">auto</span> status = _processor-&gt;Decode(piece_ids, &amp;decoded_text);</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  <span class="keywordflow">if</span> (!status.ok())</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="keywordtype">size_t</span> copy_len = std::min(decoded_text.length(), text_len - 1);</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  memcpy(text, decoded_text.c_str(), copy_len);</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  text[copy_len] = <span class="charliteral">&#39;\0&#39;</span>;</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  <span class="keywordflow">return</span> copy_len;</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>}</div>
 </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>} <span class="comment">// namespace ggma</span></div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span><span class="comment">// Register SentencePieceTokenizer using the macro</span></div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><a class="code hl_define" href="_tokenizer_factory_8h.html#a7c4bf4fc74d2cfc18835bb7611e39800">REGISTER_TOKENIZER</a>(<span class="stringliteral">&quot;sentencepiece&quot;</span>, SentencePieceTokenizer)</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>} <span class="comment">// namespace ggma</span></div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="comment">// Register SentencePieceTokenizer using the macro</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span><a class="code hl_define" href="_tokenizer_factory_8h.html#a7c4bf4fc74d2cfc18835bb7611e39800">REGISTER_TOKENIZER</a>(<span class="stringliteral">&quot;sentencepiece&quot;</span>, SentencePieceTokenizer)</div>
 <div class="ttc" id="a_tokenizer_8h_html"><div class="ttname"><a href="_tokenizer_8h.html">Tokenizer.h</a></div></div>
 <div class="ttc" id="a_tokenizer_factory_8h_html"><div class="ttname"><a href="_tokenizer_factory_8h.html">TokenizerFactory.h</a></div></div>
 <div class="ttc" id="a_tokenizer_factory_8h_html_a7c4bf4fc74d2cfc18835bb7611e39800"><div class="ttname"><a href="_tokenizer_factory_8h.html#a7c4bf4fc74d2cfc18835bb7611e39800">REGISTER_TOKENIZER</a></div><div class="ttdeci">#define REGISTER_TOKENIZER(name, type)</div><div class="ttdef"><b>Definition</b> <a href="_tokenizer_factory_8h_source.html#l00051">TokenizerFactory.h:51</a></div></div>
 <div class="ttc" id="aclassggma_1_1_sentence_piece_tokenizer_html"><div class="ttname"><a href="classggma_1_1_sentence_piece_tokenizer.html">ggma::SentencePieceTokenizer</a></div><div class="ttdef"><b>Definition</b> <a href="_tokenizer_sentence_piece_8cc_source.html#l00026">TokenizerSentencePiece.cc:27</a></div></div>
-<div class="ttc" id="aclassggma_1_1_sentence_piece_tokenizer_html_a2c424e248edeeaf2fbf41cd9ecf1e78a"><div class="ttname"><a href="classggma_1_1_sentence_piece_tokenizer.html#a2c424e248edeeaf2fbf41cd9ecf1e78a">ggma::SentencePieceTokenizer::detokenize</a></div><div class="ttdeci">size_t detokenize(const int32_t *tokens, size_t n_tokens, char *text, size_t text_len) const override</div><div class="ttdef"><b>Definition</b> <a href="_tokenizer_sentence_piece_8cc_source.html#l00095">TokenizerSentencePiece.cc:95</a></div></div>
+<div class="ttc" id="aclassggma_1_1_sentence_piece_tokenizer_html_a2c424e248edeeaf2fbf41cd9ecf1e78a"><div class="ttname"><a href="classggma_1_1_sentence_piece_tokenizer.html#a2c424e248edeeaf2fbf41cd9ecf1e78a">ggma::SentencePieceTokenizer::detokenize</a></div><div class="ttdeci">size_t detokenize(const int32_t *tokens, size_t n_tokens, char *text, size_t text_len) const override</div><div class="ttdef"><b>Definition</b> <a href="_tokenizer_sentence_piece_8cc_source.html#l00096">TokenizerSentencePiece.cc:96</a></div></div>
 <div class="ttc" id="aclassggma_1_1_sentence_piece_tokenizer_html_a5d92b83e9f4f4c619c1a7373345f61ec"><div class="ttname"><a href="classggma_1_1_sentence_piece_tokenizer.html#a5d92b83e9f4f4c619c1a7373345f61ec">ggma::SentencePieceTokenizer::id</a></div><div class="ttdeci">std::string id() const</div><div class="ttdef"><b>Definition</b> <a href="_tokenizer_sentence_piece_8cc_source.html#l00029">TokenizerSentencePiece.cc:29</a></div></div>
 <div class="ttc" id="aclassggma_1_1_sentence_piece_tokenizer_html_a6eaba26b1a68bc3ae273ba39a6febb03"><div class="ttname"><a href="classggma_1_1_sentence_piece_tokenizer.html#a6eaba26b1a68bc3ae273ba39a6febb03">ggma::SentencePieceTokenizer::tokenize</a></div><div class="ttdeci">size_t tokenize(const char *text, size_t text_len, int32_t *tokens, size_t max_tokens, size_t *n_tokens) const override</div><div class="ttdef"><b>Definition</b> <a href="_tokenizer_sentence_piece_8cc_source.html#l00051">TokenizerSentencePiece.cc:51</a></div></div>
 <div class="ttc" id="aclassggma_1_1_sentence_piece_tokenizer_html_a9ae97930ecaa9f0ef24170ba661eaa8c"><div class="ttname"><a href="classggma_1_1_sentence_piece_tokenizer.html#a9ae97930ecaa9f0ef24170ba661eaa8c">ggma::SentencePieceTokenizer::create</a></div><div class="ttdeci">static Tokenizer * create(const std::string &amp;tokenizer_dir)</div><div class="ttdef"><b>Definition</b> <a href="_tokenizer_sentence_piece_8cc_source.html#l00040">TokenizerSentencePiece.cc:40</a></div></div>
