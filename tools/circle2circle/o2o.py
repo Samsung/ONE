@@ -5,45 +5,76 @@ import circle
 import flatbuffers
 
 
+# ============================================================================
+# BASIC UTILITIES
+# ============================================================================
+
 def log(message):
     """Log message to stderr"""
     print(message, file=sys.stderr)
 
 
-def load_model_from_stdin():
-    """Load a Circle model from binary data read from stdin."""
-    data = sys.stdin.buffer.read()
+def safe_execute(main_func,
+                 input_file,
+                 output_file,
+                 *args,
+                 error_message="Error processing file"):
+    """Safely execute the main function with error handling"""
+    try:
+        main_func(input_file, output_file, *args)
+        log(f"Successfully processed {input_file} and saved to {output_file}")
+    except Exception as e:
+        log(f"{error_message}: {e}")
+        sys.exit(1)
+
+
+# ============================================================================
+# CORE I/O FUNCTIONS
+# ============================================================================
+
+def load_circle_model(input_file=None):
+    """Load and parse a circle model file"""
+    if input_file is None:
+        # Read from stdin
+        data = sys.stdin.buffer.read()
+    else:
+        # Read from file
+        with open(input_file, 'rb') as f:
+            data = f.read()
+
     buf = bytearray(data)
     model = circle.Model.GetRootAsModel(buf, 0)
     model = circle.ModelT.InitFromObj(model)
     return model
 
 
-def save_model_to_stdout(model):
-    """Serialize a Circle model and write it to stdout as binary data."""
-    builder = flatbuffers.Builder(1024)
-    builder.Finish(model.Pack(builder), b'CIR0')
-    sys.stdout.buffer.write(builder.Output())
+def load_model_from_stdin():
+    """Load a Circle model from binary data read from stdin."""
+    return load_circle_model()  # input_file=None defaults to stdin
 
 
-def load_circle_model(input_file):
-    """Load and parse a circle model file"""
-    with open(input_file, 'rb') as f:
-        buf = bytearray(f.read())
-
-    model = circle.Model.GetRootAsModel(buf, 0)
-    model = circle.ModelT.InitFromObj(model)
-    return model
-
-
-def save_circle_model(model, output_file):
+def save_circle_model(model, output_file=None):
     """Save a circle model to file using flatbuffers"""
     builder = flatbuffers.Builder(1024)
     builder.Finish(model.Pack(builder), b'CIR0')
 
-    with open(output_file, 'wb') as f:
-        f.write(builder.Output())
+    if output_file is None:
+        # Write to stdout
+        sys.stdout.buffer.write(builder.Output())
+    else:
+        # Write to file
+        with open(output_file, 'wb') as f:
+            f.write(builder.Output())
 
+
+def save_model_to_stdout(model):
+    """Serialize a Circle model and write it to stdout as binary data."""
+    save_circle_model(model)  # output_file=None defaults to stdout
+
+
+# ============================================================================
+# CLI HANDLING
+# ============================================================================
 
 def handle_cli_args(usage_message):
     """Handle common command line argument parsing and validation"""
@@ -56,6 +87,10 @@ def handle_cli_args(usage_message):
     return input_file, output_file
 
 
+# ============================================================================
+# TENSOR UTILITIES
+# ============================================================================
+
 def get_tensor_name(tensor):
     """Get tensor name as string, handling bytes conversion"""
     if tensor.name:
@@ -64,26 +99,34 @@ def get_tensor_name(tensor):
     return None
 
 
-def process_subgraphs(model, processor_func):
-    """Generic subgraph processor with modification tracking
+def get_tensor_by_index(subgraph, index):
+    """Safely get tensor by its index."""
+    if 0 <= index < len(subgraph.tensors):
+        return subgraph.tensors[index]
+    return None
 
-    Args:
-        model: Circle model object
-        processor_func: Function that processes a subgraph and returns (modified, changes_count)
 
-    Returns:
-        tuple: (overall_modified, total_changes)
-    """
-    overall_modified = False
-    total_changes = 0
+def get_tensor_index_by_name(subgraph, name):
+    """Find tensor index by name, handling byte strings."""
+    name_bytes = name.encode('utf-8')  # Convert str to bytes for comparison
+    for i, tensor in enumerate(subgraph.tensors):
+        if tensor.name and tensor.name == name_bytes:
+            return i
+    return -1  # Not found
 
-    for subgraph in model.subgraphs:
-        modified, changes_count = processor_func(subgraph)
-        overall_modified = overall_modified or modified
-        total_changes += changes_count
 
-    return overall_modified, total_changes
+def is_tensor_constant(tensor, model_buffers):
+    """Check if a tensor is constant by verifying its buffer."""
+    if tensor and tensor.buffer != 0 and 0 <= tensor.buffer - 1 < len(model_buffers):
+        # A non-zero buffer index that points to a valid buffer typically means it's constant.
+        # The 0th buffer is always an empty buffer.
+        return True
+    return False
 
+
+# ============================================================================
+# TENSOR PROCESSING FUNCTIONS
+# ============================================================================
 
 def rename_tensor_if_matches(tensor, pattern, replacement_func):
     """Rename tensor if it matches the given pattern
@@ -111,21 +154,30 @@ def rename_tensor_if_matches(tensor, pattern, replacement_func):
     return False, None, None
 
 
-def get_tensor_by_index(subgraph, index):
-    """Safely get tensor by its index."""
-    if 0 <= index < len(subgraph.tensors):
-        return subgraph.tensors[index]
-    return None
+def process_subgraphs(model, processor_func):
+    """Generic subgraph processor with modification tracking
+
+    Args:
+        model: Circle model object
+        processor_func: Function that processes a subgraph and returns (modified, changes_count)
+
+    Returns:
+        tuple: (overall_modified, total_changes)
+    """
+    overall_modified = False
+    total_changes = 0
+
+    for subgraph in model.subgraphs:
+        modified, changes_count = processor_func(subgraph)
+        overall_modified = overall_modified or modified
+        total_changes += changes_count
+
+    return overall_modified, total_changes
 
 
-def get_tensor_index_by_name(subgraph, name):
-    """Find tensor index by name, handling byte strings."""
-    name_bytes = name.encode('utf-8')  # Convert str to bytes for comparison
-    for i, tensor in enumerate(subgraph.tensors):
-        if tensor.name and tensor.name == name_bytes:
-            return i
-    return -1  # Not found
-
+# ============================================================================
+# OPERATOR UTILITIES
+# ============================================================================
 
 def parse_operator_indices(indices_str):
     """Parse operator index string into a list of indices.
@@ -185,15 +237,6 @@ def parse_operator_indices(indices_str):
     return sorted(list(indices))
 
 
-def is_tensor_constant(tensor, model_buffers):
-    """Check if a tensor is constant by verifying its buffer."""
-    if tensor and tensor.buffer != 0 and 0 <= tensor.buffer - 1 < len(model_buffers):
-        # A non-zero buffer index that points to a valid buffer typically means it's constant.
-        # The 0th buffer is always an empty buffer.
-        return True
-    return False
-
-
 def get_or_create_operator_code(model, builtin_op_type):
     """Get the index of an operator code, or create it if it doesn't exist."""
     for i, op_code in enumerate(model.operatorCodes):
@@ -207,17 +250,3 @@ def get_or_create_operator_code(model, builtin_op_type):
     new_op_code.version = 1  # Default version
     model.operatorCodes.append(new_op_code)
     return len(model.operatorCodes) - 1
-
-
-def safe_execute(main_func,
-                 input_file,
-                 output_file,
-                 *args,
-                 error_message="Error processing file"):
-    """Safely execute the main function with error handling"""
-    try:
-        main_func(input_file, output_file, *args)
-        log(f"Successfully processed {input_file} and saved to {output_file}")
-    except Exception as e:
-        log(f"{error_message}: {e}")
-        sys.exit(1)

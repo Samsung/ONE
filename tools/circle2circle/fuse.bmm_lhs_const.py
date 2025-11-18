@@ -160,7 +160,7 @@ def fuse_bmm_transpose():
 
     if not model.subgraphs:
         o2o.log("Model has no subgraphs. Exiting.")
-        o2o.save_circle_model(model, output_file)  # Save original if no subgraphs
+        o2o.save_model_to_stdout(model)  # Output to stdout for consistency
         return
 
     subgraph = model.subgraphs[0]  # Assuming single subgraph for now, can be extended
