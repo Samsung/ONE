@@ -92,6 +92,6 @@ if(Flatbuffers_FOUND)
   target_link_libraries(tensorflow-lite INTERFACE flatbuffers::flatbuffers)
 endif(Flatbuffers_FOUND)
 
-target_link_libraries(tensorflow-lite INTERFACE Threads::Threads)
+target_link_libraries(tensorflow-lite INTERFACE Threads::Threads ${CMAKE_DL_LIBS})
 
 set(TensorFlowLite_FOUND TRUE)
