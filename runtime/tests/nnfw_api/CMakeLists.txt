@@ -32,7 +32,7 @@ target_include_directories(${RUNTIME_NNFW_API_TEST} PRIVATE ${RUNTIME_NNFW_API_T
 
 target_link_libraries(${RUNTIME_NNFW_API_TEST} nnfw-dev jsoncpp)
 target_link_libraries(${RUNTIME_NNFW_API_TEST} gtest gmock)
-target_link_libraries(${RUNTIME_NNFW_API_TEST} Threads::Threads dl)
+target_link_libraries(${RUNTIME_NNFW_API_TEST} Threads::Threads)
 target_link_libraries(${RUNTIME_NNFW_API_TEST} circle_schema)
 target_link_libraries(${RUNTIME_NNFW_API_TEST} nnfw_common)
 
