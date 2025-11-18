@@ -51,7 +51,7 @@ add_executable(${TEST_ONERT_TRAIN} ${ONERT_TRAIN_TEST_SRCS})
 
 target_link_libraries(${TEST_ONERT_TRAIN} nnfw-dev)
 target_link_libraries(${TEST_ONERT_TRAIN} nnfw_common)
-target_link_libraries(${TEST_ONERT_TRAIN} gtest gtest_main dl Threads::Threads)
+target_link_libraries(${TEST_ONERT_TRAIN} gtest gtest_main Threads::Threads)
 
 add_test(${TEST_ONERT_TRAIN} ${TEST_ONERT_TRAIN})
 install(TARGETS ${TEST_ONERT_TRAIN} DESTINATION unittest)
