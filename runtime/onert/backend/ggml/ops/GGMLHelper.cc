@@ -16,7 +16,7 @@
 
 #include "GGMLHelper.h"
 
-namespace onert::backend::cpu::ops
+namespace onert::backend::ggml::ops
 {
 
 ggml_type getGGMLType(ir::DataType type)
@@ -64,4 +64,4 @@ struct ggml_tensor getGGMLTensor(const IPortableTensor *tensor)
   return res;
 }
 
-} // namespace onert::backend::cpu::ops
+} // namespace onert::backend::ggml::ops

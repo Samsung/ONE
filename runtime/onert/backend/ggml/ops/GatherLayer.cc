@@ -16,13 +16,12 @@
 
 #include "GatherLayer.h"
 
+#include "GGMLHelper.h"
 #include "OperationUtils.h"
 #include "../KernelGenerator.h"
 #include "../Validator.h"
 
-#include <cker/operation/Gather.h>
-
-namespace onert::backend::cpu
+namespace onert::backend::ggml
 {
 
 void Validator::visit(const ir::operation::Gather &node)
@@ -34,7 +33,7 @@ void Validator::visit(const ir::operation::Gather &node)
 
   _supported = false;
 
-  if (input_node->typeInfo().type() == ir::DataType::QUANT_GGML_Q4_0)
+  if (input_node->typeInfo().type() != ir::DataType::QUANT_GGML_Q4_0)
     return;
 
   _supported = true;
@@ -55,75 +54,83 @@ void KernelGenerator::visit(const ir::operation::Gather &node)
 
   auto fn = std::make_unique<ops::GatherLayer>();
 
-  fn->configure(input_tensor, indices_tensor, output_tensor, axis);
+  fn->configure(input_tensor, indices_tensor, output_tensor, axis, _external_context.get());
 
   _return_fn = std::move(fn);
 }
 
-} // namespace onert::backend::cpu
+} // namespace onert::backend::ggml
 
-namespace onert::backend::cpu::ops
+namespace onert::backend::ggml::ops
 {
 
 void GatherLayer::configure(const IPortableTensor *input, const IPortableTensor *indices,
-                            IPortableTensor *output, int32_t axis)
+                            IPortableTensor *output, int32_t axis, ExternalContext *ctx)
 {
   _input = input;
   _indices = indices;
   _axis = axis;
   _output = output;
+  _ctx = ctx;
 }
 
-template <typename InputType> void GatherLayer::runByInputType()
+void GatherLayer::runByGGMLQuantInputType()
 {
-  using OutputType = InputType;
-  nnfw::cker::GatherParams op_params;
-  op_params.axis = _axis;
+  // Supporting condition
+  // Input: rank 2
+  // Indice: rank < 4 or rank 4 with dim(0) = 1, INT32
+  // Axis: 0
+  if (_input->getShape().rank() != 2)
+    throw std::runtime_error("Gather: block quantized input tensor must be rank 2");
 
-  switch (_indices->data_type())
+  if (_indices->getShape().rank() >= 4 &&
+      (_indices->getShape().rank() != 4 || _indices->getShape().dim(0) != 1))
+    throw std::runtime_error("Gather: invalid indices tensor shape");
+
+  if (_indices->data_type() != ir::DataType::INT32)
+    throw std::runtime_error("Gather: indices tensor must be int32 type");
+
+  if (_axis != 0)
+    throw std::runtime_error("Gather: axis must be 0");
+
+  // convert tensor
+  auto input = getGGMLTensor(_input);
+  auto indices = getGGMLTensor(_indices);
+  auto output = getGGMLTensor(_output);
   {
-    case OperandType::INT32:
-    {
-      using IndicesType = int32_t;
-
-      nnfw::cker::Gather<InputType, IndicesType>(
-        op_params, getShape(_input), getBuffer<InputType>(_input), getShape(_indices),
-        getBuffer<IndicesType>(_indices), getShape(_output), getBuffer<OutputType>(_output));
-      break;
-    }
-    case OperandType::INT64:
-    {
-      using IndicesType = int64_t;
-
-      nnfw::cker::Gather<InputType, IndicesType>(
-        op_params, getShape(_input), getBuffer<InputType>(_input), getShape(_indices),
-        getBuffer<IndicesType>(_indices), getShape(_output), getBuffer<OutputType>(_output));
-      break;
-    }
-    default:
-      throw std::runtime_error("Gather: unsupported indices data type");
+    output.op = GGML_OP_GET_ROWS;
+    output.src[0] = &input;
+    output.src[1] = &indices;
   }
+  auto *nodes = &output;
+
+  // create graph
+  struct ggml_cgraph graph;
+  {
+    memset(&graph, 0, sizeof(graph));
+    graph.n_nodes = 1;
+    graph.nodes = &nodes;
+  }
+
+  // get cplan
+  auto cplan = ggml_graph_plan(&graph, _ctx->maxNumThreads());
+  std::vector<uint8_t> buf(cplan.work_size);
+  cplan.work_data = buf.data();
+
+  // compute
+  ggml_graph_compute(&graph, &cplan);
 }
 
 void GatherLayer::run()
 {
   switch (_input->data_type())
   {
-    case OperandType::FLOAT32:
-      runByInputType<float>();
-      break;
-    case OperandType::QUANT_UINT8_ASYMM:
-      runByInputType<uint8_t>();
-      break;
-    case OperandType::INT32:
-      runByInputType<int32_t>();
-      break;
-    case OperandType::BOOL8:
-      runByInputType<bool>();
+    case ir::DataType::QUANT_GGML_Q4_0:
+      runByGGMLQuantInputType();
       break;
     default:
       throw std::runtime_error("Gather: unsupported input data type");
   }
 }
 
-} // namespace onert::backend::cpu::ops
+} // namespace onert::backend::ggml::ops

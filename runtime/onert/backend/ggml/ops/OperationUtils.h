@@ -14,34 +14,26 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CPU_EXTERNAL_CONTEXT_H__
-#define __ONERT_BACKEND_CPU_EXTERNAL_CONTEXT_H__
+#ifndef __ONERT_BACKEND_GGML_OPS_OPERATION_UTILS_H__
+#define __ONERT_BACKEND_GGML_OPS_OPERATION_UTILS_H__
 
-#include <util/ConfigSource.h>
-#include <ruy/context.h>
+#include <cstdint>
 
-#include <memory>
-
-namespace onert::backend::cpu
+namespace onert::backend::ggml::ops
 {
 
-class ExternalContext
+inline int32_t getAxis(uint32_t rank, int32_t axis)
 {
-public:
-  ExternalContext();
+  auto ret = axis;
 
-public:
-  void setMaxNumThreads(int max_num_threads);
+  if (axis < 0)
+  {
+    ret += rank;
+  }
 
-  int32_t maxNumThreads() const { return _max_num_threads; }
+  return ret;
+}
 
-  ruy::Context *ruy_context() const { return _ruy_context.get(); }
+} // namespace onert::backend::ggml::ops
 
-private:
-  int32_t _max_num_threads;
-  const std::unique_ptr<ruy::Context> _ruy_context;
-};
-
-} // namespace onert::backend::cpu
-
-#endif // __ONERT_BACKEND_CPU_EXTERNAL_CONTEXT_H__
+#endif // __ONERT_BACKEND_GGML_OPS_OPERATION_UTILS_H__
