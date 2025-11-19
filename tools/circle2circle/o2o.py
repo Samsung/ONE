@@ -4,10 +4,10 @@ import sys
 import circle
 import flatbuffers
 
-
 # ============================================================================
 # BASIC UTILITIES
 # ============================================================================
+
 
 def log(message):
     """Log message to stderr"""
@@ -31,6 +31,7 @@ def safe_execute(main_func,
 # ============================================================================
 # CORE I/O FUNCTIONS
 # ============================================================================
+
 
 def load_circle_model(input_file=None):
     """Load and parse a circle model file"""
@@ -76,6 +77,7 @@ def save_model_to_stdout(model):
 # CLI HANDLING
 # ============================================================================
 
+
 def handle_cli_args(usage_message):
     """Handle common command line argument parsing and validation"""
     if len(sys.argv) != 3:
@@ -90,6 +92,7 @@ def handle_cli_args(usage_message):
 # ============================================================================
 # TENSOR UTILITIES
 # ============================================================================
+
 
 def get_tensor_name(tensor):
     """Get tensor name as string, handling bytes conversion"""
@@ -127,6 +130,7 @@ def is_tensor_constant(tensor, model_buffers):
 # ============================================================================
 # TENSOR PROCESSING FUNCTIONS
 # ============================================================================
+
 
 def rename_tensor_if_matches(tensor, pattern, replacement_func):
     """Rename tensor if it matches the given pattern
@@ -178,6 +182,7 @@ def process_subgraphs(model, processor_func):
 # ============================================================================
 # OPERATOR UTILITIES
 # ============================================================================
+
 
 def parse_operator_indices(indices_str):
     """Parse operator index string into a list of indices.
