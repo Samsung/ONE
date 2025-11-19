@@ -43,6 +43,7 @@ TEST_F(ValidationTestSessionCreated, neg_load_session_1)
 TEST_F(ValidationTestSessionCreated, neg_load_session_2)
 {
   ASSERT_EQ(nnfw_load_model_from_file(_session, nullptr), NNFW_STATUS_UNEXPECTED_NULL);
+  ASSERT_STREQ(nnfw_get_last_error_message(_session), "Invalid argument : path is NULL");
 }
 
 TEST_F(ValidationTestSessionCreated, neg_load_session_3)
@@ -147,4 +148,13 @@ TEST_F(ValidationTestSessionCreated, neg_set_execute_config_with_no_workspace)
   EXPECT_EQ(nnfw_set_execute_config(_session, NNFW_RUN_CONFIG_DUMP_MINMAX, nullptr),
             NNFW_STATUS_ERROR);
   EXPECT_EQ(nnfw_set_execute_config(_session, NNFW_RUN_CONFIG_TRACE, nullptr), NNFW_STATUS_ERROR);
+}
+
+TEST_F(ValidationTestSessionCreated, neg_deprecated_api)
+{
+  EXPECT_EQ(nnfw_apply_tensorinfo(_session, 0, nnfw_tensorinfo{}), NNFW_STATUS_DEPRECATED_API);
+  EXPECT_EQ(nnfw_prepare_pipeline(_session, nullptr), NNFW_STATUS_DEPRECATED_API);
+  EXPECT_EQ(nnfw_push_pipeline_input(_session, nullptr, nullptr), NNFW_STATUS_DEPRECATED_API);
+  EXPECT_EQ(nnfw_pop_pipeline_output(_session, nullptr), NNFW_STATUS_DEPRECATED_API);
+  EXPECT_EQ(nnfw_set_op_backend(_session, nullptr, nullptr), NNFW_STATUS_DEPRECATED_API);
 }
