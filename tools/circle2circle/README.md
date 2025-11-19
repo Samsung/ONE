@@ -150,3 +150,25 @@ Generates a simple Circle model with one `ADD` operator for testing basic functi
 #### `gen_circle.bmm_lhs_const.fc.py`
 
 Generates a test Circle model with `BATCH_MATMUL` and `TRANSPOSE` operations where the LHS is constant. This model is designed to test the fusion pattern used in `fuse.bmm_lhs_const.py`.
+
+## `merge.circle.py`
+
+Merges two Circle model files into a single model by appending their subgraphs and adding signatures. The script accepts one or more Circle files (currently limited to two).
+
+- **Positional arguments**:
+  `circles` – one or more Circle model files to merge (e.g., `in1.circle in2.circle`).
+
+- **Optional arguments**:
+  `--sig-names` – semicolon‑separated signature names for the subgraphs (e.g., `"prefill;decode"`). If omitted, the script derives the signature names from the input filenames by stripping the `.circle` extension.
+
+### Usage examples
+
+```bash
+# Merge two models, using filenames as signature names
+./merge.circle.py model1.circle model2.circle
+
+# Merge with custom signature names
+./merge.circle.py model1.circle model2.circle --sig-names "prefill;decode"
+```
+
+The merged model is written to **standard output**, allowing it to be piped into other tools or redirected to a file.

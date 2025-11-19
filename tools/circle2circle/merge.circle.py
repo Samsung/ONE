@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import sys
+import os
 import argparse
 import o2o
 import circle
@@ -229,39 +230,59 @@ def merge_models_with_signatures(model1, model2, sig_name_0, sig_name_1):
 
 def main():
     """Main function to merge two Circle models with signatures."""
+    # This script merges multiple Circle model files into a single model.
+    # It keeps each input model as a separate subgraph and adds a signature
+    # for each subgraph. If signature names are not provided via --sig-names,
+    # they are derived from the input filenames (without the .circle extension).
     parser = argparse.ArgumentParser(
-        description='Merge two Circle models by appending subgraphs with signatures'
+        description='Merge multiple Circle models (as subgraphs) with signatures'
     )
-    parser.add_argument('first_circle', help='First Circle model file')
-    parser.add_argument('second_circle', help='Second Circle model file')
+    # One or more Circle model files to merge, e.g. in1.circle in2.circle ...
+    parser.add_argument('circles', nargs='+', help='Circle model files to merge (e.g., in1.circle in2.circle ...)')
+    # Optional signature names for each subgraph, separated by semicolons.
+    # Must match the number of input files. If omitted, names are taken from the
+    # input filenames (without the .circle extension).
     parser.add_argument(
         '--sig-names',
-        default='subgraph_0;subgraph_1',
-        help='Signature names for subgraphs, separated by semicolon (e.g., "prefill;decode")'
+        default=None,
+        help='Signature names for subgraphs (semicolon‑separated). If omitted, derived from input filenames.'
     )
     args = parser.parse_args()
 
+    # Currently only support 2 models
+    if len(args.circles) != 2:
+        o2o.log("Error: Currently only 2 Circle models are supported")
+        sys.exit(1)
+
     # Parse signature names
-    sig_names = args.sig_names.split(';')
-    if len(sig_names) != 2:
-        o2o.log("Error: --sig-names must contain exactly 2 names separated by semicolon")
-        sys.exit(1)
+    if args.sig_names is None:
+        # Use filenames without .circle extension as signature names
+        sig_names = [os.path.splitext(os.path.basename(f))[0] for f in args.circles]
+    else:
+        # Use user-provided signature names
+        sig_names = args.sig_names.split(';')
+        if len(sig_names) != len(args.circles):
+            o2o.log(f"Error: --sig-names must contain exactly {len(args.circles)} names separated by semicolon")
+            sys.exit(1)
+        sig_names = [name.strip() for name in sig_names]
 
-    sig_name_0, sig_name_1 = sig_names[0].strip(), sig_names[1].strip()
+    # Validate signature names are not empty
+    for i, sig_name in enumerate(sig_names):
+        if not sig_name:
+            o2o.log(f"Error: Signature name {i+1} cannot be empty")
+            sys.exit(1)
 
-    if not sig_name_0 or not sig_name_1:
-        o2o.log("Error: Signature names cannot be empty")
-        sys.exit(1)
+    sig_name_0, sig_name_1 = sig_names[0], sig_names[1]
 
     o2o.log(f"Loading models...")
-    o2o.log(f"  First model: {args.first_circle}")
-    o2o.log(f"  Second model: {args.second_circle}")
+    o2o.log(f"  First model: {args.circles[0]}")
+    o2o.log(f"  Second model: {args.circles[1]}")
     o2o.log(f"  Signature names: ['{sig_name_0}', '{sig_name_1}']")
 
     # Load both models explicitly
     try:
-        model0 = o2o.load_circle_model(args.first_circle)
-        model1 = o2o.load_circle_model(args.second_circle)
+        model0 = o2o.load_circle_model(args.circles[0])
+        model1 = o2o.load_circle_model(args.circles[1])
     except Exception as e:
         o2o.log(f"Error loading models: {e}")
         sys.exit(1)
