@@ -14,17 +14,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-REPORT_DIR="report"
+BACKEND="cpu"
+REPORT_DIR="$(pwd)/report/$BACKEND"
 TEST_LIST_FILE=
+TEST_ALL=false
+USE_DEFAULT_DIR=true
+REPORT_DIR=""
 
 function Usage()
 {
     echo "Usage: $0 $(basename ${BASH_SOURCE[0]}) [OPTIONS]"
     echo ""
     echo "Options:"
-    echo "      --reportdir=PATH        Path to write report (default=$REPORT_DIR)"
+    echo "      --reportdir=PATH        Path to write report (default=$(pwd)/report/{BACKEND_NAME})"
     echo "      --list=FILE             List file to test. Test all if list option is not passed"
     echo "      --cachedir=PATH         Set downloaded resouces cache directory (default: $CACHE_PATH)"
+    echo "      --backend NAME          Backend to test (default: $BACKEND)"
+    echo "      --all                   Run all test cases (default: $TEST_ALL)"
 }
 
 for i in "$@"
@@ -34,14 +40,31 @@ do
             Usage
             exit 1
             ;;
+    esac
+done
+
+while [ "$#" -ne 0 ]; do
+    case $1 in
         --reportdir=*)
             REPORT_DIR=${i#*=}
+            USE_DEFAULT_DIR=false
             ;;
         --list=*)
             TEST_LIST_FILE=${i#*=}
+            # Will be deprecated
+            echo "--list option will be deprecated soon."
+            echo "Please use --backend to select backend."
+            echo "Please use --all to test all test cases."
+            ;;
+        --backend)
+            BACKEND=${2}
+            shift
             ;;
         --cachedir=*)
             CACHE_PATH=${i#*=}
+            ;;
+        --all)
+            TEST_ALL=true
             ;;
         *)
             echo "Unknown option: $i"
@@ -51,7 +74,15 @@ do
     shift
 done
 
-if [ ! -z "$TEST_LIST_FILE" ]; then
+if [[ $USE_DEFAULT_DIR == true ]]; then
+    REPORT_DIR="$(pwd)/report/$BACKEND"
+fi
+
+if [[ $TEST_ALL == false ]]; then
+    if [[  -z "$TEST_LIST_FILE" ]]; then
+        TEST_ARCH=$(uname -m | tr '[:upper:]' '[:lower:]')
+        TEST_LIST_FILE="$(dirname $0)/list/tflite_comparator.${TEST_ARCH}.${BACKEND}.list"
+    fi
     MODELLIST=$(cat "${TEST_LIST_FILE}")
 fi
 
@@ -64,12 +95,20 @@ TAP_NAME=verification_test.tap
 TEST_NAME="Loader Verification"
 TEST_DRIVER=tflite_comparator
 
+BACKUP_BACKENDS=$BACKENDS
+export BACKENDS=$BACKEND
 $INSTALL_PATH/test/models/run_test.sh --driverbin=$TEST_DRIVER \
     --reportdir=$REPORT_DIR \
     --tapname=$TAP_NAME \
     --cachedir=$CACHE_PATH \
     ${MODELLIST:-} > $REPORT_DIR/verification_test.log 2>&1
 TEST_RESULT=$?
+
+if [[ $BACKUP_BACKENDS != "" ]]; then
+    export BACKENDS=$BACKUP_BACKENDS
+else
+    unset BACKENDS
+fi
 
 if [[ $TEST_RESULT -ne 0 ]]; then
     echo ""

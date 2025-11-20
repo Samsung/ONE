@@ -32,7 +32,7 @@ TENSOR_LOGGING=trace_log.txt ./infra/scripts/test_ubuntu_runtime.sh --backend ac
 ENABLE_LOG=1 GRAPH_DOT_DUMP=1 ./infra/scripts/test_ubuntu_runtime_mixed.sh
 # Enable trace event (acl_cl default backend)
 export TRACING_MODE=1
-TFLiteModelVerification "acl_cl" "Product/out/test/list/tflite_comparator.armv7l.acl_cl.list" "report/acl_cl/trace"
+TFLiteModelVerification "acl_cl" "report/acl_cl/trace"
 unset TRACING_MODE
 
 # nnpackage test suite
