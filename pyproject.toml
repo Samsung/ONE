@@ -1,0 +1,26 @@
+[project]
+name = "ONE"
+version = "1.31.0"
+maintainers = [
+  { name="NNFW", email="nnfw@samsung.com" },
+]
+description = "ONE(On-device Neural Engine): A high-performance, on-device neural network inference framework"
+readme = "README.md"
+requires-python = ">=3.10"
+license-files = [
+  "LICENSE"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/Samsung/ONE"
+"Documentation" = "https://nnfw.readthedocs.io/"
+"Repository" = "https://github.com/Samsung/ONE/ONE.git"
+"Issues" = "https://github.com/Samsung/ONE/issues"
+
+[dependency-groups]
+dev = [
+    "flatbuffers==23.5.26",
+    "numpy==2.2.6",
+]
+
+# This file does not describe packaging details for compiler and runtime
