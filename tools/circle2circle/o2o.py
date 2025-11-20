@@ -3,6 +3,11 @@
 import sys
 import circle
 import flatbuffers
+from typing import Callable, List, Optional, Tuple, Union
+
+# Import specific Circle types for better type annotations
+from circle import (TensorT, OperatorT, SubGraphT, ModelT, BufferT, OperatorCodeT,
+                    BuiltinOperator, TensorType)
 
 # ============================================================================
 # BASIC UTILITIES
@@ -14,11 +19,11 @@ def log(message):
     print(message, file=sys.stderr)
 
 
-def safe_execute(main_func,
-                 input_file,
-                 output_file,
+def safe_execute(main_func: Callable,
+                 input_file: str,
+                 output_file: str,
                  *args,
-                 error_message="Error processing file"):
+                 error_message: str = "Error processing file") -> None:
     """Safely execute the main function with error handling"""
     try:
         main_func(input_file, output_file, *args)
@@ -33,7 +38,7 @@ def safe_execute(main_func,
 # ============================================================================
 
 
-def load_circle_model(input_file=None):
+def load_circle_model(input_file: Optional[str] = None) -> 'circle.ModelT':
     """Load and parse a circle model file"""
     if input_file is None:
         # Read from stdin
@@ -54,7 +59,7 @@ def load_model_from_stdin():
     return load_circle_model()  # input_file=None defaults to stdin
 
 
-def save_circle_model(model, output_file=None):
+def save_circle_model(model: 'circle.ModelT', output_file: Optional[str] = None) -> None:
     """Save a circle model to file using flatbuffers"""
     builder = flatbuffers.Builder(1024)
     builder.Finish(model.Pack(builder), b'CIR0')
@@ -68,7 +73,7 @@ def save_circle_model(model, output_file=None):
             f.write(builder.Output())
 
 
-def save_model_to_stdout(model):
+def save_model_to_stdout(model) -> None:
     """Serialize a Circle model and write it to stdout as binary data."""
     save_circle_model(model)  # output_file=None defaults to stdout
 
@@ -94,7 +99,7 @@ def handle_cli_args(usage_message):
 # ============================================================================
 
 
-def get_tensor_name(tensor):
+def get_tensor_name(tensor: 'circle.TensorT') -> Optional[str]:
     """Get tensor name as string, handling bytes conversion"""
     if tensor.name:
         return tensor.name.decode('utf-8') if isinstance(tensor.name,
@@ -102,14 +107,15 @@ def get_tensor_name(tensor):
     return None
 
 
-def get_tensor_by_index(subgraph, index):
+def get_tensor_by_index(subgraph: 'circle.SubGraphT',
+                        index: int) -> Optional['circle.TensorT']:
     """Safely get tensor by its index."""
     if 0 <= index < len(subgraph.tensors):
         return subgraph.tensors[index]
     return None
 
 
-def get_tensor_index_by_name(subgraph, name):
+def get_tensor_index_by_name(subgraph, name: str) -> int:
     """Find tensor index by name, handling byte strings."""
     name_bytes = name.encode('utf-8')  # Convert str to bytes for comparison
     for i, tensor in enumerate(subgraph.tensors):
@@ -118,7 +124,7 @@ def get_tensor_index_by_name(subgraph, name):
     return -1  # Not found
 
 
-def is_tensor_constant(tensor, model_buffers):
+def is_tensor_constant(tensor, model_buffers: List) -> bool:
     """Check if a tensor is constant by verifying its buffer."""
     if tensor and tensor.buffer != 0 and 0 <= tensor.buffer - 1 < len(model_buffers):
         # A non-zero buffer index that points to a valid buffer typically means it's constant.
@@ -132,7 +138,9 @@ def is_tensor_constant(tensor, model_buffers):
 # ============================================================================
 
 
-def rename_tensor_if_matches(tensor, pattern, replacement_func):
+def rename_tensor_if_matches(
+        tensor, pattern: str,
+        replacement_func: Callable) -> Tuple[bool, Optional[str], Optional[str]]:
     """Rename tensor if it matches the given pattern
 
     Args:
@@ -158,7 +166,7 @@ def rename_tensor_if_matches(tensor, pattern, replacement_func):
     return False, None, None
 
 
-def process_subgraphs(model, processor_func):
+def process_subgraphs(model, processor_func: Callable) -> Tuple[bool, int]:
     """Generic subgraph processor with modification tracking
 
     Args:
@@ -184,7 +192,7 @@ def process_subgraphs(model, processor_func):
 # ============================================================================
 
 
-def parse_operator_indices(indices_str):
+def parse_operator_indices(indices_str: str) -> List[int]:
     """Parse operator index string into a list of indices.
 
     Supports formats like:
@@ -242,7 +250,31 @@ def parse_operator_indices(indices_str):
     return sorted(list(indices))
 
 
-def get_or_create_operator_code(model, builtin_op_type):
+def get_operator_code_key(
+        op_code: 'circle.OperatorCodeT') -> Tuple[str, Union[int, str, None]]:
+    """Generate a unique key for an OperatorCode to identify duplicates.
+
+    Args:
+        op_code: Circle OperatorCode object
+
+    Returns:
+        tuple: Unique key for the operator code
+    """
+    if op_code.builtinCode is not None:
+        # Builtin operator
+        return ('builtin', op_code.builtinCode)
+    elif op_code.customCode is not None:
+        # Custom operator
+        custom_code = op_code.customCode
+        if isinstance(custom_code, bytes):
+            custom_code = custom_code.decode('utf-8')
+        return ('custom', custom_code)
+    else:
+        # Unknown case
+        return ('unknown', None)
+
+
+def get_or_create_operator_code(model, builtin_op_type) -> int:
     """Get the index of an operator code, or create it if it doesn't exist."""
     for i, op_code in enumerate(model.operatorCodes):
         if op_code.builtinCode == builtin_op_type:

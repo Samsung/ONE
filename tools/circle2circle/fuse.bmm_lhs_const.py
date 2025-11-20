@@ -1,18 +1,25 @@
 #!/usr/bin/env python3
 
 import numpy as np
+from typing import List, Optional, Tuple, Dict, Any
 import circle
 import o2o
 
+# Import specific Circle types for better type annotations
+from circle import (TensorT, OperatorT, SubGraphT, ModelT, BufferT, OperatorCodeT,
+                    BuiltinOperator, TensorType)
 
-def get_tensor_by_index(subgraph, index):
+
+def get_tensor_by_index(subgraph: 'circle.SubGraphT',
+                        index: int) -> Optional['circle.TensorT']:
     """Safely get tensor by its index."""
     if 0 <= index < len(subgraph.tensors):
         return subgraph.tensors[index]
     return None
 
 
-def is_tensor_constant(tensor, model_buffers):
+def is_tensor_constant(tensor: 'circle.TensorT',
+                       model_buffers: List['circle.BufferT']) -> bool:
     """Check if a tensor is constant by verifying its buffer."""
     if tensor and tensor.buffer != 0 and 0 <= tensor.buffer - 1 < len(model_buffers):
         # A non-zero buffer index that points to a valid buffer typically means it's constant.
@@ -21,7 +28,9 @@ def is_tensor_constant(tensor, model_buffers):
     return False
 
 
-def find_operator_by_output(subgraph, output_tensor_index):
+def find_operator_by_output(
+        subgraph: 'circle.SubGraphT',
+        output_tensor_index: int) -> Tuple[Optional[int], Optional['circle.OperatorT']]:
     """Find the first operator that produces the given output tensor index."""
     for op_idx, operator in enumerate(subgraph.operators):
         if operator.outputs and output_tensor_index in operator.outputs:
@@ -65,7 +74,8 @@ def count_tensor_usage(model, tensor_index):
     return count
 
 
-def get_or_create_operator_code(model, builtin_op_type):
+def get_or_create_operator_code(model: 'circle.ModelT',
+                                builtin_op_type: 'circle.BuiltinOperator') -> int:
     """Get the index of an operator code, or create it if it doesn't exist."""
     for i, op_code in enumerate(model.operatorCodes):
         if op_code.builtinCode == builtin_op_type:
@@ -79,7 +89,8 @@ def get_or_create_operator_code(model, builtin_op_type):
     return len(model.operatorCodes) - 1
 
 
-def create_transpose_permutation_tensor(model, subgraph, rank):
+def create_transpose_permutation_tensor(model: 'circle.ModelT',
+                                        subgraph: 'circle.SubGraphT', rank: int) -> int:
     """Create a permutation tensor for transposing last two dimensions."""
     # Create permutation: [0, 1, ..., rank-3, rank-1, rank-2]
     perm_shape = [rank]
@@ -104,8 +115,9 @@ def create_transpose_permutation_tensor(model, subgraph, rank):
     return tensor_index
 
 
-def add_rhs_transpose_if_needed(model, subgraph, bmm_op_idx, rhs_tensor_index,
-                                rhs_tensor):
+def add_rhs_transpose_if_needed(model: 'circle.ModelT', subgraph: 'circle.SubGraphT',
+                                bmm_op_idx: int, rhs_tensor_index: int,
+                                rhs_tensor: 'circle.TensorT') -> int:
     """Add TRANSPOSE operator for RHS if K != 1 OR B != 1."""
     if len(rhs_tensor.shape) < 3:
         # Need at least 3 dimensions: [B, K, N]
@@ -153,7 +165,7 @@ def add_rhs_transpose_if_needed(model, subgraph, bmm_op_idx, rhs_tensor_index,
     return transposed_rhs_tensor_index
 
 
-def fuse_bmm_transpose():
+def fuse_bmm_transpose() -> None:
     """Main function to add RHS transpose before fusing batchmatmul(lhs, rhs) to fullyconnected(transposed_rhs, lhs) when lhs is constant."""
     o2o.log("Loading model from stdin")
     model = o2o.load_model_from_stdin()

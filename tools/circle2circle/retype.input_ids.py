@@ -3,6 +3,10 @@
 import o2o
 import circle
 
+# Import specific Circle types for better type annotations
+from circle import (TensorT, OperatorT, SubGraphT, ModelT, BufferT, OperatorCodeT,
+                    BuiltinOperator, TensorType)
+
 
 def retype_input_ids():
     """Main function to change input_ids tensor type from int64 to int32"""

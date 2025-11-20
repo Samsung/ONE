@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
 
+from typing import List
 import o2o
 
+# Import specific Circle types for better type annotations
+from circle import (TensorT, OperatorT, SubGraphT, ModelT, BufferT, OperatorCodeT,
+                    BuiltinOperator, TensorType)
 
-def reorder_output_tensors():
+
+def reorder_output_tensors() -> None:
     """Reorder output tensors: move tensor 0 to the end, shift others forward"""
     o2o.log("Loading model from stdin")
     model = o2o.load_model_from_stdin()

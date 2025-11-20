@@ -2,9 +2,14 @@
 
 import o2o
 import re
+from typing import List
+
+# Import specific Circle types for better type annotations
+from circle import (TensorT, OperatorT, SubGraphT, ModelT, BufferT, OperatorCodeT,
+                    BuiltinOperator, TensorType)
 
 
-def transpose_2d_3d(shape):
+def transpose_2d_3d(shape: List[int]) -> List[int]:
     """Transpose the second and third dimensions of a 4D shape"""
     if len(shape) != 4:
         raise ValueError("Shape must be 4D to transpose second and third dimensions")

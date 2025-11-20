@@ -4,8 +4,12 @@ import o2o
 import re
 import sys
 
+# Import specific Circle types for better type annotations
+from circle import (TensorT, OperatorT, SubGraphT, ModelT, BufferT, OperatorCodeT,
+                    BuiltinOperator, TensorType)
 
-def rename_input_tensors(prefix):
+
+def rename_input_tensors(prefix: str):
     """Main function to rename tensors by removing the specified prefix"""
     # Load the model using utility function
     model = o2o.load_model_from_stdin()

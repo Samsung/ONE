@@ -3,9 +3,14 @@
 import sys
 import circle
 import o2o
+from typing import List, Optional
+
+# Import specific Circle types for better type annotations
+from circle import (TensorT, OperatorT, SubGraphT, ModelT, BufferT, OperatorCodeT,
+                    BuiltinOperator, TensorType)
 
 
-def get_tensor_name(tensor):
+def get_tensor_name(tensor: TensorT) -> Optional[str]:
     """Get tensor name as string, handling bytes conversion"""
     if tensor.name:
         return tensor.name.decode('utf-8') if isinstance(tensor.name,
@@ -13,7 +18,7 @@ def get_tensor_name(tensor):
     return None
 
 
-def find_unused_tensors_in_subgraph(subgraph):
+def find_unused_tensors_in_subgraph(subgraph) -> List[int]:
     """
     Finds and returns the indices of unused tensors in a given subgraph.
     This function uses the Native API for read-only subgraph objects.
@@ -54,7 +59,7 @@ def find_unused_tensors_in_subgraph(subgraph):
     return unused_indices
 
 
-def find_unused_buffers(model):
+def find_unused_buffers(model) -> List[int]:
     """
     Finds and returns the indices of unused buffers in the model.
     This function works with both Native API (read-only) and Object API (mutable) model objects.
@@ -111,8 +116,8 @@ def find_unused_buffers(model):
         return unused_indices
 
 
-def remove_tensors_and_update_model(model, subgraph_index_to_modify,
-                                    tensor_indices_to_remove):
+def remove_tensors_and_update_model(model: ModelT, subgraph_index_to_modify: int,
+                                    tensor_indices_to_remove: List[int]) -> List[int]:
     """
     Removes specified tensors from the model and updates all relevant references.
     This function uses the Object API for mutable model/subgraph/operator objects.
@@ -213,7 +218,8 @@ def remove_tensors_and_update_model(model, subgraph_index_to_modify,
     return sorted(removed_indices)
 
 
-def remove_buffers_and_update_model(model, buffer_indices_to_remove):
+def remove_buffers_and_update_model(model: ModelT,
+                                    buffer_indices_to_remove: List[int]) -> List[int]:
     """
     Removes specified buffers from the model and updates all tensor references.
     This function uses the Object API for mutable model objects.

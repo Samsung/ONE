@@ -4,9 +4,14 @@ import os
 import numpy as np
 import circle
 import o2o
+from typing import List
+
+# Import specific Circle types for better type annotations
+from circle import (TensorT, OperatorT, SubGraphT, ModelT, BufferT, OperatorCodeT,
+                    BuiltinOperator, TensorType)
 
 
-def create_test_bmm_k_not_1_model(output_file):
+def create_test_bmm_k_not_1_model(output_file: str):
     """Create a test Circle model with BATCH_MATMUL where RHS K != 1."""
 
     # Create model

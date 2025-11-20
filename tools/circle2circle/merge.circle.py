@@ -3,34 +3,18 @@
 import sys
 import os
 import argparse
+from typing import List, Optional, Tuple, Dict, Any
 import o2o
 import circle
 
-
-def get_operator_code_key(op_code):
-    """Generate a unique key for an OperatorCode to identify duplicates.
-
-    Args:
-        op_code: Circle OperatorCode object
-
-    Returns:
-        tuple: Unique key for the operator code
-    """
-    if op_code.builtinCode is not None:
-        # Builtin operator
-        return ('builtin', op_code.builtinCode)
-    elif op_code.customCode is not None:
-        # Custom operator
-        custom_code = op_code.customCode
-        if isinstance(custom_code, bytes):
-            custom_code = custom_code.decode('utf-8')
-        return ('custom', custom_code)
-    else:
-        # Unknown case
-        return ('unknown', None)
+# Import specific Circle types for better type annotations
+from circle import (TensorT, OperatorT, SubGraphT, ModelT, BufferT, OperatorCodeT,
+                    BuiltinOperator, TensorType, SignatureDefT, TensorMapT)
 
 
-def merge_operator_codes_with_deduplication(model1, model2):
+def merge_operator_codes_with_deduplication(
+        model1: 'circle.ModelT',
+        model2: 'circle.ModelT') -> Tuple[List['circle.OperatorCodeT'], Dict[int, int]]:
     """Merge operator codes from two models while removing duplicates.
 
     Args:
@@ -49,14 +33,14 @@ def merge_operator_codes_with_deduplication(model1, model2):
 
     # Register first model's operator codes
     for i, op_code in enumerate(model1.operatorCodes):
-        key = get_operator_code_key(op_code)
+        key = o2o.get_operator_code_key(op_code)
         opcode_mapping[key] = i
 
     # Process second model's operator codes (check for duplicates)
     model2_to_merged_mapping = {}  # model2's index → merged index
 
     for i, op_code in enumerate(model2.operatorCodes):
-        key = get_operator_code_key(op_code)
+        key = o2o.get_operator_code_key(op_code)
 
         if key in opcode_mapping:
             # Duplicate operator code - use existing index
@@ -71,7 +55,8 @@ def merge_operator_codes_with_deduplication(model1, model2):
     return merged_operator_codes, model2_to_merged_mapping
 
 
-def create_tensor_map_list(subgraph, tensor_indices):
+def create_tensor_map_list(subgraph: 'circle.SubGraphT',
+                           tensor_indices: List[int]) -> List['circle.TensorMapT']:
     """Convert tensor indices to TensorMap objects for SignatureDef.
 
     Args:
@@ -110,53 +95,36 @@ def create_tensor_map_list(subgraph, tensor_indices):
     return tensor_maps
 
 
-def create_signatures(model, sig_name_0, sig_name_1):
+def create_signatures(model: 'circle.ModelT', sig_names: List[str]) -> None:
     """Create signature definitions for the merged model.
 
     Args:
         model: Merged Circle model
-        sig_name_0: Name for first subgraph signature
-        sig_name_1: Name for second subgraph signature
+        sig_names: List of signature names for each subgraph (must match subgraph count)
     """
     if not hasattr(model, 'signatureDefs'):
         model.signatureDefs = []
 
-    # Create signature for first subgraph
-    sig0 = circle.SignatureDefT()
-    sig0.subgraphIndex = 0
-    sig0.signatureKey = sig_name_0.encode('utf-8')
+    signatures = []
 
-    # Create TensorMap lists for inputs and outputs
-    if model.subgraphs[0].inputs is not None and len(model.subgraphs[0].inputs) > 0:
-        sig0.inputs = create_tensor_map_list(model.subgraphs[0], model.subgraphs[0].inputs)
-    else:
-        sig0.inputs = []
+    for idx, sig_name in enumerate(sig_names):
+        sig = circle.SignatureDefT()
+        sig.subgraphIndex = idx
+        sig.signatureKey = sig_name.encode('utf-8')
 
-    if model.subgraphs[0].outputs is not None and len(model.subgraphs[0].outputs) > 0:
-        sig0.outputs = create_tensor_map_list(model.subgraphs[0], model.subgraphs[0].outputs)
-    else:
-        sig0.outputs = []
+        subgraph = model.subgraphs[idx]
+        sig.inputs = create_tensor_map_list(subgraph, subgraph.inputs) if list(
+            subgraph.inputs) else []
+        sig.outputs = create_tensor_map_list(subgraph, subgraph.outputs) if list(
+            subgraph.outputs) else []
 
-    # Create signature for second subgraph
-    sig1 = circle.SignatureDefT()
-    sig1.subgraphIndex = 1
-    sig1.signatureKey = sig_name_1.encode('utf-8')
+        signatures.append(sig)
 
-    # Create TensorMap lists for inputs and outputs
-    if model.subgraphs[1].inputs is not None and len(model.subgraphs[1].inputs) > 0:
-        sig1.inputs = create_tensor_map_list(model.subgraphs[1], model.subgraphs[1].inputs)
-    else:
-        sig1.inputs = []
-
-    if model.subgraphs[1].outputs is not None and len(model.subgraphs[1].outputs) > 0:
-        sig1.outputs = create_tensor_map_list(model.subgraphs[1], model.subgraphs[1].outputs)
-    else:
-        sig1.outputs = []
-
-    model.signatureDefs = [sig0, sig1]
+    model.signatureDefs = signatures
 
 
-def merge_models_with_signatures(model1, model2, sig_name_0, sig_name_1):
+def merge_models_with_signatures(model1: 'circle.ModelT', model2: 'circle.ModelT',
+                                 sig_name_0: str, sig_name_1: str) -> 'circle.ModelT':
     """Merge two Circle models by keeping subgraphs separate and adding signatures.
 
     Args:
@@ -178,15 +146,20 @@ def merge_models_with_signatures(model1, model2, sig_name_0, sig_name_1):
         sys.exit(1)
 
     o2o.log(f"Merging models:")
-    o2o.log(f"  Model 1: {len(model1.subgraphs[0].tensors)} tensors, {len(model1.subgraphs[0].operators)} operators")
-    o2o.log(f"  Model 2: {len(model2.subgraphs[0].tensors)} tensors, {len(model2.subgraphs[0].operators)} operators")
+    o2o.log(
+        f"  Model 1: {len(model1.subgraphs[0].tensors)} tensors, {len(model1.subgraphs[0].operators)} operators"
+    )
+    o2o.log(
+        f"  Model 2: {len(model2.subgraphs[0].tensors)} tensors, {len(model2.subgraphs[0].operators)} operators"
+    )
 
     # Step 1: Merge buffers (simple append)
     merged_buffers = list(model1.buffers) + list(model2.buffers)
     buffer_offset = len(model1.buffers)
 
     # Step 2: Merge operator codes with deduplication
-    merged_operator_codes, model2_opcode_mapping = merge_operator_codes_with_deduplication(model1, model2)
+    merged_operator_codes, model2_opcode_mapping = merge_operator_codes_with_deduplication(
+        model1, model2)
 
     # Step 3: Create merged subgraphs
     merged_subgraphs = []
@@ -217,7 +190,7 @@ def merge_models_with_signatures(model1, model2, sig_name_0, sig_name_1):
     merged_model.subgraphs = merged_subgraphs
 
     # Step 5: Create signatures
-    create_signatures(merged_model, sig_name_0, sig_name_1)
+    create_signatures(merged_model, [sig_name_0, sig_name_1])
 
     o2o.log(f"Merge completed:")
     o2o.log(f"  Total buffers: {len(merged_buffers)}")
@@ -235,17 +208,20 @@ def main():
     # for each subgraph. If signature names are not provided via --sig-names,
     # they are derived from the input filenames (without the .circle extension).
     parser = argparse.ArgumentParser(
-        description='Merge multiple Circle models (as subgraphs) with signatures'
-    )
+        description='Merge multiple Circle models (as subgraphs) with signatures')
     # One or more Circle model files to merge, e.g. in1.circle in2.circle ...
-    parser.add_argument('circles', nargs='+', help='Circle model files to merge (e.g., in1.circle in2.circle ...)')
+    parser.add_argument(
+        'circles',
+        nargs='+',
+        help='Circle model files to merge (e.g., in1.circle in2.circle ...)')
     # Optional signature names for each subgraph, separated by semicolons.
     # Must match the number of input files. If omitted, names are taken from the
     # input filenames (without the .circle extension).
     parser.add_argument(
         '--sig-names',
         default=None,
-        help='Signature names for subgraphs (semicolon‑separated). If omitted, derived from input filenames.'
+        help=
+        'Signature names for subgraphs (semicolon‑separated). If omitted, derived from input filenames.'
     )
     args = parser.parse_args()
 
@@ -262,7 +238,9 @@ def main():
         # Use user-provided signature names
         sig_names = args.sig_names.split(';')
         if len(sig_names) != len(args.circles):
-            o2o.log(f"Error: --sig-names must contain exactly {len(args.circles)} names separated by semicolon")
+            o2o.log(
+                f"Error: --sig-names must contain exactly {len(args.circles)} names separated by semicolon"
+            )
             sys.exit(1)
         sig_names = [name.strip() for name in sig_names]
 
@@ -289,7 +267,8 @@ def main():
 
     # Merge models with signatures
     try:
-        merged_model = merge_models_with_signatures(model0, model1, sig_name_0, sig_name_1)
+        merged_model = merge_models_with_signatures(model0, model1, sig_name_0,
+                                                    sig_name_1)
     except Exception as e:
         o2o.log(f"Error merging models: {e}")
         sys.exit(1)

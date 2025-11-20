@@ -4,6 +4,11 @@ import os
 import numpy as np
 import circle
 import o2o
+from typing import List
+
+# Import specific Circle types for better type annotations
+from circle import (TensorT, OperatorT, SubGraphT, ModelT, BufferT, OperatorCodeT,
+                    BuiltinOperator, TensorType)
 
 # Circle Model Buffer Usage Rules (based on circle_schema.fbs and analysis)
 # ======================================================================
@@ -53,7 +58,8 @@ import o2o
 #
 # Reference: circle_schema.fbs - "buffer:uint" field documentation
 
-def create_simple_add_model(output_file):
+
+def create_simple_add_model(output_file: str):
     """Create a simple Circle model with one ADD operator (similar to add.circle)."""
 
     # Create model
@@ -158,6 +164,7 @@ def create_simple_add_model(output_file):
     o2o.log(f"  Operator: ADD")
     o2o.log(f"  Subgraph inputs: {[subgraph.tensors[i].name for i in subgraph.inputs]}")
     o2o.log(f"  Subgraph outputs: {[subgraph.tensors[i].name for i in subgraph.outputs]}")
+
 
 if __name__ == "__main__":
     # Generate output filename from current script filename

@@ -3,10 +3,15 @@
 import sys
 import circle
 import flatbuffers
+from typing import Tuple
 import o2o
 
+# Import specific Circle types for better type annotations
+from circle import (TensorT, OperatorT, SubGraphT, ModelT, BufferT, OperatorCodeT,
+                    BuiltinOperator, TensorType)
 
-def load_model_from_stdin():
+
+def load_model_from_stdin() -> 'circle.ModelT':
     """Load a Circle model from binary data read from stdin."""
     data = sys.stdin.buffer.read()
     buf = bytearray(data)
@@ -15,14 +20,14 @@ def load_model_from_stdin():
     return model
 
 
-def save_model_to_stdout(model):
+def save_model_to_stdout(model: 'circle.ModelT'):
     """Serialize a Circle model and write it to stdout as binary data."""
     builder = flatbuffers.Builder(1024)
     builder.Finish(model.Pack(builder), b'CIR0')
     sys.stdout.buffer.write(builder.Output())
 
 
-def remove_namespace_from_inputs_and_outputs(model):
+def remove_namespace_from_inputs_and_outputs(model: 'circle.ModelT'):
     """Remove namespace from tensor names within the given model."""
     pattern = r'(.*)::(.*)'
 

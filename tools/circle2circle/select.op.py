@@ -2,10 +2,15 @@
 
 import sys
 import argparse
+from typing import List, Dict, Tuple
 import o2o
 
+# Import specific Circle types for better type annotations
+from circle import (TensorT, OperatorT, SubGraphT, ModelT, BufferT, OperatorCodeT,
+                    BuiltinOperator, TensorType)
 
-def parse_operator_indices(indices_str):
+
+def parse_operator_indices(indices_str: str) -> List[int]:
     """Parse operator index string into a list of indices.
 
     Supports formats like:
@@ -63,7 +68,7 @@ def parse_operator_indices(indices_str):
     return sorted(list(indices))
 
 
-def analyze_tensor_connections(subgraph):
+def analyze_tensor_connections(subgraph: SubGraphT) -> Dict[str, any]:
     """Analyze all tensor connections in the subgraph.
 
     Args:
@@ -116,7 +121,9 @@ def analyze_tensor_connections(subgraph):
     }
 
 
-def select_operators_and_update_model(model, subgraph_index, operator_indices_to_keep):
+def select_operators_and_update_model(
+        model: ModelT, subgraph_index: int,
+        operator_indices_to_keep: List[int]) -> Tuple[int, int]:
     """Keep only specified operators in the model and remove all others.
 
     Args:

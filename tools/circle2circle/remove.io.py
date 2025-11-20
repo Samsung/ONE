@@ -2,15 +2,20 @@
 
 import sys
 import argparse
+from typing import List
 import o2o
 
+# Import specific Circle types for better type annotations
+from circle import (TensorT, OperatorT, SubGraphT, ModelT, BufferT, OperatorCodeT,
+                    BuiltinOperator, TensorType)
 
-def parse_names(names_str):
+
+def parse_names(names_str: str) -> List[str]:
     """Parse comma‑separated tensor names into a list of names."""
     return [name.strip() for name in names_str.split(',') if name.strip()]
 
 
-def remove_io_tensors(io_type, names_to_keep):
+def remove_io_tensors(io_type: str, names_to_keep: List[str]) -> None:
     """Remove input or output tensors, keeping only specified tensor names"""
     # Load the model using utility function
     model = o2o.load_model_from_stdin()
@@ -66,7 +71,7 @@ def remove_io_tensors(io_type, names_to_keep):
     o2o.save_model_to_stdout(model)
 
 
-def remove_io_tensors_by_id(io_type, ids_to_keep):
+def remove_io_tensors_by_id(io_type: str, ids_to_keep: List[int]) -> None:
     """Remove input or output tensors, keeping only specified tensor indices (IDs)"""
     model = o2o.load_model_from_stdin()
 

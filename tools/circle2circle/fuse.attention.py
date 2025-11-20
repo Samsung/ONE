@@ -1,11 +1,18 @@
 #!/usr/bin/env python3
 
 import numpy as np
+from typing import List, Optional, Tuple, Dict, Any
 import circle
 import o2o
 
+# Import specific Circle types for better type annotations
+from circle import (TensorT, OperatorT, SubGraphT, ModelT, BufferT, OperatorCodeT,
+                    BuiltinOperator, TensorType)
 
-def find_operator_by_output(subgraph, output_tensor_index):
+
+def find_operator_by_output(
+        subgraph: 'circle.SubGraphT',
+        output_tensor_index: int) -> Tuple[Optional[int], Optional['circle.OperatorT']]:
     """Find the first operator that produces the given output tensor index."""
     for op_idx, operator in enumerate(subgraph.operators):
         if operator.outputs and output_tensor_index in operator.outputs:
@@ -13,7 +20,8 @@ def find_operator_by_output(subgraph, output_tensor_index):
     return None, None
 
 
-def find_attention_blocks(model, subgraph):
+def find_attention_blocks(model: 'circle.ModelT',
+                          subgraph: 'circle.SubGraphT') -> List[Dict[str, Any]]:
     """Find all attention blocks in the subgraph."""
     attention_blocks = []
 
@@ -67,7 +75,8 @@ def find_attention_blocks(model, subgraph):
     return attention_blocks
 
 
-def map_attention_inputs(subgraph, block, model):
+def map_attention_inputs(subgraph: 'circle.SubGraphT', block: Dict[str, Any],
+                         model: 'circle.ModelT') -> Optional[List[int]]:
     """Map the 11 input tensors for attention fusion."""
     layer_idx = block['layer_idx']
 

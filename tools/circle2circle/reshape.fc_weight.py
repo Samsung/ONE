@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
 
 import numpy as np
+from typing import List, Dict
 import circle
 import o2o
+
+# Import specific Circle types for better type annotations
+from circle import (TensorT, OperatorT, SubGraphT, ModelT, BufferT, OperatorCodeT,
+                    BuiltinOperator, TensorType)
 
 
 def is_effectively_2d(shape):
@@ -10,7 +15,7 @@ def is_effectively_2d(shape):
     return all(dim == 1 for dim in shape[:-2])
 
 
-def count_tensor_usage(model, tensor_index):
+def count_tensor_usage(model: 'circle.ModelT', tensor_index: int) -> int:
     """Count how many operators use a specific tensor as input"""
     count = 0
     for subgraph in model.subgraphs:
@@ -22,7 +27,8 @@ def count_tensor_usage(model, tensor_index):
     return count
 
 
-def create_new_tensor(original_tensor, new_shape):
+def create_new_tensor(original_tensor: 'circle.TensorT',
+                      new_shape: List[int]) -> 'circle.TensorT':
     """Create a new tensor with the specified shape based on the original tensor"""
     new_tensor = circle.TensorT()
     new_tensor.shape = new_shape

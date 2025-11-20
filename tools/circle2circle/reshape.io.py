@@ -2,10 +2,15 @@
 
 import sys
 import argparse
+from typing import List
 import o2o
 
+# Import specific Circle types for better type annotations
+from circle import (TensorT, OperatorT, SubGraphT, ModelT, BufferT, OperatorCodeT,
+                    BuiltinOperator, TensorType)
 
-def parse_shape(shape_str):
+
+def parse_shape(shape_str: str) -> List[int]:
     """Parse a shape string like '[1,16,30,4]' into a list of integers."""
     try:
         # Strip surrounding brackets and whitespace, then split by commas
@@ -19,14 +24,14 @@ def parse_shape(shape_str):
         ) from e
 
 
-def is_target_shape(shape, target_shape):
+def is_target_shape(shape: List[int], target_shape: List[int]) -> bool:
     """Check if a tensor shape matches the target shape."""
     if len(shape) != len(target_shape):
         return False
     return list(shape) == target_shape
 
 
-def reshape_input_tensors(io_type, target_shape, new_shape):
+def reshape_input_tensors(io_type: str, target_shape: List[int], new_shape: List[int]):
     """Reshape input or output tensors from target_shape to new_shape."""
     model = o2o.load_model_from_stdin()
 
