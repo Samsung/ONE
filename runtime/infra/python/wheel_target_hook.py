@@ -12,7 +12,7 @@ class WheelBuildHook(BuildHookInterface):
 
         THIS_FILE_DIR = os.path.dirname(os.path.abspath(__file__))
         self.DEFAULT_PRODUCT_DIR = os.path.normpath(
-            os.path.join(THIS_FILE_DIR, "../../../../Product"))
+            os.path.join(THIS_FILE_DIR, "../../../Product"))
 
         self.product_dir = None
         self.platform = None
