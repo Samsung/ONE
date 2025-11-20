@@ -1,4 +1,5 @@
 /usr/lib/*/libonert.so
 /usr/lib/*/nnfw/libonert_core.so
 /usr/lib/*/nnfw/backend/libbackend_cpu.so
+/usr/lib/*/nnfw/backend/libbackend_ggml.so
 /usr/lib/*/nnfw/backend/libbackend_ruy.so
