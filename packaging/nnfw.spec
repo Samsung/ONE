@@ -11,6 +11,7 @@ Source1001: CPUINFO.tar.gz
 Source1002: EIGEN.tar.gz
 Source1003: GEMMLOWP.tar.gz
 Source1004: RUY.tar.gz
+Source1005: SENTENCEPIECE.tar.gz
 Source2001: EXTERNALS_FOR_ODC.tar.gz
 
 %{!?build_type:     %define build_type      Release}
@@ -96,16 +97,6 @@ Summary: GGMA generative AI framework
 
 %description ggma
 GGMA package for on-device generative AI framework
-
-%files ggma
-%manifest %{name}.manifest
-%defattr(-,root,root,-)
-%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
-%{_libdir}/ggma/libggma_api.so
-%{_libdir}/ggma/libggma_tokenize.so
-%{_includedir}/ggma/*
-%{_libdir}/pkgconfig/ggma.pc
-%endif
 %endif # ggma_build
 
 %if %{test_build} == 1
@@ -182,6 +173,10 @@ tar -xf %{SOURCE1004} -C ./runtime/externals
 mkdir ./externals
 tar -xf %{SOURCE2001} -C ./externals
 %endif # odc_build
+
+%if %{ggma_build} == 1
+tar -xf %{SOURCE1005} -C ./runtime/externals
+%endif # ggma_build
 
 %build
 %ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
@@ -330,6 +325,19 @@ install -m 644 %{overlay_path}/lib/libloco*.so %{buildroot}%{_libdir}/nnfw/odc
 %endif # asan
 %endif # arm armv7l armv7hl aarch64 x86_64 %ix86
 %endif # odc_build
+
+%if %{ggma_build} == 1
+%files ggma
+%manifest %{name}.manifest
+%defattr(-,root,root,-)
+%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
+%dir %{_libdir}/ggma
+%dir %{_includedir}/ggma
+%{_libdir}/ggma/lib*
+%{_includedir}/ggma/*
+%{_libdir}/pkgconfig/ggma.pc
+%endif
+%endif # ggma_build
 
 %changelog
 * Thu Mar 15 2018 Chunseok Lee <chunseok.lee@samsung.com>

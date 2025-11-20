@@ -30,8 +30,7 @@ public:
   Validator(const ir::Graph &graph) : backend::ValidatorBase(graph) {}
 
 private:
-#define OP(InternalName) \
-  void visit(const ir::operation::InternalName &) override { _supported = true; }
+#define OP(InternalName) void visit(const ir::operation::InternalName &) override;
 #include "Operation.lst"
 #undef OP
 };

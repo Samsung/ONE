@@ -76,10 +76,11 @@ size_t SentencePieceTokenizer::tokenize(const char *text, size_t text_len, int32
   int bos_id = _processor->bos_id();
   size_t bos_offset = 0;
 
+  // TODO: Make BOS token prepending configurable
   if (bos_id >= 0 && max_tokens > 0)
   {
-    tokens[0] = 1;  // Add BOS token
-    bos_offset = 1; // Start actual tokens from index 1
+    tokens[0] = bos_id; // Add BOS token
+    bos_offset = 1;     // Start actual tokens from index 1
   }
 
   size_t available_space = max_tokens - bos_offset;
