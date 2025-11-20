@@ -153,13 +153,19 @@ Generates a test Circle model with `BATCH_MATMUL` and `TRANSPOSE` operations whe
 
 ## `merge.circle.py`
 
-Merges two Circle model files into a single model by appending their subgraphs and adding signatures. The script accepts one or more Circle files (currently limited to two).
+Merges multiple Circle model files into a single model by appending their subgraphs and adding signatures. The script accepts any number of Circle files.
 
 - **Positional arguments**:
-  `circles` – one or more Circle model files to merge (e.g., `in1.circle in2.circle`).
+  `circles` – one or more Circle model files to merge (e.g., `in1.circle in2.circle in3.circle ...`).
 
 - **Optional arguments**:
-  `--sig-names` – semicolon‑separated signature names for the subgraphs (e.g., `"prefill;decode"`). If omitted, the script derives the signature names from the input filenames by stripping the `.circle` extension.
+  `--sig-names` – semicolon‑separated signature names for the subgraphs (e.g., `"prefill;decode;extra"`). If omitted, the script derives the signature names from the input filenames by stripping the `.circle` extension.
+
+### Features
+
+- **N-model merging**: Supports merging any number of input models (not limited to two).
+- **Operator code deduplication**: Identical operator codes are merged to reduce redundancy.
+- **Buffer deduplication**: Buffers with identical content (e.g., shared weights) are automatically deduplicated using SHA256 hashing, reducing the merged model size.
 
 ### Usage examples
 
@@ -167,8 +173,11 @@ Merges two Circle model files into a single model by appending their subgraphs a
 # Merge two models, using filenames as signature names
 ./merge.circle.py model1.circle model2.circle
 
-# Merge with custom signature names
-./merge.circle.py model1.circle model2.circle --sig-names "prefill;decode"
+# Merge three models with custom signature names
+./merge.circle.py model1.circle model2.circle model3.circle --sig-names "prefill;decode;extra"
+
+# Merge multiple models (N models)
+./merge.circle.py prefill.circle decode.circle > merged.circle
 ```
 
 The merged model is written to **standard output**, allowing it to be piped into other tools or redirected to a file.
