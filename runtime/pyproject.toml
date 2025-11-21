@@ -1,0 +1,29 @@
+[project]
+name = "onert"
+version = "0.2.0"
+requires_python = ">= 3.8"
+description = "onert API binding"
+license = "MIT"
+dependencies = [
+    "numpy"
+]
+
+[project.urls]
+Homepage = "https://github.com/Samsung/ONE"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.sdist]
+packages = ["onert/api/python/onert"]
+# this filters out unwanted files from being included in the archive
+only-packages = true
+
+[tool.hatch.build.targets.wheel]
+# this includes the python files in the wheel
+packages = ["onert/api/python/onert"]
+
+[tool.hatch.build.targets.wheel.hooks.custom]
+"path" = "infra/python/wheel_target_hook.py"
+
