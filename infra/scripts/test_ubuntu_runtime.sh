@@ -51,7 +51,6 @@ CheckTestPrepared
 echo "[[ ${TEST_PLATFORM}: ${BACKEND} backend test ]]"
 
 UNITTEST_SKIPLIST="Product/out/nnapi-gtest/nnapi_gtest.skip.${TEST_PLATFORM}.${BACKEND}"
-TFLITE_TESTLIST="Product/out/test/list/tflite_comparator.${TEST_ARCH}.${BACKEND}.list"
 REPORT_BASE="report/${BACKEND}"
 EXECUTORS=("Linear" "Dataflow" "Parallel")
 
@@ -67,7 +66,7 @@ do
   export EXECUTOR="${EXECUTOR}"
 
   NNAPIGTest "${BACKEND}" "${UNITTEST_SKIPLIST}" "${REPORT_PATH}"
-  TFLiteModelVerification "${BACKEND}" "${TFLITE_TESTLIST}" "${REPORT_PATH}"
+  TFLiteModelVerification "${BACKEND}" "${REPORT_PATH}"
 
   unset EXECUTOR
 done

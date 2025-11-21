@@ -12,7 +12,7 @@
 # CheckTestPrepared
 #   Check environment variable setting to run test
 #
-# TFLiteModelVerification $1 $2 $3
+# TFLiteModelVerification $1 $2
 #   Run ./tests/scripts/test-driver.sh script verification test
 #
 # NNAPIGTest $1 $2 $3
@@ -39,25 +39,16 @@ function CheckTestPrepared()
 }
 
 # $1: (required) backend
-# $2: (required) framework list file relative path from nnfw root directory
-#                pass empty string if there is no skiplist
-# $3: (required) relative path to report from nnfw root directory
+# $2: (required) relative path to report from nnfw root directory
 function TFLiteModelVerification()
 {
-  [[ $# -ne 3 ]] && echo "Invalid function argument setting" && exit 1
+  [[ $# -ne 2 ]] && echo "Invalid function argument setting" && exit 1
 
   pushd ${ROOT_PATH} > /dev/null
 
-  export BACKENDS=$1
-  if [[ "$2" == "" ]]; then
-    $INSTALL_PATH/test/onert-test verify-tflite \
-      --reportdir=$ROOT_PATH/$3
-  else
-    $INSTALL_PATH/test/onert-test verify-tflite \
-      --list=$2 \
-      --reportdir=$ROOT_PATH/$3
-  fi
-  unset BACKENDS
+  $INSTALL_PATH/test/onert-test verify-tflite \
+    --backend $1 \
+    --reportdir=$ROOT_PATH/$2
 
   popd > /dev/null
 }
