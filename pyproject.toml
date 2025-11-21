@@ -21,6 +21,7 @@ license-files = [
 dev = [
     "flatbuffers==23.5.26",
     "numpy==2.2.6",
+    "pre-commit==4.4.0",
 ]
 
 # This file does not describe packaging details for compiler and runtime
