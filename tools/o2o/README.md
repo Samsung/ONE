@@ -62,6 +62,52 @@ After creating each fused `FULLY_CONNECTED` operator, this script automatically 
 
 ##
 
+### `fuse.attention.py`
+
+Fuses attention blocks into a single `ATTENTION` operator. The script automatically detects attention blocks by searching for `FULLY_CONNECTED` operators with `attn_q_proj` weight names, making it robust to models with different prefix operators.
+
+#### Usage
+
+**Normal mode** (fuse attention blocks):
+```bash
+./fuse.attention.py < input.circle > output.circle
+```
+
+**Debug mode** (inspect operators and extract patterns):
+```bash
+./fuse.attention.py --debug < input.circle
+```
+
+Example output:
+```
+Index OpCode                           BuiltinCode   Weight Name
+-----------------------------------------------------------------------------------------------
+0     GATHER                               36        
+...
+20    FULLY_CONNECTED                       9        tico::p_model_layers_0_self_attn_q_proj_weight
+21    RESHAPE                              22        
+...
+64    FULLY_CONNECTED                       9        tico::p_model_layers_0_self_attn_o_proj_weight
+...
+
+Searching for attention block pattern based on weight names...
+Found start_op at 20 (Weight: tico::p_model_layers_0_self_attn_q_proj_weight)
+Found end_op at 64 (Weight: tico::p_model_layers_0_self_attn_o_proj_weight)
+
+Extracted range: 20 - 64
+ATTENTION_PATTERN_CODES = [9, 22, 39, 9, 22, 39, 9, 22, 39, 22, 22, 18, 45, 45, 59, 2, 18, 0, 18, 45, 45, 59, 2, 18, 0, 2, 2, 22, 45, 18, 39, 18, 22, 22, 126, 22, 0, 25, 22, 22, 126, 22, 39, 22, 9]
+Verified: Pattern starts with FULLY_CONNECTED
+Verified: Pattern ends with FULLY_CONNECTED
+```
+
+#### Features
+
+- **Dynamic detection**: Automatically finds attention block start offset by searching for weight names
+- **Pattern-based fusion**: Fuses 45-operator attention blocks (stride of 65 operators between blocks)
+- **Debug mode**: Provides operator inspection and pattern extraction for analysis
+
+
+
 ### `transpose.io.kcache.py`
 
 Finds input tensors matching the pattern `*key_cache_\d+` (e.g., `past_key_values_key_cache_0`) and transposes their second and third dimensions if they are 4D. For example, a shape `[d0, d1, d2, d3]` will become `[d0, d2, d1, d3]`.
