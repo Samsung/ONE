@@ -118,7 +118,7 @@ Finds tensors named `input_ids` and changes their data type from int64 to int32.
 
 ##
 
-## `merge.circle.py`
+## `merge.circles.py`
 
 Merges multiple Circle model files into a single model by appending their subgraphs and adding signatures. The script accepts any number of Circle files.
 
@@ -137,14 +137,11 @@ Merges multiple Circle model files into a single model by appending their subgra
 ### Usage examples
 
 ```bash
-# Merge two models, using filenames as signature names
-./merge.circle.py model1.circle model2.circle
+# Merge multiple models (N models)
+./merge.circles.py prefill.circle decode.circle > merged.circle
 
 # Merge three models with custom signature names
-./merge.circle.py model1.circle model2.circle model3.circle --sig-names "prefill;decode;extra"
-
-# Merge multiple models (N models)
-./merge.circle.py prefill.circle decode.circle > merged.circle
+./merge.circles.py model1.circle model2.circle model3.circle --sig-names "prefill;decode;extra"
 ```
 
 The merged model is written to **standard output**, allowing it to be piped into other tools or redirected to a file.
