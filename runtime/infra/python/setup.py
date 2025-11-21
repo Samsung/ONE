@@ -52,7 +52,7 @@ try:
 
     # copy *py files to package_directory
     PY_DIR = os.path.normpath(
-        os.path.join(THIS_FILE_DIR, '../../../runtime/onert/api/python/package'))
+        os.path.join(THIS_FILE_DIR, '../../../runtime/onert/api/python/onert'))
     for root, dirs, files in os.walk(PY_DIR):
         # Calculate the relative path from the source directory
         rel_path = os.path.relpath(root, PY_DIR)
