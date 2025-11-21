@@ -7,6 +7,10 @@ import re
 
 
 class WheelBuildHook(BuildHookInterface):
+    """
+    This file contains the code used by the runtime/pyproject.toml config file. It's executed when the user attempts to build
+    a python wheel for the ONERT API. The code in this file is executed before the target is built.
+    """
     def initialize(self, version, build_data):
         super().initialize(version, build_data)
 
