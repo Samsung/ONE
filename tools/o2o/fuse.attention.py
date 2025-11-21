@@ -107,14 +107,14 @@ def map_attention_inputs(subgraph: 'circle.SubGraphT', block: Dict[str, Any],
 
     # 6. position_cos
     position_cos_idx = o2o.get_tensor_index_by_name(
-        subgraph, "transformers.models.llama.modeling_llama.LlamaRotaryEmbedding::mul_1")
+        subgraph, "transformers.models.llama.modeling_llama.LlamaForCausalLM::cos")
     if position_cos_idx == -1:
         o2o.log("Could not find position_cos tensor")
         return None
 
     # 7. position_sin
     position_sin_idx = o2o.get_tensor_index_by_name(
-        subgraph, "transformers.models.llama.modeling_llama.LlamaRotaryEmbedding::mul_2")
+        subgraph, "transformers.models.llama.modeling_llama.LlamaForCausalLM::sin")
     if position_sin_idx == -1:
         o2o.log("Could not find position_sin tensor")
         return None
