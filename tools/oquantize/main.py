@@ -9,8 +9,11 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../o2o'
 try:
     import circle
 except ImportError:
-    print("Error: Could not import 'circle'. Make sure tools/o2o is in PYTHONPATH or the script is run from the correct location.")
+    print(
+        "Error: Could not import 'circle'. Make sure tools/o2o is in PYTHONPATH or the script is run from the correct location."
+    )
     sys.exit(1)
+
 
 def load_ggml_library():
     lib_path = os.path.join(os.path.dirname(__file__), 'lib', 'libggml_quant.so')
@@ -22,13 +25,12 @@ def load_ggml_library():
 
     # void quantize_row_q4_0(const float * x, void * y, int64_t k);
     lib.quantize_row_q4_0.argtypes = [
-        ctypes.POINTER(ctypes.c_float),
-        ctypes.c_void_p,
-        ctypes.c_int64
+        ctypes.POINTER(ctypes.c_float), ctypes.c_void_p, ctypes.c_int64
     ]
     lib.quantize_row_q4_0.restype = None
 
     return lib
+
 
 def quantize_tensor(lib, tensor_data):
     # tensor_data is a numpy array of float32
@@ -55,6 +57,7 @@ def quantize_tensor(lib, tensor_data):
 
     return bytearray(output_buffer)
 
+
 def main():
     if len(sys.argv) != 4:
         print("Usage: python -m oquantize <quant_type> <input_circle> <output_circle>")
@@ -66,7 +69,9 @@ def main():
     output_path = sys.argv[3]
 
     if quant_type != "q4_0":
-        print(f"Error: Unsupported quantization type '{quant_type}'. Only 'q4_0' is supported.")
+        print(
+            f"Error: Unsupported quantization type '{quant_type}'. Only 'q4_0' is supported."
+        )
         sys.exit(1)
 
     if not os.path.exists(input_path):
@@ -120,17 +125,22 @@ def main():
                             data_bytes = bytes(buffer_obj.data)
                             tensor_data = np.frombuffer(data_bytes, dtype=np.float32)
 
-                            print(f"Quantizing tensor {target_tensor_idx} (size={tensor_data.size})...")
+                            print(
+                                f"Quantizing tensor {target_tensor_idx} (size={tensor_data.size})..."
+                            )
 
                             quantized_data = quantize_tensor(lib, tensor_data)
 
                             if quantized_data is not None:
                                 # Update buffer
-                                buffer_obj.data = list(quantized_data) # FlatBuffers python expects list of ints for ubyte vector?
+                                buffer_obj.data = list(
+                                    quantized_data
+                                )  # FlatBuffers python expects list of ints for ubyte vector?
                                 # Or numpy array? circle.py:
                                 # if np is not None and type(self.data) is np.ndarray: builder.CreateNumpyVector(self.data)
                                 # So we can set it to numpy array of uint8
-                                buffer_obj.data = np.frombuffer(quantized_data, dtype=np.uint8)
+                                buffer_obj.data = np.frombuffer(quantized_data,
+                                                                dtype=np.uint8)
 
                                 # Update tensor type
                                 tensor.type = circle.TensorType.GGML_Q4_0
@@ -149,6 +159,7 @@ def main():
         print("Done.")
     else:
         print("No tensors quantized.")
+
 
 if __name__ == "__main__":
     main()

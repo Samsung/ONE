@@ -6,6 +6,7 @@ from setuptools.command.build_py import build_py
 
 import shutil
 
+
 def find_flatc():
     # 1. Check FLATC_PATH environment variable
     flatc_env = os.environ.get('FLATC_PATH')
@@ -30,14 +31,18 @@ def find_flatc():
 
     return None
 
+
 def generate_circle_py():
     flatc_path = find_flatc()
     if not flatc_path:
-        print("Error: flatc not found. Please set FLATC_PATH environment variable or ensure flatc is in your PATH or build directory.")
+        print(
+            "Error: flatc not found. Please set FLATC_PATH environment variable or ensure flatc is in your PATH or build directory."
+        )
         sys.exit(1)
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    schema_path = os.path.abspath(os.path.join(script_dir, '../../runtime/libs/circle-schema/circle_schema.fbs'))
+    schema_path = os.path.abspath(
+        os.path.join(script_dir, '../../runtime/libs/circle-schema/circle_schema.fbs'))
 
     if not os.path.exists(schema_path):
         print(f"Error: Schema file not found at {schema_path}")
@@ -47,11 +52,7 @@ def generate_circle_py():
 
     print(f"Generating circle.py using {flatc_path} from {schema_path}...")
     cmd = [
-        flatc_path,
-        '--python',
-        '--gen-object-api',
-        '--gen-onefile',
-        '-o', output_dir,
+        flatc_path, '--python', '--gen-object-api', '--gen-onefile', '-o', output_dir,
         schema_path
     ]
 
@@ -65,9 +66,11 @@ def generate_circle_py():
         print(f"Failed to generate circle.py")
         sys.exit(1)
 
+
 def compile_ggml_lib():
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    ggml_src_dir = os.path.abspath(os.path.join(script_dir, '../../runtime/3rdparty/ggml/src'))
+    ggml_src_dir = os.path.abspath(
+        os.path.join(script_dir, '../../runtime/3rdparty/ggml/src'))
     lib_dir = os.path.join(script_dir, 'lib')
     lib_name = 'libggml_quant.so'
     lib_path = os.path.join(lib_dir, lib_name)
@@ -78,17 +81,11 @@ def compile_ggml_lib():
     print(f"Compiling {lib_name} from {ggml_src_dir}...")
 
     cmd = [
-        'gcc',
-        '-shared',
-        '-fPIC',
-        '-O3',
-        '-o', lib_path,
+        'gcc', '-shared', '-fPIC', '-O3', '-o', lib_path,
         os.path.join(ggml_src_dir, 'ggml-quants.c'),
         os.path.join(ggml_src_dir, 'ggml-aarch64.c'),
-        os.path.join(ggml_src_dir, 'ggml.c'),
-        '-I', ggml_src_dir,
-        '-I', os.path.abspath(os.path.join(ggml_src_dir, '../include')),
-        '-lm'
+        os.path.join(ggml_src_dir, 'ggml.c'), '-I', ggml_src_dir, '-I',
+        os.path.abspath(os.path.join(ggml_src_dir, '../include')), '-lm'
     ]
 
     print("Running command:", " ".join(cmd))
@@ -99,11 +96,13 @@ def compile_ggml_lib():
         print(f"Failed to compile {lib_name}: {e}")
         sys.exit(1)
 
+
 class CustomBuildPy(build_py):
     def run(self):
         generate_circle_py()
         compile_ggml_lib()
         super().run()
+
 
 if __name__ == "__main__":
     if len(sys.argv) == 1:
