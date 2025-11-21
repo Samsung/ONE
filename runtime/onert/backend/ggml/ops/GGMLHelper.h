@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CPU_GGML_HELPER_H__
-#define __ONERT_BACKEND_CPU_GGML_HELPER_H__
+#ifndef __ONERT_BACKEND_GGML_GGML_HELPER_H__
+#define __ONERT_BACKEND_GGML_GGML_HELPER_H__
 
 #include <backend/IPortableTensor.h>
 
 #include <ggml.h>
 
-namespace onert::backend::cpu::ops
+namespace onert::backend::ggml::ops
 {
 
 struct ggml_tensor getGGMLTensor(const IPortableTensor *tensor);
 
-} // namespace onert::backend::cpu::ops
+} // namespace onert::backend::ggml::ops
 
 #endif

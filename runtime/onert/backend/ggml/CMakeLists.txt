@@ -1,6 +1,7 @@
 set(LIB_ONERT_BACKEND_GGML onert_backend_ggml)
 
 file(GLOB SOURCES "*.cc")
+list(APPEND SOURCES ops/GGMLHelper.cc)
 macro(OP NAME)
   list(APPEND SOURCES ops/${NAME}Layer.cc)
 endmacro(OP)
