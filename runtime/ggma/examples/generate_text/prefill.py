@@ -72,4 +72,4 @@ import tico
 model = AutoModelForCausalLM.from_pretrained(model_name)
 model.eval()
 circle_model = tico.convert(model, captured_input)
-circle_model.save(f"tinyllama.prefill.circle")
+circle_model.save(f"prefill.circle")
