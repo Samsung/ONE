@@ -1,0 +1,49 @@
+# for pre-commit 4.4.0
+repos:
+  # - repo: https://github.com/pre-commit/pre-commit-hooks
+  #   rev: 'v6.0.0'
+  #   hooks:
+  #   - name: 'Check file end line'
+  #     id: end-of-file-fixer
+  #     # exclude .svg files
+  #     exclude: \.(svg)$
+  #   - name: 'Check trailing whitespace'
+  #     id: trailing-whitespace
+
+  - repo: https://github.com/rhysd/actionlint
+    rev: 'v1.7.9'
+    # https://github.com/rhysd/actionlint/blob/v1.7.9/docs/usage.md#pre-commit
+    hooks:
+    - name: 'Check CI workflows with actionlint'
+      id: actionlint
+
+  - repo: https://github.com/google/yapf
+    rev: 'v0.43.0'
+    hooks:
+    - name: 'Check CI Python scripts with yapf'
+      id: yapf
+      types: [file] # override default type check exceptional case
+      # yapf pre-commit cannot handle exceptional case:
+      #   one-cmds don't have '.py' extension.
+      #   onecc-docker don't have '.py' extension.
+      #   visq don't have '.py' extension.
+      #   fm-equalize doesn't have '.py' extension.
+      files:
+        (?x)^(
+          .*\.py$|
+          compiler/one-cmds/[^(\./)]*$|
+          compiler/onecc-docker/onecc-docker$|
+          compiler/visq/visq$|
+          compiler/fm-equalize/fm-equalize$
+        )
+      # Ignore shell script: one-prepare-venv
+      exclude:
+        ^compiler/one-cmds/one-prepare-venv$
+
+  - repo: https://github.com/pre-commit/mirrors-clang-format
+    rev: 'v16.0.6'
+    hooks:
+    - name: 'Check C/C++ code with clang-format'
+      id: clang-format
+      types_or: [file]  # override default type check to cl files
+      files: ((\.c[cl]?)|(\.cpp)|(\.h(pp)?))$
