@@ -189,6 +189,6 @@ if __name__ == "__main__":
     # Generate output filename from current script filename
     # e.g., cvt.bmm_lhs_const.fc.circle_gen.py -> cvt.bmm_lhs_const.fc.circle
     script_name = os.path.basename(__file__)
-    output_file = script_name.replace('gen_circle.', '').replace('.py', '.circle')
+    output_file = os.path.splitext(script_name)[0] + '.circle'
 
     create_test_bmm_k_not_1_model(output_file)

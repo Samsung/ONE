@@ -25,20 +25,6 @@ Filters example:
 
 ## Filter List
 
-### `remove.io.py`
-
-Removes input or output tensors from a Circle model, keeping only the tensors at the specified indices.
-
-#### Arguments
-
-*   `io_type` (required): Specifies whether to process `input` or `output` tensors.
-*   `--keep_by_name` (optional): A string defining the names of the tensors to keep. It supports comma‑separated tensor names (e.g., "input1,input2").
-*   `--keep_by_id` (optional): Specifies the tensor indices to keep. Supports multiple ranges separated by commas and individual indices (e.g., "0,2-4").
-
-**Note:** Exactly one of `--keep_by_name` or `--keep_by_id` must be provided.
-
-##
-
 ### `fuse.bmm_lhs_const.py`
 
 Fuses `BATCH_MATMUL` + `TRANSPOSE` to `FULLY_CONNECTED` when LHS is constant, and automatically reshapes the weight tensors of the **newly created** `FULLY_CONNECTED` operators from effectively 2D shapes (e.g., `[1, 1, D_out, D_in]`) to strict 2D shapes (`[D_out, D_in]`).

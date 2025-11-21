@@ -274,6 +274,59 @@ def remove_buffers_and_update_model(model: ModelT,
     return sorted(removed_indices)
 
 
+def prune_unused_io(model: ModelT) -> bool:
+    """
+    Removes tensors from Subgraph Inputs/Outputs if they are not connected to any operator.
+
+    Args:
+        model: The mutable Circle model object.
+
+    Returns:
+        bool: True if any changes were made.
+    """
+    changed = False
+    for i, subgraph in enumerate(model.subgraphs):
+        # Collect used inputs and outputs from operators
+        op_inputs = set()
+        op_outputs = set()
+        for op_idx, op in enumerate(subgraph.operators):
+            if op.inputs is not None:
+                for inp in op.inputs:
+                    if inp != -1:
+                        op_inputs.add(inp)
+            if op.outputs is not None:
+                for out in op.outputs:
+                    op_outputs.add(out)
+
+        # Prune Subgraph Inputs
+        # A Subgraph Input is unused if it is not consumed by any operator
+        if subgraph.inputs is not None:
+            original_len = len(subgraph.inputs)
+            new_inputs = [idx for idx in subgraph.inputs if idx in op_inputs]
+            if len(new_inputs) < original_len:
+                removed = [idx for idx in subgraph.inputs if idx not in op_inputs]
+                o2o.log(
+                    f"Subgraph {i}: Pruning unused inputs (not consumed by any op): {removed}"
+                )
+                subgraph.inputs = new_inputs
+                changed = True
+
+        # Prune Subgraph Outputs
+        # A Subgraph Output is unused if it is not produced by any operator
+        if subgraph.outputs is not None:
+            original_len = len(subgraph.outputs)
+            new_outputs = [idx for idx in subgraph.outputs if idx in op_outputs]
+            if len(new_outputs) < original_len:
+                removed = [idx for idx in subgraph.outputs if idx not in op_outputs]
+                o2o.log(
+                    f"Subgraph {i}: Pruning unused outputs (not produced by any op): {removed}"
+                )
+                subgraph.outputs = new_outputs
+                changed = True
+
+    return changed
+
+
 def main():
     # Read the entire model from stdin
     data = sys.stdin.buffer.read()
@@ -285,6 +338,10 @@ def main():
 
     total_unused_tensors_count = 0
     model_changed = False
+
+    # Prune unused inputs/outputs first
+    if prune_unused_io(model):
+        model_changed = True
 
     o2o.log(f"Processing {model_ro.SubgraphsLength()} subgraph(s)...")
     for i in range(model_ro.SubgraphsLength()):
