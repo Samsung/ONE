@@ -10,51 +10,6 @@ from circle import (TensorT, OperatorT, SubGraphT, ModelT, BufferT, OperatorCode
                     BuiltinOperator, TensorType)
 
 
-def get_tensor_by_index(subgraph: 'circle.SubGraphT',
-                        index: int) -> Optional['circle.TensorT']:
-    """Safely get tensor by its index."""
-    if 0 <= index < len(subgraph.tensors):
-        return subgraph.tensors[index]
-    return None
-
-
-def is_tensor_constant(tensor: 'circle.TensorT',
-                       model_buffers: List['circle.BufferT']) -> bool:
-    """Check if a tensor is constant by verifying its buffer."""
-    if tensor and tensor.buffer != 0 and 0 <= tensor.buffer - 1 < len(model_buffers):
-        # A non-zero buffer index that points to a valid buffer typically means it's constant.
-        # The 0th buffer is always an empty buffer.
-        return True
-    return False
-
-
-def find_operator_by_output(
-        subgraph: 'circle.SubGraphT',
-        output_tensor_index: int) -> Tuple[Optional[int], Optional['circle.OperatorT']]:
-    """Find the first operator that produces the given output tensor index."""
-    for op_idx, operator in enumerate(subgraph.operators):
-        if operator.outputs and output_tensor_index in operator.outputs:
-            return op_idx, operator
-    return None, None
-
-
-def from_buffer(buffer_index, model_buffers):
-    """Converts buffer data to a numpy array (int32)."""
-    if buffer_index > 0 and buffer_index - 1 < len(model_buffers):
-        buffer_obj = model_buffers[buffer_index]
-        if buffer_obj and len(buffer_obj.data) > 0:
-            # Assuming data is a bytearray of int32s.
-            # This needs to match the actual data type in the model.
-            try:
-                return np.frombuffer(buffer_obj.data, dtype=np.int32)
-            except Exception as e:
-                o2o.log(
-                    f"Could not parse permutation tensor buffer for buffer index {buffer_index}: {e}"
-                )
-                return None
-    return None
-
-
 def is_effectively_2d(shape):
     """Check if a tensor shape is effectively 2D (all leading dimensions are 1)"""
     if len(shape) < 2:
@@ -72,21 +27,6 @@ def count_tensor_usage(model, tensor_index):
                     if input_idx == tensor_index:
                         count += 1
     return count
-
-
-def get_or_create_operator_code(model: 'circle.ModelT',
-                                builtin_op_type: 'circle.BuiltinOperator') -> int:
-    """Get the index of an operator code, or create it if it doesn't exist."""
-    for i, op_code in enumerate(model.operatorCodes):
-        if op_code.builtinCode == builtin_op_type:
-            return i
-
-    # If not found, create a new one
-    new_op_code = circle.OperatorCodeT()
-    new_op_code.builtinCode = builtin_op_type
-    new_op_code.version = 1  # Default version
-    model.operatorCodes.append(new_op_code)
-    return len(model.operatorCodes) - 1
 
 
 def create_transpose_permutation_tensor(model: 'circle.ModelT',
@@ -113,6 +53,69 @@ def create_transpose_permutation_tensor(model: 'circle.ModelT',
     tensor_index = len(subgraph.tensors) - 1
 
     return tensor_index
+
+
+def create_reshaped_tensor(original_tensor: 'circle.TensorT',
+                           new_shape: List[int]) -> 'circle.TensorT':
+    """Create a new tensor with the specified shape based on the original tensor"""
+    new_tensor = circle.TensorT()
+    new_tensor.shape = new_shape
+    new_tensor.type = original_tensor.type
+    new_tensor.buffer = original_tensor.buffer
+    new_tensor.name = original_tensor.name
+    new_tensor.quantization = original_tensor.quantization
+    new_tensor.isVariable = original_tensor.isVariable
+    new_tensor.sparsity = original_tensor.sparsity
+    new_tensor.shapeSignature = original_tensor.shapeSignature
+    new_tensor.hasRank = original_tensor.hasRank
+    new_tensor.variantTensors = original_tensor.variantTensors
+    new_tensor.compressionType = original_tensor.compressionType
+    return new_tensor
+
+
+def reshape_fc_weights(model: 'circle.ModelT', subgraph: 'circle.SubGraphT',
+                       fc_op_idx: int) -> None:
+    """Reshape FullyConnected weights from effectively 2D to 2D for a specific operator"""
+    fc_op = subgraph.operators[fc_op_idx]
+
+    # Get the weights tensor (typically the second input)
+    if len(fc_op.inputs) < 2:
+        return
+
+    weights_index = fc_op.inputs[1]  # Weights is usually the second input
+    weights_tensor = subgraph.tensors[weights_index]
+
+    # Check if the weights tensor is effectively 2D
+    if len(weights_tensor.shape) > 2 and is_effectively_2d(weights_tensor.shape):
+        # Ensure keepNumDims is True
+        if hasattr(fc_op.builtinOptions, 'keepNumDims'):
+            fc_op.builtinOptions.keepNumDims = True
+
+        # Check if this tensor is used by multiple operators
+        usage_count = count_tensor_usage(model, weights_index)
+
+        if usage_count > 1:
+            # Create a new tensor for this operator to avoid affecting others
+            new_shape = weights_tensor.shape[-2:]  # Remove leading dimensions of 1
+            new_tensor = create_reshaped_tensor(weights_tensor, new_shape)
+
+            # Add the new tensor to the subgraph
+            new_tensor_index = len(subgraph.tensors)
+            subgraph.tensors.append(new_tensor)
+
+            # Update the operator input to use the new tensor
+            fc_op.inputs[1] = new_tensor_index
+
+            o2o.log(
+                f"Created reshaped weight tensor {new_tensor_index} for FC operator at {fc_op_idx}"
+            )
+        else:
+            # Directly modify the tensor shape since it's only used once
+            original_shape = weights_tensor.shape
+            weights_tensor.shape = weights_tensor.shape[-2:]
+            o2o.log(
+                f"Reshaped weight tensor {weights_index} from {original_shape} to {weights_tensor.shape}"
+            )
 
 
 def add_rhs_transpose_if_needed(model: 'circle.ModelT', subgraph: 'circle.SubGraphT',
@@ -151,7 +154,7 @@ def add_rhs_transpose_if_needed(model: 'circle.ModelT', subgraph: 'circle.SubGra
 
     # Create TRANSPOSE operator
     transpose_op = circle.OperatorT()
-    transpose_op.opcodeIndex = get_or_create_operator_code(
+    transpose_op.opcodeIndex = o2o.get_or_create_operator_code(
         model, circle.BuiltinOperator.TRANSPOSE)
     transpose_op.inputs = [rhs_tensor_index, perm_tensor_index]
     transpose_op.outputs = [transposed_rhs_tensor_index]
@@ -196,7 +199,8 @@ def fuse_bmm_transpose() -> None:
             continue
 
         transpose_input_tensor_idx = transpose_op.inputs[0]
-        bmm_op_idx, bmm_op = find_operator_by_output(subgraph, transpose_input_tensor_idx)
+        bmm_op_idx, bmm_op = o2o.find_operator_by_output(subgraph,
+                                                         transpose_input_tensor_idx)
 
         # Check if the found operator is BATCH_MATMUL
         if bmm_op is None or model.operatorCodes[
@@ -206,8 +210,8 @@ def fuse_bmm_transpose() -> None:
         lhs_tensor_index = bmm_op.inputs[0]
         rhs_tensor_index = bmm_op.inputs[1]
 
-        lhs_tensor = get_tensor_by_index(subgraph, lhs_tensor_index)
-        rhs_tensor = get_tensor_by_index(subgraph, rhs_tensor_index)
+        lhs_tensor = o2o.get_tensor_by_index(subgraph, lhs_tensor_index)
+        rhs_tensor = o2o.get_tensor_by_index(subgraph, rhs_tensor_index)
 
         if not lhs_tensor or not rhs_tensor:
             o2o.log(
@@ -216,7 +220,7 @@ def fuse_bmm_transpose() -> None:
             continue
 
         # Crucial check: LHS must be constant
-        if not is_tensor_constant(lhs_tensor, model.buffers):
+        if not o2o.is_tensor_constant(lhs_tensor, model.buffers):
             o2o.log(
                 f"LHS tensor '{lhs_tensor.name if lhs_tensor.name else lhs_tensor_index}' for BATCH_MATMUL at index {bmm_op_idx} is not constant. Skipping fusion."
             )
@@ -228,21 +232,30 @@ def fuse_bmm_transpose() -> None:
         # For a 3D tensor [B, M, N] -> [B, N, M], permutation is [0, 2, 1]
         valid_permutation = False
         perm_tensor_index = transpose_op.inputs[1]
-        perm_tensor = get_tensor_by_index(subgraph, perm_tensor_index)
+        perm_tensor = o2o.get_tensor_by_index(subgraph, perm_tensor_index)
 
-        if perm_tensor and is_tensor_constant(perm_tensor, model.buffers):
+        if perm_tensor and o2o.is_tensor_constant(perm_tensor, model.buffers):
             # Get permutation data from buffer using the new helper function
-            perm = from_buffer(perm_tensor.buffer, model.buffers)
-            if len(perm) >= 2:  # At least 2D
-                # Check if the last two elements of permutation are swapped
-                # and other elements are in their original ascending order (0, 1, 2, ...)
-                expected_perm_prefix = list(range(len(perm) - 2))
-                actual_perm_prefix = perm[:-2]
+            perm = o2o.from_buffer(perm_tensor.buffer, model.buffers)
+            if perm is None:
+                o2o.log(
+                    f"Could not read permutation buffer at index {perm_tensor.buffer}")
+                valid_permutation = False
+            else:
+                # Use the tensor's shape to determine the actual permutation length
+                perm_length = perm_tensor.shape[0] if perm_tensor.shape else len(perm)
+                perm = perm[:perm_length]  # Trim to actual length
 
-                if np.all(actual_perm_prefix == expected_perm_prefix) and \
-                    perm[-2] == len(perm) - 1 and \
-                    perm[-1] == len(perm) - 2:
-                    valid_permutation = True
+                if len(perm) >= 2:  # At least 2D
+                    # Check if the last two elements of permutation are swapped
+                    # and other elements are in their original ascending order (0, 1, 2, ...)
+                    expected_perm_prefix = list(range(len(perm) - 2))
+                    actual_perm_prefix = perm[:-2]
+
+                    if np.all(actual_perm_prefix == expected_perm_prefix) and \
+                        perm[-2] == len(perm) - 1 and \
+                        perm[-1] == len(perm) - 2:
+                        valid_permutation = True
         else:
             o2o.log(
                 f"Permutation tensor for TRANSPOSE at index {i} is not constant or not found. Skipping."
@@ -260,7 +273,7 @@ def fuse_bmm_transpose() -> None:
 
         # Create the new FULLY_CONNECTED operator
         fc_op = circle.OperatorT()
-        fc_op.opcodeIndex = get_or_create_operator_code(
+        fc_op.opcodeIndex = o2o.get_or_create_operator_code(
             model, circle.BuiltinOperator.FULLY_CONNECTED)
         # Set inputs: [transposed_rhs, original_lhs, -1] where -1 means bias not exists
         fc_op.inputs = [final_rhs_tensor_index, lhs_tensor_index, -1]
@@ -277,6 +290,9 @@ def fuse_bmm_transpose() -> None:
         # Insert it at the position of the original BATCH_MATMUL operator
         o2o.log(f"Replacing batchmatmul at {bmm_op_idx} with fullyconnected")
         subgraph.operators[bmm_op_idx] = fc_op
+
+        # Reshape the weights of the newly created FC operator
+        reshape_fc_weights(model, subgraph, bmm_op_idx)
 
         # Mark the original TRANSPOSE operator for removal
         operators_to_remove.append(i)
@@ -295,6 +311,7 @@ def fuse_bmm_transpose() -> None:
     # Note: Cleanup of unused tensors and operator codes is a more advanced step
     # and not implemented here for simplicity, but would be part of a production-ready script.
     o2o.log(f"TODO: Remove tensors at {tensors_to_potentially_remove}")
+
     o2o.save_model_to_stdout(model)
 
 

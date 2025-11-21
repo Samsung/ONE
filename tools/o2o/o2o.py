@@ -274,7 +274,8 @@ def get_operator_code_key(
         return ('unknown', None)
 
 
-def get_or_create_operator_code(model, builtin_op_type) -> int:
+def get_or_create_operator_code(model: 'circle.ModelT',
+                                builtin_op_type: 'circle.BuiltinOperator') -> int:
     """Get the index of an operator code, or create it if it doesn't exist."""
     for i, op_code in enumerate(model.operatorCodes):
         if op_code.builtinCode == builtin_op_type:
@@ -287,3 +288,39 @@ def get_or_create_operator_code(model, builtin_op_type) -> int:
     new_op_code.version = 1  # Default version
     model.operatorCodes.append(new_op_code)
     return len(model.operatorCodes) - 1
+
+
+def find_operator_by_output(
+        subgraph: 'circle.SubGraphT',
+        output_tensor_index: int) -> Tuple[Optional[int], Optional['circle.OperatorT']]:
+    """Find the first operator that produces the given output tensor index."""
+    for op_idx, operator in enumerate(subgraph.operators):
+        if operator.outputs and output_tensor_index in operator.outputs:
+            return op_idx, operator
+    return None, None
+
+
+def from_buffer(buffer_index: int,
+                model_buffers: List['circle.BufferT']) -> Optional['np.ndarray']:
+    """Converts buffer data to a numpy array (int32).
+
+    Args:
+        buffer_index: Buffer index (1-based, as stored in tensor.buffer)
+        model_buffers: List of buffers from the model
+
+    Returns:
+        numpy array of int32 values, or None if buffer is invalid
+    """
+    import numpy as np
+
+    if buffer_index > 0 and buffer_index < len(model_buffers):
+        buffer_obj = model_buffers[buffer_index]
+        if buffer_obj and len(buffer_obj.data) > 0:
+            # Assuming data is a bytearray of int32s.
+            # This needs to match the actual data type in the model.
+            try:
+                return np.frombuffer(buffer_obj.data, dtype=np.int32)
+            except Exception as e:
+                log(f"Could not parse buffer for buffer index {buffer_index}: {e}")
+                return None
+    return None

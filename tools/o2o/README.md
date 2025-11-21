@@ -39,21 +39,9 @@ Removes input or output tensors from a Circle model, keeping only the tensors at
 
 ##
 
-### `reshape.fc_weight.py`
-
-Reshapes the weight tensors of `FULLY_CONNECTED` operators from an effectively 2D shape (e.g., `[1, 1, D_out, D_in]`) to a strict 2D shape (`[D_out, D_in]`). This is useful for optimizing or standardizing the model structure. If a weight tensor is used by multiple operators, a new tensor is created for the specific operator to prevent conflicts.
-
-##
-
-### `transpose.io.kcache.py`
-
-Finds input tensors matching the pattern `*key_cache_\d+` (e.g., `past_key_values_key_cache_0`) and transposes their second and third dimensions if they are 4D. For example, a shape `[d0, d1, d2, d3]` will become `[d0, d2, d1, d3]`.
-
-##
-
 ### `fuse.bmm_lhs_const.py`
 
-Fuses `BATCH_MATMUL` + `TRANSPOSE` to `FULLY_CONNECTED` when LHS is constant.
+Fuses `BATCH_MATMUL` + `TRANSPOSE` to `FULLY_CONNECTED` when LHS is constant, and automatically reshapes the weight tensors of the **newly created** `FULLY_CONNECTED` operators from effectively 2D shapes (e.g., `[1, 1, D_out, D_in]`) to strict 2D shapes (`[D_out, D_in]`).
 
 #### Transformation Diagram
 
@@ -79,7 +67,21 @@ Key Relationship:
 - BatchMatMul's RHS becomes FullyConnected's input
 ```
 
+#### Additional Processing
+
+After creating each fused `FULLY_CONNECTED` operator, this script automatically reshapes its weight tensor:
+- Converts effectively 2D shapes (e.g., `[1, 1, D_out, D_in]`) to strict 2D shapes (`[D_out, D_in]`)
+- If a weight tensor is used by multiple operators, creates a new tensor for the specific operator to prevent conflicts
+- Sets `keepNumDims = True` to preserve batch dimensions
+
 ##
+
+### `transpose.io.kcache.py`
+
+Finds input tensors matching the pattern `*key_cache_\d+` (e.g., `past_key_values_key_cache_0`) and transposes their second and third dimensions if they are 4D. For example, a shape `[d0, d1, d2, d3]` will become `[d0, d2, d1, d3]`.
+
+##
+
 
 ### `select.op.py`
 

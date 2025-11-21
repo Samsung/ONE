@@ -10,16 +10,6 @@ from circle import (TensorT, OperatorT, SubGraphT, ModelT, BufferT, OperatorCode
                     BuiltinOperator, TensorType)
 
 
-def find_operator_by_output(
-        subgraph: 'circle.SubGraphT',
-        output_tensor_index: int) -> Tuple[Optional[int], Optional['circle.OperatorT']]:
-    """Find the first operator that produces the given output tensor index."""
-    for op_idx, operator in enumerate(subgraph.operators):
-        if operator.outputs and output_tensor_index in operator.outputs:
-            return op_idx, operator
-    return None, None
-
-
 def find_attention_blocks(model: 'circle.ModelT',
                           subgraph: 'circle.SubGraphT') -> List[Dict[str, Any]]:
     """Find all attention blocks in the subgraph."""
