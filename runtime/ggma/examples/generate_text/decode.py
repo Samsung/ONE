@@ -65,4 +65,4 @@ from transformers.models.llama.modeling_llama import LlamaAttention
 model = AutoModelForCausalLM.from_pretrained(model_name)
 model.eval()
 circle_model = tico.convert(model, captured_input)
-circle_model.save(f"tinyllama.decode.circle")
+circle_model.save(f"decode_.circle")
