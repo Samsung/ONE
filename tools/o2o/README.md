@@ -14,16 +14,11 @@ All circle2circle command scripts read a Circle model from **standard input** an
 
 An example:
 
-```bash
-./rename.io.remove_namespace.py < in.circle > out.circle
-```
-
 Filters example:
 
 ```bash
-./with.py in.circle |
-    ./select.op.py --by_id 0-181 |
-    ./gc.py > new.circle
+./select.op.py --by_id 0-181 < in.circle |
+./gc.py > out.circle
 ```
 
 <br>
@@ -41,23 +36,6 @@ Removes input or output tensors from a Circle model, keeping only the tensors at
 *   `--keep_by_id` (optional): Specifies the tensor indices to keep. Supports multiple ranges separated by commas and individual indices (e.g., "0,2-4").
 
 **Note:** Exactly one of `--keep_by_name` or `--keep_by_id` must be provided.
-
-##
-
-### `rename.io.remove_namespace.py`
-
-Removes namespaces from the names of input and output tensors. A namespace is identified as the part of the tensor name before a double colon (`::`). For example, a tensor named `module::input_tensor` would be renamed to `input_tensor`.
-
-##
-
-### `rename.io.remove_prefix.py`
-
-Removes a user-specified prefix from the names of all tensors in the model.
-
-#### Arguments
-
-*   `prefix` (required): The string prefix to remove from tensor names.
-
 
 ##
 
@@ -137,19 +115,6 @@ Performs garbage collection by removing unreachable tensors and buffers, reducin
 Finds tensors named `input_ids` and changes their data type from int64 to int32. This filter is useful for models that need to be compatible with hardware or frameworks that expect input_ids to be 32-bit integers instead of 64-bit integers.
 
 ##
-
-### `gen_circle.*.py`
-
-
-These scripts generate test Circle models with specific operator patterns for development and testing purposes. Each script follows the naming convention `gen_circle.<operation>.py` and automatically generates an output file with the name `<operation>.circle` when executed.
-
-#### `gen_circle.add.py`
-
-Generates a simple Circle model with one `ADD` operator for testing basic functionality.
-
-#### `gen_circle.bmm_lhs_const.fc.py`
-
-Generates a test Circle model with `BATCH_MATMUL` and `TRANSPOSE` operations where the LHS is constant. This model is designed to test the fusion pattern used in `fuse.bmm_lhs_const.py`.
 
 ## `merge.circle.py`
 
