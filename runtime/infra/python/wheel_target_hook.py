@@ -28,7 +28,7 @@ class WheelBuildHook(BuildHookInterface):
         # this is the path where the native libraries are expected to land in the wheel
         # the files copied to this location will eventually be added to the wheel by the build system
         # the whole structure of subdirectories will be reflected in the final wheel
-        self.whl_binaries_target_dir = os.path.join(tmp_build_dir, 'native')
+        self.whl_binaries_target_dir = os.path.join(tmp_build_dir, "native")
 
         # gather the required binaries in the temporary build directory
         self.prepare_binaries()
@@ -38,11 +38,11 @@ class WheelBuildHook(BuildHookInterface):
         build_data["force_include"][tmp_build_dir] = "onert"
 
         build_data["pure_python"] = False
-        build_data['infer_tag'] = False
-        build_data['tag'] = self.create_build_tag()
+        build_data["infer_tag"] = False
+        build_data["tag"] = self.create_build_tag()
 
     def read_env(self):
-        '''Read the relevant environment variables or use the defaults'''
+        """Read the relevant environment variables or use the defaults"""
 
         self.product_dir = self._read_env("PRODUCT_DIR")
         self.platform = self._read_env("PLATFORM")
@@ -60,7 +60,7 @@ class WheelBuildHook(BuildHookInterface):
         self.copy_libraries(src_libs_base_dir, self.whl_binaries_target_dir, "nnfw/odc")
 
     def get_libs_dir(self):
-        '''Retrieve the path of a directory where the required shared libraries are'''
+        """Retrieve the path of a directory where the required shared libraries are"""
         runtime_build_dir = self.get_runtime_build_dir()
         if not os.path.exists(runtime_build_dir):
             raise FileExistsError(
@@ -77,7 +77,7 @@ class WheelBuildHook(BuildHookInterface):
         raise FileNotFoundError(f"No lib directory found in {runtime_build_dir}")
 
     def get_runtime_build_dir(self):
-        '''Retrieve the path of a directory where the runtime's binaries are (the build tree's root)'''
+        """Retrieve the path of a directory where the runtime's binaries are (the build tree's root)"""
 
         if self.product_dir != self.DEFAULT_PRODUCT_DIR:
             # In case the product directory was passed as an environment variable use this path
@@ -88,11 +88,11 @@ class WheelBuildHook(BuildHookInterface):
             return os.path.join(self.product_dir, f"{self.platform}-linux.release/out")
 
     def copy_libraries(self, src_dir, target_dir, subdir=None):
-        '''
+        """
         Copy all .so files found in src_dir to the target_dir
         If subdir is provided copy from src_dir/subdir to target_dir/subdir
-        '''
-        if subdir != None:
+        """
+        if subdir is not None:
             src_dir = os.path.join(src_dir, subdir)
             target_dir = os.path.join(target_dir, subdir)
 
@@ -105,14 +105,14 @@ class WheelBuildHook(BuildHookInterface):
             print(f" |> Copied {src_path} to {tgt_path}")
 
     def recreate_dir(self, dir_path):
-        '''Delete a directory (if it exists) and create it again but empty'''
+        """Delete a directory (if it exists) and create it again but empty"""
         if os.path.exists(dir_path):
             print(f" |> Deleting existing directory '{dir_path}'...")
             shutil.rmtree(dir_path)
         os.makedirs(dir_path)
 
     def create_build_tag(self):
-        '''Create the most appropriate build tag that will be used to name the wheel'''
+        """Create the most appropriate build tag that will be used to name the wheel"""
 
         # first get the tag using the usual way build backends do it
         tag = next(sys_tags())
@@ -134,11 +134,11 @@ class WheelBuildHook(BuildHookInterface):
         validators = {
             "PLATFORM": self._validate_platform,
             "GLIBC_VERSION": self._validate_glibc_version,
-            "PRODUCT_DIR": self._validate_product_dir
+            "PRODUCT_DIR": self._validate_product_dir,
         }
 
         value = os.environ.get(env_var_name, None)
-        validate = validators.get(env_var_name, None)
+        validate = validators.get(env_var_name)
         if validate is not None:
             return validate(value)
         else:
@@ -184,4 +184,3 @@ class WheelBuildHook(BuildHookInterface):
             )
         else:
             return value
-
