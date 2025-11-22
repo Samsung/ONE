@@ -18,18 +18,18 @@ def get_tensor_name(tensor: TensorT) -> Optional[str]:
     return None
 
 
-def find_unused_tensors_in_subgraph(subgraph) -> List[int]:
+def find_unused_tensors_in_subgraph(subgraph: SubGraphT) -> List[int]:
     """
     Finds and returns the indices of unused tensors in a given subgraph.
-    This function uses the Native API for read-only subgraph objects.
+    This function uses the Object API for mutable subgraph objects.
 
     Args:
-        subgraph: The Circle read-only subgraph object.
+        subgraph: The Circle mutable subgraph object (SubGraphT).
 
     Returns:
         list: A list of integer indices representing unused tensors.
     """
-    num_tensors = subgraph.TensorsLength()
+    num_tensors = len(subgraph.tensors)
     if num_tensors == 0:
         return []
 
@@ -37,18 +37,16 @@ def find_unused_tensors_in_subgraph(subgraph) -> List[int]:
     output_tensor_indices = set()
 
     # Collect output tensor indices
-    for i in range(subgraph.OutputsLength()):
-        output_tensor_indices.add(subgraph.Outputs(i))
+    if subgraph.outputs is not None and len(subgraph.outputs) > 0:
+        for out in subgraph.outputs:
+            output_tensor_indices.add(out)
 
     # Collect input tensor indices from all operators
-    for i in range(subgraph.OperatorsLength()):
-        operator = subgraph.Operators(i)
-        if operator and operator.InputsLength():
-            for j in range(operator.InputsLength()):
-                input_tensor_index = operator.Inputs(j)
-                # In Circle schema, -1 indicates an optional input that is not used.
-                if input_tensor_index != -1:
-                    used_tensor_indices.add(input_tensor_index)
+    for operator in subgraph.operators:
+        if operator.inputs is not None and len(operator.inputs) > 0:
+            for inp in operator.inputs:
+                if inp != -1:
+                    used_tensor_indices.add(inp)
 
     # A tensor is unused if it's not used by any operator AND not an output of the subgraph
     unused_indices = []
@@ -215,6 +213,38 @@ def remove_tensors_and_update_model(model: ModelT, subgraph_index_to_modify: int
                 updated_subgraph_outputs.append(new_indices_map[old_output_idx])
         subgraph.outputs = updated_subgraph_outputs
 
+    # Update SignatureDefs
+    if model.signatureDefs:
+        for sig_def in model.signatureDefs:
+            if sig_def.subgraphIndex == subgraph_index_to_modify:
+                # Update inputs
+                if sig_def.inputs:
+                    updated_sig_inputs = []
+                    for tensor_map in sig_def.inputs:
+                        if tensor_map.tensorIndex in new_indices_map:
+                            tensor_map.tensorIndex = new_indices_map[
+                                tensor_map.tensorIndex]
+                            updated_sig_inputs.append(tensor_map)
+                        elif tensor_map.tensorIndex in tensor_indices_to_remove:
+                            o2o.log(
+                                f"  SignatureDef '{sig_def.signatureKey}': Removing input tensor index {tensor_map.tensorIndex}"
+                            )
+                    sig_def.inputs = updated_sig_inputs
+
+                # Update outputs
+                if sig_def.outputs:
+                    updated_sig_outputs = []
+                    for tensor_map in sig_def.outputs:
+                        if tensor_map.tensorIndex in new_indices_map:
+                            tensor_map.tensorIndex = new_indices_map[
+                                tensor_map.tensorIndex]
+                            updated_sig_outputs.append(tensor_map)
+                        elif tensor_map.tensorIndex in tensor_indices_to_remove:
+                            o2o.log(
+                                f"  SignatureDef '{sig_def.signatureKey}': Removing output tensor index {tensor_map.tensorIndex}"
+                            )
+                    sig_def.outputs = updated_sig_outputs
+
     return sorted(removed_indices)
 
 
@@ -274,6 +304,40 @@ def remove_buffers_and_update_model(model: ModelT,
     return sorted(removed_indices)
 
 
+def update_signature_defs_for_pruned_io(model: ModelT, subgraph_index: int,
+                                        removed_inputs: List[int],
+                                        removed_outputs: List[int]):
+    """
+    Updates SignatureDefs to remove references to pruned inputs/outputs.
+    """
+    if not model.signatureDefs:
+        return
+
+    for sig_def in model.signatureDefs:
+        if sig_def.subgraphIndex == subgraph_index:
+            # Update inputs
+            if sig_def.inputs and removed_inputs:
+                original_len = len(sig_def.inputs)
+                sig_def.inputs = [
+                    tm for tm in sig_def.inputs if tm.tensorIndex not in removed_inputs
+                ]
+                if len(sig_def.inputs) < original_len:
+                    o2o.log(
+                        f"  SignatureDef '{sig_def.signatureKey}': Pruned {original_len - len(sig_def.inputs)} input(s)"
+                    )
+
+            # Update outputs
+            if sig_def.outputs and removed_outputs:
+                original_len = len(sig_def.outputs)
+                sig_def.outputs = [
+                    tm for tm in sig_def.outputs if tm.tensorIndex not in removed_outputs
+                ]
+                if len(sig_def.outputs) < original_len:
+                    o2o.log(
+                        f"  SignatureDef '{sig_def.signatureKey}': Pruned {original_len - len(sig_def.outputs)} output(s)"
+                    )
+
+
 def prune_unused_io(model: ModelT) -> bool:
     """
     Removes tensors from Subgraph Inputs/Outputs if they are not connected to any operator.
@@ -286,6 +350,9 @@ def prune_unused_io(model: ModelT) -> bool:
     """
     changed = False
     for i, subgraph in enumerate(model.subgraphs):
+        removed_inputs = []
+        removed_outputs = []
+
         # Collect used inputs and outputs from operators
         op_inputs = set()
         op_outputs = set()
@@ -304,9 +371,9 @@ def prune_unused_io(model: ModelT) -> bool:
             original_len = len(subgraph.inputs)
             new_inputs = [idx for idx in subgraph.inputs if idx in op_inputs]
             if len(new_inputs) < original_len:
-                removed = [idx for idx in subgraph.inputs if idx not in op_inputs]
+                removed_inputs = [idx for idx in subgraph.inputs if idx not in op_inputs]
                 o2o.log(
-                    f"Subgraph {i}: Pruning unused inputs (not consumed by any op): {removed}"
+                    f"Subgraph {i}: Pruning unused inputs (not consumed by any op): {removed_inputs}"
                 )
                 subgraph.inputs = new_inputs
                 changed = True
@@ -317,12 +384,18 @@ def prune_unused_io(model: ModelT) -> bool:
             original_len = len(subgraph.outputs)
             new_outputs = [idx for idx in subgraph.outputs if idx in op_outputs]
             if len(new_outputs) < original_len:
-                removed = [idx for idx in subgraph.outputs if idx not in op_outputs]
+                removed_outputs = [
+                    idx for idx in subgraph.outputs if idx not in op_outputs
+                ]
                 o2o.log(
-                    f"Subgraph {i}: Pruning unused outputs (not produced by any op): {removed}"
+                    f"Subgraph {i}: Pruning unused outputs (not produced by any op): {removed_outputs}"
                 )
                 subgraph.outputs = new_outputs
                 changed = True
+
+        # Update SignatureDefs if any IO was pruned
+        if removed_inputs or removed_outputs:
+            update_signature_defs_for_pruned_io(model, i, removed_inputs, removed_outputs)
 
     return changed
 
@@ -343,14 +416,10 @@ def main():
     if prune_unused_io(model):
         model_changed = True
 
-    o2o.log(f"Processing {model_ro.SubgraphsLength()} subgraph(s)...")
-    for i in range(model_ro.SubgraphsLength()):
-        subgraph_ro = model_ro.Subgraphs(i)
-        if not subgraph_ro:
-            o2o.log(f"Warning: Could not read subgraph {i}. Skipping.")
-            continue
-
-        unused = find_unused_tensors_in_subgraph(subgraph_ro)
+    o2o.log(f"Processing {len(model.subgraphs)} subgraph(s)...")
+    for i, subgraph in enumerate(model.subgraphs):
+        # Use the mutable subgraph which might have been updated by prune_unused_io
+        unused = find_unused_tensors_in_subgraph(subgraph)
         if not unused:
             o2o.log(f"Subgraph {i}: No unused tensors found.")
             continue
