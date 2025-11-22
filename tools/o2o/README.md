@@ -144,9 +144,9 @@ Performs garbage collection by removing unreachable tensors and buffers, reducin
 
 ##
 
-### `retype.input_ids.py`
+### `downcast.input_ids.py`
 
-Finds tensors named `input_ids` and changes their data type from int64 to int32. This filter is useful for models that need to be compatible with hardware or frameworks that expect input_ids to be 32-bit integers instead of 64-bit integers.
+Identifies `input_ids` tensors based on the graph structure (specifically, `INT64` tensors that are the indices input to `GATHER` operators and are also Subgraph Inputs) and changes their data type from `int64` to `int32`. This robust detection method works regardless of the tensor name. This filter is useful for models that need to be compatible with hardware or frameworks that expect input_ids to be 32-bit integers.
 
 ##
 
