@@ -18,25 +18,35 @@ def retype_input_ids():
         o2o.log(f"Processing subgraph with {len(subgraph.tensors)} tensors")
 
         retyped_count = 0
-        for tensor in subgraph.tensors:
-            tensor_name = o2o.get_tensor_name(tensor)
 
-            # Check if this is the input_ids tensor
-            if tensor_name == "tico::input_ids":
-                # Check if current type is int64
-                if tensor.type == circle.TensorType.INT64:
-                    old_type = "int64"
-                    new_type = "int32"
+        # Collect subgraph inputs for quick lookup
+        subgraph_inputs = set(subgraph.inputs)
 
-                    # Change type to int32
-                    tensor.type = circle.TensorType.INT32
+        for op_idx, op in enumerate(subgraph.operators):
+            opcode = model.operatorCodes[op.opcodeIndex]
 
-                    o2o.log(f"Retyped tensor: {tensor_name} {old_type} → {new_type}")
-                    retyped_count += 1
-                else:
-                    o2o.log(
-                        f"Found input_ids tensor but type is not int64 (current type: {tensor.type})"
-                    )
+            if opcode.builtinCode == circle.BuiltinOperator.GATHER:
+                # GATHER input 1 is the indices tensor (params, indices)
+                if op.inputs is not None and len(op.inputs) > 1:
+                    input_tensor_idx = op.inputs[1]
+
+                    # Check if this input is a subgraph input
+                    if input_tensor_idx in subgraph_inputs:
+                        tensor = subgraph.tensors[input_tensor_idx]
+
+                        # Check if type is INT64
+                        if tensor.type == circle.TensorType.INT64:
+                            tensor_name = o2o.get_tensor_name(tensor)
+                            old_type = "int64"
+                            new_type = "int32"
+
+                            # Change type to int32
+                            tensor.type = circle.TensorType.INT32
+
+                            o2o.log(
+                                f"Retyped tensor: {tensor_name} (Index: {input_tensor_idx}) {old_type} → {new_type}"
+                            )
+                            retyped_count += 1
 
         if retyped_count > 0:
             o2o.log(f"Retyped {retyped_count} input_ids tensors in this subgraph")
