@@ -180,7 +180,7 @@ var searchData=
   ['operationtype_2eh_177',['OperationType.h',['../_operation_type_8h.html',1,'']]],
   ['operationtype_2eprobe_2ecpp_178',['OperationType.probe.cpp',['../_operation_type_8probe_8cpp.html',1,'']]],
   ['operationutils_2ecc_179',['operationutils.cc',['../train_2ops_2_operation_utils_8cc.html',1,'(Global Namespace)'],['../ruy_2ops_2_operation_utils_8cc.html',1,'(Global Namespace)'],['../cpu_2ops_2_operation_utils_8cc.html',1,'(Global Namespace)']]],
-  ['operationutils_2eh_180',['operationutils.h',['../train_2ops_2_operation_utils_8h.html',1,'(Global Namespace)'],['../ruy_2ops_2_operation_utils_8h.html',1,'(Global Namespace)'],['../cpu_2ops_2_operation_utils_8h.html',1,'(Global Namespace)']]],
+  ['operationutils_2eh_180',['operationutils.h',['../train_2ops_2_operation_utils_8h.html',1,'(Global Namespace)'],['../ruy_2ops_2_operation_utils_8h.html',1,'(Global Namespace)'],['../ggml_2ops_2_operation_utils_8h.html',1,'(Global Namespace)'],['../cpu_2ops_2_operation_utils_8h.html',1,'(Global Namespace)']]],
   ['operationvalidator_2ecc_181',['OperationValidator.cc',['../_operation_validator_8cc.html',1,'']]],
   ['operationvalidator_2eh_182',['OperationValidator.h',['../_operation_validator_8h.html',1,'']]],
   ['operationvisitor_2eh_183',['OperationVisitor.h',['../_operation_visitor_8h.html',1,'']]],

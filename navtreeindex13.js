@@ -1,15 +1,9 @@
 var NAVTREEINDEX13 =
 {
-"_global_data_generation_8cpp.html#a24990c06c9bf79de7411e1e1d0e4afaa":[42,0,0,38,1,1,4,24,0],
-"_global_data_generation_8cpp_source.html":[42,0,0,38,1,1,4,24],
-"_global_data_generation_8h.html":[42,0,0,38,1,1,4,25],
-"_global_data_generation_8h.html#a24990c06c9bf79de7411e1e1d0e4afaa":[42,0,0,38,1,1,4,25,2],
-"_global_data_generation_8h.html#a81b59f2e10a9142e39eaccf332e9b9ef":[42,0,0,38,1,1,4,25,1],
-"_global_data_generation_8h_source.html":[42,0,0,38,1,1,4,25],
-"_gradient_applier_8cc.html":[42,0,3,4,1,6,0,14],
-"_gradient_applier_8cc_source.html":[42,0,3,4,1,6,0,14],
-"_gradient_applier_8h.html":[42,0,3,4,1,6,0,15],
-"_gradient_applier_8h_source.html":[42,0,3,4,1,6,0,15],
+"_gradient_applier_8cc.html":[42,0,3,4,1,7,0,14],
+"_gradient_applier_8cc_source.html":[42,0,3,4,1,7,0,14],
+"_gradient_applier_8h.html":[42,0,3,4,1,7,0,15],
+"_gradient_applier_8h_source.html":[42,0,3,4,1,7,0,15],
 "_gradient_calculation_storage_8cpp.html":[42,0,2,4,2,0,1],
 "_gradient_calculation_storage_8cpp_source.html":[42,0,2,4,2,0,1],
 "_gradient_calculation_storage_8h.html":[42,0,2,4,2,0,2],
@@ -249,5 +243,11 @@ var NAVTREEINDEX13 =
 "_i_tensor_8cc.html":[42,0,3,4,2,1,0,4],
 "_i_tensor_8cc_source.html":[42,0,3,4,2,1,0,4],
 "_i_tensor_8h.html":[42,0,3,4,2,0,0,7],
-"_i_tensor_8h_source.html":[42,0,3,4,2,0,0,7]
+"_i_tensor_8h_source.html":[42,0,3,4,2,0,0,7],
+"_i_tensor_registry_8h.html":[42,0,3,4,2,0,0,8],
+"_i_tensor_registry_8h_source.html":[42,0,3,4,2,0,0,8],
+"_i_timer_8h.html":[42,0,3,4,2,0,7,4],
+"_i_timer_8h_source.html":[42,0,3,4,2,0,7,4],
+"_i_trainable_backend_8h.html":[42,0,3,4,2,0,0,1,1],
+"_i_trainable_backend_8h_source.html":[42,0,3,4,2,0,0,1,1]
 };

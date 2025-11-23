@@ -123,8 +123,6 @@ var namespaceonert_1_1backend_1_1cpu_1_1ops =
     [ "getBuffer", "namespaceonert_1_1backend_1_1cpu_1_1ops.html#a67659c4b1db1cd377445852a8ed53fe6", null ],
     [ "getBuffer", "namespaceonert_1_1backend_1_1cpu_1_1ops.html#a554a0d2d44ad80d670877316908742fe", null ],
     [ "getExtendedTensorShape", "namespaceonert_1_1backend_1_1cpu_1_1ops.html#aad998e9198e97919831626a22ae9ee70", null ],
-    [ "getGGMLTensor", "namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1f6dbde496876ba47f2b9299bb62ab91", null ],
-    [ "getGGMLType", "namespaceonert_1_1backend_1_1cpu_1_1ops.html#ad21affbdb0784c5ad3e7feda7abe2d26", null ],
     [ "getNumberOfDimensions", "namespaceonert_1_1backend_1_1cpu_1_1ops.html#a8bd3b9d30711a87ca05dd34c92d35e6d", null ],
     [ "getNumberOfElements", "namespaceonert_1_1backend_1_1cpu_1_1ops.html#a26b5e969b47cf039ff14a095c294271d", null ],
     [ "getPaddingType", "namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5650844753363f826ab47f2e9a947983", null ],

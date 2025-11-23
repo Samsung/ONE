@@ -1,7 +1,5 @@
 var NAVTREEINDEX11 =
 {
-"_float_b_m_m_kernel_8h.html#af3bd2d89b5a31c9bf3192511b08ab8f6":[42,0,2,5,0,6,7,0,1],
-"_float_b_m_m_kernel_8h_source.html":[42,0,2,5,0,6,7,0],
 "_float_broadcast_to_kernel_8h.html":[42,0,2,4,0,0,1,7,0],
 "_float_broadcast_to_kernel_8h.html#a1f273541e724b83ac4e93b5f05bbbcaa":[42,0,2,4,0,0,1,7,0,1],
 "_float_broadcast_to_kernel_8h.html#ae1a96fe3f032a39f20d7b2249ab066f7":[42,0,2,4,0,0,1,7,0,2],
@@ -249,5 +247,7 @@ var NAVTREEINDEX11 =
 "_fuse_add_with_t_conv_pass_8h_source.html":[42,0,0,59,7,0,0,0,30],
 "_fuse_arithmetic_ops_8h.html":[42,0,0,81,2,2,1,3],
 "_fuse_arithmetic_ops_8h_source.html":[42,0,0,81,2,2,1,3],
-"_fuse_b_c_q_pass_8cpp.html":[42,0,0,59,7,1,40]
+"_fuse_b_c_q_pass_8cpp.html":[42,0,0,59,7,1,40],
+"_fuse_b_c_q_pass_8cpp_source.html":[42,0,0,59,7,1,40],
+"_fuse_b_c_q_pass_8h.html":[42,0,0,59,7,0,0,0,34]
 };

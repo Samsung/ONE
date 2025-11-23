@@ -2976,6 +2976,18 @@ var annotated_dup =
           [ "IKernelBuilder", "classonert_1_1backend_1_1custom_1_1_i_kernel_builder.html", "classonert_1_1backend_1_1custom_1_1_i_kernel_builder" ],
           [ "TypeInfo", "structonert_1_1backend_1_1custom_1_1_type_info.html", "structonert_1_1backend_1_1custom_1_1_type_info" ]
         ] ],
+        [ "ggml", "namespaceonert_1_1backend_1_1ggml.html", [
+          [ "ops", "namespaceonert_1_1backend_1_1ggml_1_1ops.html", [
+            [ "FullyConnectedLayer", "classonert_1_1backend_1_1ggml_1_1ops_1_1_fully_connected_layer.html", "classonert_1_1backend_1_1ggml_1_1ops_1_1_fully_connected_layer" ],
+            [ "GatherLayer", "classonert_1_1backend_1_1ggml_1_1ops_1_1_gather_layer.html", "classonert_1_1backend_1_1ggml_1_1ops_1_1_gather_layer" ]
+          ] ],
+          [ "Backend", "classonert_1_1backend_1_1ggml_1_1_backend.html", "classonert_1_1backend_1_1ggml_1_1_backend" ],
+          [ "BackendContext", "classonert_1_1backend_1_1ggml_1_1_backend_context.html", "classonert_1_1backend_1_1ggml_1_1_backend_context" ],
+          [ "Config", "classonert_1_1backend_1_1ggml_1_1_config.html", "classonert_1_1backend_1_1ggml_1_1_config" ],
+          [ "ExternalContext", "classonert_1_1backend_1_1ggml_1_1_external_context.html", "classonert_1_1backend_1_1ggml_1_1_external_context" ],
+          [ "KernelGenerator", "classonert_1_1backend_1_1ggml_1_1_kernel_generator.html", "classonert_1_1backend_1_1ggml_1_1_kernel_generator" ],
+          [ "Validator", "classonert_1_1backend_1_1ggml_1_1_validator.html", "classonert_1_1backend_1_1ggml_1_1_validator" ]
+        ] ],
         [ "ruy", "namespaceonert_1_1backend_1_1ruy.html", [
           [ "ops", "namespaceonert_1_1backend_1_1ruy_1_1ops.html", [
             [ "ConvolutionLayer", "classonert_1_1backend_1_1ruy_1_1ops_1_1_convolution_layer.html", "classonert_1_1backend_1_1ruy_1_1ops_1_1_convolution_layer" ],

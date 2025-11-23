@@ -95,7 +95,7 @@ $(document).ready(function(){initNavTree('classonert_1_1backend_1_1cpu_1_1ops_1_
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="_gather_layer_8h_source.html">GatherLayer.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="cpu_2ops_2_gather_layer_8h_source.html">GatherLayer.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for onert::backend::cpu::ops::GatherLayer:</div>
 <div class="dyncontent">
@@ -111,8 +111,8 @@ Collaboration diagram for onert::backend::cpu::ops::GatherLayer:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a04c841e678296faeddf5f3d472172c49" id="r_a04c841e678296faeddf5f3d472172c49"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_gather_layer.html#a04c841e678296faeddf5f3d472172c49">GatherLayer</a> ()</td></tr>
 <tr class="separator:a04c841e678296faeddf5f3d472172c49"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adea425748402b607547395c4d1197e11" id="r_adea425748402b607547395c4d1197e11"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_gather_layer.html#adea425748402b607547395c4d1197e11">configure</a> (const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *input, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *indices, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output, int32_t axis, <a class="el" href="classonert_1_1backend_1_1cpu_1_1_external_context.html">ExternalContext</a> *ctx)</td></tr>
-<tr class="separator:adea425748402b607547395c4d1197e11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b8d3bdd2b58005653fe83f86f3f0f08" id="r_a1b8d3bdd2b58005653fe83f86f3f0f08"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_gather_layer.html#a1b8d3bdd2b58005653fe83f86f3f0f08">configure</a> (const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *input, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *indices, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output, int32_t axis)</td></tr>
+<tr class="separator:a1b8d3bdd2b58005653fe83f86f3f0f08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75e28cefee408de707ed43295db1e6b0" id="r_a75e28cefee408de707ed43295db1e6b0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_gather_layer.html#a75e28cefee408de707ed43295db1e6b0">run</a> () override</td></tr>
 <tr class="separator:a75e28cefee408de707ed43295db1e6b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classonert_1_1exec_1_1_i_function"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classonert_1_1exec_1_1_i_function')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classonert_1_1exec_1_1_i_function.html">onert::exec::IFunction</a></td></tr>
@@ -123,7 +123,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_gather_layer_8h_source.html#l00029">29</a> of file <a class="el" href="_gather_layer_8h_source.html">GatherLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_gather_layer_8h_source.html#l00027">27</a> of file <a class="el" href="cpu_2ops_2_gather_layer_8h_source.html">GatherLayer.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a04c841e678296faeddf5f3d472172c49" name="a04c841e678296faeddf5f3d472172c49"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a04c841e678296faeddf5f3d472172c49">&#9670;&#160;</a></span>GatherLayer()</h2>
@@ -148,17 +148,17 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_gather_layer_8h_source.html#l00032">32</a> of file <a class="el" href="_gather_layer_8h_source.html">GatherLayer.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   32</span>                : _input{<span class="keyword">nullptr</span>}, _indices{<span class="keyword">nullptr</span>}, _output{<span class="keyword">nullptr</span>}, _axis{-1}, _ctx{<span class="keyword">nullptr</span>}</div>
-<div class="line"><span class="lineno">   33</span>  {</div>
-<div class="line"><span class="lineno">   34</span>    <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">   35</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_gather_layer_8h_source.html#l00030">30</a> of file <a class="el" href="cpu_2ops_2_gather_layer_8h_source.html">GatherLayer.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   30</span>                : _input{<span class="keyword">nullptr</span>}, _indices{<span class="keyword">nullptr</span>}, _output{<span class="keyword">nullptr</span>}, _axis{-1}</div>
+<div class="line"><span class="lineno">   31</span>  {</div>
+<div class="line"><span class="lineno">   32</span>    <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   33</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="adea425748402b607547395c4d1197e11" name="adea425748402b607547395c4d1197e11"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adea425748402b607547395c4d1197e11">&#9670;&#160;</a></span>configure()</h2>
+<a id="a1b8d3bdd2b58005653fe83f86f3f0f08" name="a1b8d3bdd2b58005653fe83f86f3f0f08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b8d3bdd2b58005653fe83f86f3f0f08">&#9670;&#160;</a></span>configure()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -185,13 +185,7 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int32_t&#160;</td>
-          <td class="paramname"><em>axis</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classonert_1_1backend_1_1cpu_1_1_external_context.html">ExternalContext</a> *&#160;</td>
-          <td class="paramname"><em>ctx</em>&#160;</td>
+          <td class="paramname"><em>axis</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -201,24 +195,16 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_gather_layer_8cc_source.html#l00056">56</a> of file <a class="el" href="_gather_layer_8cc_source.html">GatherLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   58</span>{</div>
-<div class="line"><span class="lineno">   59</span>  _input = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
-<div class="line"><span class="lineno">   60</span>  _indices = indices;</div>
-<div class="line"><span class="lineno">   61</span>  _axis = axis;</div>
-<div class="line"><span class="lineno">   62</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
-<div class="line"><span class="lineno">   63</span>  _ctx = ctx;</div>
-<div class="line"><span class="lineno">   64</span> </div>
-<div class="line"><span class="lineno">   65</span>  <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_GGML_Q4_0)</div>
-<div class="line"><span class="lineno">   66</span>    ctx-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1_external_context.html#aa9dae17746e17559ba1436ecf3f1d91f">initGgmlContext</a>();</div>
-<div class="line"><span class="lineno">   67</span>}</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aae73f75c41fa15f5ae2c391918fa09c5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor::data_type</a></div><div class="ttdeci">ir::DataType data_type() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00054">IPortableTensor.h:54</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1_external_context_html_aa9dae17746e17559ba1436ecf3f1d91f"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1_external_context.html#aa9dae17746e17559ba1436ecf3f1d91f">onert::backend::cpu::ExternalContext::initGgmlContext</a></div><div class="ttdeci">void initGgmlContext()</div><div class="ttdef"><b>Definition</b> <a href="_external_context_8cc_source.html#l00073">ExternalContext.cc:73</a></div></div>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_gather_layer_8cc_source.html#l00068">68</a> of file <a class="el" href="cpu_2ops_2_gather_layer_8cc_source.html">GatherLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   70</span>{</div>
+<div class="line"><span class="lineno">   71</span>  _input = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
+<div class="line"><span class="lineno">   72</span>  _indices = indices;</div>
+<div class="line"><span class="lineno">   73</span>  _axis = axis;</div>
+<div class="line"><span class="lineno">   74</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
+<div class="line"><span class="lineno">   75</span>}</div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00096">gen_h5_explicit_inputs_all.py:96</a></div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>, and <a class="el" href="_external_context_8cc_source.html#l00073">onert::backend::cpu::ExternalContext::initGgmlContext()</a>.</p>
-
 </div>
 </div>
 <a id="a75e28cefee408de707ed43295db1e6b0" name="a75e28cefee408de707ed43295db1e6b0"></a>
@@ -246,37 +232,35 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_function.html#aedd6f5e12852d808abb97327b9d229e2">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_gather_layer_8cc_source.html#l00147">147</a> of file <a class="el" href="_gather_layer_8cc_source.html">GatherLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  148</span>{</div>
-<div class="line"><span class="lineno">  149</span>  <span class="keywordflow">switch</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>())</div>
-<div class="line"><span class="lineno">  150</span>  {</div>
-<div class="line"><span class="lineno">  151</span>    <span class="keywordflow">case</span> OperandType::FLOAT32:</div>
-<div class="line"><span class="lineno">  152</span>      runByInputType&lt;float&gt;();</div>
-<div class="line"><span class="lineno">  153</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  154</span>    <span class="keywordflow">case</span> OperandType::QUANT_UINT8_ASYMM:</div>
-<div class="line"><span class="lineno">  155</span>      runByInputType&lt;uint8_t&gt;();</div>
-<div class="line"><span class="lineno">  156</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  157</span>    <span class="keywordflow">case</span> OperandType::INT32:</div>
-<div class="line"><span class="lineno">  158</span>      runByInputType&lt;int32_t&gt;();</div>
-<div class="line"><span class="lineno">  159</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  160</span>    <span class="keywordflow">case</span> OperandType::QUANT_GGML_Q4_0:</div>
-<div class="line"><span class="lineno">  161</span>      runByGGMLQuantInputType();</div>
-<div class="line"><span class="lineno">  162</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  163</span>    <span class="keywordflow">case</span> OperandType::BOOL8:</div>
-<div class="line"><span class="lineno">  164</span>      runByInputType&lt;bool&gt;();</div>
-<div class="line"><span class="lineno">  165</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  166</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  167</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Gather: unsupported input data type&quot;</span>);</div>
-<div class="line"><span class="lineno">  168</span>  }</div>
-<div class="line"><span class="lineno">  169</span>}</div>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_gather_layer_8cc_source.html#l00108">108</a> of file <a class="el" href="cpu_2ops_2_gather_layer_8cc_source.html">GatherLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  109</span>{</div>
+<div class="line"><span class="lineno">  110</span>  <span class="keywordflow">switch</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>())</div>
+<div class="line"><span class="lineno">  111</span>  {</div>
+<div class="line"><span class="lineno">  112</span>    <span class="keywordflow">case</span> OperandType::FLOAT32:</div>
+<div class="line"><span class="lineno">  113</span>      runByInputType&lt;float&gt;();</div>
+<div class="line"><span class="lineno">  114</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  115</span>    <span class="keywordflow">case</span> OperandType::QUANT_UINT8_ASYMM:</div>
+<div class="line"><span class="lineno">  116</span>      runByInputType&lt;uint8_t&gt;();</div>
+<div class="line"><span class="lineno">  117</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  118</span>    <span class="keywordflow">case</span> OperandType::INT32:</div>
+<div class="line"><span class="lineno">  119</span>      runByInputType&lt;int32_t&gt;();</div>
+<div class="line"><span class="lineno">  120</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  121</span>    <span class="keywordflow">case</span> OperandType::BOOL8:</div>
+<div class="line"><span class="lineno">  122</span>      runByInputType&lt;bool&gt;();</div>
+<div class="line"><span class="lineno">  123</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  124</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  125</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Gather: unsupported input data type&quot;</span>);</div>
+<div class="line"><span class="lineno">  126</span>  }</div>
+<div class="line"><span class="lineno">  127</span>}</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aae73f75c41fa15f5ae2c391918fa09c5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor::data_type</a></div><div class="ttdeci">ir::DataType data_type() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00054">IPortableTensor.h:54</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>runtime/onert/backend/cpu/ops/<a class="el" href="_gather_layer_8h_source.html">GatherLayer.h</a></li>
-<li>runtime/onert/backend/cpu/ops/<a class="el" href="_gather_layer_8cc_source.html">GatherLayer.cc</a></li>
+<li>runtime/onert/backend/cpu/ops/<a class="el" href="cpu_2ops_2_gather_layer_8h_source.html">GatherLayer.h</a></li>
+<li>runtime/onert/backend/cpu/ops/<a class="el" href="cpu_2ops_2_gather_layer_8cc_source.html">GatherLayer.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

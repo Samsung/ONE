@@ -8,6 +8,7 @@ var namespaceonert_1_1backend =
     [ "cl_common", "namespaceonert_1_1backend_1_1cl__common.html", "namespaceonert_1_1backend_1_1cl__common" ],
     [ "cpu", "namespaceonert_1_1backend_1_1cpu.html", "namespaceonert_1_1backend_1_1cpu" ],
     [ "custom", "namespaceonert_1_1backend_1_1custom.html", "namespaceonert_1_1backend_1_1custom" ],
+    [ "ggml", "namespaceonert_1_1backend_1_1ggml.html", "namespaceonert_1_1backend_1_1ggml" ],
     [ "ruy", "namespaceonert_1_1backend_1_1ruy.html", "namespaceonert_1_1backend_1_1ruy" ],
     [ "train", "namespaceonert_1_1backend_1_1train.html", "namespaceonert_1_1backend_1_1train" ],
     [ "trix", "namespaceonert_1_1backend_1_1trix.html", "namespaceonert_1_1backend_1_1trix" ],

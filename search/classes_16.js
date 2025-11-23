@@ -1,7 +1,7 @@
 var searchData=
 [
   ['validateargs_0',['ValidateArgs',['../structluci_1_1_graph_builder_base_1_1_validate_args.html',1,'luci::GraphBuilderBase']]],
-  ['validator_1',['validator',['../classonert_1_1backend_1_1acl__cl_1_1_validator.html',1,'onert::backend::acl_cl::Validator'],['../classonert_1_1backend_1_1trix_1_1_validator.html',1,'onert::backend::trix::Validator'],['../classonert_1_1backend_1_1ruy_1_1_validator.html',1,'onert::backend::ruy::Validator'],['../classonert_1_1backend_1_1acl__neon_1_1_validator.html',1,'onert::backend::acl_neon::Validator'],['../classonert_1_1backend_1_1cpu_1_1_validator.html',1,'onert::backend::cpu::Validator']]],
+  ['validator_1',['validator',['../classonert_1_1backend_1_1acl__cl_1_1_validator.html',1,'onert::backend::acl_cl::Validator'],['../classonert_1_1backend_1_1trix_1_1_validator.html',1,'onert::backend::trix::Validator'],['../classonert_1_1backend_1_1ruy_1_1_validator.html',1,'onert::backend::ruy::Validator'],['../classonert_1_1backend_1_1cpu_1_1_validator.html',1,'onert::backend::cpu::Validator'],['../classonert_1_1backend_1_1ggml_1_1_validator.html',1,'onert::backend::ggml::Validator'],['../classonert_1_1backend_1_1acl__neon_1_1_validator.html',1,'onert::backend::acl_neon::Validator']]],
   ['validatorbase_2',['ValidatorBase',['../classonert_1_1backend_1_1_validator_base.html',1,'onert::backend']]],
   ['value_3',['value',['../structflatbuffers_1_1_value.html',1,'flatbuffers::Value'],['../structflexbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s_1_1_value.html',1,'flexbuffers::FLATBUFFERS_FINAL_CLASS::Value']]],
   ['var_4',['Var',['../classnest_1_1_var.html',1,'nest']]],

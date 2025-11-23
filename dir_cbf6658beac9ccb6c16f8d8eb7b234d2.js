@@ -7,7 +7,7 @@ var dir_cbf6658beac9ccb6c16f8d8eb7b234d2 =
     [ "Config.cc", "onert_2backend_2cpu_2_config_8cc.html", null ],
     [ "Config.h", "runtime_2onert_2backend_2cpu_2_config_8h.html", "runtime_2onert_2backend_2cpu_2_config_8h" ],
     [ "cpu.cc", "cpu_8cc.html", "cpu_8cc" ],
-    [ "ExternalContext.cc", "_external_context_8cc.html", null ],
+    [ "ExternalContext.cc", "cpu_2_external_context_8cc.html", null ],
     [ "ExternalContext.h", "backend_2cpu_2_external_context_8h.html", "backend_2cpu_2_external_context_8h" ],
     [ "KernelGenerator.cc", "backend_2cpu_2_kernel_generator_8cc.html", null ],
     [ "KernelGenerator.h", "backend_2cpu_2_kernel_generator_8h.html", "backend_2cpu_2_kernel_generator_8h" ],

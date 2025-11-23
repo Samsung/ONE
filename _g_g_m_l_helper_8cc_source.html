@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ONE - On-device Neural Engine: runtime/onert/backend/cpu/ops/GGMLHelper.cc Source File</title>
+<title>ONE - On-device Neural Engine: runtime/onert/backend/ggml/ops/GGMLHelper.cc Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -115,11 +115,11 @@ $(document).ready(function(){initNavTree('_g_g_m_l_helper_8cc_source.html',''); 
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="_g_g_m_l_helper_8h.html">GGMLHelper.h</a>&quot;</span></div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html">onert::backend::cpu::ops</a></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert_1_1backend_1_1ggml_1_1ops.html">onert::backend::ggml::ops</a></div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>{</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
 <div class="foldopen" id="foldopen00022" data-start="{" data-end="}">
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ad21affbdb0784c5ad3e7feda7abe2d26">   22</a></span>ggml_type <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ad21affbdb0784c5ad3e7feda7abe2d26">getGGMLType</a>(<a class="code hl_enumeration" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331">ir::DataType</a> type)</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="namespaceonert_1_1backend_1_1ggml_1_1ops.html#a4f80b177a07acae5dd20b7031d14c493">   22</a></span>ggml_type <a class="code hl_function" href="namespaceonert_1_1backend_1_1ggml_1_1ops.html#a4f80b177a07acae5dd20b7031d14c493">getGGMLType</a>(<a class="code hl_enumeration" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331">ir::DataType</a> type)</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>{</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  <span class="keywordflow">switch</span> (type)</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  {</div>
@@ -140,11 +140,11 @@ $(document).ready(function(){initNavTree('_g_g_m_l_helper_8cc_source.html',''); 
 </div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
 <div class="foldopen" id="foldopen00041" data-start="{" data-end="}">
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1f6dbde496876ba47f2b9299bb62ab91">   41</a></span><span class="keyword">struct </span>ggml_tensor <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1f6dbde496876ba47f2b9299bb62ab91">getGGMLTensor</a>(const <a class="code hl_class" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *tensor)</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="namespaceonert_1_1backend_1_1ggml_1_1ops.html#ad225dd44156f1a2e5e184cd83b6ccb75">   41</a></span><span class="keyword">struct </span>ggml_tensor <a class="code hl_function" href="namespaceonert_1_1backend_1_1ggml_1_1ops.html#ad225dd44156f1a2e5e184cd83b6ccb75">getGGMLTensor</a>(const <a class="code hl_class" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *tensor)</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>{</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keyword">struct </span>ggml_tensor res;</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  res.type = <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ad21affbdb0784c5ad3e7feda7abe2d26">getGGMLType</a>(tensor-&gt;data_type());</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  res.type = <a class="code hl_function" href="namespaceonert_1_1backend_1_1ggml_1_1ops.html#a4f80b177a07acae5dd20b7031d14c493">getGGMLType</a>(tensor-&gt;data_type());</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keyword">const</span> <span class="keyword">auto</span> rank = tensor-&gt;getShape().rank();</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; GGML_MAX_DIMS; ++i)</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  {</div>
@@ -167,19 +167,19 @@ $(document).ready(function(){initNavTree('_g_g_m_l_helper_8cc_source.html',''); 
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>}</div>
 </div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>} <span class="comment">// namespace onert::backend::cpu::ops</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>} <span class="comment">// namespace onert::backend::ggml::ops</span></div>
 <div class="ttc" id="a_g_g_m_l_helper_8h_html"><div class="ttname"><a href="_g_g_m_l_helper_8h.html">GGMLHelper.h</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html">onert::backend::IPortableTensor</a></div><div class="ttdoc">A tensor class that is portable for other backends.</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00036">IPortableTensor.h:37</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html">onert::backend::cpu::ops</a></div><div class="ttdef"><b>Definition</b> <a href="_add_n_layer_8cc_source.html#l00050">AddNLayer.cc:51</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a1f6dbde496876ba47f2b9299bb62ab91"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1f6dbde496876ba47f2b9299bb62ab91">onert::backend::cpu::ops::getGGMLTensor</a></div><div class="ttdeci">struct ggml_tensor getGGMLTensor(const IPortableTensor *tensor)</div><div class="ttdef"><b>Definition</b> <a href="_g_g_m_l_helper_8cc_source.html#l00041">GGMLHelper.cc:41</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_ad21affbdb0784c5ad3e7feda7abe2d26"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ad21affbdb0784c5ad3e7feda7abe2d26">onert::backend::cpu::ops::getGGMLType</a></div><div class="ttdeci">ggml_type getGGMLType(ir::DataType type)</div><div class="ttdef"><b>Definition</b> <a href="_g_g_m_l_helper_8cc_source.html#l00022">GGMLHelper.cc:22</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1backend_1_1ggml_1_1ops_html"><div class="ttname"><a href="namespaceonert_1_1backend_1_1ggml_1_1ops.html">onert::backend::ggml::ops</a></div><div class="ttdef"><b>Definition</b> <a href="ggml_2ops_2_fully_connected_layer_8cc_source.html#l00073">FullyConnectedLayer.cc:74</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1backend_1_1ggml_1_1ops_html_a4f80b177a07acae5dd20b7031d14c493"><div class="ttname"><a href="namespaceonert_1_1backend_1_1ggml_1_1ops.html#a4f80b177a07acae5dd20b7031d14c493">onert::backend::ggml::ops::getGGMLType</a></div><div class="ttdeci">ggml_type getGGMLType(ir::DataType type)</div><div class="ttdef"><b>Definition</b> <a href="_g_g_m_l_helper_8cc_source.html#l00022">GGMLHelper.cc:22</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1backend_1_1ggml_1_1ops_html_ad225dd44156f1a2e5e184cd83b6ccb75"><div class="ttname"><a href="namespaceonert_1_1backend_1_1ggml_1_1ops.html#ad225dd44156f1a2e5e184cd83b6ccb75">onert::backend::ggml::ops::getGGMLTensor</a></div><div class="ttdeci">struct ggml_tensor getGGMLTensor(const IPortableTensor *tensor)</div><div class="ttdef"><b>Definition</b> <a href="_g_g_m_l_helper_8cc_source.html#l00041">GGMLHelper.cc:41</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a0343744557a8c62c8f3ac225760f8331"><div class="ttname"><a href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331">onert::ir::DataType</a></div><div class="ttdeci">DataType</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_data_type_8h_source.html#l00025">DataType.h:26</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_cb031e414f281a658b23dddb30bb9d2c.html">runtime</a></li><li class="navelem"><a class="el" href="dir_e8e2d335b1be314b4aeca39d410c6e2f.html">onert</a></li><li class="navelem"><a class="el" href="dir_e3c1c6f396287f59b9861978effe28d3.html">backend</a></li><li class="navelem"><a class="el" href="dir_cbf6658beac9ccb6c16f8d8eb7b234d2.html">cpu</a></li><li class="navelem"><a class="el" href="dir_41fcf59703ad3e4317a6c52e7bbdc719.html">ops</a></li><li class="navelem"><a class="el" href="_g_g_m_l_helper_8cc.html">GGMLHelper.cc</a></li>
+    <li class="navelem"><a class="el" href="dir_cb031e414f281a658b23dddb30bb9d2c.html">runtime</a></li><li class="navelem"><a class="el" href="dir_e8e2d335b1be314b4aeca39d410c6e2f.html">onert</a></li><li class="navelem"><a class="el" href="dir_e3c1c6f396287f59b9861978effe28d3.html">backend</a></li><li class="navelem"><a class="el" href="dir_e08d820013f2b7f279b6a9950f94c370.html">ggml</a></li><li class="navelem"><a class="el" href="dir_8a739a7ea735a9ce0bd454c06dd573b6.html">ops</a></li><li class="navelem"><a class="el" href="_g_g_m_l_helper_8cc.html">GGMLHelper.cc</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

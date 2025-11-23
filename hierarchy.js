@@ -1295,6 +1295,7 @@ var hierarchy =
       [ "onert::backend::acl_neon::Backend", "classonert_1_1backend_1_1acl__neon_1_1_backend.html", null ],
       [ "onert::backend::builtin::Backend", "classonert_1_1backend_1_1builtin_1_1_backend.html", null ],
       [ "onert::backend::cpu::Backend", "classonert_1_1backend_1_1cpu_1_1_backend.html", null ],
+      [ "onert::backend::ggml::Backend", "classonert_1_1backend_1_1ggml_1_1_backend.html", null ],
       [ "onert::backend::ruy::Backend", "classonert_1_1backend_1_1ruy_1_1_backend.html", null ],
       [ "onert::backend::train::Backend", "classonert_1_1backend_1_1train_1_1_backend.html", null ],
       [ "onert::backend::trix::Backend", "classonert_1_1backend_1_1trix_1_1_backend.html", null ]
@@ -1305,6 +1306,7 @@ var hierarchy =
         [ "onert::backend::acl_common::AclBackendContext< T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator, T_Optimizer >", "classonert_1_1backend_1_1acl__common_1_1_acl_backend_context.html", null ]
       ] ],
       [ "onert::backend::cpu::BackendContext", "classonert_1_1backend_1_1cpu_1_1_backend_context.html", null ],
+      [ "onert::backend::ggml::BackendContext", "classonert_1_1backend_1_1ggml_1_1_backend_context.html", null ],
       [ "onert::backend::ruy::BackendContext", "classonert_1_1backend_1_1ruy_1_1_backend_context.html", null ],
       [ "onert::backend::train::DummyBackendContext", "classonert_1_1backend_1_1train_1_1_dummy_backend_context.html", null ],
       [ "onert::backend::trix::BackendContext", "classonert_1_1backend_1_1trix_1_1_backend_context.html", null ]
@@ -1966,6 +1968,7 @@ var hierarchy =
     [ "luci::pass::ExpressionCache", "classluci_1_1pass_1_1_expression_cache.html", null ],
     [ "onert::backend::builtin::ExternalContext", "classonert_1_1backend_1_1builtin_1_1_external_context.html", null ],
     [ "onert::backend::cpu::ExternalContext", "classonert_1_1backend_1_1cpu_1_1_external_context.html", null ],
+    [ "onert::backend::ggml::ExternalContext", "classonert_1_1backend_1_1ggml_1_1_external_context.html", null ],
     [ "onert::backend::ruy::ExternalContext", "classonert_1_1backend_1_1ruy_1_1_external_context.html", null ],
     [ "std::false_type", null, [
       [ "is_VariadicArity< T >", "structis___variadic_arity.html", null ],
@@ -2364,6 +2367,7 @@ var hierarchy =
       [ "onert::backend::acl_neon::Config", "classonert_1_1backend_1_1acl__neon_1_1_config.html", null ],
       [ "onert::backend::builtin::Config", "classonert_1_1backend_1_1builtin_1_1_config.html", null ],
       [ "onert::backend::cpu::Config", "classonert_1_1backend_1_1cpu_1_1_config.html", null ],
+      [ "onert::backend::ggml::Config", "classonert_1_1backend_1_1ggml_1_1_config.html", null ],
       [ "onert::backend::ruy::Config", "classonert_1_1backend_1_1ruy_1_1_config.html", null ],
       [ "onert::backend::train::Config", "classonert_1_1backend_1_1train_1_1_config.html", null ],
       [ "onert::backend::trix::Config", "classonert_1_1backend_1_1trix_1_1_config.html", null ]
@@ -2498,6 +2502,8 @@ var hierarchy =
       [ "onert::backend::cpu::ops::TopKV2Layer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_top_k_v2_layer.html", null ],
       [ "onert::backend::cpu::ops::TransposeLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_transpose_layer.html", null ],
       [ "onert::backend::cpu::ops::UnpackLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_unpack_layer.html", null ],
+      [ "onert::backend::ggml::ops::FullyConnectedLayer", "classonert_1_1backend_1_1ggml_1_1ops_1_1_fully_connected_layer.html", null ],
+      [ "onert::backend::ggml::ops::GatherLayer", "classonert_1_1backend_1_1ggml_1_1ops_1_1_gather_layer.html", null ],
       [ "onert::backend::ruy::ops::ConvolutionLayer", "classonert_1_1backend_1_1ruy_1_1ops_1_1_convolution_layer.html", null ],
       [ "onert::backend::ruy::ops::FullyConnectedLayer", "classonert_1_1backend_1_1ruy_1_1ops_1_1_fully_connected_layer.html", null ],
       [ "onert::backend::trix::ops::BulkLayer", "classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_layer.html", null ],
@@ -4168,6 +4174,7 @@ var hierarchy =
         [ "onert::backend::acl_cl::Validator", "classonert_1_1backend_1_1acl__cl_1_1_validator.html", null ],
         [ "onert::backend::acl_neon::Validator", "classonert_1_1backend_1_1acl__neon_1_1_validator.html", null ],
         [ "onert::backend::cpu::Validator", "classonert_1_1backend_1_1cpu_1_1_validator.html", null ],
+        [ "onert::backend::ggml::Validator", "classonert_1_1backend_1_1ggml_1_1_validator.html", null ],
         [ "onert::backend::ruy::Validator", "classonert_1_1backend_1_1ruy_1_1_validator.html", null ],
         [ "onert::backend::trix::Validator", "classonert_1_1backend_1_1trix_1_1_validator.html", null ]
       ] ],
@@ -4181,6 +4188,7 @@ var hierarchy =
         [ "onert::backend::acl_neon::KernelGenerator", "classonert_1_1backend_1_1acl__neon_1_1_kernel_generator.html", null ],
         [ "onert::backend::builtin::KernelGenerator", "classonert_1_1backend_1_1builtin_1_1_kernel_generator.html", null ],
         [ "onert::backend::cpu::KernelGenerator", "classonert_1_1backend_1_1cpu_1_1_kernel_generator.html", null ],
+        [ "onert::backend::ggml::KernelGenerator", "classonert_1_1backend_1_1ggml_1_1_kernel_generator.html", null ],
         [ "onert::backend::ruy::KernelGenerator", "classonert_1_1backend_1_1ruy_1_1_kernel_generator.html", null ],
         [ "onert::backend::trix::KernelGenerator", "classonert_1_1backend_1_1trix_1_1_kernel_generator.html", null ]
       ] ],

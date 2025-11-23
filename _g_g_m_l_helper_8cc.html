@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ONE - On-device Neural Engine: runtime/onert/backend/cpu/ops/GGMLHelper.cc File Reference</title>
+<title>ONE - On-device Neural Engine: runtime/onert/backend/ggml/ops/GGMLHelper.cc File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -105,24 +105,24 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceonert_1_1backend" id="r_namespaceonert_1_1backend"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend.html">onert::backend</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespaceonert_1_1backend_1_1cpu" id="r_namespaceonert_1_1backend_1_1cpu"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1cpu.html">onert::backend::cpu</a></td></tr>
+<tr class="memitem:namespaceonert_1_1backend_1_1ggml" id="r_namespaceonert_1_1backend_1_1ggml"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1ggml.html">onert::backend::ggml</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespaceonert_1_1backend_1_1cpu_1_1ops" id="r_namespaceonert_1_1backend_1_1cpu_1_1ops"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html">onert::backend::cpu::ops</a></td></tr>
+<tr class="memitem:namespaceonert_1_1backend_1_1ggml_1_1ops" id="r_namespaceonert_1_1backend_1_1ggml_1_1ops"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1ggml_1_1ops.html">onert::backend::ggml::ops</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ad21affbdb0784c5ad3e7feda7abe2d26" id="r_ad21affbdb0784c5ad3e7feda7abe2d26"><td class="memItemLeft" align="right" valign="top">ggml_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ad21affbdb0784c5ad3e7feda7abe2d26">onert::backend::cpu::ops::getGGMLType</a> (<a class="el" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331">ir::DataType</a> type)</td></tr>
-<tr class="separator:ad21affbdb0784c5ad3e7feda7abe2d26"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f6dbde496876ba47f2b9299bb62ab91" id="r_a1f6dbde496876ba47f2b9299bb62ab91"><td class="memItemLeft" align="right" valign="top">struct ggml_tensor&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1f6dbde496876ba47f2b9299bb62ab91">onert::backend::cpu::ops::getGGMLTensor</a> (const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *tensor)</td></tr>
-<tr class="separator:a1f6dbde496876ba47f2b9299bb62ab91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f80b177a07acae5dd20b7031d14c493" id="r_a4f80b177a07acae5dd20b7031d14c493"><td class="memItemLeft" align="right" valign="top">ggml_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1ggml_1_1ops.html#a4f80b177a07acae5dd20b7031d14c493">onert::backend::ggml::ops::getGGMLType</a> (<a class="el" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331">ir::DataType</a> type)</td></tr>
+<tr class="separator:a4f80b177a07acae5dd20b7031d14c493"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad225dd44156f1a2e5e184cd83b6ccb75" id="r_ad225dd44156f1a2e5e184cd83b6ccb75"><td class="memItemLeft" align="right" valign="top">struct ggml_tensor&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1ggml_1_1ops.html#ad225dd44156f1a2e5e184cd83b6ccb75">onert::backend::ggml::ops::getGGMLTensor</a> (const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *tensor)</td></tr>
+<tr class="separator:ad225dd44156f1a2e5e184cd83b6ccb75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_cb031e414f281a658b23dddb30bb9d2c.html">runtime</a></li><li class="navelem"><a class="el" href="dir_e8e2d335b1be314b4aeca39d410c6e2f.html">onert</a></li><li class="navelem"><a class="el" href="dir_e3c1c6f396287f59b9861978effe28d3.html">backend</a></li><li class="navelem"><a class="el" href="dir_cbf6658beac9ccb6c16f8d8eb7b234d2.html">cpu</a></li><li class="navelem"><a class="el" href="dir_41fcf59703ad3e4317a6c52e7bbdc719.html">ops</a></li><li class="navelem"><a class="el" href="_g_g_m_l_helper_8cc.html">GGMLHelper.cc</a></li>
+    <li class="navelem"><a class="el" href="dir_cb031e414f281a658b23dddb30bb9d2c.html">runtime</a></li><li class="navelem"><a class="el" href="dir_e8e2d335b1be314b4aeca39d410c6e2f.html">onert</a></li><li class="navelem"><a class="el" href="dir_e3c1c6f396287f59b9861978effe28d3.html">backend</a></li><li class="navelem"><a class="el" href="dir_e08d820013f2b7f279b6a9950f94c370.html">ggml</a></li><li class="navelem"><a class="el" href="dir_8a739a7ea735a9ce0bd454c06dd573b6.html">ops</a></li><li class="navelem"><a class="el" href="_g_g_m_l_helper_8cc.html">GGMLHelper.cc</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

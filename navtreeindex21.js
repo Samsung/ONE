@@ -1,11 +1,5 @@
 var NAVTREEINDEX21 =
 {
-"_optimizations_8h.html":[42,0,0,38,1,1,4,33],
-"_optimizations_8h.html#a3ec5886b4893e8f1a13f7d13b22f5abc":[42,0,0,38,1,1,4,33,2],
-"_optimizations_8h.html#ab3cc83e6040b60f16d1cd9e5a61eb0be":[42,0,0,38,1,1,4,33,1],
-"_optimizations_8h_source.html":[42,0,0,38,1,1,4,33],
-"_optimized_utils_8h.html":[42,0,3,0,1,0,0,3,1,7],
-"_optimized_utils_8h.html#a3faac8ad96bfaec0b409322c20a42230":[42,0,3,0,1,0,0,3,1,7,2],
 "_optimized_utils_8h.html#a403e08d865d6f45ba561998b93304d57":[42,0,3,0,1,0,0,3,1,7,0],
 "_optimized_utils_8h.html#a94dc0ed7df7b941c9a6f0b67a1155e51":[42,0,3,0,1,0,0,3,1,7,3],
 "_optimized_utils_8h.html#ac7c3ecad381acad6f04dbc55ed5f750e":[42,0,3,0,1,0,0,3,1,7,1],
@@ -24,9 +18,9 @@ var NAVTREEINDEX21 =
 "_optimizer_code_8h_source.html":[42,0,3,4,2,0,4,1,7],
 "_optimizer_info_8h.html":[42,0,3,4,2,0,4,1,8],
 "_optimizer_info_8h_source.html":[42,0,3,4,2,0,4,1,8],
-"_optimizers_8h.html":[42,0,3,4,1,6,1,2],
-"_optimizers_8h.html#a9487515b281a36b5c774eb456275e89e":[42,0,3,4,1,6,1,2,0],
-"_optimizers_8h_source.html":[42,0,3,4,1,6,1,2],
+"_optimizers_8h.html":[42,0,3,4,1,7,1,2],
+"_optimizers_8h.html#a9487515b281a36b5c774eb456275e89e":[42,0,3,4,1,7,1,2,0],
+"_optimizers_8h_source.html":[42,0,3,4,1,7,1,2],
 "_option_builder_8py.html":[42,0,0,92,1,7],
 "_option_builder_8py_source.html":[42,0,0,92,1,7],
 "_options_8cpp.html":[42,0,0,81,1,3],
@@ -249,5 +243,11 @@ var NAVTREEINDEX21 =
 "_p_config_ini_8cpp.html#a0ed5ffd0f2f236e712fc7c28ae9e77b5":[42,0,0,32,1,1,5],
 "_p_config_ini_8cpp.html#a1adaf4bc2fc59106841cab3e3ab31753":[42,0,0,32,1,1,3],
 "_p_config_ini_8cpp.html#a8d77c71410fe54e57624a20ece9ec2f4":[42,0,0,32,1,1,4],
-"_p_config_ini_8cpp.html#a97bc5b58ba6787d57c4fa91965d9e794":[42,0,0,32,1,1,1]
+"_p_config_ini_8cpp.html#a97bc5b58ba6787d57c4fa91965d9e794":[42,0,0,32,1,1,1],
+"_p_config_ini_8cpp.html#ae90c48db60e66a440cfa66322f0bb42c":[42,0,0,32,1,1,2],
+"_p_config_ini_8cpp_source.html":[42,0,0,32,1,1],
+"_p_config_ini_8h.html":[42,0,0,32,0,0,1],
+"_p_config_ini_8h.html#a0ae03a45a18934e27b566f921b83a608":[42,0,0,32,0,0,1,3],
+"_p_config_ini_8h.html#a0ed5ffd0f2f236e712fc7c28ae9e77b5":[42,0,0,32,0,0,1,8],
+"_p_config_ini_8h.html#a1adaf4bc2fc59106841cab3e3ab31753":[42,0,0,32,0,0,1,6]
 };

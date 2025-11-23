@@ -6,7 +6,7 @@ var searchData=
   ['gatherchef_3',['GatherChef',['../class_gather_chef.html',1,'']]],
   ['gathercheffactory_4',['GatherChefFactory',['../struct_gather_chef_factory.html',1,'']]],
   ['gatherimpl_5',['GatherImpl',['../structmir__interpreter_1_1_gather_impl.html',1,'mir_interpreter']]],
-  ['gatherlayer_6',['GatherLayer',['../classonert_1_1backend_1_1cpu_1_1ops_1_1_gather_layer.html',1,'onert::backend::cpu::ops']]],
+  ['gatherlayer_6',['gatherlayer',['../classonert_1_1backend_1_1cpu_1_1ops_1_1_gather_layer.html',1,'onert::backend::cpu::ops::GatherLayer'],['../classonert_1_1backend_1_1ggml_1_1ops_1_1_gather_layer.html',1,'onert::backend::ggml::ops::GatherLayer']]],
   ['gatherndchef_7',['GatherNdChef',['../class_gather_nd_chef.html',1,'']]],
   ['gatherndcheffactory_8',['GatherNdChefFactory',['../struct_gather_nd_chef_factory.html',1,'']]],
   ['gatherop_9',['GatherOp',['../classmir_1_1ops_1_1_gather_op.html',1,'mir::ops']]],
