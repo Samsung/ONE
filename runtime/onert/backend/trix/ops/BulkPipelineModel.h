@@ -41,7 +41,15 @@ namespace ops
 class BulkPipelineModel
 {
 public:
-  BulkPipelineModel(const std::string &model_path, int device_id);
+  enum class BufferOwnership
+  {
+    OWNER,
+    SHARED
+  };
+
+public:
+  BulkPipelineModel(const std::string &model_path, int device_id,
+                    BufferOwnership ownership = BufferOwnership::OWNER);
   ~BulkPipelineModel();
 
   // Disallow copying
@@ -56,8 +64,14 @@ public:
   void run(const std::vector<const IPortableTensor *> &inputs,
            std::vector<IPortableTensor *> &outputs);
 
+  void shareBuffersFrom(const BulkPipelineModel &owner);
+  void setNextModel(std::shared_ptr<BulkPipelineModel> next);
+  std::shared_ptr<BulkPipelineModel> getNextModel() { return _next_model; };
+  void setBufferOwnership(BufferOwnership ownership) { _ownership = ownership; }
+
   void waitForBufferReady();
   void markBufferReady();
+  void startAsyncBufferFill();
 
   const npubin_meta *metadata() const { return _meta.get(); }
   uint64_t programSize() const { return _meta->program_size; }
@@ -65,6 +79,7 @@ public:
   uint32_t modelId() const { return _model_id; }
   npudev_h device() const { return _dev; }
   const std::string &modelPath() const { return _model_path; }
+  BufferOwnership ownership() const { return _ownership; }
 
 private:
   bool loadMetadata();
@@ -78,6 +93,7 @@ private:
 private:
   std::string _model_path;
   int _device_id;
+  BufferOwnership _ownership;
   std::atomic<bool> _initialized{false};
   std::atomic<bool> _prepared{false};
 
@@ -91,9 +107,12 @@ private:
   std::shared_ptr<BulkPipelineBuffer> _program_buffer;
   std::shared_ptr<BulkPipelineBuffer> _weight_buffer;
 
+  std::shared_ptr<BulkPipelineModel> _next_model;
+
   std::mutex _buffer_mutex;
   std::condition_variable _buffer_cv;
   std::atomic<bool> _buffer_ready{false};
+  std::future<void> _async_fill_future;
 };
 
 } // namespace ops
