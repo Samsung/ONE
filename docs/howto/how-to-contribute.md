@@ -70,4 +70,3 @@ This section explains the steps to create a pull request (PR).
    your pull request upon such feedbacks. These update commits will be squashed into the first
    commit of your pull request later. Please do **NOT** include a sign-off message or write a full
    description for update commits.
-

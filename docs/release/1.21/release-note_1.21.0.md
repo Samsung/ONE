@@ -32,4 +32,3 @@
 
 ### Batch Execution with TRIX backend
 - TRIX backend supports batch execution which run in parallel with multicore
-

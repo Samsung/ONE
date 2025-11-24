@@ -15,4 +15,3 @@ Overview
   ./overall-architecture.md
   ./supported-operations.md
   ./workgroup.md
-
