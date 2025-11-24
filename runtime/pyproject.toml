@@ -5,14 +5,14 @@ requires_python = ">= 3.8"
 description = "onert API binding"
 license = "MIT"
 dependencies = [
-    "numpy"
+    "numpy >= 1.19.0"
 ]
 
 [project.urls]
 Homepage = "https://github.com/Samsung/ONE"
 
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling ~= 1.15.0"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.sdist]
