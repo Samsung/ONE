@@ -28,6 +28,33 @@ You can use a custom installation of the binaries as a starting point of the Pyt
 
 ## Creating the Python wheel
 
+To create the Python wheel you will need to install the `build` frontend (check the following link https://pypi.org/project/build/).
+
+Change the working directory to `runtime` and the simplest command you need to issue to build the wheel is:
+
+```sh
+python3 -m build --wheel
+```
+
+Additionally the build can be parametrized with the following environment variables:
+
+`PLATFORM` - used to build a wheel containing cross compiled binaries. By default the `x86_64` platform is assumed.
+
+`GLIBC_VERSION` - the version of GLIBC used to build the runtime. The expected format is X_Y or X.Y where X and Y are the major and minor versions of GLIBC respectively.
+
+`PRODUCT_DIR` - an alternative location containing the build of the runtime.
+
+An example command that uses the env variables to parametrize the wheel's build:
+
+```sh
+PLATFORM=aarch64 GLIBC_VERSION=3_15 python3 -m build --wheel
+```
+
+As the result you should be able to find a wheel located in the `dist` directory and the name of this file should be similar to: `onert-0.2.0-cp312-cp312-manylinux_3_15_aarch64.whl`
+
+### Deprecated (but still supported) method
+This method of building the wheel is currently deprecated and the approach described above should be used.
+
 To create the Python wheel (complete Python API package) execute the following command in the `runtime/infra/python` directory:
 
 ```sh
