@@ -16,7 +16,7 @@ This section explains the steps to create a pull request (PR).
 
 1. Create an issue
 
-   Maintainers will accept your contribution only when it is well aligned with the 
+   Maintainers will accept your contribution only when it is well aligned with the
    [roadmap](../overview/roadmap.md) and design
    principles of **ONE**. So, it is optional, but recommended for contributors to create an issue
    and have a discussion with maintainers before writing code.
@@ -28,21 +28,22 @@ This section explains the steps to create a pull request (PR).
    your contribution into multiple small, but focused pull requests in this case. Unfortunately, it
    is possible that maintainers reject your pull request as it is hard for them to understand the
    intuition behind these changes. So, it is optional, but recommended for contributors to present
-   the full [draft](https://github.com/Samsung/ONE/pulls?q=is%3Apr+label%3ADRAFT+) of your 
+   the full [draft](https://github.com/Samsung/ONE/pulls?q=is%3Apr+label%3ADRAFT+) of your
    contribution and have a discussion with maintainers before creating PR(s).
 
 1. Create a commit
 
    It is time to create a commit for submission once you are convinced that your contribution is
-   ready to go. Please include 
-   [signed-off message](https://github.com/Samsung/ONE/wiki/ONE-Developer's-Certificate-of-Origin) 
+   ready to go. Please include
+   [signed-off message](https://github.com/Samsung/ONE/wiki/ONE-Developer's-Certificate-of-Origin)
    at the end of commit message. If not, your pull request will be **rejected** by CI.
 
 1. Check code format locally
 
    **ONE** has its code formatting rules, and any pull request that violates these rules will be
    **rejected** by CI. So, it is optional, but recommended for contributor to check code format
-   locally before submission.
+   locally before submission. Please refer [this guide](how-to-run-format-checker.md) for details
+   to run format checker locally.
 
 1. Create a PR
 
