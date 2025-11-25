@@ -260,4 +260,3 @@ bool validateRequest(const Request &request, const Model &model)
           validRequestArguments(request.outputs, model.outputIndexes, model.operands, poolCount,
                                 "output"));
 }
-

@@ -33,4 +33,3 @@ Can be included as a `CMake` target.
 ### Dependencies
 
 Mir depends on the `adtitas` library, which provides the `small_vector` data type.
-

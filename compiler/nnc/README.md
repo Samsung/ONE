@@ -55,4 +55,3 @@ Also assuming that we have tflite model (for example inceptionv3.tflite)
 --output inception \
 --output-dir output_dir
 ```
-

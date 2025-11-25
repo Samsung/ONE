@@ -30,4 +30,3 @@ $ python model_runner.py  -m onnx_runer/model.onnx -i RANDOM.hdf5
  
  -m mean pre learned model which you run
  -i mean model's input
-
