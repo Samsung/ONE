@@ -59,4 +59,3 @@ operation {
 input: "ifm1"
 input: "ifm2"
 output: "ofm"
-

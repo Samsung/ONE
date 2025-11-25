@@ -91,4 +91,3 @@ mkdir -p "$destdir"
 for ext in $extensions; do
   cp "$indir/$tcname.$ext" "$destdir/$ext"
 done;
-
