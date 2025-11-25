@@ -39,4 +39,3 @@
 ### Support CPU backend quant8 operation
 
 - BatchToSpaceND, L2Normalization, Pad, PadV2, ResizeBilinear, Slice, Quantize, SpaceToDepth, Sum
-

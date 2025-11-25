@@ -69,4 +69,3 @@ Binary file size overhead (bytes) | N/A | 43 444 |
 
 (*) Average for 100 inferences
 (**) Tflite-micro has not launched this model
-

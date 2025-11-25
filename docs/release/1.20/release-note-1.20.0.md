@@ -31,4 +31,3 @@
 
 ### API supports new data type
 - Symmetric Quantized int16 type named "NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED"
-

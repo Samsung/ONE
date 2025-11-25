@@ -55,4 +55,3 @@ memory bandwidth at runtime.
 - We organize WGs for major topics and each WG will be working on its own major topic by breaking
   it into small tasks/issues, performing them inside WG and collaborating between WGs.
 - The WG information can be found [here](workgroup.md).
-
