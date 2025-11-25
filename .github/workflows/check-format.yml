@@ -39,6 +39,17 @@ jobs:
       - name: Check
         run: ./nnas format
 
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.9.10"
+
+      - name: Check format all files
+        run: |
+          uv venv --python 3.10 --seed
+          uv pip install pre-commit==4.4.0
+          uv run pre-commit run -a
+
       # Upload patch file if failed
       - name: Store archive
         uses: actions/upload-artifact@v4
