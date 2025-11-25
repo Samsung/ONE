@@ -9,6 +9,10 @@ repos:
       exclude: \.(svg)$
     - name: 'Check trailing whitespace'
       id: trailing-whitespace
+      # TODO add shebang to all excutable python/shell scripts
+    - name: 'Check executable files'
+      id: check-executables-have-shebangs
+      exclude: \.(py|sh)$
 
   - repo: https://github.com/rhysd/actionlint
     rev: 'v1.7.9'
