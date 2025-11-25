@@ -54,4 +54,3 @@ output2 = {out0: # output 0
 
 # Instantiate an example
 Example((input2, output2))
-

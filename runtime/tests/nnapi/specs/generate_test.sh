@@ -171,4 +171,3 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     exit $?
   fi
 fi # [[ "${BASH_SOURCE[0]}" == "${0}" ]]
-

@@ -35,4 +35,3 @@ input0 = {lookup:  [12345, 54321, 67890, 9876, -12345678, -87654321],
 output0 = {output: [1, 1, 1, 0, 1, 1, 1, 0]}
 
 Example((input0, output0))
-

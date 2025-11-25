@@ -78,4 +78,3 @@ and the following optional parameters:
 
 ### Operations
 The `OperationLoader` loads each operation information from configuration file. This loader takes the last string of the configuration file name as a key of `OperationLoader` map. So the configuration file should not be changed. For example, if the configuration file name is a `inceptionv3_slim_Main_model_CONV_2D.test.config`, the `OperationLoader` takes `CONV_2D` as a key of map. The `CONV_2D` key is connected to `Convolution` class in `operations/Convolution.h`. This related information is described in `Operations.lst` file. Each operation class will return the `nonius::parameters` from `OperationInfo` in `ConfigFile` class.
-

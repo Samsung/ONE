@@ -21,4 +21,3 @@ output0 = {i3: # output 0
             5, 3, 5]}
 # Instantiate an example
 Example((input0, output0))
-

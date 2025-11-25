@@ -20,4 +20,3 @@ output0 = {i3: # output 0
            ]}
 # Instantiate an example
 Example((input0, output0))
-

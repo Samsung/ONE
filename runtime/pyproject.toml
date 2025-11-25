@@ -26,4 +26,3 @@ packages = ["onert/api/python/onert"]
 
 [tool.hatch.build.targets.wheel.hooks.custom]
 "path" = "infra/python/wheel_target_hook.py"
-

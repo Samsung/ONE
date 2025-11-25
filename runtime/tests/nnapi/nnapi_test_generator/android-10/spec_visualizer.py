@@ -405,4 +405,3 @@ if __name__ == '__main__':
             DumpTest=None, test_fd=None)
         FinalizeHtml(fd)
     print("Output HTML file: %s" % outFile)
-

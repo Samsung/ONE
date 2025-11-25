@@ -72,4 +72,3 @@ public final class TensorInfo implements AutoCloseable {
         shape = null;
     }
 }
-

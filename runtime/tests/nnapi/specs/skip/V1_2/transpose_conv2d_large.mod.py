@@ -45,4 +45,3 @@ Example({
     i1: [1] * 25,
     o1: ([1] * 16 + [0] * (32 * 32 - 1) * 16) * 25
 }).AddVariations(quant8, channelQuant8, includeDefault=False)
-

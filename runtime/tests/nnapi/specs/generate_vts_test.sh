@@ -65,4 +65,3 @@ do
   done
   echo "Generated file in $VTS_PATH/generated/"`basename $OUTFILE`
 done
-
