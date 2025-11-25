@@ -89,7 +89,3 @@ After profiling, the results can be viewed under the filename provided by the `-
     {"exec_time": 8.201, "max_rss": 404656, "id": 31}], "mode": "name"}
 ```
 **Note**: The pareto-estimation algorithms require the use of python `numpy` package, so make sure to install it beforehand.
-
-
-
-
