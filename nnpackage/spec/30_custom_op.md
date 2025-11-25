@@ -83,4 +83,3 @@ NNFW_STATUS nnfw_register_custom_op_info(nnfw_session *session, const char *id,
 Please find sample app in `nnfw` repository
 
 The `id` should be unique in an app.
-

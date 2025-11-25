@@ -36,4 +36,3 @@
 
 - Model file: TensorFlow Lite model
 - `WHILE` operation example with input and output example
-
