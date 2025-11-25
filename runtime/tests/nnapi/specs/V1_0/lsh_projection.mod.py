@@ -37,4 +37,3 @@ input0 = {
 output0 = {output: [1, 1, 1, 0, 1, 1, 1, 0]}
 
 Example((input0, output0))
-
