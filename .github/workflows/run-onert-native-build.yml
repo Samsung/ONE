@@ -78,7 +78,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/ccache
-          key: ccache-onert-${{ matrix.ubuntu_code }}
+          key: ccache-onert-${{ matrix.ubuntu_code }}-${{ matrix.arch }}-${{ matrix.type }}
+          restore-keys: |
+            ccache-onert-${{ matrix.ubuntu_code }}
 
       - name: Build onert
         run: |

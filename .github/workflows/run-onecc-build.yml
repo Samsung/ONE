@@ -118,7 +118,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/ccache
-          key: ccache-onecc-${{ matrix.ubuntu_code }}
+          key: ccache-onecc-${{ matrix.ubuntu_code }}-${{ matrix.type }}
+          restore-keys: |
+            ccache-onecc-${{ matrix.ubuntu_code }}
 
       - name: Build
         run: |
