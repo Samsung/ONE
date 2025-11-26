@@ -25,8 +25,11 @@
 # Makefile
 /Makefile
 
-# Python virtualenv
-/.venv
+# Python environment
+**/.venv
+
+# Root uv.lock
+/uv.lock
 
 # Debian folder for multiple packages
 /debian
