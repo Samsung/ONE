@@ -24,6 +24,9 @@ url="$2"
 
 # RUN FORMAT CHECKER
 
+echo "This hook will be deprecated. Please use pre-commit framework hooks instead. "
+echo "See docs/howto/how-to-run-format-checker.md for more details."
+
 REPO_PATH=$(git rev-parse --show-toplevel)
 cd $REPO_PATH
 

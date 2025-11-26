@@ -9,6 +9,10 @@ PATCH_FILE=format.patch
 CHECK_DIFF_ONLY="0"
 CHECK_STAGED_ONLY="0"
 
+echo "[CAUTION!!!] This command will be deprecated. Please use pre-commit framework hooks instead. "
+echo "See docs/howto/how-to-run-format-checker.md for more details."
+echo ""
+
 function Usage()
 {
   echo "Usage: $0 $(basename "${BASH_SOURCE[0]}") [OPTIONS] [<file|dir> ...]"
