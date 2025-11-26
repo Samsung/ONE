@@ -44,7 +44,7 @@ index d61a980e..e6a4902c 100644
 +++ b/src/Dialect/ONNX/Transforms/Decompose.cpp
 @@ -460,6 +460,7 @@ Value replaceSequenceAt(
  }
- 
+
  bool shouldDecomposeConvTransposeOp(Value convTransposeResult) {
 +  return false;
    ONNXConvTransposeOp op =

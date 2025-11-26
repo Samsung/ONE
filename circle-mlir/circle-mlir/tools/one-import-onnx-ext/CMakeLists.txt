@@ -2,7 +2,7 @@ set(EXT_FILES
     one-import-onnx-ext
 )
 
-# NOTE using loop is to prepare 
+# NOTE using loop is to prepare
 foreach(EXT_FILE IN ITEMS ${EXT_FILES})
   set(EXT_FILE_SRC "${CMAKE_CURRENT_SOURCE_DIR}/${EXT_FILE}")
 
