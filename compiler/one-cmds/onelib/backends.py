@@ -41,8 +41,8 @@ NOTE If there are backends of the same name in different places,
 [About TARGET and BACKEND]
   "Target" refers to an instance from the core of the system and
   "Backend" refers to an architecture. Say there is a NPU that has
-  multiple cores. Its cores may have different global buffer 
-  size, DSPM size and clock rate, etc, which are described in 
+  multiple cores. Its cores may have different global buffer
+  size, DSPM size and clock rate, etc, which are described in
   each configuration file of "Target". Even though they
   are different target, they may follow same architecture, which means
   they have same "Backend".

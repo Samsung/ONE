@@ -1,6 +1,6 @@
 # q-implant
 
-_q-implant_ implants quantization parameters and weights 
+_q-implant_ implants quantization parameters and weights
 (given as .json and .npy files) to a circle model.
 
 ## Format of input files (`.json` and `.npy`)
@@ -9,7 +9,7 @@ The main input file is a `.json` file, which is a dictionary.
 The dictionary's key is a tensor name, and its value is quantization parameters
 and values(if exists).
 
-The `.npy` file is a NumPy file that can be generated with `numpy.save` function. 
+The `.npy` file is a NumPy file that can be generated with `numpy.save` function.
 
 The content of the json file is as below.
 
@@ -29,15 +29,15 @@ The content of the json file is as below.
 
 `<dtype>`: String (data type of the target tensor. ex: "uint8" or "int16")
 
-`<path/to/scale_npy>`: String (path to the .npy file that contains scale. 
+`<path/to/scale_npy>`: String (path to the .npy file that contains scale.
 The npy file has to be 1d array of fp32.)
 
-`<path/to/zerop_npy>`: String (path to the .npy file that contains zerop. 
+`<path/to/zerop_npy>`: String (path to the .npy file that contains zerop.
 The npy file has to be 1d array of int64.)
 
 `<dim>`: Integer (quantized dimension)
 
-`<path/to/value_npy>`: String (path to the .npy file that contains zerop. 
+`<path/to/value_npy>`: String (path to the .npy file that contains zerop.
 The npy file should have the same shape/dtype with the target tensor.)
 
 NOTE "value" is an optional attribute. It is only necessary for weights.
@@ -50,7 +50,7 @@ NOTE `.npy` files have to be placed in the same directory with `qparam.json`.
 q-implant input.circle qparam.json output.circle
 ```
 
-Let's assume a circle model with a single Conv layer. 
+Let's assume a circle model with a single Conv layer.
 It has four tensors: `ifm`, `ker`, `bias`, and `ofm`.
 
 For the model, `qparam.json` and `*.npy` can be defined as follows.

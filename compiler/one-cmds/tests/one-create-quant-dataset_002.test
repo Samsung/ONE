@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# run test with numpy2hdf5 
+# run test with numpy2hdf5
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"

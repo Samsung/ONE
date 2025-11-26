@@ -129,7 +129,7 @@ message Operation {
   optional GRUOptions gru_options = 104;
   optional FullyConnectedOptions fullyconnected_options = 105;
   optional RmsNormOptions rms_norm_options = 106;
-  optional RoPEOptions rope_options = 107;  
+  optional RoPEOptions rope_options = 107;
 }
 
 // For additional subgraphs

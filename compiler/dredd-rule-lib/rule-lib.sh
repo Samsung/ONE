@@ -265,7 +265,7 @@ tensor_shape()
           awk -v tensor_name="$1" '{ if ($1 == tensor_name) print $2}'`
 
   check_success_exit_code $? 0
-  
+
   echo ${ACTUAL}
 }
 

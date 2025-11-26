@@ -10,7 +10,7 @@ dump tensors in circle file
 
 ```
 $ ./circle-tensordump --tensors ../luci/tests/Conv2D_000.circle
-                      
+
 ----------------------------------------------------------------------
 [ifm]
  └── shape : (1, 3, 3, 2)
@@ -21,7 +21,7 @@ $ ./circle-tensordump --tensors ../luci/tests/Conv2D_000.circle
  └── buffer
      ├── index : 3
      ├── size  : 8
-     └── data  : 0.727939, 0.320132, 
+     └── data  : 0.727939, 0.320132,
 
 ----------------------------------------------------------------------
 [bias]
@@ -29,7 +29,7 @@ $ ./circle-tensordump --tensors ../luci/tests/Conv2D_000.circle
  └── buffer
      ├── index : 4
      ├── size  : 4
-     └── data  : -0.794465, 
+     └── data  : -0.794465,
 
 ----------------------------------------------------------------------
 [ofm]

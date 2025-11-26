@@ -33,7 +33,7 @@ macro(Add RECIPE)
   # Generate resized .circle
   add_custom_command(OUTPUT ${RESIZED_CIRCLE_PATH}
     COMMAND $<TARGET_FILE:circle_resizer> --input_path ${CIRCLE_PATH} --output_path ${RESIZED_CIRCLE_PATH} ${NEW_INPUTS_SIZES}
-    DEPENDS 
+    DEPENDS
       circle_resizer
       ${CIRCLE_PATH}
     COMMENT "Generate ${RECIPE}.resized.circle"

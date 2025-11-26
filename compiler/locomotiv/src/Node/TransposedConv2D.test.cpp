@@ -126,7 +126,7 @@ TEST(NodeExecution_TransposedConv2D, f32)
   for (int n = 0; n < 1 * 2 * 2 * 4; n++)
     ifm[n] = 1.1;
 
-  float ker[2 * 3 * 3 * 4]; // NHWC 
+  float ker[2 * 3 * 3 * 4]; // NHWC
   for (int n = 0; n < 2 * 3 * 3 * 4; n++)
     ker[n] = 2.2;
 

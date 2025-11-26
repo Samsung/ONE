@@ -30,13 +30,13 @@ Output:
     <Inst>:
       Eval (0x10cfa90)
         out: 0x10cf960
-        <op>: 
+        <op>:
           Load(0x10cf600, obj: 0x10cd670)
           Conv2D(0x10cf8a0, ker obj: 0x10cf2d0, padding [T/B/L/R=0,0,0,0], stride [V/H = 1,1])
     <Inst>:
       Eval (0x10cff80)
         out: 0x10cfb20
-        <op>: 
+        <op>:
           Load(0x10cfe70, obj: 0x10cfcc0)
           Load(0x10cfdd0, obj: 0x10cf960)
           Add
@@ -51,13 +51,13 @@ Output:
   <Input>: bag 0x10ce650, name=ifm
   <Output>: bag 0x10ce9c0, name=ofm
   <Bag>:
-    0x10ce650, obj: [0x10cd670], size: 18, input, const, reader: [x], updater: [x], 
-    0x10ce770, obj: [0x10cf2d0], size: 2, const, reader: [x], updater: [x], 
-    0x10ce890, obj: [0x10cfcc0], size: 1, const, reader: [x], updater: [x], 
-    0x10ce9c0, obj: [0x10cf210], size: 9, output, const, reader: [x], updater: [x], 
-    0x10cf9d0, obj: [0x10cf960], size: 9, const, reader: [x], updater: [x], 
-    0x10cfbe0, obj: [0x10cfb20], size: 9, const, reader: [x], updater: [x], 
-    0x10d0060, obj: [0x10cfff0], size: 9, const, reader: [x], updater: [x], 
+    0x10ce650, obj: [0x10cd670], size: 18, input, const, reader: [x], updater: [x],
+    0x10ce770, obj: [0x10cf2d0], size: 2, const, reader: [x], updater: [x],
+    0x10ce890, obj: [0x10cfcc0], size: 1, const, reader: [x], updater: [x],
+    0x10ce9c0, obj: [0x10cf210], size: 9, output, const, reader: [x], updater: [x],
+    0x10cf9d0, obj: [0x10cf960], size: 9, const, reader: [x], updater: [x],
+    0x10cfbe0, obj: [0x10cfb20], size: 9, const, reader: [x], updater: [x],
+    0x10d0060, obj: [0x10cfff0], size: 9, const, reader: [x], updater: [x],
   <Object>:
     0x10cd670, bag: 0x10ce650, kind: Feature, Shape [H/W/D=3,3,2], producer: x, comsumer: [op: 0x10cf600]
     0x10cf210, bag: 0x10ce9c0, kind: Feature, Shape [H/W/D=3,3,1], producer: instr: 0x10d01f0, comsumer: [x]

@@ -25,8 +25,8 @@ $ python model_runner.py  -m onnx_runer/model.onnx -i RANDOM.hdf5
 ```
 
  ------
- 
+
  ## parameters and short comment
- 
+
  -m mean pre learned model which you run
  -i mean model's input

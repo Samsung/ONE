@@ -59,7 +59,7 @@ https://github.com/tensorflow/models/blob/v2.3.0/research/slim/preprocessing/inc
 
 $ cat > preprocess.py << EOF
 import os, shutil, PIL.Image, numpy as np
-  
+
 input_dir = 'img_files'
 output_dir = 'raw_files'
 list_file = 'datalist.txt'

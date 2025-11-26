@@ -1,4 +1,4 @@
-## Overview 
+## Overview
 
 This directory contains auxilliary tests for small onnx target models.
 

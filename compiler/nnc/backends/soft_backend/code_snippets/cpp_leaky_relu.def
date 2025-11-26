@@ -17,7 +17,7 @@
 void leakyRelu(Tensor& out, const char* params, const Tensor& in) {
   const float alpha = deserializeT<float>(params);
   out.reshape(in.getShape());
-  
+
   const auto input = MapAsVector(in.getData(), static_cast<size_t>(in.getShape().getNumElems()));
   auto output = MapAsVector(out.getData(), static_cast<size_t>(in.getShape().getNumElems()));
 

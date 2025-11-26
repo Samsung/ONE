@@ -28,7 +28,7 @@ FAILED=()
 TEST_PARAMS="$@"
 
 pushd "${WORKDIR}"
-while [ "$1" != "" ]; do  
+while [ "$1" != "" ]; do
   MODELNAME=$1; shift
   GRANULARITY=$1; shift
   DTYPE=$1; shift
@@ -50,7 +50,7 @@ while [ "$1" != "" ]; do
     "${CIRCLE_QUANTIZER_PATH}" \
       --quantize_dequantize_weights float32 "${DTYPE}" "${GRANULARITY}" \
       "${WORKDIR}/${MODELNAME}.circle" \
-      "${TEST_RESULT_FILE}.fake_quantized.circle" 
+      "${TEST_RESULT_FILE}.fake_quantized.circle"
 
     # Dump weights values (circle-tensordump)
     "${CIRCLE_TENSORDUMP_PATH}" \

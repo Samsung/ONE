@@ -52,7 +52,7 @@ macro(Add RECIPE)
       --quantize_with_minmax float32 ${ARG_DTYPE} ${ARG_GRANULARITY}
       ${QCONFIG_OPT} ${RECORDED_CIRCLE_PATH} ${QUANT_CIRCLE_PATH}
       ${INPUT_DTYPE_OPT} ${OUTPUT_DTYPE_OPT}
-    DEPENDS 
+    DEPENDS
       circle-quantizer
       record-minmax
       ${CIRCLE_PATH}

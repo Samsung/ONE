@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# negative usage with invalid input file 
+# negative usage with invalid input file
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
