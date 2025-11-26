@@ -77,8 +77,8 @@ operand {
   shape { dim: 4 }
   filler {
     tag: "explicit"
-    arg: "1" 
-    arg: "15" 
+    arg: "1"
+    arg: "15"
     arg: "15"
     arg: "32"
   }

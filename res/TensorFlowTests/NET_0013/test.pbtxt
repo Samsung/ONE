@@ -2,7 +2,7 @@
 # Note that this is a work-around to test Shape
 #
 #                (tensor)
-#   Placeholder ---------- Reshape 
+#   Placeholder ---------- Reshape
 #                        /
 #     Const --- Shape ---
 #                      (shape)

@@ -27,7 +27,7 @@ add_executable(onnx-subgraph src/main.cpp)
 target_link_libraries(onnx-subgraph onnx-subgraph-parser)
 target_link_libraries(onnx-subgraph  ${Python3_LIBRARIES})
 
-set(ONNX_SUBGRAPH_FILES                                                 
+set(ONNX_SUBGRAPH_FILES
     test_model_download.sh
     extract_onnx.py
     subgraphs_ios.txt

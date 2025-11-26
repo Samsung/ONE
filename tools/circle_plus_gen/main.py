@@ -40,7 +40,7 @@ def print_training_hparameters(circle_model: CirclePlus):
 
 def inject_hparams(in_file, hparams_file, out_file=None) -> None:
     '''
-    Inject hparams_file's contents into in_file's circle model, and save it as out_file 
+    Inject hparams_file's contents into in_file's circle model, and save it as out_file
     '''
     # if out_file isn't given, rewrite in_file
     if out_file is None:

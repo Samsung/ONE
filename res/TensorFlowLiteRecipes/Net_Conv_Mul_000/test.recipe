@@ -40,7 +40,7 @@ operand {
     arg: "1.0"
   }
 }
-operand { 
+operand {
   name: "ofm_mul"
   type: FLOAT32
   shape { dim: 1 dim: 1 dim: 1 dim: 2 }

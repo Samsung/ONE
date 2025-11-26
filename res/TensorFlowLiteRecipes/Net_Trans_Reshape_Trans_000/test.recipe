@@ -1,10 +1,10 @@
-operand 
+operand
 {
   name : "ifm"
   type : FLOAT32
   shape {dim: 1, dim: 7, dim: 7, dim : 20}
 }
-operand 
+operand
 {
   name : "front_perm"
   type : INT32
@@ -15,7 +15,7 @@ operand
 {
   name : "front_transpose_out"
   type : FLOAT32
-  shape {dim: 1, dim: 20, dim:7, dim:7} 
+  shape {dim: 1, dim: 20, dim:7, dim:7}
 }
 operand
 {
@@ -30,7 +30,7 @@ operand
   type : FLOAT32
   shape : {dim: 1, dim:20, dim:49}
 }
-operand 
+operand
 {
   name : "back_perm"
   type : INT32
@@ -41,7 +41,7 @@ operand
 {
   name : "ofm"
   type : FLOAT32
-  shape {dim: 1, dim: 49, dim:20} 
+  shape {dim: 1, dim: 49, dim:20}
 }
 operation {
   type: "Transpose"
@@ -61,7 +61,7 @@ operation
   input: "reshape_out"
   input: "back_perm"
   output: "ofm"
-} 
+}
 
 input: "ifm"
 output: "ofm"

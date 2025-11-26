@@ -1,12 +1,12 @@
 # Circle+ generator
 
-Circle+ is a circle file which contains training hyperparameters. <br/> 
+Circle+ is a circle file which contains training hyperparameters. <br/>
 This tool generates a circle+ by adding training hyperparameters to a circle file.<br/>
-It also helps handle circle+ file, such as checking whether the circle file contains training hyperparameters. <br/> 
+It also helps handle circle+ file, such as checking whether the circle file contains training hyperparameters. <br/>
 
 ## Requirements
 
-This tool tested on python3.8. 
+This tool tested on python3.8.
 
 1. (optional) Set python virtaul environment.
 
@@ -15,7 +15,7 @@ This tool tested on python3.8.
     source ./venv/bin/activate
     ```
 
-2. Install required pakcages. 
+2. Install required pakcages.
 
     Currently, only `flatbuffers` is needed.
     ```bash
@@ -29,7 +29,7 @@ To begin with, you need to write the hyperparameters in a json file. Here's [an 
 To write own json file, please refer detailed documenet [here](./how-to-write-tparam-json.md).
 
 
-```bash 
+```bash
 cat example/train_tparam.json
 
 # {
@@ -60,13 +60,13 @@ Next, execute the `main.py` script to add the hyperparameters to the `*.circle` 
 python3 main.py example/sample.circle example/train_tparam.json out.circle
 
 # expected output
-# 
+#
 # load training hyperparameters
 # {
 #     "optimizer": {
 #         "type": "adam",
 #         "args": {
-#          ... 
+#          ...
 #     },
 #     "batchSize": 32,
 #     "fineFuning": 0
@@ -75,7 +75,7 @@ python3 main.py example/sample.circle example/train_tparam.json out.circle
 # saved in out.circle
 ```
 
-If you don't give `out.circle` as an argument, the input circle file(here, `example/sample.circle`) will be overwritten. 
+If you don't give `out.circle` as an argument, the input circle file(here, `example/sample.circle`) will be overwritten.
 
 
 ## Print training hyperparameters in circle file
@@ -95,7 +95,7 @@ python3 main.py example/sample.circle
 ```bash
 python3 main.py example/sample_tparam.circle
 
-# expected output 
+# expected output
 #
 # check hyperparameters in example/sample_tparam.circle
 # {
@@ -117,7 +117,7 @@ python3 main.py example/sample_tparam.circle
 # }
 ```
 
-If it doesn't work well with example files, please check their md5sum to make sure they're not broken. 
+If it doesn't work well with example files, please check their md5sum to make sure they're not broken.
 
 ```bash
 $ md5sum example/sample.circle example/sample_tparam.circle

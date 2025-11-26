@@ -23,7 +23,7 @@ operation {
   output: "ofm"
   mul_options {
    activation: NONE
-  } 
+  }
 }
 input: "ifm1"
 input: "ifm2"

@@ -25,7 +25,7 @@ def get_model_tensors(tflite_file):
     return tensors
 
 
-"""Generate binary adjacency matrix from a tflite model. The adjacency matrix is symmetric and 
+"""Generate binary adjacency matrix from a tflite model. The adjacency matrix is symmetric and
 undirected.
 """
 
@@ -91,7 +91,7 @@ def get_csr(adj_matrix):
 
 
 """Perform basic spectral clustering given a tflite model. The graph in this case is symmetric, undirected with
-unit weight per edge. Therefore, the spectral clustering is performed on a binary (0-1) adjacency matrix derived 
+unit weight per edge. Therefore, the spectral clustering is performed on a binary (0-1) adjacency matrix derived
 from the tflite model.
 """
 

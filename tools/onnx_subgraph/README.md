@@ -20,7 +20,7 @@ sub models.
     scikit-learn
     pandas
     tqdm
-    
+
 ## building the onnx-subgraph
 ```bash
     cd onnx-subgraph
@@ -41,11 +41,11 @@ sub models.
     1. 'bash scripts/test_model_download.sh', then "resnet-test.onnx" will be got in './build'
     2. you can change to any other onnx files as your needs, or edit the download link in
        "scripts/test_model_download.sh"
-  
+
 ## Parse the onnx model
     note: 'subgraphs_ios.txt' will be generated in future code, suppose we already have it as
     the example file now.
-       
+
 ## Split the onnx model to subgraphs
 ```bash
     python scripts/extract_onnx.py \

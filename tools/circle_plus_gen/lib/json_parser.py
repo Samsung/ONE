@@ -40,13 +40,13 @@ def _generate_optimizer(
 def load_optimizer(
     opt_obj: dict
 ) -> Tuple[ctr_gen.Optimizer, ctr_gen.OptimizerOptions, utils.OPTIM_OPTIONS_T]:
-    ''' 
+    '''
     Return objects for circle_traininfo_generated.ModelTrainingT.[optimizer, optimizerOptType, OptimizerOpt]
-    
-    An example of given arguments and return values : 
-    
+
+    An example of given arguments and return values :
+
         opt_obj : {
-          "type" : "sgd", 
+          "type" : "sgd",
           "args" : {"learningRate = 0.1"}
         }
         return : (Optimizer.SGD, OptimizerOptions.SGDOptions, object of SGDOptionsT)
@@ -97,12 +97,12 @@ def load_lossfn(loss_obj: dict):
     Return objects for circle_traininfo_generated.ModelTrainingT.[lossfn, lossfnOptType, lossfnOpt]
 
     An example of given arguments and return values :
-    
+
         loss_obj : {
-          "type" : "categorical crossentropy", 
+          "type" : "categorical crossentropy",
           "args" : {"fromLogits = True"}
         }
-        return : (LossFn.CATEGORICAL_CROSSENTROPY, 
+        return : (LossFn.CATEGORICAL_CROSSENTROPY,
                   LossFnOptions.CategoricalCrossentropyOptions,
                   object of CategoricalCrossentropyOptionsT)
     '''

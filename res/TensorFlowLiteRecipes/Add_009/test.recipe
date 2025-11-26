@@ -9,9 +9,9 @@ operand {
   shape { dim: 4 dim: 1 dim: 3 }
   filler {
     tag: "explicit"
-    arg: "1" arg: "2" arg: "1" arg: "2" 
-    arg: "3" arg: "4" arg: "-5" arg: "-6" 
-    arg: "7" arg: "12" arg: "-12" arg: "-2" 
+    arg: "1" arg: "2" arg: "1" arg: "2"
+    arg: "3" arg: "4" arg: "-5" arg: "-6"
+    arg: "7" arg: "12" arg: "-12" arg: "-2"
   }
 }
 operand {

@@ -34,7 +34,7 @@ In [70]: g = Graph.GraphTopology('inceptionV3.tflite', 'inceptionV3.chrome.json'
 ```
 In [71]: g.partition_minmax_multiple(K=4, nruns=10)
 
-INFO:Topology:Session ids: 
+INFO:Topology:Session ids:
 INFO:Topology:Partition 0 : [0, 1, 2, 3, 4, 5, 6, 13, 7, 10, 14, 11, 12, 8, 9, 15, 22, 16, 23, 19, 17, 20, 21], sum weight = 292393
 INFO:Topology:Partition 1 : [18, 24, 26, 27, 28, 25, 29, 30, 31, 32, 33, 34, 38, 35, 36, 37, 39, 49, 44, 41, 45, 42, 50, 46, 43, 40, 47, 48, 51, 53, 56, 52], sum weight = 293959
 INFO:Topology:Partition 2 : [61, 57, 58, 54, 55, 62, 59, 60, 63, 73, 74, 65, 64, 68, 66, 69, 67, 70, 71, 72, 75, 76, 80, 77, 78, 79, 81, 82], sum weight = 290835
@@ -47,7 +47,7 @@ INFO:Topology:Session Graph:
 INFO:Topology:Edge cut: 12
 INFO:Topology:Memory overhead (bytes): 4366144
 
-In [72]: 
+In [72]:
 ```
 
 ### Detailed View
