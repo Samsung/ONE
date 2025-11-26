@@ -76,7 +76,7 @@ $ ./summarize_tflite.sh <tflite file>
 
 The results shown below:
 ```
-$ ./summarize_tflite.sh inception_v3.tflite 
+$ ./summarize_tflite.sh inception_v3.tflite
 [Main model]
 
 Main model input tensors: [317]
@@ -312,7 +312,7 @@ $ python sample_saver.py
 $ ls /tmp/saver/
 checkpoint  model.ckpt.data-00000-of-00001  model.ckpt.index  model.ckpt.meta
 $ cat > freeze_saver.info << END
-#SAVED_MODEL=""                                  
+#SAVED_MODEL=""
 META_GRAPH="/tmp/saver/model.ckpt.meta"
 CKPT_PATH="/tmp/saver/model.ckpt"
 FROZEN_PATH="/tmp/saver/model.frozen.pb"

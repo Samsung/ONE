@@ -9,7 +9,7 @@ operand {
   shape { dim: 2 }
   filler {
     tag: "explicit"
-    arg: "3" arg: "2"  
+    arg: "3" arg: "2"
   }
 }
 operand {

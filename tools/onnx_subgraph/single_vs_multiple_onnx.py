@@ -30,7 +30,7 @@ class ModelInference:
     Description:
         Subgraphsiostxt_path is a txt file that describes the structure of the model graph and
         is used to get input/output node names.The model_path contains paths to multiple onnx files.
-        The load_sessions function will sort the onnx models in the model_path according to the 
+        The load_sessions function will sort the onnx models in the model_path according to the
         order specified in subgraphsiostxt_path.
     """
     def __init__(self, model_path, subgraphsiostxt_path):

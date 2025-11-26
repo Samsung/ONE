@@ -31,7 +31,7 @@ class ModelInfo:
 
     def get_tensors(self):
         return self._tensors
-        """Return vertex weights representing execution times 
+        """Return vertex weights representing execution times
     of model operations
     """
 
@@ -107,7 +107,7 @@ class GraphPartition:
                     self._logger.error("Session %d: %s", i, self._session_ids[i])
                     self._logger.error("Session %d: %s", j, self._session_ids[j])
                     sys.exit(-1)
-        """Generate an initial partition of the topological ordering T, with the 
+        """Generate an initial partition of the topological ordering T, with the
     help of provided vertex weights. This method will update _session_weights, that is,
     the cumulative sum of vertex weights within a session/partition
     """

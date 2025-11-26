@@ -47,7 +47,7 @@ operand {
     arg: "-1.0f" arg: "-0.99692f" arg: "-0.98769f" arg: "-0.97237f" arg: "-0.95106f"
     arg: "-0.92388f" arg: "-0.89101f" arg: "-0.85264f" arg: "-0.80902f" arg: "-0.76041f"
     arg: "-0.70711f" arg: "-0.64945f" arg: "-0.58779f" arg: "-0.5225f" arg: "-0.45399f"
-    arg: "-0.38268f" arg: "-0.30902f" arg: "-0.23345f" arg: "-0.15643f" arg: "-0.07846f"    
+    arg: "-0.38268f" arg: "-0.30902f" arg: "-0.23345f" arg: "-0.15643f" arg: "-0.07846f"
   }
 }
 operand {
@@ -71,7 +71,7 @@ operand {
     arg: "-0.0f" arg: "0.07846f" arg: "0.15643f" arg: "0.23345f" arg: "0.30902f"
     arg: "0.38268f" arg: "0.45399f" arg: "0.5225f" arg: "0.58779f" arg: "0.64945f"
     arg: "0.70711f" arg: "0.76041f" arg: "0.80902f" arg: "0.85264f" arg: "0.89101f"
-    arg: "0.92388f" arg: "0.95106f" arg: "0.97237f" arg: "0.98769f" arg: "0.99692f"	    
+    arg: "0.92388f" arg: "0.95106f" arg: "0.97237f" arg: "0.98769f" arg: "0.99692f"
   }
 }
 operand {
@@ -178,15 +178,15 @@ operation {
   concatenation_options {
     axis: 3
     activation: NONE
-  }  
+  }
   input: "neg"
-  input: "strided_slice"  
+  input: "strided_slice"
   output: "concat"
 }
 operation {
   type: "Mul"
   input: "concat"
-  input: "sin_table"  
+  input: "sin_table"
   output: "mul_sin"
   mul_options {
     activation: NONE
@@ -208,7 +208,7 @@ operation {
   output: "add_ofm"
   add_options {
     activation: NONE
-  }  
+  }
 }
 input: "ifm"
 output: "add_ofm"

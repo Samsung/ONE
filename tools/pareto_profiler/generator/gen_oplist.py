@@ -35,7 +35,7 @@ def generate_oplist_by_name(tflite_file):
   Returns the total data size for the model graph node (inputs + outputs)
   Params:
   op: operation instance (obtained from _get_ops_details())
-  tsr: tensor instance (obtained from get_tensor_details()) 
+  tsr: tensor instance (obtained from get_tensor_details())
 """
 
 

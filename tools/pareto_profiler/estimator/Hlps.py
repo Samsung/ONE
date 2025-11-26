@@ -23,7 +23,7 @@ from pareto import ParetoData
 
 
 class Hlps:
-    """ 
+    """
     Initialize Runner and Pareto data structure
   """
     def __init__(self, runner, num_backends, num_samples):
@@ -36,8 +36,8 @@ class Hlps:
         self._pareto_obj = ParetoData()
 
     """
-    Method to generate new samples from a given sample v_vec. 
-    The new samples bear a hamming distance hd from the provided sample.    
+    Method to generate new samples from a given sample v_vec.
+    The new samples bear a hamming distance hd from the provided sample.
   """
 
     def gen_hamming(self, v_vec, hd=1, nsamples=None):
@@ -92,7 +92,7 @@ class Hlps:
 
     """
       HLPS algorithm implementation provided here.
-      Description: Starting with a random sample, fill up a sampling 
+      Description: Starting with a random sample, fill up a sampling
       queue with hamming neighbors. Fetch samples from queue,
       each time checking for pareto optimality. Pareto-optimal samples
       are then explored/exploited to generate new samples that are added to the queue.
