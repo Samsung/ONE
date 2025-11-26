@@ -42,8 +42,14 @@ repos:
           compiler/fm-equalize/fm-equalize$
         )
       # Ignore shell script: one-prepare-venv
+      # Exclude files in .yapfignore - yapf's pre-commit issue
       exclude:
-        ^compiler/one-cmds/one-prepare-venv$
+        (?x)^(
+          compiler/one-cmds/one-prepare-venv|
+          runtime/3rdparty/.*|
+          runtime/tests/nnapi/nnapi_test_generator/.*|
+          runtime/tests/nnapi/specs/.*
+        )$
 
   - repo: https://github.com/pre-commit/mirrors-clang-format
     rev: 'v16.0.6'
