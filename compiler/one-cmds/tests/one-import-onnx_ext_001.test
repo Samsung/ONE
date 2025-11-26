@@ -39,7 +39,7 @@ rm -f ${logfile}
 # copy dummy-compile to bin folder
 cp dummy-onnx-ext ../bin/one-import-onnx-ext
 
-# run test 
+# run test
 one-import-onnx \
 --input_path ${inputfile} \
 --output_path ${outputfile} > ${logfile} 2>&1

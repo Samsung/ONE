@@ -9,7 +9,7 @@ A one-global-conf-* package supplies:
 - **Backend command schemas** (codegen.py, profile.py, …) defining the CLI interface of
  backend drivers in a key-value style for onecc.
 
-By following this template, anyone can create and install a new target configuration 
+By following this template, anyone can create and install a new target configuration
  package that integrates seamlessly with onecc.
 
 ## Repository Layout

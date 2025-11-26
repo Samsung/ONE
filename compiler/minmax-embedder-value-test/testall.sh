@@ -80,7 +80,7 @@ for TESTCASE in "$@"; do
     # Read min/max from circle+minmax
     MD_MIN=()
     MD_MAX=()
-    for NAME in "${INPUT_NAMES[@]}"; do 
+    for NAME in "${INPUT_NAMES[@]}"; do
       MD_MIN+=( $("${CIRCLEDUMP}" "${TESTCASE}.circle+minmax" | grep -aP "^T.*${NAME}$" -A 1 | tail -1 | grep -oP '(?<=min\()[+-]?[\d]+') )
       if [[ $? -ne 0 ]]; then
         echo "FAILED TO PARSE MODEL INPUT MIN FROM CIRCLE"
@@ -95,7 +95,7 @@ for TESTCASE in "$@"; do
 
     OP_MIN=()
     OP_MAX=()
-    for NAME in "${OP_OUT_NAMES[@]}"; do 
+    for NAME in "${OP_OUT_NAMES[@]}"; do
       OP_MIN+=( $("${CIRCLEDUMP}" "${TESTCASE}.circle+minmax" | grep -aP "^T.*${NAME}$" -A 1 | tail -1 | grep -oP '(?<=min\()[+-]?[\d]+') )
       if [[ $? -ne 0 ]]; then
         echo "FAILED TO PARSE OP MIN FROM CIRCLE"
@@ -108,7 +108,7 @@ for TESTCASE in "$@"; do
       fi
     done
 
-    # check model input 
+    # check model input
     for i in "${!MD_MIN[@]}"; do
       # Be sure it is synced with minmax-embedder-data-gen
       EXPECTED_MIN=$((i*10))

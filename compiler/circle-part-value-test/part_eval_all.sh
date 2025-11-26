@@ -25,7 +25,7 @@ for TESTCASE in "$@"; do
 
   # for simplicity, folder uses same ${TESTCASE}
   TESTCASE_FOLDER="${WORKDIR}/${TESTCASE}"
-  
+
   PASSED_TAG="${TESTCASE_FOLDER}.passed"
   rm -f "${PASSED_TAG}"
 

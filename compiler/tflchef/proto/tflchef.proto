@@ -127,7 +127,7 @@ message BidirectionalSequenceLSTMOptions {
   optional float proj_clip = 3 [default = 0.0];
   optional bool merge_outputs = 6 [default = false];
   optional bool time_major = 4 [default = true];
-  optional bool asymmetric_quantize_inputs = 5 [default = false];  
+  optional bool asymmetric_quantize_inputs = 5 [default = false];
 }
 
 message Conv2DOptions
@@ -396,7 +396,7 @@ message FillOptions {
 }
 
 message GreaterOptions {
-  // None 
+  // None
 }
 
 message L2NormOptions {

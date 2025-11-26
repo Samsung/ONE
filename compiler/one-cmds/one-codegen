@@ -179,10 +179,10 @@ def main():
     [5] one-codegen -b ${backend} ${command}
     [6] one-codegen -b ${backend} -- ${command}
     [7] one-codegen -b ${backend} -C {cfg} (backend, command key in cfg)
-    [8] one-codegen -b ${backend} -C {cfg} (backends key in cfg) (Only 'backend' is invoked, 
+    [8] one-codegen -b ${backend} -C {cfg} (backends key in cfg) (Only 'backend' is invoked,
          even though cfg file has multiple backends)
-    [9] one-codegen -b ${backend} -C ${cfg} -- ${command} (backend, command key in cfg) 
-    [10] one-codegen -b ${backend} -C ${cfg} -- ${command} (backends key in cfg) (Only 'backend' is invoked, 
+    [9] one-codegen -b ${backend} -C ${cfg} -- ${command} (backend, command key in cfg)
+    [10] one-codegen -b ${backend} -C ${cfg} -- ${command} (backends key in cfg) (Only 'backend' is invoked,
          even though cfg file has multiple backends)
     [11] one-codegen -C {cfg} (w/ target, w/ command schema)
     [12] one-codegen -C {cfg} (w/ target, w/o command schema)

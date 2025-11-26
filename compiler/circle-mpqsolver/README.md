@@ -1,20 +1,20 @@
 # circle-mpqsolver
-_circle-mpqsolver_ provides light-weight methods for finding a high-quality mixed-precision model 
+_circle-mpqsolver_ provides light-weight methods for finding a high-quality mixed-precision model
 within a reasonable time.
 
 ## Methods
 
 ### Bisection
-A model is split into two parts: front and back. One of them is quantized in uint8 and another in 
-int16. The precision of front and back is determined by our proxy metric, upperbound of total layer 
+A model is split into two parts: front and back. One of them is quantized in uint8 and another in
+int16. The precision of front and back is determined by our proxy metric, upperbound of total layer
 errors. (See https://github.com/Samsung/ONE/pull/10170#discussion_r1042246598 for more details)
 
-The boundary between the front and the back is decided by the depth of operators (depth: distance 
-from input to the operator), i.e., given a depth d, layers with a depth less than d are included 
-in front, and the rest are included in back. Bisection performs binary search to find a proper 
+The boundary between the front and the back is decided by the depth of operators (depth: distance
+from input to the operator), i.e., given a depth d, layers with a depth less than d are included
+in front, and the rest are included in back. Bisection performs binary search to find a proper
 depth which achieves a qerror less than target_qerror.
 
-In case front is quantized into Q16 the pseudocode is the following: 
+In case front is quantized into Q16 the pseudocode is the following:
 ```
     until |_depth_max_ - _depth_min_| <=1 do
         _current_depth_ = 0.5 * (_depth_max_ + _depth_min_)
@@ -23,12 +23,12 @@ In case front is quantized into Q16 the pseudocode is the following:
         else
             _depth_min_ = _current_depth_
 ```
-, where Loss(current_depth) is the qerror of the mixied-precision model split at current_depth. 
-As every iteration halves the remaining range (|depth_max - depth_min|), it converges in 
+, where Loss(current_depth) is the qerror of the mixied-precision model split at current_depth.
+As every iteration halves the remaining range (|depth_max - depth_min|), it converges in
 _~log2(max_depth)_ iterations.
 
-## Usage 
-Run _circle-mpqsolver_ with the following arguments.  
+## Usage
+Run _circle-mpqsolver_ with the following arguments.
 
 --data: .h5 file with test data
 
@@ -63,8 +63,8 @@ $./circle-mpqsolver
     --bisection true
 ```
 
-It will produce _model.q_opt.circle_, which is _model.recorded.circle_ quantized to mixed precision 
-using _dataset.h5_, with input nodes set to _Q16_ precision and quantization error (_qerror_) of 
+It will produce _model.q_opt.circle_, which is _model.recorded.circle_ quantized to mixed precision
+using _dataset.h5_, with input nodes set to _Q16_ precision and quantization error (_qerror_) of
 _model.q_opt.circle_ will be less than
 ```
  _qerror(full_q16) + qerror_ratio * (qerror(full_q8) - qerror(full_q16))_

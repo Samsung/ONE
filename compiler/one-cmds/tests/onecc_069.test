@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Boolean type option has multiple options. 
+# Boolean type option has multiple options.
 
 : '
 This test assumes below directories.

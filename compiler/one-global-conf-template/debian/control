@@ -13,4 +13,3 @@ Description: Global target configuration for ONE ({TARGET_NAME})
  This package installs the global Target config for ONE and the backend
  command schema for {BACKEND_NAME}, enabling onecc to pass options to
  backend tools via key-value entries instead of free-form command strings.
- 

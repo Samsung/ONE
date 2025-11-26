@@ -22,12 +22,12 @@ Interpreter object is reusable and can run multiple inferences.
 Elements in tensors (input/output/internal) are stored contiguously and have C-like layout:
 This means for tensor t=[[0, 1],[2, 3]], t[0,1] == 1.
 
-Input and output tensors have the same indexes as in original luci model. 
+Input and output tensors have the same indexes as in original luci model.
 
 **Usage example:**
 ``` c++
 // Note getTensorSize is a function that computes tensor size,
-// it is not part of interpreter and should be implemented by user 
+// it is not part of interpreter and should be implemented by user
 
 luci_interpreter::Interpreter interpreter(luci_module);
 
@@ -107,7 +107,7 @@ This is done by `MemoryManger` interface, see `luci-interpreter/include/luci_int
 This header contains `IMemoryManager` abstract class which is responsible for allocation and dealocation of tensors' memory.
 
 User can construct an interpreter with one of predefined memory managers or their own custom memory manager.
-Note that one memory manager could be shared between multiple interpreter instances, because an interpreter does not own the manager object. 
+Note that one memory manager could be shared between multiple interpreter instances, because an interpreter does not own the manager object.
 
 List of predefined memory managers:
 - `SimpleMemoryManager` This is a simple wrapper around new/delete, default one.

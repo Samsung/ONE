@@ -214,10 +214,10 @@ def main():
     [5] one-profile -b ${backend} ${command}
     [6] one-profile -b ${backend} -- ${command}
     [7] one-profile -b ${backend} -C {cfg} (backend, command key in cfg)
-    [8] one-profile -b ${backend} -C {cfg} (backends key in cfg) (Only 'backend' is invoked, 
+    [8] one-profile -b ${backend} -C {cfg} (backends key in cfg) (Only 'backend' is invoked,
          even though cfg file has multiple backends)
-    [9] one-profile -b ${backend} -C ${cfg} -- ${command} (backend, command key in cfg) 
-    [10] one-profile -b ${backend} -C ${cfg} -- ${command} (backends key in cfg) (Only 'backend' is invoked, 
+    [9] one-profile -b ${backend} -C ${cfg} -- ${command} (backend, command key in cfg)
+    [10] one-profile -b ${backend} -C ${cfg} -- ${command} (backends key in cfg) (Only 'backend' is invoked,
          even though cfg file has multiple backends)
     [11] one-profile -C {cfg} (w/ target, w/ command schema)
     [12] one-profile -C {cfg} (w/ target, w/o command schema)

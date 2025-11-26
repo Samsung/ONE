@@ -42,7 +42,7 @@ if [[ $? -ne 0 ]]; then
 fi
 
 pushd "${WORKDIR}"
-while [ "$1" != "" ]; do  
+while [ "$1" != "" ]; do
   MODELNAME=$1; shift
   GRANULARITY=$1; shift
   DTYPE=$1; shift
@@ -64,7 +64,7 @@ while [ "$1" != "" ]; do
     "${RECORD_MINMAX_PATH}" \
       --input_model "${TEST_RESULT_FILE}.fake_quantized.circle" \
       --input_data "${TEST_RESULT_FILE}.input.h5" \
-      --output_model "${TEST_RESULT_FILE}.minmax_recorded.circle" 
+      --output_model "${TEST_RESULT_FILE}.minmax_recorded.circle"
 
     # Dump min/max values (circle-tensordump)
     "${CIRCLE_TENSORDUMP_PATH}" \

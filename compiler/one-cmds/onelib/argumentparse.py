@@ -17,15 +17,15 @@
 This is for the command schema feature.
 
 _one-cmds_ has lots of tools such as one-import, one-optimize, etc.
-They have their own section in the configuration file and users can 
+They have their own section in the configuration file and users can
  give arguments with key-value pairs.
- 
+
 But, backend tools such as one-codegen and one-profile hasn't the same
  mechanism. Rather, they should pass all the arguments with `command` key
  because _onecc_ can't know the backends' interface in advance.
 
 The command schema has been introduced for resolving these difficulties.
-If users provide _onecc_ with the command schema that describes the interface 
+If users provide _onecc_ with the command schema that describes the interface
  of the backend, users can give arguments with key-value paris like other tools.
 
 NOTE. Command schema feature works only when target option is given.
@@ -143,16 +143,16 @@ class ArgumentParser():
         """
         Get registered option names.
 
-        :param flatten: single option can have multiple names. 
+        :param flatten: single option can have multiple names.
           If it is True, such options are returned after flattened.
-        :param without_dash: optional argument has leading dash on its names. 
+        :param without_dash: optional argument has leading dash on its names.
           If it is True, option names are returned without such dashes.
 
         For example, say there are options like these.
 
           parser.add_argument("--verbose", action=NormalOption, dtype=bool)
           parser.add_argument("--output", "--output_path", action=NormalOption)
-        
+
         [EXAMPLES]
           get_option_names()
             [[--verbose], [--output, --output_path]]

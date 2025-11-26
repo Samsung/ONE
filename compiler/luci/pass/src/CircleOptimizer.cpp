@@ -403,7 +403,7 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   option_to_pass[Options::Algorithm::XpSepActFromTransposeConv] = &createPassInstance<luci::XpSepActFromTransposeConvPass>;
   option_to_pass[Options::Algorithm::ForwardReshapeToUnaryOp] = &createPassInstance<luci::ForwardReshapeToUnaryOpPass>;
   option_to_pass[Options::Algorithm::ForwardTransposeOp] = &createPassInstance<luci::ForwardTransposeOpPass>;
-  // clang-format on 
+  // clang-format on
 
   for (auto const &m : option_to_pass)
   {

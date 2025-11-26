@@ -30,7 +30,7 @@ from onelib.argumentparse import ArgumentParser
 """
 Support commands in the one-cmds.
 
-{ 
+{
   ${GROUP} : {
     ${CMD} : EXPLANATIONS
   }
@@ -126,7 +126,7 @@ def parse_cfg(config_path: Union[str, None],
               quiet: bool = False):
     """
     parse configuration file and store the information to args
-    
+
     :param config_path: path to configuration file
     :param section_to_parse: section name to parse
     :param args: object to store the parsed information

@@ -48,7 +48,7 @@ if [[ ! -f ${inputfile} ]]; then
   trap_err_onexit
 fi
 
-# run test 
+# run test
 one-import-onnx \
 --input_path ${inputfile} \
 --output_path ${outputfile} > ${logfile} 2>&1

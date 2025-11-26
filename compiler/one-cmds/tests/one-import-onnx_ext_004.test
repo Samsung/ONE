@@ -38,7 +38,7 @@ rm -f ${logfile}
 # be sure to remove one-import-onnx-ext
 rm -f ../bin/one-import-onnx-ext
 
-# run test 
+# run test
 one-import-onnx \
 --force_ext \
 --input_path ${inputfile} \

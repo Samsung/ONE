@@ -42,9 +42,9 @@ def run_subtools():
 
     E.g. $ onecc -C ${CFG_FILE}
          $ onecc import tflite -i ${INPUT} -o ${OUTPUT} ## HERE
-        
+
     Please refer to above `subtool_list` for the support list of sub-tools.
-    
+
     This function checks if given sub-tool exists and run it directly.
     """
     subtool_keys: List[str] = oneutils.one_cmd_list()
