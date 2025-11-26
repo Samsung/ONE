@@ -28,5 +28,4 @@ This is recommended coding rules for the project.
 ### Code Style
 
 - Follow .clang-format file in the repository.
-- You can use `./nnas format` command to apply clang-format to entire project.
-- You can use `./nnas format --diff-only` command to apply clang-format to only modified files.
+- Recommand to use pre-commit hook: [How to run format checker](../docs/howto/how-to-run-format-checker.md)
