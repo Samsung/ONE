@@ -24,21 +24,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.x'
-
-      # C format: clang-format-16
-      # Python format: yapf==0.43.0
-      - name: Install packages
-        run: |
-          sudo apt-get update && sudo apt-get install -qqy clang-format-16
-          pip install yapf==0.43.0
-
-      - name: Check
-        run: ./nnas format
-
       - name: Install uv
         uses: astral-sh/setup-uv@v7
         with:
@@ -46,24 +31,7 @@ jobs:
 
       - name: Check format all files
         run: |
-          uv venv --python 3.10 --seed
-          uv pip install pre-commit==4.4.0
           uv run pre-commit run -a
-
-      # Upload patch file if failed
-      - name: Store archive
-        uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: format-patch
-          path: format.patch
-          retention-days: 3
-
-      # Refer https://github.com/rhysd/actionlint/blob/main/docs/usage.md#use-actionlint-on-github-actions
-      - name: Check workflow files
-        run: |
-          bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash)
-          ./actionlint -color
 
   check-copyright:
     name: Check copyright
