@@ -1,6 +1,6 @@
 // Circle.conv_2d with unknown shape to validate shape inference
 func.func @main_graph(%arg0: tensor<1x2x3x3xf32>) -> tensor<1x2x3x3xf32> attributes {
-  input_names = ["input"], output_names = ["3"]} 
+  input_names = ["input"], output_names = ["3"]}
 {
   %0 = "Circle.pseudo_const"() {value = dense<[[[[0.1, 0.2]]], [[[0.3, 0.4]]]]> :
     tensor<2x1x1x2xf32>} :

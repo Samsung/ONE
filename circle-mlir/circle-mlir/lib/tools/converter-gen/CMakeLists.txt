@@ -23,7 +23,7 @@ function(cir_convertergen ofn)
     set(LLVM_TARGET_DEFINITIONS_ABSOLUTE
       ${CMAKE_CURRENT_SOURCE_DIR}/${LLVM_TARGET_DEFINITIONS})
   endif()
-  
+
   set(tblgen_change_flag "--write-if-changed")
 
   if (NOT LLVM_ENABLE_WARNINGS)

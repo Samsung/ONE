@@ -9,7 +9,7 @@ func.func @main_graph()
   %begin = "Circle.pseudo_const"() {
     value = dense<[4]> : tensor<1xi32>
   } : () -> tensor<1xi32>
-  
+
   %end = "Circle.pseudo_const"() {
     value = dense<[8]> : tensor<1xi32>
   } : () -> tensor<1xi32>

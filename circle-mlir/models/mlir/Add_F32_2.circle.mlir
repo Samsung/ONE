@@ -1,5 +1,5 @@
 module {
-  func.func @main_graph(%arg0: tensor<1x2x3x3xf32>, %arg1: tensor<1x2x3x3xf32>) 
+  func.func @main_graph(%arg0: tensor<1x2x3x3xf32>, %arg1: tensor<1x2x3x3xf32>)
     -> tensor<1x2x3x3xf32> attributes {
       input_names = ["input_0", "input_1"],
       output_names = ["output_2"]}
