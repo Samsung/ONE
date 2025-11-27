@@ -72,11 +72,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Caching externals
-        uses: actions/cache@v4
+      - name: Restore onecc external cache
+        uses: actions/cache/restore@v4
         with:
           path: externals
-          key: external-onert-${{ matrix.ubuntu_code }}-${{ hashFiles('infra/nnfw/cmake/packages/**/*.cmake') }}
+          key: external-onecc-${{ hashFiles('infra/cmake/packages/**/*.cmake') }}
+          restore-keys: |
+            external-onecc-
+
+      - name: Restore externals cache
+        uses: actions/cache/restore@v4
+        with:
+          path: runtime/externals
+          key: external-onert-${{ matrix.ubuntu_code }}-${{ hashFiles('runtime/infra/cmake/packages/**/*.cmake') }}
           restore-keys: |
             external-onert-${{ matrix.ubuntu_code }}-
 
@@ -115,11 +123,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Caching externals
-        uses: actions/cache@v4
+      - name: Restore onecc external cache
+        uses: actions/cache/restore@v4
         with:
           path: externals
-          key: external-onert-${{ matrix.ubuntu_code }}-${{ hashFiles('infra/nnfw/cmake/packages/**/*.cmake') }}
+          key: external-onecc-${{ hashFiles('infra/cmake/packages/**/*.cmake') }}
+          restore-keys: |
+            external-onecc-
+
+      - name: Restore externals cache
+        uses: actions/cache/restore@v4
+        with:
+          path: runtime/externals
+          key: external-onert-${{ matrix.ubuntu_code }}-${{ hashFiles('runtime/infra/cmake/packages/**/*.cmake') }}
           restore-keys: |
             external-onert-${{ matrix.ubuntu_code }}-
 
@@ -145,11 +161,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Caching externals
-        uses: actions/cache@v4
+      - name: Restore onecc external cache
+        uses: actions/cache/restore@v4
         with:
           path: externals
-          key: external-onert-ndk-${{ hashFiles('infra/nnfw/cmake/packages/**/*.cmake') }}
+          key: external-onecc-${{ hashFiles('infra/cmake/packages/**/*.cmake') }}
+          restore-keys: |
+            external-onecc-
+
+      - name: Restore externals cache
+        uses: actions/cache/restore@v4
+        with:
+          path: runtime/externals
+          key: external-onert-ndk-${{ hashFiles('runtime/infra/cmake/packages/**/*.cmake') }}
           restore-keys: |
             external-onert-ndk-
 
@@ -178,10 +202,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Caching externals
-        uses: actions/cache@v4
+      - name: Restore onecc external cache
+        uses: actions/cache/restore@v4
         with:
           path: externals
+          key: external-onecc-${{ hashFiles('infra/cmake/packages/**/*.cmake') }}
+          restore-keys: |
+            external-onecc-
+
+      - name: Restore externals cache
+        uses: actions/cache/restore@v4
+        with:
+          path: runtime/externals
           key: external-onert-${{ matrix.ubuntu_code }}-${{ hashFiles('infra/nnfw/cmake/packages/**/*.cmake') }}
           restore-keys: |
             external-onert-${{ matrix.ubuntu_code }}-

@@ -64,16 +64,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Caching externals
-        uses: actions/cache@v4
+      - name: Restore onecc external cache
+        uses: actions/cache/restore@v4
+        with:
+          path: externals
+          key: external-onecc-${{ hashFiles('infra/cmake/packages/**/*.cmake') }}
+          restore-keys: |
+            external-onecc-
+
+      - name: Restore externals cache
+        uses: actions/cache/restore@v4
         with:
           path: runtime/externals
           key: external-onert-${{ matrix.ubuntu_code }}-${{ hashFiles('runtime/infra/cmake/packages/**/*.cmake') }}
           restore-keys: |
             external-onert-${{ matrix.ubuntu_code }}-
 
-      - name: Caching ccache
-        uses: actions/cache@v4
+      - name: Restore ccache cache
+        uses: actions/cache/restore@v4
+        id: ccache-cache
         with:
           path: ~/.cache/ccache
           key: ccache-onert-${{ matrix.ubuntu_code }}-${{ matrix.arch }}-${{ matrix.type }}-${{ github.sha }}
@@ -95,6 +104,15 @@ jobs:
       - name: Build onert
         run: |
           make -f Makefile.template create-testsuite
+
+      # Save cache on push to reduce the size of cache storage
+      #   ccache cache: only for master branch
+      - name: Save ccache cache
+        uses: actions/cache/save@v4
+        if: github.event_name == 'push' && github.ref_name =='master'
+        with:
+          path: ~/.cache/ccache
+          key: ${{ steps.ccache-cache.outputs.cache-primary-key }}
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
