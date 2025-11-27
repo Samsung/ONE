@@ -23,7 +23,7 @@ or in a single command
 make -f Makefile.template configure build install BUILD_TYPE=Release
 ```
 
-After the build is done, the required binaries should be installed in the `Product/out` directory. This is where the native part of the Python bindings is as well. 
+After the build is done, the required binaries should be installed in the `Product/out` directory. This is where the native part of the Python bindings is as well.
 You can use a custom installation of the binaries as a starting point of the Python API - in this case specify that location in the `PRODUCT_DIR` environment variable.
 
 ## Creating the Python wheel

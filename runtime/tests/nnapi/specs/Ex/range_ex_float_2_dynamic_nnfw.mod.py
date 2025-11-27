@@ -15,7 +15,7 @@ dynamic_delta = dynamic_tensor.DynamicInputGenerator(model, delta_shape)
 test_delta_input = dynamic_delta.getTestNodeInput()
 
 
-out = Output("output", "TENSOR_FLOAT32", "{3}") 
+out = Output("output", "TENSOR_FLOAT32", "{3}")
 model = model.Operation("RANGE_EX", test_start_input, test_limit_input, test_delta_input).To(out)
 
 

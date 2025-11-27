@@ -1,9 +1,9 @@
 # model
 model = Model()
 start = Input("start", "TENSOR_FLOAT32", "{}")
-limit = Input("limit", "TENSOR_FLOAT32", "{}") 
-delta = Input("delta", "TENSOR_FLOAT32", "{}") 
-out = Output("output", "TENSOR_FLOAT32", "{8}") 
+limit = Input("limit", "TENSOR_FLOAT32", "{}")
+delta = Input("delta", "TENSOR_FLOAT32", "{}")
+out = Output("output", "TENSOR_FLOAT32", "{8}")
 model = model.Operation("RANGE_EX", start, limit, delta).To(out)
 
 input0 = {start: [1],

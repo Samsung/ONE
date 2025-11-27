@@ -55,7 +55,7 @@ model.Operation("LOGISTIC", test_node_input).To(model_output)
 
 model_input_data = [0, 1, 2, 4, 8, 16]
 model_output_data = [0.5, 0.7310585786300049,
-                     0.8807970779778823, 0.9820137900379085, 
+                     0.8807970779778823, 0.9820137900379085,
                      0.9996646498695336, 0.9999998874648379]
 
 Example({

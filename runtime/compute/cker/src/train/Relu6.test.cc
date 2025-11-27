@@ -53,7 +53,7 @@ TEST(CKer_Operation, ReLU6)
 
     // clang-format off
     // std::vector<float> input_fwd         = {-2.0,  -1.0,  2.0,  3.0,  6.0,  7.0};
-    std::vector<float> output_fwd           = { 0.0,   0.0,  2.0,  3.0,  6.0,  6.0};  
+    std::vector<float> output_fwd           = { 0.0,   0.0,  2.0,  3.0,  6.0,  6.0};
     std::vector<float> input_bwd            = {-0.1,  -0.2,  0.3,  0.4, -0.1,  0.5};
     std::vector<float> expected_output_bwd  = { 0.0,   0.0,  0.3,  0.4,  0.0,  0.0};
     // clang-format on
@@ -66,7 +66,7 @@ TEST(CKer_Operation, ReLU6)
 
     // clang-format off
     // std::vector<float> input_fwd         = { 7.0,   8.0,  4.0, -4.0, -5.0, 10.0};
-    std::vector<float> output_fwd           = { 6.0,   6.0,  4.0,  0.0,  0.0,  6.0};  
+    std::vector<float> output_fwd           = { 6.0,   6.0,  4.0,  0.0,  0.0,  6.0};
     std::vector<float> input_bwd            = {-6.1,  -3.3,  7.0,  8.4, -9.2,  0.0};
     std::vector<float> expected_output_bwd  = { 0.0,   0.0,  7.0,  0.0,  0.0,  0.0};
     // clang-format on
@@ -82,7 +82,7 @@ TEST(CKer_Operation, neg_ReLU6)
 
     // clang-format off
     // std::vector<float> input_fwd         = { 0.0,   2.0,  4.0,  6.0,  8.0, 10.0};
-    std::vector<float> output_fwd           = { 0.0,   2.0,  4.0,  6.0,  6.0,  6.0};  
+    std::vector<float> output_fwd           = { 0.0,   2.0,  4.0,  6.0,  6.0,  6.0};
     std::vector<float> input_bwd            = { 0.1,   0.2,  0.3,  0.4,  0.5,  0.6};
     std::vector<float> expected_output_bwd  = { 0.1,   0.2,  0.3,  0.4,  0.5,  0.6};  // wrong value
     // clang-format on
@@ -95,7 +95,7 @@ TEST(CKer_Operation, neg_ReLU6)
 
     // clang-format off
     // std::vector<float> input_fwd         = { 0.0,   2.0,  4.0,  6.0,  8.0, 10.0};
-    std::vector<float> output_fwd           = { 0.0,   2.0,  4.0,  6.0,  6.0,  6.0};  
+    std::vector<float> output_fwd           = { 0.0,   2.0,  4.0,  6.0,  6.0,  6.0};
     std::vector<float> input_bwd            = { 0.1,   0.2,  0.3,  0.4};  // size mismatch
     std::vector<float> expected_output_bwd  = { 0.0,   0.2,  0.3,  0.4};
     // clang-format on
