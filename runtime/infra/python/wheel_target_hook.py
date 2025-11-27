@@ -61,7 +61,6 @@ class WheelBuildHook(BuildHookInterface):
         self.copy_libraries(src_libs_base_dir, self.whl_binaries_target_dir, "nnfw")
         self.copy_libraries(src_libs_base_dir, self.whl_binaries_target_dir,
                             "nnfw/backend")
-        self.copy_libraries(src_libs_base_dir, self.whl_binaries_target_dir, "nnfw/odc")
 
     def get_libs_dir(self):
         """Retrieve the path of a directory where the required shared libraries are"""
@@ -156,7 +155,7 @@ class WheelBuildHook(BuildHookInterface):
             )
             return supported_platforms[0]
         elif value not in supported_platforms:
-            raise ValueError(f"""Unsupported platform detected: {value}. 
+            raise ValueError(f"""Unsupported platform detected: {value}.
                 Please use one of the following values: {','.join(supported_platforms)}"""
                              )
         else:

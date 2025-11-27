@@ -20,7 +20,7 @@ jobs:
     if: github.repository_owner == 'Samsung'
     strategy:
       matrix:
-        python-version: [ 'python3.10', 'python3.11', 'python3.12' ]
+        python-version: [ '3.10', '3.11', '3.12' ]
         arch: [ 'x86_64', 'aarch64' ]
         include:
           - arch: x86_64
@@ -36,7 +36,9 @@ jobs:
     env:
       BUILD_TYPE: release
       OPTIONS: "-DENABLE_TEST=OFF -DBUILD_ARMCOMPUTE=OFF"
-      DEV_TAG: ""
+      # Set env to decide package name: refer runtime/infra/python/wheel_target_hook.py
+      PLATFORM: ${{ matrix.arch }}
+      GLIBC_VERSION: "2.28"
 
     steps:
       - name: Checkout
@@ -50,11 +52,11 @@ jobs:
           restore-keys: |
             external-onert-jammy-
 
-      - name: Install venv for python version
-        run: |
-          ${{ matrix.python-version }} -m venv ./venv
-          source ./venv/bin/activate
-          pip3 install -U setuptools wheel
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.9.10"
+          python-version: "${{ matrix.python-version }}"
 
       # For flatc build
       - name: Install glibc-static
@@ -63,8 +65,7 @@ jobs:
 
       - name: Build
         run: |
-          source ./venv/bin/activate
-          make -f Makefile.template configure build install
+          uv run --python "${{ matrix.python-version }}" make -f Makefile.template configure build install
 
       # Pre-release build
       # 1) Release branch test build
@@ -73,23 +74,17 @@ jobs:
       - name: Pre-release packaging
         if: github.event.inputs.official == 'false' || github.event_name == 'pull_request' || github.ref_name == 'master'
         run: |
-          source ./venv/bin/activate
-          cd runtime/infra/python
-          python3 setup.py bdist_wheel --plat-name manylinux_2_28_${{ matrix.arch }} egg_info --tag-build "dev$(date -u "+%y%m%d")"
+          uv version "$(uv version --short --project runtime)-dev$(date -u "+%y%m%d")" --project runtime --python "${{ matrix.python-version }}"
 
-      # Allow official release on release branch only
-      - name: Release packaging
-        if: github.event.inputs.official == 'true' && startsWith(github.ref_name, 'release/')
+      - name: Build package
         run: |
-          source ./venv/bin/activate
-          cd runtime/infra/python
-          python3 setup.py bdist_wheel --plat-name manylinux_2_28_${{ matrix.arch }} egg_info
+          uv build --wheel --project runtime --python "${{ matrix.python-version }}"
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: onert-wheel-${{ matrix.python-version }}-${{ matrix.arch }}
-          path: runtime/infra/python/dist/*.whl
+          name: onert-wheel-python${{ matrix.python-version }}-${{ matrix.arch }}
+          path: runtime/dist/*.whl
 
   publish-to-pypi:
     needs: [ build ]
