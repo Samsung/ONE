@@ -71,7 +71,7 @@ function preset_install()
   install -T -m 755 -D "${SCRIPT_PATH}/res/tf2nnpkg.20220323" "${NNAS_INSTALL_PREFIX}/bin/tf2nnpkg"
 
   # Though you have to install tensorflow to run 'tf2tfliteV2',
-  # tensorflow can't be installed in mingw. First, You can install tensorflow 
+  # tensorflow can't be installed in mingw. First, You can install tensorflow
   # from Window native CMD(run as administrator) with python virtual environment.
   # And, you must copy it to "${NNAS_INSTALL_PREFIX}/bin/venv"
 }

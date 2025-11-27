@@ -8,6 +8,5 @@ index 5295d9dd..f71553c9 100644
    CodedInputStream* coded_input = new CodedInputStream(raw_input);
 -  coded_input->SetTotalBytesLimit(kProtoReadBytesLimit, 536870912);
 +  coded_input->SetTotalBytesLimit(kProtoReadBytesLimit);
- 
+
    bool success = proto->ParseFromCodedStream(coded_input);
- 

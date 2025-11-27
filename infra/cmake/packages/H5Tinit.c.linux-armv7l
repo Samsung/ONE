@@ -26,7 +26,7 @@
  *			architecture.  The parameters below should be
  *			checked carefully and errors reported to the
  *			HDF5 maintainer.
- *			
+ *
  *			Each of the numeric formats listed below are
  *			printed from most significant bit to least
  *			significant bit even though the actual bytes
@@ -36,7 +36,7 @@
  *			memory; little-endian machines have
  *			decreasing numbers while big-endian machines
  *			have increasing numbers.
- *			
+ *
  *			The fields of the numbers are printed as
  *			letters with `S' for the mantissa sign bit,
  *			`M' for the mantissa magnitude, and `E' for
@@ -48,7 +48,7 @@
  *			of these categories is printed as a question
  *			mark.  Bits of integer types are printed as
  *			`I' for 2's complement and `U' for magnitude.
- *			
+ *
  *			If the most significant bit of the normalized
  *			mantissa (always a `1' except for `0.0') is
  *			not stored then an `implicit=yes' appears
@@ -123,7 +123,7 @@
 /*******************/
 
 
-
+
 /*-------------------------------------------------------------------------
  * Function:	H5TN_init_interface
  *
