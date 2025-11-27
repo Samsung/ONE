@@ -111,7 +111,7 @@ function print_tests()
     for TEST in $TEST_RESULTS; do
         local NAME=$(cat $REPORT_MODEL_DIR/$TEST | awk '{print $1}')
         local RESULT=$(cat $REPORT_MODEL_DIR/$TEST | awk '{print $2}')
-        print_test $NAME $RESULT 
+        print_test $NAME $RESULT
         if [[ $i -ne $TEST_NUM-1 ]]; then
             print_comma
         fi

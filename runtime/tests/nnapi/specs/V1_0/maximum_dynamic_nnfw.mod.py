@@ -56,7 +56,7 @@ model = model.Operation("MAXIMUM", input1, input2).To(output)
 
 input1_data = [1, 2, 3, 4]
 
-input2_data = [2, 4, 8, 10, 
+input2_data = [2, 4, 8, 10,
                -2, -4, -8, -10]
 
 output_data = [2, 4, 8, 10,

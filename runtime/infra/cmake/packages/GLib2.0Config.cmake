@@ -1,7 +1,7 @@
 function(_GLIB_2_0_import)
   find_library(GLIB_LIBRARIES
     NAMES glib-2.0)
-  
+
   get_filename_component(GLIB_LIBRARY_DIR ${GLIB_LIBRARIES} DIRECTORY)
   find_path(GLIBCONFIG_INCLUDE_DIR
     NAMES glibconfig.h
@@ -12,7 +12,7 @@ function(_GLIB_2_0_import)
   find_path(GLIB_INCLUDE_DIR
     NAMES glib.h
     PATH_SUFFIXES glib-2.0)
-  
+
   set(GLIB_FOUND TRUE)
 
   if(NOT GLIB_LIBRARIES)

@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# 
+#
 # refer to tanh_v1_dynamic.mod.py about the structore
 #
 # This adds reshape as the first op in a model and

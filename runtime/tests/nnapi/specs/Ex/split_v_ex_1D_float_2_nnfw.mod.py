@@ -1,7 +1,7 @@
 # model
 input0 = Input("input0", "TENSOR_FLOAT32", "{12}")
 size_splits = Input("size_splits", "TENSOR_INT32", "{3}")
-split_dim = Input("split_dim", "TENSOR_INT32", "{1}") 
+split_dim = Input("split_dim", "TENSOR_INT32", "{1}")
 num_splits = Int32Scalar("num_splits",3);
 
 output0 = Output("output0", "TENSOR_FLOAT32", "{3}")
