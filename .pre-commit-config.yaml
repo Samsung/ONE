@@ -8,8 +8,8 @@ repos:
         id: end-of-file-fixer
         # exclude .svg files
         exclude: \.(svg)$
-      # - name: 'Check trailing whitespace'
-      #   id: trailing-whitespace
+      - name: 'Check trailing whitespace'
+        id: trailing-whitespace
       # TODO add shebang to all excutable python/shell scripts
       - name: 'Check executable files'
         id: check-executables-have-shebangs
