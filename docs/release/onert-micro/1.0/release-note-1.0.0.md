@@ -2,7 +2,7 @@
 
 ### Supported operations
 
-More operations are supported as follows: 
+More operations are supported as follows:
 
 - AveragePool2D, Elu, Exp, Abs, Neg, Div, AddN, Relu, Relu6, Leak_Relu, Pad, PadV2, ArgMin, ArgMax, Resize_Bilinear, LogicalAnd, LogicalOr, Equal, NotEqual, Greater, GreaterEqual, LessEqual
 

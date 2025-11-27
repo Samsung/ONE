@@ -8,7 +8,7 @@
   - Runtime CPU backend supports more quant8 operations
   - API changes
   - New optimization
-  
+
 ## ONE Compiler
 
 ### Compiler supports more operations
@@ -42,5 +42,5 @@
 - Introduce basic asynchronous execution API
 
 ### New optimization
-    
+
 - Remove dynamic tensor overhead from static models

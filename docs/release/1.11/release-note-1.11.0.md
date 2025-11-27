@@ -5,7 +5,7 @@
 ### Compiler supports more operations
 - MaxPoolWithArgMax by CustomOp
 
-### Changes 
+### Changes
 - `one-build` command added as representative command
 - one-cmds are now revised to python script and supports configuration file as input parameters
 - added `rawdata2hdf5` tool to help creating input datasets for calibration

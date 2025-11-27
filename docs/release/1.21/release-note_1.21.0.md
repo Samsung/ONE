@@ -28,7 +28,7 @@
 - Runtime supports to run nnpackage with two models
 
 ### Channel Wise Quantization on Conv2D and Depthwise Conv2D
-- Conv2D and Depthwise Conv2D supports per-channel quantization of uint8 type. 
+- Conv2D and Depthwise Conv2D supports per-channel quantization of uint8 type.
 
 ### Batch Execution with TRIX backend
 - TRIX backend supports batch execution which run in parallel with multicore
