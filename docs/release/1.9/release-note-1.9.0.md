@@ -12,7 +12,7 @@
 - Experimental requantization from INT8 to UINT8
 - Adding more operator value tests
 - tf2tfliteV2 supports conversion from Keras model, saved model
-- Refactoring for better maintenance long Class codes using visitor patterns 
+- Refactoring for better maintenance long Class codes using visitor patterns
 - Introducing optimization pass that fuses batch normalization with Transposed Convolution.
 
 

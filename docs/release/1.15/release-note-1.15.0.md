@@ -27,7 +27,7 @@
   - Maximum: uint8
   - MaxPool2D: int8
   - Minimum: uint8
-  - Mul: int8 
+  - Mul: int8
   - Pad: int8
   - PadV2: int8
   - Quantize: uint8, int8
@@ -37,6 +37,6 @@
   - Squeeze: int8
   - Sub: int8
 
-### ARM Compute Library Update 
+### ARM Compute Library Update
 
 - ONERT uses Compute Library v21.02

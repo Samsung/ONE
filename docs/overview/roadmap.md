@@ -3,8 +3,8 @@
 This document describes the roadmap of the **ONE** project.
 
 Project **ONE** aims at providing a high-performance, on-device neural network (NN) inference
-framework that performs inference of a given NN model on processors, such as CPU, GPU, DSP, or NPU, 
-on the target platform, such as Tizen, Android and Ubuntu. 
+framework that performs inference of a given NN model on processors, such as CPU, GPU, DSP, or NPU,
+on the target platform, such as Tizen, Android and Ubuntu.
 
 ## Progress
 

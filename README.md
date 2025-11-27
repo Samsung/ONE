@@ -15,8 +15,8 @@ A high-performance, on-device neural network inference framework.
 This project **ONE** aims at providing a high-performance, on-device neural network (NN) inference
 framework that performs inference of a given NN model on processors, such as CPU, GPU, DSP or NPU.
 
-We develop a runtime that runs on a Linux kernel-based OS platform such as Ubuntu, Tizen, or 
-Android, and a compiler toolchain to support NN models created using various NN training frameworks such 
+We develop a runtime that runs on a Linux kernel-based OS platform such as Ubuntu, Tizen, or
+Android, and a compiler toolchain to support NN models created using various NN training frameworks such
 as Tensorflow or PyTorch in a unified form at runtime.
 
 ## Overview

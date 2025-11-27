@@ -1,4 +1,4 @@
-## Release Notes for onert-micro 2.0.0-pre 
+## Release Notes for onert-micro 2.0.0-pre
 
 ### Overall Structure Refactored
 

@@ -4,7 +4,7 @@
 
 ### Compiler Frontend
 
-- Add optimization pass: ConvertNCHWToNHWC, FoldSparseToDensePass, FuseBatchNormWithConvPass, ForwardReshapeToUnaryOpPass, RemoveUnnecessarySlicePass, RemoveUnnecessarySplitPass,  RemoveUnnecessaryReshapePass, RemoveRedundantReshape, SubstituteTransposeToReshapePass, SubstituteSqueezeToReshapePass, 
+- Add optimization pass: ConvertNCHWToNHWC, FoldSparseToDensePass, FuseBatchNormWithConvPass, ForwardReshapeToUnaryOpPass, RemoveUnnecessarySlicePass, RemoveUnnecessarySplitPass,  RemoveUnnecessaryReshapePass, RemoveRedundantReshape, SubstituteTransposeToReshapePass, SubstituteSqueezeToReshapePass,
 - Support more operators: FAKE_QUANT
 - Enhancements: Support auto generated random input for record-minmax (for better quantization testing)
 - Changes: `--all` option to `--O1` in circle2circle(and one-optimize)
