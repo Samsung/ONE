@@ -54,7 +54,7 @@ public:
     assert(tensor->quantization() != nullptr);
 
     _params = tensor->quantization();
-    
+
     if (Scales().Length() > 1)
     {
       _type = CWQ;

@@ -54,11 +54,11 @@ index 460fa43ee1..be67c3f83c 100644
 -  REDUCE_WINDOW = 205,
  }
  // LINT.ThenChange(nnapi_linter/linter.proto)
- 
+
 @@ -625,187 +579,8 @@ union BuiltinOptions {
    InstanceNormOptions = 254,
  }
- 
+
 -union BuiltinOptions2{
 -  StablehloConcatenateOptions,
 -  StablehloBroadcastInDimOptions,
@@ -242,7 +242,7 @@ index 460fa43ee1..be67c3f83c 100644
 -}
 +//union BuiltinOptions2{
 +//}
- 
+
  // LINT.IfChange
  enum Padding : byte { SAME, VALID }
 @@ -1582,7 +1357,7 @@ table Operator {
@@ -252,5 +252,5 @@ index 460fa43ee1..be67c3f83c 100644
 -  builtin_options_2 : BuiltinOptions2;
 +  //builtin_options_2 : BuiltinOptions2;
  }
- 
+
  // The root type, defining a subgraph, which typically represents an entire

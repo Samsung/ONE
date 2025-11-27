@@ -101,7 +101,7 @@ public:
     _reference_output_data = logical_or_bool::reference_output_data;
     _test_kernel_model_circle = logical_or_bool::test_kernel_model_circle;
   }
-  
+
   ~TestDataBoolLogicalOr() override = default;
 };
 
