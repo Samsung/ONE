@@ -52,9 +52,9 @@ diff -r -u a/config/cmake/ConfigureChecks.cmake b/config/cmake/ConfigureChecks.c
 +endif(NOT CMAKE_CROSSCOMPILING)
  # ----------------------------------------------------------------------
  # Set the flag to indicate that the machine is using a special algorithm
- # to convert some values of '(unsigned) long' to 'long double' values.  
+ # to convert some values of '(unsigned) long' to 'long double' values.
 @@ -230,7 +240,12 @@
- # ..., 7fffff..., the compiler uses a unknown algorithm.  We define a 
+ # ..., 7fffff..., the compiler uses a unknown algorithm.  We define a
  # macro and skip the test for now until we know about the algorithm.
  #
 +if(NOT CMAKE_CROSSCOMPILING)
@@ -98,7 +98,7 @@ diff -r -u a/config/cmake/ConfigureChecks.cmake b/config/cmake/ConfigureChecks.c
 +  set(H5_NO_ALIGNMENT_RESTRICTIONS_RUN 0)
 +  set(H5_NO_ALIGNMENT_RESTRICTIONS_COMPILE TRUE)
 +endif(NOT CMAKE_CROSSCOMPILING)
- 
+
  # -----------------------------------------------------------------------
  # wrapper script variables
 diff -r -u a/config/cmake_ext_mod/ConfigureChecks.cmake b/config/cmake_ext_mod/ConfigureChecks.cmake
@@ -160,7 +160,7 @@ diff -r -u a/config/cmake_ext_mod/ConfigureChecks.cmake b/config/cmake_ext_mod/C
 +    set (${HDF_PREFIX}_PRINTF_LL "L")
 +    set (PRINT_LL_FOUND 1)
 +  endif(NOT CMAKE_CROSSCOMPILING)
- 
+
    if (PRINT_LL_FOUND)
      message (STATUS "Checking for appropriate format for 64 bit long: found ${${HDF_PREFIX}_PRINTF_LL_WIDTH}")
 diff -r -u a/src/CMakeLists.txt b/src/CMakeLists.txt
@@ -169,7 +169,7 @@ diff -r -u a/src/CMakeLists.txt b/src/CMakeLists.txt
 @@ -616,6 +616,7 @@
    target_link_libraries (H5detect "ws2_32.lib")
  endif (MSVC OR MINGW)
- 
+
 +if (NOT CMAKE_CROSSCOMPILING)
  set (CMD $<TARGET_FILE:H5detect>)
  add_custom_command (
@@ -179,12 +179,12 @@ diff -r -u a/src/CMakeLists.txt b/src/CMakeLists.txt
      DEPENDS H5detect
  )
 +endif (NOT CMAKE_CROSSCOMPILING)
- 
+
  add_executable (H5make_libsettings ${HDF5_SRC_DIR}/H5make_libsettings.c)
  TARGET_C_PROPERTIES (H5make_libsettings STATIC " " " ")
 @@ -631,6 +633,10 @@
  endif (MSVC OR MINGW)
- 
+
  set (CMD $<TARGET_FILE:H5make_libsettings>)
 +# for cross compile
 +if (DEFINED ENV{EXTERNAL_H5MAKE_LIBSETTINGS})

@@ -23,20 +23,20 @@ function(_LLVM_import)
     # get llvm link options
     execute_process(COMMAND ${llvm_config} --ldflags OUTPUT_VARIABLE
                     LLVM_LINKFLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
-    execute_process(COMMAND ${llvm_config} --system-libs 
+    execute_process(COMMAND ${llvm_config} --system-libs
                     OUTPUT_VARIABLE LLVM_LINKSYSLIBS OUTPUT_STRIP_TRAILING_WHITESPACE)
     execute_process(COMMAND ${llvm_config} --libs core mcjit native
                     OUTPUT_VARIABLE LLVM_LINKLIBS OUTPUT_STRIP_TRAILING_WHITESPACE)
-                    
+
     add_library(llvm INTERFACE)
-    
+
     foreach(ONE_CPPFLAG ${LLVM_CPPFLAGS})
       target_compile_options(llvm INTERFACE ${ONE_CPPFLAG})
     endforeach()
     target_link_libraries(llvm INTERFACE ${LLVM_LINKFLAGS})
     target_link_libraries(llvm INTERFACE ${LLVM_LINKLIBS})
     target_link_libraries(llvm INTERFACE ${LLVM_LINKSYSLIBS})
-  
+
   endif(NOT TARGET llvm)
 
   set(LLVM_FOUND TRUE PARENT_SCOPE)

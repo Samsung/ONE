@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # STEP 1
-#   Download latest TCM tool from 
+#   Download latest TCM tool from
 #   https://github.sec.samsung.net/RS-TCM/tca-standalone/releases/download/1.0.2/tca-standalone-1.0.2.jar
 #
 # STEP 2
