@@ -52,13 +52,13 @@ Please refer to `tflite2circle` tool(https://github.com/Samsung/ONE/tree/master/
 
 ### Convert to c array model
 
-Many MCU platforms are lack of file system support. The proper way to provide a model to onert-micro is to convert it into c array so that it can be compiled into MCU binary. 
+Many MCU platforms are lack of file system support. The proper way to provide a model to onert-micro is to convert it into c array so that it can be compiled into MCU binary.
 
 ``` bash
 xxi -i model.circle > model.h
 ```
 
-Then, model.h looks like this: 
+Then, model.h looks like this:
 
 ``` cpp
 unsigned char model_circle[] = {
@@ -72,7 +72,7 @@ unsigned int model_circle_len = 1004;
 
 Once you have c array model, you are ready to use onert-micro.
 
-To run a model with onert-micro, follow the instruction: 
+To run a model with onert-micro, follow the instruction:
 
 1. Include onert-micro header
 
@@ -125,4 +125,4 @@ onert-micro provides compile flags to generate reduced-size binary.
 - `DIS_DYN_SHAPES` : Flag for Disabling Dynamic Shape Support
 
 Also, you can build onert-micro library only with kernels in target models.
-For this, please remove all the kernels from [KernelsToBuild.lst](./luci-interpreter/pal/mcu/KernelsToBuild.lst) except kernels in your target model. 
+For this, please remove all the kernels from [KernelsToBuild.lst](./luci-interpreter/pal/mcu/KernelsToBuild.lst) except kernels in your target model.

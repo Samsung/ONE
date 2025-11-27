@@ -87,7 +87,7 @@ public:
     _reference_output_data = logical_not_bool::reference_output_data;
     _test_kernel_model_circle = logical_not_bool::test_kernel_model_circle;
   }
-  
+
   ~TestDataBoolLogicalNot() override = default;
 };
 
