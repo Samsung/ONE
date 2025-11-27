@@ -67,7 +67,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/ccache
-          key: ccache-onert-android
+          key: ccache-onert-android-${{ github.sha }}
+          restore-keys: |
+            ccache-onert-android
 
       # Set ccache size
       # Release < 100MB / Debug < 250MB

@@ -40,38 +40,14 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  prepare:
+  onecc-test:
     if: github.repository_owner == 'Samsung' && !contains(github.event.pull_request.labels.*.name, 'PR/NO TEST')
-    runs-on: ubuntu-latest
-    outputs:
-      run_matrix: ${{ steps.set-matrix.outputs.run_matrix }}
-    steps:
-      - name: set matrix
-        id: set-matrix
-        env:
-          EVENT_NAME: ${{ github.event_name }}
+    strategy:
+      matrix:
+        type: ['Debug', 'Release']
         # TODO enable focal when possible
         #      refer https://github.com/Samsung/ONE/issues/16196
-        run: |
-          JSON='{'
-          if [[ "$EVENT_NAME" == "push" ]]; then
-            JSON+='"type": ["Debug"],'
-            JSON+='"ubuntu_code": ["jammy", "noble"]'
-          elif [[ "$EVENT_NAME" == "pull_request" ]]; then
-            JSON+='"type": ["Debug", "Release"],'
-            JSON+='"ubuntu_code": ["jammy", "noble"],'
-            JSON+='"exclude": [{"ubuntu_code": "focal", "type": "Debug"},'
-            JSON+='{"ubuntu_code": "noble", "type": "Debug"}]'
-          else
-            exit 1
-          fi
-          JSON+='}'
-          echo "run_matrix=$JSON" >> "$GITHUB_OUTPUT"
-
-  onecc-test:
-    needs: [ prepare ]
-    strategy:
-      matrix: ${{ fromJSON(needs.prepare.outputs.run_matrix) }}
+        ubuntu_code: ['jammy', 'noble']
     runs-on: one-x64-linux
     container:
       image: samsungonedev.azurecr.io/nnfw/one-devtools:${{ matrix.ubuntu_code }}
@@ -118,9 +94,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/ccache
-          key: ccache-onecc-${{ matrix.ubuntu_code }}-${{ matrix.type }}
+          key: ccache-onecc-${{ matrix.ubuntu_code }}-${{ matrix.type }}-${{ github.sha }}
           restore-keys: |
-            ccache-onecc-${{ matrix.ubuntu_code }}
+            ccache-onecc-${{ matrix.ubuntu_code }}-${{ matrix.type }}
 
       - name: Build
         run: |
