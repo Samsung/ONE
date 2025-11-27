@@ -39,9 +39,11 @@ jobs:
 
     steps:
       - name: Install Arm GNU Toolchain (arm-none-eabi-gcc)
-        uses: carlosperate/arm-none-eabi-gcc-action@v1
-        with:
-          release: '12.2.Rel1' # <-- The compiler release to use
+        # Not working now
+        # uses: carlosperate/arm-none-eabi-gcc-action@v1
+        #   release: '12.2.Rel1' # <-- The compiler release to use
+        run: sudo apt-get update && sudo apt-get install -y gcc-arm-none-eabi
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
