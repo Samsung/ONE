@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import argparse
 from onert.experimental.train import session, DataLoader, optimizer, losses, metrics
 

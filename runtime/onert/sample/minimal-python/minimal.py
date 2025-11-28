@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from onert import infer
 import numpy as np
 import sys
