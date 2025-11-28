@@ -75,8 +75,9 @@ jobs:
           apt-get -qqy install python3.10 python3.10-dev python3.10-venv
           python3.10 -m ensurepip --upgrade
 
-      - name: Caching externals
-        uses: actions/cache@v4
+      - name: Restore externals cache
+        uses: actions/cache/restore@v4
+        id: externals-cache
         with:
           path: externals
           key: external-onecc-${{ hashFiles('infra/cmake/packages/**/*.cmake') }}
@@ -84,14 +85,16 @@ jobs:
             external-onecc-
             external-
 
-      - name: Caching overlay
-        uses: actions/cache@v4
+      - name: Restore overlay cache
+        uses: actions/cache/restore@v4
+        id: overlay-cache
         with:
           path: ${{ env.NNCC_WORKSPACE }}/overlay
           key: overlay-onecc-${{ matrix.ubuntu_code }}-${{ hashFiles('compiler/common-artifacts/CMakeLists.txt') }}-${{ hashFiles('infra/cmake/packages/**/*.cmake') }}
 
-      - name: Caching ccache
-        uses: actions/cache@v4
+      - name: Restore ccache cache
+        uses: actions/cache/restore@v4
+        id: ccache-cache
         with:
           path: ~/.cache/ccache
           key: ccache-onecc-${{ matrix.ubuntu_code }}-${{ matrix.type }}-${{ github.sha }}
@@ -104,6 +107,31 @@ jobs:
             -DEXTERNALS_BUILD_THREADS="$(nproc)" -DCMAKE_INSTALL_PREFIX="${NNCC_INSTALL_PREFIX}"
           ./nncc build "-j$(nproc)"
           cmake --build "${NNCC_WORKSPACE}" -- install
+
+      # Save cache on push to reduce the size of cache storage
+      #   ccache cache: only for master branch
+      #   overlay cache: only for master branch and Release build
+      #   externals cache: only for master branch and Release build and jammy
+      - name: Save ccache cache
+        if: github.event_name == 'push' && github.ref_name == 'master'
+        uses: actions/cache/save@v4
+        with:
+          path: ~/.cache/ccache
+          key: ${{ steps.ccache-cache.outputs.cache-primary-key }}
+
+      - name: Save overlay cache
+        if: github.event_name == 'push' && github.ref_name == 'master' && matrix.type == 'Release'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ env.NNCC_WORKSPACE }}/overlay
+          key: ${{ steps.overlay-cache.outputs.cache-primary-key }}
+
+      - name: Save externals cache
+        if: github.event_name == 'push' && github.ref_name == 'master' && matrix.type == 'Release' && matrix.ubuntu_code == 'jammy'
+        uses: actions/cache/save@v4
+        with:
+          path: externals
+          key: ${{ steps.externals-cache.outputs.cache-primary-key }}
 
       - name: Test(Debug)
         if: matrix.type == 'Debug'

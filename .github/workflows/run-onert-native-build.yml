@@ -66,16 +66,26 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Caching externals
-        uses: actions/cache@v4
+      - name: Restore onecc external cache
+        uses: actions/cache/restore@v4
+        with:
+          path: externals
+          key: external-onecc-${{ hashFiles('infra/cmake/packages/**/*.cmake') }}
+          restore-keys: |
+            external-onecc-
+
+      - name: Restore externals cache
+        uses: actions/cache/restore@v4
+        id: external-cache
         with:
           path: runtime/externals
           key: external-onert-${{ matrix.ubuntu_code }}-${{ hashFiles('runtime/infra/cmake/packages/**/*.cmake') }}
           restore-keys: |
             external-onert-${{ matrix.ubuntu_code }}-
 
-      - name: Caching ccache
-        uses: actions/cache@v4
+      - name: Restore ccache cache
+        uses: actions/cache/restore@v4
+        id: ccache-cache
         with:
           path: ~/.cache/ccache
           key: ccache-onert-${{ matrix.ubuntu_code }}-${{ matrix.arch }}-${{ matrix.type }}-${{ github.sha }}
@@ -89,3 +99,20 @@ jobs:
         run: |
           ./Product/out/test/onert-test unittest
           ./Product/out/test/onert-test unittest --unittestdir=./Product/out/nnapi-gtest
+
+      # Save cache on push to reduce the size of cache storage
+      #   ccache cache: only for master branch
+      #   externals cache: only for master branch and Release build and x86_64
+      - name: Save ccache cache
+        uses: actions/cache/save@v4
+        if: github.event_name == 'push' && github.ref_name =='master'
+        with:
+          path: ~/.cache/ccache
+          key: ${{ steps.ccache-cache.outputs.cache-primary-key }}
+
+      - name: Save externals cache
+        uses: actions/cache/save@v4
+        if: github.event_name == 'push' && github.ref_name =='master' && matrix.type =='release' && matrix.arch == 'x86_64'
+        with:
+          path: runtime/externals
+          key: ${{ steps.external-cache.outputs.cache-primary-key }}
