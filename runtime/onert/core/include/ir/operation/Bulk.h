@@ -27,7 +27,7 @@ class Bulk : public Operation
 public:
   struct Param
   {
-    std::string binary_path;
+    std::vector<std::string> binary_path;
     std::vector<ir::Shape> origin_input_shapes;
     std::vector<ir::Shape> origin_output_shapes;
   };
