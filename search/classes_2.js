@@ -13,7 +13,7 @@ var searchData=
   ['bagmanager_10',['BagManager',['../classcoco_1_1_bag_manager.html',1,'coco']]],
   ['basegenerator_11',['BaseGenerator',['../classflatbuffers_1_1_base_generator.html',1,'flatbuffers']]],
   ['baseloader_12',['BaseLoader',['../classonert_1_1loader_1_1_base_loader.html',1,'onert::loader']]],
-  ['basesession_13',['BaseSession',['../classpackage_1_1common_1_1basesession_1_1_base_session.html',1,'package::common::basesession']]],
+  ['basesession_13',['BaseSession',['../classonert_1_1common_1_1basesession_1_1_base_session.html',1,'onert::common::basesession']]],
   ['batchmatmul_14',['batchmatmul',['../classluci__interpreter_1_1kernels_1_1_batch_mat_mul.html',1,'luci_interpreter::kernels::BatchMatMul'],['../classnnfw_1_1cker_1_1_batch_mat_mul.html',1,'nnfw::cker::BatchMatMul'],['../classonert_1_1ir_1_1operation_1_1_batch_mat_mul.html',1,'onert::ir::operation::BatchMatMul']]],
   ['batchmatmulchef_15',['BatchMatMulChef',['../class_batch_mat_mul_chef.html',1,'']]],
   ['batchmatmulcheffactory_16',['BatchMatMulChefFactory',['../struct_batch_mat_mul_chef_factory.html',1,'']]],

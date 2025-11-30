@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ONE - On-device Neural Engine: runtime/onert/api/python/package/experimental/train/losses/registry.py Source File</title>
+<title>ONE - On-device Neural Engine: runtime/onert/api/python/onert/experimental/train/losses/registry.py Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -97,7 +97,7 @@ $(document).ready(function(){initNavTree('losses_2registry_8py_source.html','');
   <div class="headertitle"><div class="title">registry.py</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="losses_2registry_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespacepackage_1_1experimental_1_1train_1_1losses_1_1registry.html">    1</a></span><span class="keyword">from</span> typing <span class="keyword">import</span> Type, Dict</div>
+<a href="losses_2registry_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespaceonert_1_1experimental_1_1train_1_1losses_1_1registry.html">    1</a></span><span class="keyword">from</span> typing <span class="keyword">import</span> Type, Dict</div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="keyword">from</span> .loss <span class="keyword">import</span> LossFunction</div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="keyword">from</span> .cce <span class="keyword">import</span> CategoricalCrossentropy</div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">from</span> .mse <span class="keyword">import</span> MeanSquaredError</div>
@@ -105,18 +105,18 @@ $(document).ready(function(){initNavTree('losses_2registry_8py_source.html','');
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
 <div class="foldopen" id="foldopen00008" data-start="" data-end="">
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="classpackage_1_1experimental_1_1train_1_1losses_1_1registry_1_1_loss_registry.html">    8</a></span><span class="keyword">class </span><a class="code hl_class" href="classpackage_1_1experimental_1_1train_1_1losses_1_1registry_1_1_loss_registry.html">LossRegistry</a>:</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="classonert_1_1experimental_1_1train_1_1losses_1_1registry_1_1_loss_registry.html">    8</a></span><span class="keyword">class </span><a class="code hl_class" href="classonert_1_1experimental_1_1train_1_1losses_1_1registry_1_1_loss_registry.html">LossRegistry</a>:</div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="stringliteral">    Registry for creating and mapping losses by name or instance.</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="classpackage_1_1experimental_1_1train_1_1losses_1_1registry_1_1_loss_registry.html#aebecde7aba22c8ba0ed36b20ec07da5e">   12</a></span>    _losses: Dict[str, Type[LossFunction]] = {</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="classonert_1_1experimental_1_1train_1_1losses_1_1registry_1_1_loss_registry.html#a4e077802040855af71cc99a29ac908b7">   12</a></span>    _losses: Dict[str, Type[LossFunction]] = {</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>        <span class="stringliteral">&quot;categorical_crossentropy&quot;</span>: CategoricalCrossentropy,</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>        <span class="stringliteral">&quot;mean_squared_error&quot;</span>: MeanSquaredError</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    }</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <span class="preprocessor">@staticmethod</span></div>
 <div class="foldopen" id="foldopen00018" data-start="" data-end="">
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="classpackage_1_1experimental_1_1train_1_1losses_1_1registry_1_1_loss_registry.html#ae8e9bd6332d428be91b8e0bb6a498521">   18</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classpackage_1_1experimental_1_1train_1_1losses_1_1registry_1_1_loss_registry.html#ae8e9bd6332d428be91b8e0bb6a498521">create_loss</a>(name: str) -&gt; LossFunction:</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="classonert_1_1experimental_1_1train_1_1losses_1_1registry_1_1_loss_registry.html#ac9903d7f6ea853bf46796f9f38a50250">   18</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classonert_1_1experimental_1_1train_1_1losses_1_1registry_1_1_loss_registry.html#ac9903d7f6ea853bf46796f9f38a50250">create_loss</a>(name: str) -&gt; LossFunction:</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="stringliteral">        Create a loss instance by name.</span></div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="stringliteral">        Args:</span></div>
@@ -131,7 +131,7 @@ $(document).ready(function(){initNavTree('losses_2registry_8py_source.html','');
 </div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="preprocessor">@staticmethod</span></div>
 <div class="foldopen" id="foldopen00031" data-start="" data-end="">
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="classpackage_1_1experimental_1_1train_1_1losses_1_1registry_1_1_loss_registry.html#a5d9a029ee91c0099d323dc98977a4fb7">   31</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classpackage_1_1experimental_1_1train_1_1losses_1_1registry_1_1_loss_registry.html#a5d9a029ee91c0099d323dc98977a4fb7">map_loss_function_to_enum</a>(loss_instance: LossFunction) -&gt; loss_type:</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="classonert_1_1experimental_1_1train_1_1losses_1_1registry_1_1_loss_registry.html#a70a2321fc5fdc50b80dd39b99bd20122">   31</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classonert_1_1experimental_1_1train_1_1losses_1_1registry_1_1_loss_registry.html#a70a2321fc5fdc50b80dd39b99bd20122">map_loss_function_to_enum</a>(loss_instance: LossFunction) -&gt; loss_type:</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="stringliteral">        Maps a LossFunction instance to the appropriate enum value.</span></div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="stringliteral">        Args:</span></div>
@@ -153,15 +153,15 @@ $(document).ready(function(){initNavTree('losses_2registry_8py_source.html','');
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>            f<span class="stringliteral">&quot;Supported types are: {list(loss_to_enum.keys())}.&quot;</span>)</div>
 </div>
 </div>
-<div class="ttc" id="aclasspackage_1_1experimental_1_1train_1_1losses_1_1registry_1_1_loss_registry_html"><div class="ttname"><a href="classpackage_1_1experimental_1_1train_1_1losses_1_1registry_1_1_loss_registry.html">package.experimental.train.losses.registry.LossRegistry</a></div><div class="ttdef"><b>Definition</b> <a href="losses_2registry_8py_source.html#l00008">registry.py:8</a></div></div>
-<div class="ttc" id="aclasspackage_1_1experimental_1_1train_1_1losses_1_1registry_1_1_loss_registry_html_a5d9a029ee91c0099d323dc98977a4fb7"><div class="ttname"><a href="classpackage_1_1experimental_1_1train_1_1losses_1_1registry_1_1_loss_registry.html#a5d9a029ee91c0099d323dc98977a4fb7">package.experimental.train.losses.registry.LossRegistry.map_loss_function_to_enum</a></div><div class="ttdeci">loss_type map_loss_function_to_enum(LossFunction loss_instance)</div><div class="ttdef"><b>Definition</b> <a href="losses_2registry_8py_source.html#l00031">registry.py:31</a></div></div>
-<div class="ttc" id="aclasspackage_1_1experimental_1_1train_1_1losses_1_1registry_1_1_loss_registry_html_ae8e9bd6332d428be91b8e0bb6a498521"><div class="ttname"><a href="classpackage_1_1experimental_1_1train_1_1losses_1_1registry_1_1_loss_registry.html#ae8e9bd6332d428be91b8e0bb6a498521">package.experimental.train.losses.registry.LossRegistry.create_loss</a></div><div class="ttdeci">LossFunction create_loss(str name)</div><div class="ttdef"><b>Definition</b> <a href="losses_2registry_8py_source.html#l00018">registry.py:18</a></div></div>
+<div class="ttc" id="aclassonert_1_1experimental_1_1train_1_1losses_1_1registry_1_1_loss_registry_html"><div class="ttname"><a href="classonert_1_1experimental_1_1train_1_1losses_1_1registry_1_1_loss_registry.html">onert.experimental.train.losses.registry.LossRegistry</a></div><div class="ttdef"><b>Definition</b> <a href="losses_2registry_8py_source.html#l00008">registry.py:8</a></div></div>
+<div class="ttc" id="aclassonert_1_1experimental_1_1train_1_1losses_1_1registry_1_1_loss_registry_html_a70a2321fc5fdc50b80dd39b99bd20122"><div class="ttname"><a href="classonert_1_1experimental_1_1train_1_1losses_1_1registry_1_1_loss_registry.html#a70a2321fc5fdc50b80dd39b99bd20122">onert.experimental.train.losses.registry.LossRegistry.map_loss_function_to_enum</a></div><div class="ttdeci">loss_type map_loss_function_to_enum(LossFunction loss_instance)</div><div class="ttdef"><b>Definition</b> <a href="losses_2registry_8py_source.html#l00031">registry.py:31</a></div></div>
+<div class="ttc" id="aclassonert_1_1experimental_1_1train_1_1losses_1_1registry_1_1_loss_registry_html_ac9903d7f6ea853bf46796f9f38a50250"><div class="ttname"><a href="classonert_1_1experimental_1_1train_1_1losses_1_1registry_1_1_loss_registry.html#ac9903d7f6ea853bf46796f9f38a50250">onert.experimental.train.losses.registry.LossRegistry.create_loss</a></div><div class="ttdeci">LossFunction create_loss(str name)</div><div class="ttdef"><b>Definition</b> <a href="losses_2registry_8py_source.html#l00018">registry.py:18</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_cb031e414f281a658b23dddb30bb9d2c.html">runtime</a></li><li class="navelem"><a class="el" href="dir_e8e2d335b1be314b4aeca39d410c6e2f.html">onert</a></li><li class="navelem"><a class="el" href="dir_b620a079c486362998f4e991c5bfc221.html">api</a></li><li class="navelem"><a class="el" href="dir_52dfe05db77a34a54e967cf3a7ec81b5.html">python</a></li><li class="navelem"><a class="el" href="dir_156ba61c8cd84185578c5f828863e94c.html">package</a></li><li class="navelem"><a class="el" href="dir_e91df6bb8cbc9bfe00a2ab9302752467.html">experimental</a></li><li class="navelem"><a class="el" href="dir_a664a7444a65faae7943bfe36e75059b.html">train</a></li><li class="navelem"><a class="el" href="dir_fdc32566d1d1bca3655fe4f735278543.html">losses</a></li><li class="navelem"><a class="el" href="losses_2registry_8py.html">registry.py</a></li>
+    <li class="navelem"><a class="el" href="dir_cb031e414f281a658b23dddb30bb9d2c.html">runtime</a></li><li class="navelem"><a class="el" href="dir_e8e2d335b1be314b4aeca39d410c6e2f.html">onert</a></li><li class="navelem"><a class="el" href="dir_b620a079c486362998f4e991c5bfc221.html">api</a></li><li class="navelem"><a class="el" href="dir_52dfe05db77a34a54e967cf3a7ec81b5.html">python</a></li><li class="navelem"><a class="el" href="dir_24b4de6749ea4dd707c53d06ffdba61c.html">onert</a></li><li class="navelem"><a class="el" href="dir_79b8510bc6c6f37ca82f9727bfb1f305.html">experimental</a></li><li class="navelem"><a class="el" href="dir_2fa2a46167d35d54c8a3aaaaebffb242.html">train</a></li><li class="navelem"><a class="el" href="dir_64dbb9c8dea12145e8013207613f377b.html">losses</a></li><li class="navelem"><a class="el" href="losses_2registry_8py.html">registry.py</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

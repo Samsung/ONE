@@ -98,7 +98,7 @@ $(document).ready(function(){initNavTree('train__with__dataset_8py_source.html',
 </div><!--header-->
 <div class="contents">
 <a href="train__with__dataset_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespacetrain__with__dataset.html">    1</a></span><span class="keyword">import</span> argparse</div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="keyword">from</span> onert.experimental.train <span class="keyword">import</span> session, DataLoader, optimizer, losses, metrics</div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="keyword">from</span> <a class="code hl_namespace" href="namespaceonert_1_1experimental_1_1train.html">onert.experimental.train</a> <span class="keyword">import</span> session, DataLoader, optimizer, losses, metrics</div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
 <div class="foldopen" id="foldopen00005" data-start="" data-end="">
@@ -188,7 +188,7 @@ $(document).ready(function(){initNavTree('train__with__dataset_8py_source.html',
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    input_shape[0] = args.data_length</div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    label_shape[0] = args.data_length</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    data_loader = DataLoader(args.input,</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    data_loader = <a class="code hl_class" href="classonert_1_1experimental_1_1train_1_1dataloader_1_1_data_loader.html">DataLoader</a>(args.input,</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>                             args.label,</div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>                             args.batch_size,</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>                             input_shape=input_shape,</div>
@@ -230,6 +230,8 @@ $(document).ready(function(){initNavTree('train__with__dataset_8py_source.html',
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="namespacetrain__with__dataset.html#af9735dd9ae0eb5e72b192724ad108122">  123</a></span>    args = <a class="code hl_function" href="namespacetrain__with__dataset.html#afdf0a665deea3c4bceae85d863295a50">initParse</a>()</div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    train(args)</div>
+<div class="ttc" id="aclassonert_1_1experimental_1_1train_1_1dataloader_1_1_data_loader_html"><div class="ttname"><a href="classonert_1_1experimental_1_1train_1_1dataloader_1_1_data_loader.html">onert.experimental.train.dataloader.DataLoader</a></div><div class="ttdef"><b>Definition</b> <a href="dataloader_8py_source.html#l00006">dataloader.py:6</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1experimental_1_1train_html"><div class="ttname"><a href="namespaceonert_1_1experimental_1_1train.html">onert.experimental.train</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2api_2python_2onert_2experimental_2train_2____init_____8py_source.html#l00001">__init__.py:1</a></div></div>
 <div class="ttc" id="anamespacetrain__with__dataset_html_a108acf2df482b0f0f08e970923f0416d"><div class="ttname"><a href="namespacetrain__with__dataset.html#a108acf2df482b0f0f08e970923f0416d">train_with_dataset.createLoss</a></div><div class="ttdeci">createLoss(loss_type, reduction=&quot;mean&quot;)</div><div class="ttdef"><b>Definition</b> <a href="train__with__dataset_8py_source.html#l00054">train_with_dataset.py:54</a></div></div>
 <div class="ttc" id="anamespacetrain__with__dataset_html_a55351efbf992774c44565059c828ff64"><div class="ttname"><a href="namespacetrain__with__dataset.html#a55351efbf992774c44565059c828ff64">train_with_dataset.createOptimizer</a></div><div class="ttdeci">createOptimizer(optimizer_type, learning_rate=0.001, **kwargs)</div><div class="ttdef"><b>Definition</b> <a href="train__with__dataset_8py_source.html#l00036">train_with_dataset.py:36</a></div></div>
 <div class="ttc" id="anamespacetrain__with__dataset_html_afdf0a665deea3c4bceae85d863295a50"><div class="ttname"><a href="namespacetrain__with__dataset.html#afdf0a665deea3c4bceae85d863295a50">train_with_dataset.initParse</a></div><div class="ttdeci">initParse()</div><div class="ttdef"><b>Definition</b> <a href="train__with__dataset_8py_source.html#l00005">train_with_dataset.py:5</a></div></div>

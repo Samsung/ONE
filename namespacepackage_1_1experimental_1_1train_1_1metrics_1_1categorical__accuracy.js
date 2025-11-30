@@ -1,4 +1,0 @@
-var namespacepackage_1_1experimental_1_1train_1_1metrics_1_1categorical__accuracy =
-[
-    [ "CategoricalAccuracy", "classpackage_1_1experimental_1_1train_1_1metrics_1_1categorical__accuracy_1_1_categorical_accuracy.html", "classpackage_1_1experimental_1_1train_1_1metrics_1_1categorical__accuracy_1_1_categorical_accuracy" ]
-];

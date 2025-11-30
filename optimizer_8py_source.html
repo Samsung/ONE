@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ONE - On-device Neural Engine: runtime/onert/api/python/package/experimental/train/optimizer/optimizer.py Source File</title>
+<title>ONE - On-device Neural Engine: runtime/onert/api/python/onert/experimental/train/optimizer/optimizer.py Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -97,16 +97,16 @@ $(document).ready(function(){initNavTree('optimizer_8py_source.html',''); initRe
   <div class="headertitle"><div class="title">optimizer.py</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="optimizer_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespacepackage_1_1experimental_1_1train_1_1optimizer_1_1optimizer.html">    1</a></span><span class="keyword">from</span> onert.native.libnnfw_api_pybind.train <span class="keyword">import</span> trainable_ops</div>
+<a href="optimizer_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespaceonert_1_1experimental_1_1train_1_1optimizer_1_1optimizer.html">    1</a></span><span class="keyword">from</span> onert.native.libnnfw_api_pybind.train <span class="keyword">import</span> trainable_ops</div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="foldopen" id="foldopen00004" data-start="" data-end="">
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno"><a class="line" href="classpackage_1_1experimental_1_1train_1_1optimizer_1_1optimizer_1_1_optimizer.html">    4</a></span><span class="keyword">class </span><a class="code hl_class" href="classpackage_1_1experimental_1_1train_1_1optimizer_1_1optimizer_1_1_optimizer.html">Optimizer</a>:</div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno"><a class="line" href="classonert_1_1experimental_1_1train_1_1optimizer_1_1optimizer_1_1_optimizer.html">    4</a></span><span class="keyword">class </span><a class="code hl_class" href="classonert_1_1experimental_1_1train_1_1optimizer_1_1optimizer_1_1_optimizer.html">Optimizer</a>:</div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="stringliteral">    Base class for optimizers.</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
 <div class="foldopen" id="foldopen00008" data-start="" data-end="">
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="classpackage_1_1experimental_1_1train_1_1optimizer_1_1optimizer_1_1_optimizer.html#ac916d38e4b54d32f045c55f0a42ce0bf">    8</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classpackage_1_1experimental_1_1train_1_1optimizer_1_1optimizer_1_1_optimizer.html#ac916d38e4b54d32f045c55f0a42ce0bf">__init__</a>(self,</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="classonert_1_1experimental_1_1train_1_1optimizer_1_1optimizer_1_1_optimizer.html#a54880da1f309a405755657ad4b561d7e">    8</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classonert_1_1experimental_1_1train_1_1optimizer_1_1optimizer_1_1_optimizer.html#a54880da1f309a405755657ad4b561d7e">__init__</a>(self,</div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>                 learning_rate: float = 0.001,</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>                 nums_trainable_ops: int = trainable_ops.ALL) -&gt; <span class="keywordtype">None</span>:</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
@@ -120,14 +120,14 @@ $(document).ready(function(){initNavTree('optimizer_8py_source.html',''); initRe
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>        self.nums_trainable_ops: int = nums_trainable_ops</div>
 </div>
 </div>
-<div class="ttc" id="aclasspackage_1_1experimental_1_1train_1_1optimizer_1_1optimizer_1_1_optimizer_html"><div class="ttname"><a href="classpackage_1_1experimental_1_1train_1_1optimizer_1_1optimizer_1_1_optimizer.html">package.experimental.train.optimizer.optimizer.Optimizer</a></div><div class="ttdef"><b>Definition</b> <a href="optimizer_8py_source.html#l00004">optimizer.py:4</a></div></div>
-<div class="ttc" id="aclasspackage_1_1experimental_1_1train_1_1optimizer_1_1optimizer_1_1_optimizer_html_ac916d38e4b54d32f045c55f0a42ce0bf"><div class="ttname"><a href="classpackage_1_1experimental_1_1train_1_1optimizer_1_1optimizer_1_1_optimizer.html#ac916d38e4b54d32f045c55f0a42ce0bf">package.experimental.train.optimizer.optimizer.Optimizer.__init__</a></div><div class="ttdeci">None __init__(self, float learning_rate=0.001, int nums_trainable_ops=trainable_ops.ALL)</div><div class="ttdef"><b>Definition</b> <a href="optimizer_8py_source.html#l00008">optimizer.py:10</a></div></div>
+<div class="ttc" id="aclassonert_1_1experimental_1_1train_1_1optimizer_1_1optimizer_1_1_optimizer_html"><div class="ttname"><a href="classonert_1_1experimental_1_1train_1_1optimizer_1_1optimizer_1_1_optimizer.html">onert.experimental.train.optimizer.optimizer.Optimizer</a></div><div class="ttdef"><b>Definition</b> <a href="optimizer_8py_source.html#l00004">optimizer.py:4</a></div></div>
+<div class="ttc" id="aclassonert_1_1experimental_1_1train_1_1optimizer_1_1optimizer_1_1_optimizer_html_a54880da1f309a405755657ad4b561d7e"><div class="ttname"><a href="classonert_1_1experimental_1_1train_1_1optimizer_1_1optimizer_1_1_optimizer.html#a54880da1f309a405755657ad4b561d7e">onert.experimental.train.optimizer.optimizer.Optimizer.__init__</a></div><div class="ttdeci">None __init__(self, float learning_rate=0.001, int nums_trainable_ops=trainable_ops.ALL)</div><div class="ttdef"><b>Definition</b> <a href="optimizer_8py_source.html#l00008">optimizer.py:10</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_cb031e414f281a658b23dddb30bb9d2c.html">runtime</a></li><li class="navelem"><a class="el" href="dir_e8e2d335b1be314b4aeca39d410c6e2f.html">onert</a></li><li class="navelem"><a class="el" href="dir_b620a079c486362998f4e991c5bfc221.html">api</a></li><li class="navelem"><a class="el" href="dir_52dfe05db77a34a54e967cf3a7ec81b5.html">python</a></li><li class="navelem"><a class="el" href="dir_156ba61c8cd84185578c5f828863e94c.html">package</a></li><li class="navelem"><a class="el" href="dir_e91df6bb8cbc9bfe00a2ab9302752467.html">experimental</a></li><li class="navelem"><a class="el" href="dir_a664a7444a65faae7943bfe36e75059b.html">train</a></li><li class="navelem"><a class="el" href="dir_30ec67806af20c11896c0f7206543b1b.html">optimizer</a></li><li class="navelem"><a class="el" href="optimizer_8py.html">optimizer.py</a></li>
+    <li class="navelem"><a class="el" href="dir_cb031e414f281a658b23dddb30bb9d2c.html">runtime</a></li><li class="navelem"><a class="el" href="dir_e8e2d335b1be314b4aeca39d410c6e2f.html">onert</a></li><li class="navelem"><a class="el" href="dir_b620a079c486362998f4e991c5bfc221.html">api</a></li><li class="navelem"><a class="el" href="dir_52dfe05db77a34a54e967cf3a7ec81b5.html">python</a></li><li class="navelem"><a class="el" href="dir_24b4de6749ea4dd707c53d06ffdba61c.html">onert</a></li><li class="navelem"><a class="el" href="dir_79b8510bc6c6f37ca82f9727bfb1f305.html">experimental</a></li><li class="navelem"><a class="el" href="dir_2fa2a46167d35d54c8a3aaaaebffb242.html">train</a></li><li class="navelem"><a class="el" href="dir_48ff3768d22e511fd4dc46c7438d32b3.html">optimizer</a></li><li class="navelem"><a class="el" href="optimizer_8py.html">optimizer.py</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

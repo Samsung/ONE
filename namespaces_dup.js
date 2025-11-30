@@ -579,7 +579,6 @@ var namespaces_dup =
     [ "opselector", "namespaceopselector.html", "namespaceopselector" ],
     [ "optimized_ops", "namespaceoptimized__ops.html", "namespaceoptimized__ops" ],
     [ "OptionBuilder", "namespace_option_builder.html", "namespace_option_builder" ],
-    [ "package", "namespacepackage.html", "namespacepackage" ],
     [ "Pad_000", "namespace_pad__000.html", "namespace_pad__000" ],
     [ "Palette", "namespace_palette.html", "namespace_palette" ],
     [ "part_eval_one", "namespacepart__eval__one.html", [
@@ -823,5 +822,6 @@ var namespaces_dup =
     [ "validate_global_conf", "namespacevalidate__global__conf.html", "namespacevalidate__global__conf" ],
     [ "validate_onnx2circle", "namespacevalidate__onnx2circle.html", "namespacevalidate__onnx2circle" ],
     [ "vconone", "namespacevconone.html", "namespacevconone" ],
+    [ "wheel_target_hook", "namespacewheel__target__hook.html", "namespacewheel__target__hook" ],
     [ "WorkflowRunner", "namespace_workflow_runner.html", "namespace_workflow_runner" ]
 ];

@@ -10,7 +10,7 @@ var searchData=
   ['dataformatswitcher_7',['DataFormatSwitcher',['../classnnc_1_1_data_format_switcher.html',1,'nnc']]],
   ['datagen_8',['DataGen',['../classminmax__embedder__test_1_1_data_gen.html',1,'minmax_embedder_test']]],
   ['datalayoutconversionpass_9',['DataLayoutConversionPass',['../structenco_1_1_data_layout_conversion_pass.html',1,'enco']]],
-  ['dataloader_10',['DataLoader',['../classpackage_1_1experimental_1_1train_1_1dataloader_1_1_data_loader.html',1,'package::experimental::train::dataloader']]],
+  ['dataloader_10',['DataLoader',['../classonert_1_1experimental_1_1train_1_1dataloader_1_1_data_loader.html',1,'onert::experimental::train::dataloader']]],
   ['datalocation_11',['DataLocation',['../struct_data_location.html',1,'']]],
   ['dataprovider_12',['DataProvider',['../classmpqsolver_1_1core_1_1_data_provider.html',1,'mpqsolver::core']]],
   ['dataptr_13',['DataPtr',['../uniononert_1_1backend_1_1cpu_1_1ops_1_1_data_ptr.html',1,'onert::backend::cpu::ops']]],

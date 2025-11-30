@@ -35,7 +35,7 @@ var searchData=
   ['log_5fformat_32',['log_format',['../namespacecompare__tensors__all.html#aa1f29fea011145fe421e93f996458f88',1,'compare_tensors_all']]],
   ['long_5fdescription_33',['long_description',['../namespacesetup.html#a4cda9dbfb952875376a0749fe08a5bde',1,'setup']]],
   ['long_5fopt_34',['long_opt',['../structflatbuffers_1_1_flat_c_option.html#a43754c3d861214a2dcad509e4b7660de',1,'flatbuffers::FlatCOption']]],
-  ['loss_35',['loss',['../classpackage_1_1experimental_1_1train_1_1session_1_1_train_session.html#ab18ae3112bdd87a5f831fd7f68cda3b2',1,'package.experimental.train.session.TrainSession.loss'],['../structnnfw__loss__info.html#ad33ff992b9964810caeacd8c40a940f1',1,'nnfw_loss_info::loss'],['../structonert__micro_1_1_o_m_training_context.html#aef2a1913f57cf39369355cbcd552d1db',1,'onert_micro::OMTrainingContext::loss']]],
+  ['loss_35',['loss',['../classonert_1_1experimental_1_1train_1_1session_1_1_train_session.html#aa45f2a1139b6f9b12fbf99e0ee5b3758',1,'onert.experimental.train.session.TrainSession.loss'],['../structnnfw__loss__info.html#ad33ff992b9964810caeacd8c40a940f1',1,'nnfw_loss_info::loss'],['../structonert__micro_1_1_o_m_training_context.html#aef2a1913f57cf39369355cbcd552d1db',1,'onert_micro::OMTrainingContext::loss']]],
   ['loss_5fcode_36',['loss_code',['../structonert_1_1ir_1_1train_1_1_loss_info.html#a4bd1e6f14248781f51834d22b7f12f6f',1,'onert::ir::train::LossInfo']]],
   ['loss_5finfo_37',['loss_info',['../structnnfw__train__info.html#a292f84b0055374d3dc80e7c88b500d06',1,'nnfw_train_info']]],
   ['loss_5fparam_38',['loss_param',['../structonert_1_1ir_1_1train_1_1_loss_info.html#a7657ce7e3d0f52418c6728532b1577e9',1,'onert::ir::train::LossInfo']]],

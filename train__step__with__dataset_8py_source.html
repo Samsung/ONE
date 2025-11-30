@@ -98,7 +98,7 @@ $(document).ready(function(){initNavTree('train__step__with__dataset_8py_source.
 </div><!--header-->
 <div class="contents">
 <a href="train__step__with__dataset_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespacetrain__step__with__dataset.html">    1</a></span><span class="keyword">import</span> argparse</div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="keyword">from</span> onert.experimental.train <span class="keyword">import</span> session, DataLoader, optimizer, losses, metrics</div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="keyword">from</span> <a class="code hl_namespace" href="namespaceonert_1_1experimental_1_1train.html">onert.experimental.train</a> <span class="keyword">import</span> session, DataLoader, optimizer, losses, metrics</div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
 <div class="foldopen" id="foldopen00005" data-start="" data-end="">
@@ -183,7 +183,7 @@ $(document).ready(function(){initNavTree('train__step__with__dataset_8py_source.
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    input_shape[0] = args.data_length</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    label_shape[0] = args.data_length</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    data_loader = DataLoader(args.input,</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    data_loader = <a class="code hl_class" href="classonert_1_1experimental_1_1train_1_1dataloader_1_1_data_loader.html">DataLoader</a>(args.input,</div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>                             args.label,</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>                             args.batch_size,</div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>                             input_shape=input_shape,</div>
@@ -242,6 +242,8 @@ $(document).ready(function(){initNavTree('train__step__with__dataset_8py_source.
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno"><a class="line" href="namespacetrain__step__with__dataset.html#abad0eb8ea52c4d6f668ec639733403d8">  135</a></span>    args = <a class="code hl_function" href="namespacetrain__step__with__dataset.html#ae2d33e586e050684ec975710bb72f370">initParse</a>()</div>
 <div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
 <div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    <a class="code hl_function" href="namespacetrain__step__with__dataset.html#aee9ce640192f62c65d7f064f69d7e6a2">train_steps</a>(args)</div>
+<div class="ttc" id="aclassonert_1_1experimental_1_1train_1_1dataloader_1_1_data_loader_html"><div class="ttname"><a href="classonert_1_1experimental_1_1train_1_1dataloader_1_1_data_loader.html">onert.experimental.train.dataloader.DataLoader</a></div><div class="ttdef"><b>Definition</b> <a href="dataloader_8py_source.html#l00006">dataloader.py:6</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1experimental_1_1train_html"><div class="ttname"><a href="namespaceonert_1_1experimental_1_1train.html">onert.experimental.train</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2api_2python_2onert_2experimental_2train_2____init_____8py_source.html#l00001">__init__.py:1</a></div></div>
 <div class="ttc" id="anamespacetrain__step__with__dataset_html_abf188699edc4821c5dd57593049af4d0"><div class="ttname"><a href="namespacetrain__step__with__dataset.html#abf188699edc4821c5dd57593049af4d0">train_step_with_dataset.createOptimizer</a></div><div class="ttdeci">createOptimizer(optimizer_type, learning_rate=0.001, **kwargs)</div><div class="ttdef"><b>Definition</b> <a href="train__step__with__dataset_8py_source.html#l00031">train_step_with_dataset.py:31</a></div></div>
 <div class="ttc" id="anamespacetrain__step__with__dataset_html_ae2d33e586e050684ec975710bb72f370"><div class="ttname"><a href="namespacetrain__step__with__dataset.html#ae2d33e586e050684ec975710bb72f370">train_step_with_dataset.initParse</a></div><div class="ttdeci">initParse()</div><div class="ttdef"><b>Definition</b> <a href="train__step__with__dataset_8py_source.html#l00005">train_step_with_dataset.py:5</a></div></div>
 <div class="ttc" id="anamespacetrain__step__with__dataset_html_aee9ce640192f62c65d7f064f69d7e6a2"><div class="ttname"><a href="namespacetrain__step__with__dataset.html#aee9ce640192f62c65d7f064f69d7e6a2">train_step_with_dataset.train_steps</a></div><div class="ttdeci">train_steps(args)</div><div class="ttdef"><b>Definition</b> <a href="train__step__with__dataset_8py_source.html#l00066">train_step_with_dataset.py:66</a></div></div>

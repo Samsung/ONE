@@ -1,17 +1,17 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" title=" " alt="" coords="5,116,127,141"/>
 <area shape="rect" id="Node000001" href="$classnnc_1_1_acl_cpp_exception.html" title="objects of this class are to be thrown from ACL C++ soft backend if errors are occurred." alt="" coords="175,86,321,112"/>
-<area shape="poly" id="edge3404_Node000000_Node000001" title=" " alt="" coords="141,114,174,108,174,113,142,119"/>
+<area shape="poly" id="edge3405_Node000000_Node000001" title=" " alt="" coords="141,114,174,108,174,113,142,119"/>
 <area shape="rect" id="Node000002" href="$structonert_1_1api_1_1python_1_1_nnfw_error.html" title=" " alt="" coords="189,136,307,177"/>
-<area shape="poly" id="edge3405_Node000000_Node000002" title=" " alt="" coords="142,137,189,145,189,150,141,143"/>
+<area shape="poly" id="edge3406_Node000000_Node000002" title=" " alt="" coords="142,137,189,145,189,150,141,143"/>
 <area shape="rect" id="Node000003" href="$structonert_1_1api_1_1python_1_1_nnfw_deprecated_api_error.html" title=" " alt="" coords="377,5,547,46"/>
-<area shape="poly" id="edge3406_Node000002_Node000003" title=" " alt="" coords="315,125,319,122,334,106,342,90,351,74,367,57,389,44,391,49,371,61,355,77,347,93,338,109,323,126,319,129"/>
+<area shape="poly" id="edge3407_Node000002_Node000003" title=" " alt="" coords="315,125,319,122,334,106,342,90,351,74,367,57,389,44,391,49,371,61,355,77,347,93,338,109,323,126,319,129"/>
 <area shape="rect" id="Node000004" href="$structonert_1_1api_1_1python_1_1_nnfw_insufficient_output_error.html" title=" " alt="" coords="369,71,555,111"/>
-<area shape="poly" id="edge3407_Node000002_Node000004" title=" " alt="" coords="320,132,392,109,394,115,322,137"/>
+<area shape="poly" id="edge3408_Node000002_Node000004" title=" " alt="" coords="320,132,392,109,394,115,322,137"/>
 <area shape="rect" id="Node000005" href="$structonert_1_1api_1_1python_1_1_nnfw_invalid_state_error.html" title=" " alt="" coords="385,136,539,177"/>
-<area shape="poly" id="edge3408_Node000002_Node000005" title=" " alt="" coords="322,154,384,154,384,159,322,159"/>
+<area shape="poly" id="edge3409_Node000002_Node000005" title=" " alt="" coords="322,154,384,154,384,159,322,159"/>
 <area shape="rect" id="Node000006" href="$structonert_1_1api_1_1python_1_1_nnfw_out_of_memory_error.html" title=" " alt="" coords="379,201,545,242"/>
-<area shape="poly" id="edge3409_Node000002_Node000006" title=" " alt="" coords="322,176,394,198,392,203,320,181"/>
+<area shape="poly" id="edge3410_Node000002_Node000006" title=" " alt="" coords="322,176,394,198,392,203,320,181"/>
 <area shape="rect" id="Node000007" href="$structonert_1_1api_1_1python_1_1_nnfw_unexpected_null_error.html" title=" " alt="" coords="374,267,551,307"/>
-<area shape="poly" id="edge3410_Node000002_Node000007" title=" " alt="" coords="283,185,323,219,370,251,396,264,394,269,368,256,320,224,279,189"/>
+<area shape="poly" id="edge3411_Node000002_Node000007" title=" " alt="" coords="283,185,323,219,370,251,396,264,394,269,368,256,320,224,279,189"/>
 </map>

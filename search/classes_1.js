@@ -32,7 +32,7 @@ var searchData=
   ['activationfunctionimpl_3c_20fusedactivationfunctiontype_3a_3akrelu1_20_3e_29',['ActivationFunctionImpl&lt; FusedActivationFunctionType::kRelu1 &gt;',['../struct_activation_function_impl_3_01_fused_activation_function_type_1_1k_relu1_01_4.html',1,'']]],
   ['activationfunctionimpl_3c_20fusedactivationfunctiontype_3a_3akrelu6_20_3e_30',['ActivationFunctionImpl&lt; FusedActivationFunctionType::kRelu6 &gt;',['../struct_activation_function_impl_3_01_fused_activation_function_type_1_1k_relu6_01_4.html',1,'']]],
   ['activationfunctor_31',['ActivationFunctor',['../classnnfw_1_1cker_1_1_activation_functor.html',1,'nnfw::cker']]],
-  ['adam_32',['adam',['../classonert_1_1backend_1_1train_1_1optimizer_1_1_adam.html',1,'onert::backend::train::optimizer::Adam'],['../classpackage_1_1experimental_1_1train_1_1optimizer_1_1adam_1_1_adam.html',1,'package.experimental.train.optimizer.adam.Adam'],['../classonert__micro_1_1train_1_1optimizers_1_1_adam.html',1,'onert_micro::train::optimizers::Adam']]],
+  ['adam_32',['adam',['../classonert_1_1backend_1_1train_1_1optimizer_1_1_adam.html',1,'onert::backend::train::optimizer::Adam'],['../classonert__micro_1_1train_1_1optimizers_1_1_adam.html',1,'onert_micro::train::optimizers::Adam'],['../classonert_1_1experimental_1_1train_1_1optimizer_1_1adam_1_1_adam.html',1,'onert.experimental.train.optimizer.adam.Adam']]],
   ['add_33',['add',['../classcoco_1_1_add.html',1,'coco::Add'],['../classluci__interpreter_1_1kernels_1_1_add.html',1,'luci_interpreter::kernels::Add']]],
   ['add_5f000_5fq8_34',['Add_000_Q8',['../class_add__000_1_1_add__000___q8.html',1,'Add_000']]],
   ['add_5f001_5fq8_35',['Add_001_Q8',['../class_add__001_1_1_add__001___q8.html',1,'Add_001']]],

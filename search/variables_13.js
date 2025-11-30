@@ -25,7 +25,7 @@ var searchData=
   ['sequence_5fref_22',['sequence_ref',['../structflatbuffers_1_1_type_code.html#a0b7a140af934e73985d9ac7df4435869',1,'flatbuffers::TypeCode']]],
   ['serialized_5flocation_23',['serialized_location',['../structflatbuffers_1_1_definition.html#ae72ef95e71baad65833404844c2a68ea',1,'flatbuffers::Definition']]],
   ['services_5f_24',['services_',['../classflatbuffers_1_1_parser.html#a3617171fab53e1aab9bce4bab1255093',1,'flatbuffers::Parser']]],
-  ['session_25',['session',['../classvalidate__onnx2circle_1_1_onnx_runner.html#abb2d3224673722979009cb3cfa97384e',1,'validate_onnx2circle.OnnxRunner.session'],['../classpackage_1_1common_1_1basesession_1_1_base_session.html#ac6af20057e623cf084deb723f76fa34f',1,'package.common.basesession.BaseSession.session']]],
+  ['session_25',['session',['../classvalidate__onnx2circle_1_1_onnx_runner.html#abb2d3224673722979009cb3cfa97384e',1,'validate_onnx2circle.OnnxRunner.session'],['../classonert_1_1common_1_1basesession_1_1_base_session.html#aa157bedae398a79e3f927b6942200e83',1,'onert.common.basesession.BaseSession.session']]],
   ['session_5findex_26',['session_index',['../struct_event_collector_1_1_event.html#a937ec1314dd79be877b519a037bcfef7',1,'EventCollector::Event::session_index'],['../struct_duration_event.html#aaed52eba86caba7499104bb4bafd60d9',1,'DurationEvent::session_index']]],
   ['set_5fempty_5fstrings_5fto_5fnull_27',['set_empty_strings_to_null',['../structflatbuffers_1_1_i_d_l_options.html#a60383f54f50885f70a246475065c29ff',1,'flatbuffers::IDLOptions']]],
   ['set_5fempty_5fvectors_5fto_5fnull_28',['set_empty_vectors_to_null',['../structflatbuffers_1_1_i_d_l_options.html#acf823a4133bcd25e4e40fc0adbeb3563',1,'flatbuffers::IDLOptions']]],

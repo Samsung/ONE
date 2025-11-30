@@ -151,7 +151,7 @@ $(document).ready(function(){initNavTree('setup_8py_source.html',''); initResiza
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="comment"># copy *py files to package_directory</span></div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="namespacesetup.html#abda56ec8d05cc15cf560a5237e8ee995">   54</a></span>    PY_DIR = os.path.normpath(</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        os.path.join(THIS_FILE_DIR, <span class="stringliteral">&#39;../../../runtime/onert/api/python/package&#39;</span>))</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        os.path.join(THIS_FILE_DIR, <span class="stringliteral">&#39;../../../runtime/onert/api/python/onert&#39;</span>))</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="keywordflow">for</span> root, dirs, files <span class="keywordflow">in</span> os.walk(PY_DIR):</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        <span class="comment"># Calculate the relative path from the source directory</span></div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="namespacesetup.html#a63a26c35aa5367cae2cb292b2001919b">   58</a></span>        rel_path = os.path.relpath(root, PY_DIR)</div>

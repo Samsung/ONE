@@ -1,0 +1,5 @@
+<map id="onert.experimental.train.losses.cce.CategoricalCrossentropy" name="onert.experimental.train.losses.cce.CategoricalCrossentropy">
+<area shape="rect" id="Node000001" title=" " alt="" coords="7,94,229,135"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1experimental_1_1train_1_1losses_1_1loss_1_1_loss_function.html" title=" " alt="" coords="5,5,231,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="121,62,121,94,115,94,115,62"/>
+</map>

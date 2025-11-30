@@ -1328,8 +1328,9 @@ var hierarchy =
     ] ],
     [ "flatbuffers::BaseGenerator", "classflatbuffers_1_1_base_generator.html", null ],
     [ "onert::loader::BaseLoader< LoaderDomain >", "classonert_1_1loader_1_1_base_loader.html", null ],
-    [ "package.common.basesession.BaseSession", "classpackage_1_1common_1_1basesession_1_1_base_session.html", [
-      [ "package.infer.session.session", "classpackage_1_1infer_1_1session_1_1session.html", null ]
+    [ "onert.common.basesession.BaseSession", "classonert_1_1common_1_1basesession_1_1_base_session.html", [
+      [ "onert.experimental.train.session.TrainSession", "classonert_1_1experimental_1_1train_1_1session_1_1_train_session.html", null ],
+      [ "onert.infer.session.session", "classonert_1_1infer_1_1session_1_1session.html", null ]
     ] ],
     [ "nnfw::cker::BatchMatMul", "classnnfw_1_1cker_1_1_batch_mat_mul.html", null ],
     [ "luci_interpreter::BatchMatMulParams", "structluci__interpreter_1_1_batch_mat_mul_params.html", null ],
@@ -1700,7 +1701,7 @@ var hierarchy =
       [ "souschef::GaussianUint8DataChefFactory", "structsouschef_1_1_gaussian_uint8_data_chef_factory.html", null ]
     ] ],
     [ "minmax_embedder_test::DataGen", "classminmax__embedder__test_1_1_data_gen.html", null ],
-    [ "package.experimental.train.dataloader.DataLoader", "classpackage_1_1experimental_1_1train_1_1dataloader_1_1_data_loader.html", null ],
+    [ "onert.experimental.train.dataloader.DataLoader", "classonert_1_1experimental_1_1train_1_1dataloader_1_1_data_loader.html", null ],
     [ "DataLocation", "struct_data_location.html", null ],
     [ "mpqsolver::core::DataProvider", "classmpqsolver_1_1core_1_1_data_provider.html", [
       [ "mpqsolver::core::H5FileDataProvider", "classmpqsolver_1_1core_1_1_h5_file_data_provider.html", null ]
@@ -3186,12 +3187,12 @@ var hierarchy =
     [ "onert_micro::execute::pal::LogicalAndFn", "structonert__micro_1_1execute_1_1pal_1_1_logical_and_fn.html", null ],
     [ "onert_micro::execute::pal::LogicalOrFn", "structonert__micro_1_1execute_1_1pal_1_1_logical_or_fn.html", null ],
     [ "onert_micro::core::LogSoftmaxParams", "structonert__micro_1_1core_1_1_log_softmax_params.html", null ],
-    [ "package.experimental.train.losses.loss.LossFunction", "classpackage_1_1experimental_1_1train_1_1losses_1_1loss_1_1_loss_function.html", [
-      [ "package.experimental.train.losses.cce.CategoricalCrossentropy", "classpackage_1_1experimental_1_1train_1_1losses_1_1cce_1_1_categorical_crossentropy.html", null ],
-      [ "package.experimental.train.losses.mse.MeanSquaredError", "classpackage_1_1experimental_1_1train_1_1losses_1_1mse_1_1_mean_squared_error.html", null ]
+    [ "onert.experimental.train.losses.loss.LossFunction", "classonert_1_1experimental_1_1train_1_1losses_1_1loss_1_1_loss_function.html", [
+      [ "onert.experimental.train.losses.cce.CategoricalCrossentropy", "classonert_1_1experimental_1_1train_1_1losses_1_1cce_1_1_categorical_crossentropy.html", null ],
+      [ "onert.experimental.train.losses.mse.MeanSquaredError", "classonert_1_1experimental_1_1train_1_1losses_1_1mse_1_1_mean_squared_error.html", null ]
     ] ],
     [ "onert::ir::train::LossInfo", "structonert_1_1ir_1_1train_1_1_loss_info.html", null ],
-    [ "package.experimental.train.losses.registry.LossRegistry", "classpackage_1_1experimental_1_1train_1_1losses_1_1registry_1_1_loss_registry.html", null ],
+    [ "onert.experimental.train.losses.registry.LossRegistry", "classonert_1_1experimental_1_1train_1_1losses_1_1registry_1_1_loss_registry.html", null ],
     [ "luci_interpreter::lstm::LSTMParameters", "structluci__interpreter_1_1lstm_1_1_l_s_t_m_parameters.html", null ],
     [ "nnfw::cker::LSTMParams", "structnnfw_1_1cker_1_1_l_s_t_m_params.html", null ],
     [ "luci_interpreter_pal::lstm_internal::LstmSizeInfo", "structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html", null ],
@@ -3250,8 +3251,8 @@ var hierarchy =
       [ "circledump::SourceTablePrinter", "classcircledump_1_1_source_table_printer.html", null ]
     ] ],
     [ "circledump::MetadataPrinterRegistry", "classcircledump_1_1_metadata_printer_registry.html", null ],
-    [ "package.experimental.train.metrics.metric.Metric", "classpackage_1_1experimental_1_1train_1_1metrics_1_1metric_1_1_metric.html", [
-      [ "package.experimental.train.metrics.categorical_accuracy.CategoricalAccuracy", "classpackage_1_1experimental_1_1train_1_1metrics_1_1categorical__accuracy_1_1_categorical_accuracy.html", null ]
+    [ "onert.experimental.train.metrics.metric.Metric", "classonert_1_1experimental_1_1train_1_1metrics_1_1metric_1_1_metric.html", [
+      [ "onert.experimental.train.metrics.categorical_accuracy.CategoricalAccuracy", "classonert_1_1experimental_1_1train_1_1metrics_1_1categorical__accuracy_1_1_categorical_accuracy.html", null ]
     ] ],
     [ "circle_eval_diff::MetricPrinter", "classcircle__eval__diff_1_1_metric_printer.html", [
       [ "circle_eval_diff::MAEPrinter", "classcircle__eval__diff_1_1_m_a_e_printer.html", null ],
@@ -3260,7 +3261,7 @@ var hierarchy =
       [ "circle_eval_diff::MSEPrinter", "classcircle__eval__diff_1_1_m_s_e_printer.html", null ],
       [ "circle_eval_diff::TopKMatchPrinter", "classcircle__eval__diff_1_1_top_k_match_printer.html", null ]
     ] ],
-    [ "package.experimental.train.metrics.registry.MetricsRegistry", "classpackage_1_1experimental_1_1train_1_1metrics_1_1registry_1_1_metrics_registry.html", null ],
+    [ "onert.experimental.train.metrics.registry.MetricsRegistry", "classonert_1_1experimental_1_1train_1_1metrics_1_1registry_1_1_metrics_registry.html", null ],
     [ "luci_interpreter_pal::MinimumFn< T >", "structluci__interpreter__pal_1_1_minimum_fn.html", null ],
     [ "onert_micro::execute::pal::MinimumFn< T >", "structonert__micro_1_1execute_1_1pal_1_1_minimum_fn.html", null ],
     [ "nnfw::cker::MinimumOp", "structnnfw_1_1cker_1_1_minimum_op.html", null ],
@@ -4312,12 +4313,12 @@ var hierarchy =
       [ "onert::backend::train::optimizer::Adam", "classonert_1_1backend_1_1train_1_1optimizer_1_1_adam.html", null ],
       [ "onert::backend::train::optimizer::SGD", "classonert_1_1backend_1_1train_1_1optimizer_1_1_s_g_d.html", null ]
     ] ],
-    [ "package.experimental.train.optimizer.optimizer.Optimizer", "classpackage_1_1experimental_1_1train_1_1optimizer_1_1optimizer_1_1_optimizer.html", [
-      [ "package.experimental.train.optimizer.adam.Adam", "classpackage_1_1experimental_1_1train_1_1optimizer_1_1adam_1_1_adam.html", null ],
-      [ "package.experimental.train.optimizer.sgd.SGD", "classpackage_1_1experimental_1_1train_1_1optimizer_1_1sgd_1_1_s_g_d.html", null ]
+    [ "onert.experimental.train.optimizer.optimizer.Optimizer", "classonert_1_1experimental_1_1train_1_1optimizer_1_1optimizer_1_1_optimizer.html", [
+      [ "onert.experimental.train.optimizer.adam.Adam", "classonert_1_1experimental_1_1train_1_1optimizer_1_1adam_1_1_adam.html", null ],
+      [ "onert.experimental.train.optimizer.sgd.SGD", "classonert_1_1experimental_1_1train_1_1optimizer_1_1sgd_1_1_s_g_d.html", null ]
     ] ],
     [ "onert::ir::train::OptimizerInfo", "structonert_1_1ir_1_1train_1_1_optimizer_info.html", null ],
-    [ "package.experimental.train.optimizer.registry.OptimizerRegistry", "classpackage_1_1experimental_1_1train_1_1optimizer_1_1registry_1_1_optimizer_registry.html", null ],
+    [ "onert.experimental.train.optimizer.registry.OptimizerRegistry", "classonert_1_1experimental_1_1train_1_1optimizer_1_1registry_1_1_optimizer_registry.html", null ],
     [ "argumentparse.Option", "classargumentparse_1_1_option.html", [
       [ "argumentparse.Optional", "classargumentparse_1_1_optional.html", null ],
       [ "argumentparse.Positional", "classargumentparse_1_1_positional.html", null ]
@@ -6362,7 +6363,7 @@ var hierarchy =
       [ "nnfw::cker::xent_ops::functor::XentFunctor< CPUDevice, T >", "structnnfw_1_1cker_1_1xent__ops_1_1functor_1_1_xent_functor_3_01_c_p_u_device_00_01_t_01_4.html", null ]
     ] ],
     [ "nnfw::misc::tensor::Zipper< T >", "classnnfw_1_1misc_1_1tensor_1_1_zipper.html", null ],
-    [ "BaseSession", null, [
-      [ "package.experimental.train.session.TrainSession", "classpackage_1_1experimental_1_1train_1_1session_1_1_train_session.html", null ]
+    [ "BuildHookInterface", null, [
+      [ "wheel_target_hook.WheelBuildHook", "classwheel__target__hook_1_1_wheel_build_hook.html", null ]
     ] ]
 ];
