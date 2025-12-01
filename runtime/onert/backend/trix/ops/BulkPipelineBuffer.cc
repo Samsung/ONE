@@ -68,7 +68,7 @@ void BulkPipelineBuffer::allocate()
     _buffer = new generic_buffer{};
   }
 
-  // Open the devbice
+  // Open the device
   char devname[16];
   snprintf(devname, sizeof(devname), "/dev/triv2-%d", _device_id);
   _dev_fd = open(devname, O_RDWR);
