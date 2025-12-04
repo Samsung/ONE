@@ -21,13 +21,128 @@
 #include <sys/ioctl.h>
 #include <fcntl.h>
 #include <stdio.h>
+#include <functional>
+#include <memory>
+#include <cstdarg>
 
-int open(const char *, int, ...) { return 0; }
-void *mmap(void *, size_t, int, int, int, off_t) { return (void *)0x1; }
-int munmap(void *, size_t) { return 0; }
-int close(int) { return 0; }
-int ioctl(int, unsigned long, ...) { return 0; }
-size_t fread(void *, size_t, size_t, FILE *) { return 1; }
-int fseek(FILE *, long, int) { return 0; }
+namespace onert
+{
+namespace backend
+{
+namespace trix
+{
+namespace ops
+{
+namespace test
+{
 
-#endif
+class MockSyscallsManager
+{
+public:
+  // Function type definitions for each syscall
+  // Note: std::function doesn't work well with variadic functions, so we use specific signatures
+  using OpenHook = std::function<int(const char *, int)>;
+  using OpenCreatHook = std::function<int(const char *, int, mode_t)>;
+  using MmapHook = std::function<void *(void *, size_t, int, int, int, off_t)>;
+  using MunmapHook = std::function<int(void *, size_t)>;
+  using CloseHook = std::function<int(int)>;
+  using IoctlHook = std::function<int(int, unsigned long, void *)>;
+  using FopenHook = std::function<FILE *(const char *, const char *)>;
+  using FcloseHook = std::function<int(FILE *)>;
+  using FreadHook = std::function<size_t(void *, size_t, size_t, FILE *)>;
+  using FseekHook = std::function<int(FILE *, long, int)>;
+
+  static MockSyscallsManager &getInstance()
+  {
+    static MockSyscallsManager instance;
+    return instance;
+  }
+
+  // Hook registration functions
+  void setOpenHook(OpenHook hook) { _openHook = hook; }
+  void setOpenCreatHook(OpenCreatHook hook) { _openCreatHook = hook; }
+  void setMmapHook(MmapHook hook) { _mmapHook = hook; }
+  void setMunmapHook(MunmapHook hook) { _munmapHook = hook; }
+  void setCloseHook(CloseHook hook) { _closeHook = hook; }
+  void setIoctlHook(IoctlHook hook) { _ioctlHook = hook; }
+  void setFopenHook(FopenHook hook) { _fopenHook = hook; }
+  void setFcloseHook(FcloseHook hook) { _fcloseHook = hook; }
+  void setFreadHook(FreadHook hook) { _freadHook = hook; }
+  void setFseekHook(FseekHook hook) { _fseekHook = hook; }
+
+  // Hook retrieval functions
+  OpenHook getOpenHook() const { return _openHook; }
+  OpenCreatHook getOpenCreatHook() const { return _openCreatHook; }
+  MmapHook getMmapHook() const { return _mmapHook; }
+  MunmapHook getMunmapHook() const { return _munmapHook; }
+  CloseHook getCloseHook() const { return _closeHook; }
+  IoctlHook getIoctlHook() const { return _ioctlHook; }
+  FopenHook getFopenHook() const { return _fopenHook; }
+  FcloseHook getFcloseHook() const { return _fcloseHook; }
+  FreadHook getFreadHook() const { return _freadHook; }
+  FseekHook getFseekHook() const { return _fseekHook; }
+
+  // Hook clearing functions
+  void clearOpenHook() { _openHook = nullptr; }
+  void clearOpenCreatHook() { _openCreatHook = nullptr; }
+  void clearMmapHook() { _mmapHook = nullptr; }
+  void clearMunmapHook() { _munmapHook = nullptr; }
+  void clearCloseHook() { _closeHook = nullptr; }
+  void clearIoctlHook() { _ioctlHook = nullptr; }
+  void clearFopenHook() { _fopenHook = nullptr; }
+  void clearFcloseHook() { _fcloseHook = nullptr; }
+  void clearFreadHook() { _freadHook = nullptr; }
+  void clearFseekHook() { _fseekHook = nullptr; }
+
+  // Reset all hooks
+  void resetAll()
+  {
+    clearOpenHook();
+    clearOpenCreatHook();
+    clearMmapHook();
+    clearMunmapHook();
+    clearCloseHook();
+    clearIoctlHook();
+    clearFopenHook();
+    clearFcloseHook();
+    clearFreadHook();
+    clearFseekHook();
+  }
+
+private:
+  MockSyscallsManager() = default;
+  ~MockSyscallsManager() = default;
+  MockSyscallsManager(const MockSyscallsManager &) = delete;
+  MockSyscallsManager &operator=(const MockSyscallsManager &) = delete;
+
+  // Hook function pointers
+  OpenHook _openHook;
+  OpenCreatHook _openCreatHook;
+  MmapHook _mmapHook;
+  MunmapHook _munmapHook;
+  CloseHook _closeHook;
+  IoctlHook _ioctlHook;
+  FopenHook _fopenHook;
+  FcloseHook _fcloseHook;
+  FreadHook _freadHook;
+  FseekHook _fseekHook;
+};
+
+} // namespace test
+} // namespace ops
+} // namespace trix
+} // namespace backend
+} // namespace onert
+
+// Mock syscall implementations
+int open(const char *pathname, int flags, ...);
+void *mmap(void *addr, size_t length, int prot, int flags, int fd, off_t offset);
+int munmap(void *addr, size_t length);
+int close(int fd);
+int ioctl(int fd, unsigned long request, ...);
+FILE *fopen(const char *path, const char *mode);
+int fclose(FILE *stream);
+size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream);
+int fseek(FILE *stream, long offset, int whence);
+
+#endif // _MOCK_SYSCALLS_H_
