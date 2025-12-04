@@ -4,7 +4,7 @@ import argparse
 import numpy as np
 import psutil
 import os
-from typing import List
+from typing import List, Optional
 from onert import infer, tensorinfo
 
 
@@ -47,8 +47,8 @@ def get_validated_input_tensorinfos(sess: infer.session,
     return updated_infos
 
 
-def benchmark_inference(nnpackage_path: str, backends: str, input_shapes: List[List[int]],
-                        repeat: int):
+def benchmark_inference(nnpackage_path: str, backends: str,
+                        input_shapes: Optional[List[List[int]]], repeat: int):
     mem_before_kb = get_memory_usage_mb() * 1024
 
     sess = infer.session(path=nnpackage_path, backends=backends)
