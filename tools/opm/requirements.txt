@@ -1,0 +1,4 @@
+tico==0.1.0.dev251125
+PyYAML
+huggingface_hub
+httpx
