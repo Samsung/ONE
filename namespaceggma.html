@@ -146,11 +146,11 @@ Functions</h2></td></tr>
 <tr class="separator:a9d3ee398e31703d72f09df9131580122"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1c270e0de522f4a34be360ae5b9269d" id="r_ab1c270e0de522f4a34be360ae5b9269d"><td class="memItemLeft" align="right" valign="top">template void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceggma.html#ab1c270e0de522f4a34be360ae5b9269d">Context::decode_impl&lt; true, std::vector&lt; float &gt; &gt;</a> (<a class="el" href="ggma__types_8h.html#ac7a95e76f819f29376630f475debda2b">ggma_token</a> token_id, std::vector&lt; float &gt; &amp;output)</td></tr>
 <tr class="separator:ab1c270e0de522f4a34be360ae5b9269d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad260249deee6c2ac9c4c1622e0d231c" id="r_aad260249deee6c2ac9c4c1622e0d231c"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceggma.html#aad260249deee6c2ac9c4c1622e0d231c">to_string</a> (<a class="el" href="namespaceggma.html#a90c8ebca6afb17e770d2d2557bc090c1">KVCacheDataType</a> type)</td></tr>
+<tr class="memitem:aad260249deee6c2ac9c4c1622e0d231c" id="r_aad260249deee6c2ac9c4c1622e0d231c"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceggma.html#aad260249deee6c2ac9c4c1622e0d231c">to_string</a> (<a class="el" href="namespaceggma.html#a90c8ebca6afb17e770d2d2557bc090c1">KVCacheDataType</a> <a class="el" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</td></tr>
 <tr class="separator:aad260249deee6c2ac9c4c1622e0d231c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02d0f3104d8a8ca32040e68cab1226fa" id="r_a02d0f3104d8a8ca32040e68cab1226fa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceggma.html#a90c8ebca6afb17e770d2d2557bc090c1">KVCacheDataType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceggma.html#a02d0f3104d8a8ca32040e68cab1226fa">from_string</a> (const std::string &amp;type_str)</td></tr>
 <tr class="separator:a02d0f3104d8a8ca32040e68cab1226fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31c7d2c564b70e2fb8bfa01c01edc617" id="r_a31c7d2c564b70e2fb8bfa01c01edc617"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceggma.html#a31c7d2c564b70e2fb8bfa01c01edc617">is_supported_type</a> (<a class="el" href="namespaceggma.html#a90c8ebca6afb17e770d2d2557bc090c1">KVCacheDataType</a> type)</td></tr>
+<tr class="memitem:a31c7d2c564b70e2fb8bfa01c01edc617" id="r_a31c7d2c564b70e2fb8bfa01c01edc617"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceggma.html#a31c7d2c564b70e2fb8bfa01c01edc617">is_supported_type</a> (<a class="el" href="namespaceggma.html#a90c8ebca6afb17e770d2d2557bc090c1">KVCacheDataType</a> <a class="el" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</td></tr>
 <tr class="separator:a31c7d2c564b70e2fb8bfa01c01edc617"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
@@ -370,7 +370,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_k_v_cache_8cc_source.html#l00056">56</a> of file <a class="el" href="_k_v_cache_8cc_source.html">KVCache.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   57</span>{</div>
-<div class="line"><span class="lineno">   58</span>  <span class="keywordflow">switch</span> (type)</div>
+<div class="line"><span class="lineno">   58</span>  <span class="keywordflow">switch</span> (<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</div>
 <div class="line"><span class="lineno">   59</span>  {</div>
 <div class="line"><span class="lineno">   60</span>    <span class="keywordflow">case</span> KVCacheDataType::FLOAT32:</div>
 <div class="line"><span class="lineno">   61</span>    <span class="keywordflow">case</span> KVCacheDataType::UINT8:</div>
@@ -379,8 +379,9 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   64</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">   65</span>  }</div>
 <div class="line"><span class="lineno">   66</span>}</div>
+<div class="ttc" id="a_bulk_pipeline_buffer_8cc_html_a449e574ed6911881dc55507cb5635c2c"><div class="ttname"><a href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a></div><div class="ttdeci">int32_t type</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_buffer_8cc_source.html#l00000">BulkPipelineBuffer.cc:0</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="namespaceggma.html#a90c8ebca6afb17e770d2d2557bc090c1a967d280b5c16d95f2947647dd2ca6cc2">FLOAT32</a>, and <a class="el" href="namespaceggma.html#a90c8ebca6afb17e770d2d2557bc090c1aecfc091ed2a607335524c8389cfa41b5">UINT8</a>.</p>
+<p class="reference">References <a class="el" href="namespaceggma.html#a90c8ebca6afb17e770d2d2557bc090c1a967d280b5c16d95f2947647dd2ca6cc2">FLOAT32</a>, <a class="el" href="_bulk_pipeline_buffer_8cc_source.html#l00000">type</a>, and <a class="el" href="namespaceggma.html#a90c8ebca6afb17e770d2d2557bc090c1aecfc091ed2a607335524c8389cfa41b5">UINT8</a>.</p>
 
 </div>
 </div>
@@ -605,7 +606,7 @@ template&lt;&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="_k_v_cache_8cc_source.html#l00028">28</a> of file <a class="el" href="_k_v_cache_8cc_source.html">KVCache.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   29</span>{</div>
-<div class="line"><span class="lineno">   30</span>  <span class="keywordflow">switch</span> (type)</div>
+<div class="line"><span class="lineno">   30</span>  <span class="keywordflow">switch</span> (<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</div>
 <div class="line"><span class="lineno">   31</span>  {</div>
 <div class="line"><span class="lineno">   32</span>    <span class="keywordflow">case</span> KVCacheDataType::FLOAT32:</div>
 <div class="line"><span class="lineno">   33</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;FLOAT32&quot;</span>;</div>
@@ -616,7 +617,7 @@ template&lt;&gt; </div>
 <div class="line"><span class="lineno">   38</span>  }</div>
 <div class="line"><span class="lineno">   39</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="namespaceggma.html#a90c8ebca6afb17e770d2d2557bc090c1a967d280b5c16d95f2947647dd2ca6cc2">FLOAT32</a>, and <a class="el" href="namespaceggma.html#a90c8ebca6afb17e770d2d2557bc090c1aecfc091ed2a607335524c8389cfa41b5">UINT8</a>.</p>
+<p class="reference">References <a class="el" href="namespaceggma.html#a90c8ebca6afb17e770d2d2557bc090c1a967d280b5c16d95f2947647dd2ca6cc2">FLOAT32</a>, <a class="el" href="_bulk_pipeline_buffer_8cc_source.html#l00000">type</a>, and <a class="el" href="namespaceggma.html#a90c8ebca6afb17e770d2d2557bc090c1aecfc091ed2a607335524c8389cfa41b5">UINT8</a>.</p>
 
 </div>
 </div>

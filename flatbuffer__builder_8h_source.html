@@ -1290,7 +1290,7 @@ $(document).ready(function(){initNavTree('flatbuffer__builder_8h_source.html',''
 <div class="line"><a id="l01385" name="l01385"></a><span class="lineno"> 1385</span>  }</div>
 <div class="line"><a id="l01386" name="l01386"></a><span class="lineno"> 1386</span> </div>
 <div class="line"><a id="l01387" name="l01387"></a><span class="lineno"> 1387</span>  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a id="l01388" name="l01388"></a><span class="lineno"> 1388</span>  <span class="keyword">typename</span> std::enable_if&lt;std::is_same&lt;T, uoffset_t&gt;::value, T&gt;::type</div>
+<div class="line"><a id="l01388" name="l01388"></a><span class="lineno"> 1388</span>  <span class="keyword">typename</span> std::enable_if&lt;std::is_same&lt;T, uoffset_t&gt;::value, T&gt;<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">::type</a></div>
 <div class="line"><a id="l01389" name="l01389"></a><span class="lineno"> 1389</span>  CalculateOffset() {</div>
 <div class="line"><a id="l01390" name="l01390"></a><span class="lineno"> 1390</span>    <span class="comment">// Default to the end of the 32-bit region. This may or may not be the end</span></div>
 <div class="line"><a id="l01391" name="l01391"></a><span class="lineno"> 1391</span>    <span class="comment">// of the buffer, depending on if any 64-bit offsets have been added.</span></div>
@@ -1300,7 +1300,7 @@ $(document).ready(function(){initNavTree('flatbuffer__builder_8h_source.html',''
 <div class="line"><a id="l01395" name="l01395"></a><span class="lineno"> 1395</span>  <span class="comment">// Specializations to handle the 64-bit CalculateOffset, which is relative to</span></div>
 <div class="line"><a id="l01396" name="l01396"></a><span class="lineno"> 1396</span>  <span class="comment">// end of the buffer.</span></div>
 <div class="line"><a id="l01397" name="l01397"></a><span class="lineno"> 1397</span>  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a id="l01398" name="l01398"></a><span class="lineno"> 1398</span>  <span class="keyword">typename</span> std::enable_if&lt;std::is_same&lt;T, uoffset64_t&gt;::value, T&gt;::type</div>
+<div class="line"><a id="l01398" name="l01398"></a><span class="lineno"> 1398</span>  <span class="keyword">typename</span> std::enable_if&lt;std::is_same&lt;T, uoffset64_t&gt;::value, T&gt;<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">::type</a></div>
 <div class="line"><a id="l01399" name="l01399"></a><span class="lineno"> 1399</span>  CalculateOffset() {</div>
 <div class="line"><a id="l01400" name="l01400"></a><span class="lineno"> 1400</span>    <span class="comment">// This should never be compiled in when not using a 64-bit builder.</span></div>
 <div class="line"><a id="l01401" name="l01401"></a><span class="lineno"> 1401</span>    <span class="keyword">static_assert</span>(Is64Aware, <span class="stringliteral">&quot;invalid 64-bit offset in 32-bit builder&quot;</span>);</div>
@@ -1369,6 +1369,7 @@ $(document).ready(function(){initNavTree('flatbuffer__builder_8h_source.html',''
 <div class="line"><a id="l01463" name="l01463"></a><span class="lineno"> 1463</span>}  <span class="comment">// namespace flatbuffers</span></div>
 <div class="line"><a id="l01464" name="l01464"></a><span class="lineno"> 1464</span> </div>
 <div class="line"><a id="l01465" name="l01465"></a><span class="lineno"> 1465</span><span class="preprocessor">#endif  </span><span class="comment">// FLATBUFFERS_FLATBUFFER_BUILDER_H_</span></div>
+<div class="ttc" id="a_bulk_pipeline_buffer_8cc_html_a449e574ed6911881dc55507cb5635c2c"><div class="ttname"><a href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a></div><div class="ttdeci">int32_t type</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_buffer_8cc_source.html#l00000">BulkPipelineBuffer.cc:0</a></div></div>
 <div class="ttc" id="a_subnet_8cpp_html_a8a5702603be53459127f7fd94f12dcd8"><div class="ttname"><a href="_subnet_8cpp.html#a8a5702603be53459127f7fd94f12dcd8">S</a></div><div class="ttdeci">#define S(content)</div><div class="ttdef"><b>Definition</b> <a href="_subnet_8cpp_source.html#l00030">Subnet.cpp:30</a></div></div>
 <div class="ttc" id="aann-ref_2src_2ops_2internal_2_dims_8h_html_a1c037ff89c0da8b5cd52088b914b9c1d"><div class="ttname"><a href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a></div><div class="ttdeci">int Offset(const Dims&lt; 4 &gt; &amp;dims, int i0, int i1, int i2, int i3)</div><div class="ttdef"><b>Definition</b> <a href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00064">Dims.h:64</a></div></div>
 <div class="ttc" id="abase_8h_html"><div class="ttname"><a href="base_8h.html">base.h</a></div></div>

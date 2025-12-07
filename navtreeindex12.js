@@ -1,5 +1,15 @@
 var NAVTREEINDEX12 =
 {
+"_fuse_add_with_t_conv_pass_8cpp.html":[43,0,0,59,7,1,36],
+"_fuse_add_with_t_conv_pass_8cpp.html#afeefeb03342f01cad24a8985936fc3ff":[43,0,0,59,7,1,36,0],
+"_fuse_add_with_t_conv_pass_8cpp_source.html":[43,0,0,59,7,1,36],
+"_fuse_add_with_t_conv_pass_8h.html":[43,0,0,59,7,0,0,0,30],
+"_fuse_add_with_t_conv_pass_8h_source.html":[43,0,0,59,7,0,0,0,30],
+"_fuse_arithmetic_ops_8h.html":[43,0,0,81,2,2,1,3],
+"_fuse_arithmetic_ops_8h_source.html":[43,0,0,81,2,2,1,3],
+"_fuse_b_c_q_pass_8cpp.html":[43,0,0,59,7,1,40],
+"_fuse_b_c_q_pass_8cpp_source.html":[43,0,0,59,7,1,40],
+"_fuse_b_c_q_pass_8h.html":[43,0,0,59,7,0,0,0,34],
 "_fuse_b_c_q_pass_8h_source.html":[43,0,0,59,7,0,0,0,34],
 "_fuse_batch_norm_with_conv_pass_8cpp.html":[43,0,0,59,7,1,37],
 "_fuse_batch_norm_with_conv_pass_8cpp.html#afb821ee62cded6ec74a36455b3cfcf51":[43,0,0,59,7,1,37,0],
@@ -239,15 +249,5 @@ var NAVTREEINDEX12 =
 "_generic_node_summary_builder_8h_source.html":[43,0,0,55,0,0,3],
 "_global_average_pool_8cpp.html":[43,0,0,72,1,2,0,30],
 "_global_average_pool_8cpp.html#a7901a4c55e5f2f2048fdfba5e50aaed4":[43,0,0,72,1,2,0,30,0],
-"_global_average_pool_8cpp_source.html":[43,0,0,72,1,2,0,30],
-"_global_average_pool_8h.html":[43,0,0,72,1,2,0,31],
-"_global_average_pool_8h.html#a7901a4c55e5f2f2048fdfba5e50aaed4":[43,0,0,72,1,2,0,31,0],
-"_global_average_pool_8h_source.html":[43,0,0,72,1,2,0,31],
-"_global_data_generation_8cpp.html":[43,0,0,38,1,1,4,24],
-"_global_data_generation_8cpp.html#a24990c06c9bf79de7411e1e1d0e4afaa":[43,0,0,38,1,1,4,24,0],
-"_global_data_generation_8cpp_source.html":[43,0,0,38,1,1,4,24],
-"_global_data_generation_8h.html":[43,0,0,38,1,1,4,25],
-"_global_data_generation_8h.html#a24990c06c9bf79de7411e1e1d0e4afaa":[43,0,0,38,1,1,4,25,2],
-"_global_data_generation_8h.html#a81b59f2e10a9142e39eaccf332e9b9ef":[43,0,0,38,1,1,4,25,1],
-"_global_data_generation_8h_source.html":[43,0,0,38,1,1,4,25]
+"_global_average_pool_8cpp_source.html":[43,0,0,72,1,2,0,30]
 };

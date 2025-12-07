@@ -141,7 +141,7 @@ $(document).ready(function(){initNavTree('circle-tensordump_2src_2_dump_8cpp_sou
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>}</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="keywordtype">void</span> print_buffer(std::ostream &amp;os, uint32_t buff_idx, <span class="keyword">const</span> <a class="code hl_class" href="classflatbuffers_1_1_vector.html">flatbuffers::Vector&lt;uint8_t&gt;</a> *data_ptr,</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>                  <span class="keyword">const</span> circle::TensorType &amp;type)</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>                  <span class="keyword">const</span> circle::TensorType &amp;<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>{</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keywordflow">if</span> (data_ptr == <span class="keyword">nullptr</span>)</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordflow">return</span>;</div>
@@ -151,7 +151,7 @@ $(document).ready(function(){initNavTree('circle-tensordump_2src_2_dump_8cpp_sou
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keywordtype">size_t</span> buff_size = data_ptr-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a70e1b54b9c82251be5496f1729d60e9a">size</a>();</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  os &lt;&lt; <span class="stringliteral">&quot;     ├── size  : &quot;</span> &lt;&lt; buff_size &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  os &lt;&lt; <span class="stringliteral">&quot;     └── data  : &quot;</span>;</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keywordflow">switch</span> (type)</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keywordflow">switch</span> (<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  {</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="keywordflow">case</span> circle::TensorType_UINT8:</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    {</div>
@@ -190,7 +190,7 @@ $(document).ready(function(){initNavTree('circle-tensordump_2src_2_dump_8cpp_sou
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    }</div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;NYI tensor type : &quot;</span> + std::to_string(type));</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;NYI tensor type : &quot;</span> + std::to_string(<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>));</div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  }</div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  os &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>}</div>
@@ -342,25 +342,25 @@ $(document).ready(function(){initNavTree('circle-tensordump_2src_2_dump_8cpp_sou
 <div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span> </div>
 <div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
 <div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span><span class="keywordtype">void</span> write_vector_data_to_hdf5(H5::H5File &amp;file, std::string &amp;group_name, std::string dataset_name,</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>                               <span class="keyword">const</span> H5::PredType &amp;type, <span class="keyword">const</span> <a class="code hl_class" href="classflatbuffers_1_1_vector.html">flatbuffers::Vector&lt;T&gt;</a> *data,</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>                               <span class="keyword">const</span> H5::PredType &amp;<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>, <span class="keyword">const</span> <a class="code hl_class" href="classflatbuffers_1_1_vector.html">flatbuffers::Vector&lt;T&gt;</a> *data,</div>
 <div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>                               std::vector&lt;hsize_t&gt; dims)</div>
 <div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>{</div>
 <div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>  <span class="keywordflow">if</span> (data == <span class="keyword">nullptr</span>)</div>
 <div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>  <span class="keyword">auto</span> dataspace = std::make_unique&lt;H5::DataSpace&gt;(<a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>.size(), <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>.data());</div>
 <div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>  <span class="keyword">auto</span> dataset = std::make_unique&lt;H5::DataSet&gt;(</div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>    <a class="code hl_variable" href="namespacetf2tflite_v2.html#abe660e9c50ccb26ca3f53160f59fabb7">file</a>.createDataSet(group_name + <span class="stringliteral">&quot;/&quot;</span> + dataset_name, type, *dataspace));</div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>  dataset-&gt;write(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a>-&gt;data(), type);</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>    <a class="code hl_variable" href="namespacetf2tflite_v2.html#abe660e9c50ccb26ca3f53160f59fabb7">file</a>.createDataSet(group_name + <span class="stringliteral">&quot;/&quot;</span> + dataset_name, <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>, *dataspace));</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>  dataset-&gt;write(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a>-&gt;data(), <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>);</div>
 <div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>}</div>
 <div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span> </div>
 <div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
 <div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span><span class="keywordtype">void</span> write_scalar_data_to_hdf5(H5::H5File &amp;file, std::string &amp;group_name, std::string dataset_name,</div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>                               <span class="keyword">const</span> H5::PredType &amp;type, T data)</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>                               <span class="keyword">const</span> H5::PredType &amp;<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>, T data)</div>
 <div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>{</div>
 <div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>  <span class="keyword">auto</span> dataspace = std::make_unique&lt;H5::DataSpace&gt;(H5S_SCALAR);</div>
 <div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>  <span class="keyword">auto</span> dataset = std::make_unique&lt;H5::DataSet&gt;(</div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>    <a class="code hl_variable" href="namespacetf2tflite_v2.html#abe660e9c50ccb26ca3f53160f59fabb7">file</a>.createDataSet(group_name + <span class="stringliteral">&quot;/&quot;</span> + dataset_name, type, *dataspace));</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>  dataset-&gt;write(&amp;data, type);</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>    <a class="code hl_variable" href="namespacetf2tflite_v2.html#abe660e9c50ccb26ca3f53160f59fabb7">file</a>.createDataSet(group_name + <span class="stringliteral">&quot;/&quot;</span> + dataset_name, <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>, *dataspace));</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>  dataset-&gt;write(&amp;data, <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>);</div>
 <div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>}</div>
 <div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span> </div>
 <div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>} <span class="comment">// namespace</span></div>
@@ -435,6 +435,7 @@ $(document).ready(function(){initNavTree('circle-tensordump_2src_2_dump_8cpp_sou
 </div>
 <div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span> </div>
 <div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>} <span class="comment">// namespace circletensordump</span></div>
+<div class="ttc" id="a_bulk_pipeline_buffer_8cc_html_a449e574ed6911881dc55507cb5635c2c"><div class="ttname"><a href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a></div><div class="ttdeci">int32_t type</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_buffer_8cc_source.html#l00000">BulkPipelineBuffer.cc:0</a></div></div>
 <div class="ttc" id="aclasscircletensordump_1_1_dump_tensors_html_a8e4b8070106f31a52b83db00145d95ff"><div class="ttname"><a href="classcircletensordump_1_1_dump_tensors.html#a8e4b8070106f31a52b83db00145d95ff">circletensordump::DumpTensors::run</a></div><div class="ttdeci">void run(std::ostream &amp;os, const circle::Model *model, const std::string &amp;) override</div><div class="ttdef"><b>Definition</b> <a href="circle-tensordump_2src_2_dump_8cpp_source.html#l00104">Dump.cpp:104</a></div></div>
 <div class="ttc" id="aclasscircletensordump_1_1_dump_tensors_to_hdf5_html_a5c3347200b8f35c8b207eef92598612e"><div class="ttname"><a href="classcircletensordump_1_1_dump_tensors_to_hdf5.html#a5c3347200b8f35c8b207eef92598612e">circletensordump::DumpTensorsToHdf5::run</a></div><div class="ttdeci">void run(std::ostream &amp;os, const circle::Model *model, const std::string &amp;output_path) override</div><div class="ttdef"><b>Definition</b> <a href="circle-tensordump_2src_2_dump_8cpp_source.html#l00300">Dump.cpp:300</a></div></div>
 <div class="ttc" id="aclassflatbuffers_1_1_vector_html"><div class="ttname"><a href="classflatbuffers_1_1_vector.html">flatbuffers::Vector</a></div><div class="ttdef"><b>Definition</b> <a href="vector_8h_source.html#l00148">vector.h:148</a></div></div>

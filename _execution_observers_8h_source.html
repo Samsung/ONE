@@ -170,10 +170,10 @@ $(document).ready(function(){initNavTree('_execution_observers_8h_source.html','
 </div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
 <div class="foldopen" id="foldopen00068" data-start="{" data-end="}">
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1_exec_observers.html#ab6bade5c57e90d2cff311f044b9cfd80">   68</a></span>  <a class="code hl_class" href="classonert_1_1exec_1_1_i_execution_observer.html">IExecutionObserver</a> *<a class="code hl_function" href="classonert_1_1exec_1_1_exec_observers.html#ab6bade5c57e90d2cff311f044b9cfd80">get</a>(<a class="code hl_enumeration" href="namespaceonert_1_1exec.html#a7197df3298167805c3fe9e0646ba9068">ObserverType</a> type)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1_exec_observers.html#ab6bade5c57e90d2cff311f044b9cfd80">   68</a></span>  <a class="code hl_class" href="classonert_1_1exec_1_1_i_execution_observer.html">IExecutionObserver</a> *<a class="code hl_function" href="classonert_1_1exec_1_1_exec_observers.html#ab6bade5c57e90d2cff311f044b9cfd80">get</a>(<a class="code hl_enumeration" href="namespaceonert_1_1exec.html#a7197df3298167805c3fe9e0646ba9068">ObserverType</a> <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="keywordflow">if</span> (_observers.find(type) != _observers.end())</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>      <span class="keywordflow">return</span> _observers.at(type).get();</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="keywordflow">if</span> (_observers.find(<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>) != _observers.end())</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>      <span class="keywordflow">return</span> _observers.at(<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>).get();</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  }</div>
@@ -242,6 +242,7 @@ $(document).ready(function(){initNavTree('_execution_observers_8h_source.html','
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>} <span class="comment">// namespace onert::exec</span></div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_EXEC_OBSREVERS_H__</span></div>
+<div class="ttc" id="a_bulk_pipeline_buffer_8cc_html_a449e574ed6911881dc55507cb5635c2c"><div class="ttname"><a href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a></div><div class="ttdeci">int32_t type</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_buffer_8cc_source.html#l00000">BulkPipelineBuffer.cc:0</a></div></div>
 <div class="ttc" id="a_exec_time_8h_html"><div class="ttname"><a href="_exec_time_8h.html">ExecTime.h</a></div></div>
 <div class="ttc" id="a_i_executor_8h_html"><div class="ttname"><a href="_i_executor_8h.html">IExecutor.h</a></div><div class="ttdoc">This file defines interface of Executor.</div></div>
 <div class="ttc" id="a_i_operation_8h_html"><div class="ttname"><a href="_i_operation_8h.html">IOperation.h</a></div></div>

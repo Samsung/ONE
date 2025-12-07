@@ -160,9 +160,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a634de774edf3fd5763dba0d65eb5e181" id="r_a634de774edf3fd5763dba0d65eb5e181"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecirclechef.html#a634de774edf3fd5763dba0d65eb5e181">write_recipe</a> (const std::string &amp;filename, std::unique_ptr&lt; ModelRecipe &gt; &amp;recipe)</td></tr>
 <tr class="memdesc:a634de774edf3fd5763dba0d65eb5e181"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write ModelRecipe to file with given name.  <br /></td></tr>
 <tr class="separator:a634de774edf3fd5763dba0d65eb5e181"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae7b7698118bdd3637da18c710d92b744" id="r_ae7b7698118bdd3637da18c710d92b744"><td class="memItemLeft" align="right" valign="top">circlechef::TensorType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecirclechef.html#ae7b7698118bdd3637da18c710d92b744">as_circlechef_type</a> (const circle::TensorType type)</td></tr>
+<tr class="memitem:ae7b7698118bdd3637da18c710d92b744" id="r_ae7b7698118bdd3637da18c710d92b744"><td class="memItemLeft" align="right" valign="top">circlechef::TensorType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecirclechef.html#ae7b7698118bdd3637da18c710d92b744">as_circlechef_type</a> (const circle::TensorType <a class="el" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</td></tr>
 <tr class="separator:ae7b7698118bdd3637da18c710d92b744"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb4577f6c6c4c848a2700a6ec3b56fd0" id="r_adb4577f6c6c4c848a2700a6ec3b56fd0"><td class="memItemLeft" align="right" valign="top">circlechef::Activation&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecirclechef.html#adb4577f6c6c4c848a2700a6ec3b56fd0">as_circlechef_activation</a> (const circle::ActivationFunctionType type)</td></tr>
+<tr class="memitem:adb4577f6c6c4c848a2700a6ec3b56fd0" id="r_adb4577f6c6c4c848a2700a6ec3b56fd0"><td class="memItemLeft" align="right" valign="top">circlechef::Activation&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecirclechef.html#adb4577f6c6c4c848a2700a6ec3b56fd0">as_circlechef_activation</a> (const circle::ActivationFunctionType <a class="el" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</td></tr>
 <tr class="separator:adb4577f6c6c4c848a2700a6ec3b56fd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb725f50d14f303fae51b5494b603c40" id="r_aeb725f50d14f303fae51b5494b603c40"><td class="memItemLeft" align="right" valign="top">circlechef::Padding&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecirclechef.html#aeb725f50d14f303fae51b5494b603c40">as_circlechef_padding</a> (const circle::Padding padding)</td></tr>
 <tr class="separator:aeb725f50d14f303fae51b5494b603c40"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -267,7 +267,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="circlechef_2circle_2src_2_convert_8cpp_source.html#l00055">55</a> of file <a class="el" href="circlechef_2circle_2src_2_convert_8cpp_source.html">Convert.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   56</span>{</div>
-<div class="line"><span class="lineno">   57</span>  <span class="keywordflow">switch</span> (type)</div>
+<div class="line"><span class="lineno">   57</span>  <span class="keywordflow">switch</span> (<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</div>
 <div class="line"><span class="lineno">   58</span>  {</div>
 <div class="line"><span class="lineno">   59</span>    <span class="keywordflow">case</span> circle::ActivationFunctionType_NONE:</div>
 <div class="line"><span class="lineno">   60</span>      <span class="keywordflow">return</span> circlechef::NONE;</div>
@@ -283,7 +283,10 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   70</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;unsupported activation type&quot;</span>};</div>
 <div class="line"><span class="lineno">   71</span>  }</div>
 <div class="line"><span class="lineno">   72</span>}</div>
+<div class="ttc" id="a_bulk_pipeline_buffer_8cc_html_a449e574ed6911881dc55507cb5635c2c"><div class="ttname"><a href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a></div><div class="ttdeci">int32_t type</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_buffer_8cc_source.html#l00000">BulkPipelineBuffer.cc:0</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="_bulk_pipeline_buffer_8cc_source.html#l00000">type</a>.</p>
+
 <p class="reference">Referenced by <a class="el" href="circle_2src_2_op_2_b_c_q_fully_connected_8cpp_source.html#l00045">circlechef::CircleOpBCQFullyConnected::build()</a>, <a class="el" href="compiler_2circlechef_2circle_2src_2_op_2_g_r_u_8cpp_source.html#l00038">circlechef::CircleOpGRU::build()</a>, and <a class="el" href="compiler_2circlechef_2circle_2src_2_op_2_instance_norm_8cpp_source.html#l00035">circlechef::CircleOpInstanceNorm::build()</a>.</p>
 
 </div>
@@ -337,7 +340,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="circlechef_2circle_2src_2_convert_8cpp_source.html#l00022">22</a> of file <a class="el" href="circlechef_2circle_2src_2_convert_8cpp_source.html">Convert.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   23</span>{</div>
-<div class="line"><span class="lineno">   24</span>  <span class="keywordflow">switch</span> (type)</div>
+<div class="line"><span class="lineno">   24</span>  <span class="keywordflow">switch</span> (<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</div>
 <div class="line"><span class="lineno">   25</span>  {</div>
 <div class="line"><span class="lineno">   26</span>    <span class="keywordflow">case</span> circle::TensorType_FLOAT32:</div>
 <div class="line"><span class="lineno">   27</span>      <span class="keywordflow">return</span> circlechef::FLOAT32;</div>
@@ -368,6 +371,8 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   52</span>  }</div>
 <div class="line"><span class="lineno">   53</span>}</div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="_bulk_pipeline_buffer_8cc_source.html#l00000">type</a>.</p>
+
 <p class="reference">Referenced by <a class="el" href="circlechef_2circle_2src_2_recipe_chef_8cpp_source.html#l00071">generate_recipe()</a>.</p>
 
 </div>

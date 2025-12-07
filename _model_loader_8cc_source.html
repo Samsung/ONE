@@ -123,15 +123,15 @@ $(document).ready(function(){initNavTree('_model_loader_8cc_source.html',''); in
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>{</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
 <div class="foldopen" id="foldopen00026" data-start="{" data-end="}">
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="namespaceonert_1_1loader.html#aa3e212d74367c0eed3cbe983e1fe7421">   26</a></span>std::unique_ptr&lt;ir::Model&gt; <a class="code hl_function" href="namespaceonert_1_1loader.html#aa3e212d74367c0eed3cbe983e1fe7421">loadModel</a>(<span class="keyword">const</span> std::string &amp;filename, <span class="keyword">const</span> std::string &amp;type)</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="namespaceonert_1_1loader.html#aa3e212d74367c0eed3cbe983e1fe7421">   26</a></span>std::unique_ptr&lt;ir::Model&gt; <a class="code hl_function" href="namespaceonert_1_1loader.html#aa3e212d74367c0eed3cbe983e1fe7421">loadModel</a>(<span class="keyword">const</span> std::string &amp;filename, <span class="keyword">const</span> std::string &amp;<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>{</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="comment">// Custom loader library name should be lib&lt;type&gt;_loader.so</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  std::string libname = <span class="stringliteral">&quot;lib&quot;</span> + type + <span class="stringliteral">&quot;_loader.so&quot;</span>;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  std::string libname = <span class="stringliteral">&quot;lib&quot;</span> + <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a> + <span class="stringliteral">&quot;_loader.so&quot;</span>;</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="comment">// Open custom loader library</span></div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keywordtype">void</span> *handle = dlopen(libname.c_str(), RTLD_LAZY);</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="keywordflow">if</span> (!handle)</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to open &quot;</span> + type + <span class="stringliteral">&quot; loader&quot;</span>);</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to open &quot;</span> + <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a> + <span class="stringliteral">&quot; loader&quot;</span>);</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="comment">// Get custom loader create function</span></div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keyword">using </span>create_func_t = <a class="code hl_class" href="classonert_1_1loader_1_1_i_loader.html">ILoader</a> *(*)();</div>
@@ -181,6 +181,7 @@ $(document).ready(function(){initNavTree('_model_loader_8cc_source.html',''); in
 </div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>} <span class="comment">// namespace onert::loader</span></div>
+<div class="ttc" id="a_bulk_pipeline_buffer_8cc_html_a449e574ed6911881dc55507cb5635c2c"><div class="ttname"><a href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a></div><div class="ttdeci">int32_t type</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_buffer_8cc_source.html#l00000">BulkPipelineBuffer.cc:0</a></div></div>
 <div class="ttc" id="a_i_loader_8h_html"><div class="ttname"><a href="_i_loader_8h.html">ILoader.h</a></div></div>
 <div class="ttc" id="a_model_loader_8h_html"><div class="ttname"><a href="_model_loader_8h.html">ModelLoader.h</a></div></div>
 <div class="ttc" id="aclassonert_1_1loader_1_1_i_loader_html"><div class="ttname"><a href="classonert_1_1loader_1_1_i_loader.html">onert::loader::ILoader</a></div><div class="ttdef"><b>Definition</b> <a href="_i_loader_8h_source.html#l00028">ILoader.h:29</a></div></div>

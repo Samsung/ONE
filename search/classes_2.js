@@ -86,7 +86,7 @@ var searchData=
   ['broadcasttocheffactory_83',['BroadcastToChefFactory',['../struct_broadcast_to_chef_factory.html',1,'']]],
   ['broadcasttolayer_84',['BroadcastToLayer',['../classonert_1_1backend_1_1cpu_1_1ops_1_1_broadcast_to_layer.html',1,'onert::backend::cpu::ops']]],
   ['buddymemorymanager_85',['BuddyMemoryManager',['../classluci__interpreter_1_1_buddy_memory_manager.html',1,'luci_interpreter']]],
-  ['buffer_86',['buffer',['../classnncc_1_1core_1_1_a_d_t_1_1tensor_1_1_buffer.html',1,'nncc::core::ADT::tensor::Buffer&lt; T &gt;'],['../classnncc_1_1core_1_1_a_d_t_1_1kernel_1_1_buffer.html',1,'nncc::core::ADT::kernel::Buffer&lt; T &gt;'],['../classnncc_1_1core_1_1_a_d_t_1_1feature_1_1_buffer.html',1,'nncc::core::ADT::feature::Buffer&lt; T &gt;']]],
+  ['buffer_86',['buffer',['../classnncc_1_1core_1_1_a_d_t_1_1tensor_1_1_buffer.html',1,'nncc::core::ADT::tensor::Buffer&lt; T &gt;'],['../classnncc_1_1core_1_1_a_d_t_1_1feature_1_1_buffer.html',1,'nncc::core::ADT::feature::Buffer&lt; T &gt;'],['../classnncc_1_1core_1_1_a_d_t_1_1kernel_1_1_buffer.html',1,'nncc::core::ADT::kernel::Buffer&lt; T &gt;']]],
   ['buffer_3c_20float_20_3e_87',['Buffer&lt; float &gt;',['../classnncc_1_1core_1_1_a_d_t_1_1kernel_1_1_buffer.html',1,'nncc::core::ADT::kernel']]],
   ['bufferlink_88',['BufferLink',['../structtflite2circle_1_1_buffer_link.html',1,'tflite2circle']]],
   ['bufferref_89',['BufferRef',['../structflatbuffers_1_1_buffer_ref.html',1,'flatbuffers']]],
@@ -98,7 +98,8 @@ var searchData=
   ['builtinoptionsmappingrule_95',['BuiltinOptionsMappingRule',['../classluci_1_1_builtin_options_mapping_rule.html',1,'luci']]],
   ['bulk_96',['Bulk',['../classonert_1_1ir_1_1operation_1_1_bulk.html',1,'onert::ir::operation']]],
   ['bulklayer_97',['BulkLayer',['../classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_layer.html',1,'onert::backend::trix::ops']]],
-  ['bumpplanner_98',['bumpplanner',['../classonert_1_1backend_1_1basic_1_1_bump_planner.html',1,'onert::backend::basic::BumpPlanner'],['../classonert_1_1backend_1_1train_1_1_bump_planner.html',1,'onert::backend::train::BumpPlanner&lt; Index &gt;']]],
-  ['bundle_99',['Bundle',['../classenco_1_1_bundle.html',1,'enco']]],
-  ['bypassgenerationpass_100',['BypassGenerationPass',['../structenco_1_1_bypass_generation_pass.html',1,'enco']]]
+  ['bulkpipelinebuffer_98',['BulkPipelineBuffer',['../classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_buffer.html',1,'onert::backend::trix::ops']]],
+  ['bumpplanner_99',['bumpplanner',['../classonert_1_1backend_1_1basic_1_1_bump_planner.html',1,'onert::backend::basic::BumpPlanner'],['../classonert_1_1backend_1_1train_1_1_bump_planner.html',1,'onert::backend::train::BumpPlanner&lt; Index &gt;']]],
+  ['bundle_100',['Bundle',['../classenco_1_1_bundle.html',1,'enco']]],
+  ['bypassgenerationpass_101',['BypassGenerationPass',['../structenco_1_1_bypass_generation_pass.html',1,'enco']]]
 ];

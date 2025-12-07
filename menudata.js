@@ -287,6 +287,7 @@ var menudata={children:[
 {text:"z",url:"functions_type_z.html#index_z"}]},
 {text:"Enumerations",url:"functions_enum.html",children:[
 {text:"a",url:"functions_enum.html#index_a"},
+{text:"b",url:"functions_enum.html#index_b"},
 {text:"c",url:"functions_enum.html#index_c"},
 {text:"d",url:"functions_enum.html#index_d"},
 {text:"e",url:"functions_enum.html#index_e"},

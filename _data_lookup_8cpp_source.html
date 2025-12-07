@@ -234,9 +234,9 @@ $(document).ready(function(){initNavTree('_data_lookup_8cpp_source.html',''); in
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="preprocessor">#undef TFL_BUILTIN_OPTIONS</span></div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    <span class="keywordflow">default</span>:</div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    {</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>      <span class="keyword">auto</span> type = op-&gt;builtin_options_type();</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>      <span class="keyword">auto</span> <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a> = op-&gt;builtin_options_type();</div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>      std::string msg = <span class="stringliteral">&quot;tflite2circle: wrong builtin options type: &quot;</span>;</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>      msg = msg + tflite::EnumNameBuiltinOptions(type);</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>      msg = msg + tflite::EnumNameBuiltinOptions(<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>);</div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>      <span class="keywordflow">throw</span> std::runtime_error(msg.c_str());</div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    }</div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  }</div>
@@ -257,9 +257,9 @@ $(document).ready(function(){initNavTree('_data_lookup_8cpp_source.html',''); in
 <div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span><span class="preprocessor">#undef TFL_BUILTIN_OPTIONS</span></div>
 <div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    <span class="keywordflow">default</span>:</div>
 <div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    {</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>      <span class="keyword">auto</span> type = op-&gt;builtin_options_type();</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>      <span class="keyword">auto</span> <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a> = op-&gt;builtin_options_type();</div>
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>      std::string msg = <span class="stringliteral">&quot;tflite2circle: wrong builtin options type: &quot;</span>;</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>      msg = msg + tflite::EnumNameBuiltinOptions(type);</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>      msg = msg + tflite::EnumNameBuiltinOptions(<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>);</div>
 <div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>      <span class="keywordflow">throw</span> std::runtime_error(msg.c_str());</div>
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    }</div>
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>  }</div>
@@ -363,6 +363,7 @@ $(document).ready(function(){initNavTree('_data_lookup_8cpp_source.html',''); in
 <div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span> </div>
 <div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>} <span class="comment">// namespace tflite2circle</span></div>
 <div class="ttc" id="a_build_builtin_options_8h_html"><div class="ttname"><a href="_build_builtin_options_8h.html">BuildBuiltinOptions.h</a></div></div>
+<div class="ttc" id="a_bulk_pipeline_buffer_8cc_html_a449e574ed6911881dc55507cb5635c2c"><div class="ttname"><a href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a></div><div class="ttdeci">int32_t type</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_buffer_8cc_source.html#l00000">BulkPipelineBuffer.cc:0</a></div></div>
 <div class="ttc" id="a_data_lookup_8h_html"><div class="ttname"><a href="_data_lookup_8h.html">DataLookup.h</a></div></div>
 <div class="ttc" id="aclassflatbuffers_1_1_flat_buffer_builder_impl_html"><div class="ttname"><a href="classflatbuffers_1_1_flat_buffer_builder_impl.html">flatbuffers::FlatBufferBuilderImpl&lt; false &gt;</a></div></div>
 <div class="ttc" id="aclassflatbuffers_1_1_flat_buffer_builder_impl_html_a813b376143a53bd2828d9684713fe03c"><div class="ttname"><a href="classflatbuffers_1_1_flat_buffer_builder_impl.html#a813b376143a53bd2828d9684713fe03c">flatbuffers::FlatBufferBuilderImpl::Finish</a></div><div class="ttdeci">void Finish(Offset&lt; T &gt; root, const char *file_identifier=nullptr)</div><div class="ttdoc">Finish serializing a buffer by writing the root offset.</div><div class="ttdef"><b>Definition</b> <a href="flatbuffer__builder_8h_source.html#l01216">flatbuffer_builder.h:1216</a></div></div>

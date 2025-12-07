@@ -97,144 +97,146 @@ $(document).ready(function(){initNavTree('train__with__dataset_8py_source.html',
   <div class="headertitle"><div class="title">train_with_dataset.py</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="train__with__dataset_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespacetrain__with__dataset.html">    1</a></span><span class="keyword">import</span> argparse</div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="keyword">from</span> <a class="code hl_namespace" href="namespaceonert_1_1experimental_1_1train.html">onert.experimental.train</a> <span class="keyword">import</span> session, DataLoader, optimizer, losses, metrics</div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
-<div class="foldopen" id="foldopen00005" data-start="" data-end="">
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno"><a class="line" href="namespacetrain__with__dataset.html#afdf0a665deea3c4bceae85d863295a50">    5</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacetrain__with__dataset.html#afdf0a665deea3c4bceae85d863295a50">initParse</a>():</div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>    parser = argparse.ArgumentParser()</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>    parser.add_argument(<span class="stringliteral">&#39;-m&#39;</span>,</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>                        <span class="stringliteral">&#39;--nnpkg&#39;</span>,</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>                        required=<span class="keyword">True</span>,</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>                        help=<span class="stringliteral">&#39;Path to the nnpackage file or directory&#39;</span>)</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    parser.add_argument(<span class="stringliteral">&#39;-i&#39;</span>,</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>                        <span class="stringliteral">&#39;--input&#39;</span>,</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>                        required=<span class="keyword">True</span>,</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>                        help=<span class="stringliteral">&#39;Path to the file containing input data (e.g., .npy or raw)&#39;</span>)</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    parser.add_argument(</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>        <span class="stringliteral">&#39;-l&#39;</span>,</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>        <span class="stringliteral">&#39;--label&#39;</span>,</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        required=<span class="keyword">True</span>,</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>        help=<span class="stringliteral">&#39;Path to the file containing label data (e.g., .npy or raw).&#39;</span>)</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    parser.add_argument(<span class="stringliteral">&#39;--data_length&#39;</span>, required=<span class="keyword">True</span>, type=int, help=<span class="stringliteral">&#39;data length&#39;</span>)</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    parser.add_argument(<span class="stringliteral">&#39;--backends&#39;</span>, default=<span class="stringliteral">&#39;train&#39;</span>, help=<span class="stringliteral">&#39;Backends to use&#39;</span>)</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    parser.add_argument(<span class="stringliteral">&#39;--batch_size&#39;</span>, default=16, type=int, help=<span class="stringliteral">&#39;batch size&#39;</span>)</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    parser.add_argument(<span class="stringliteral">&#39;--epoch&#39;</span>, default=5, type=int, help=<span class="stringliteral">&#39;epoch number&#39;</span>)</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    parser.add_argument(<span class="stringliteral">&#39;--learning_rate&#39;</span>, default=0.01, type=float, help=<span class="stringliteral">&#39;learning rate&#39;</span>)</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    parser.add_argument(<span class="stringliteral">&#39;--loss&#39;</span>, default=<span class="stringliteral">&#39;mse&#39;</span>, choices=[<span class="stringliteral">&#39;mse&#39;</span>, <span class="stringliteral">&#39;cce&#39;</span>])</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    parser.add_argument(<span class="stringliteral">&#39;--optimizer&#39;</span>, default=<span class="stringliteral">&#39;sgd&#39;</span>, choices=[<span class="stringliteral">&#39;sgd&#39;</span>, <span class="stringliteral">&#39;adam&#39;</span>])</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    parser.add_argument(<span class="stringliteral">&#39;--loss_reduction_type&#39;</span>, default=<span class="stringliteral">&#39;mean&#39;</span>, choices=[<span class="stringliteral">&#39;mean&#39;</span>, <span class="stringliteral">&#39;sum&#39;</span>])</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    parser.add_argument(<span class="stringliteral">&#39;--validation_split&#39;</span>,</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>                        default=0.0,</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>                        type=float,</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>                        help=<span class="stringliteral">&#39;validation split rate&#39;</span>)</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keywordflow">return</span> parser.parse_args()</div>
+<a href="train__with__dataset_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespacetrain__with__dataset.html">    1</a></span><span class="comment">#!/usr/bin/env python3</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="keyword">import</span> argparse</div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">from</span> <a class="code hl_namespace" href="namespaceonert_1_1experimental_1_1train.html">onert.experimental.train</a> <span class="keyword">import</span> session, DataLoader, optimizer, losses, metrics</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="foldopen" id="foldopen00007" data-start="" data-end="">
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="namespacetrain__with__dataset.html#afdf0a665deea3c4bceae85d863295a50">    7</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacetrain__with__dataset.html#afdf0a665deea3c4bceae85d863295a50">initParse</a>():</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    parser = argparse.ArgumentParser()</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    parser.add_argument(<span class="stringliteral">&#39;-m&#39;</span>,</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>                        <span class="stringliteral">&#39;--nnpkg&#39;</span>,</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>                        required=<span class="keyword">True</span>,</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>                        help=<span class="stringliteral">&#39;Path to the nnpackage file or directory&#39;</span>)</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    parser.add_argument(<span class="stringliteral">&#39;-i&#39;</span>,</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>                        <span class="stringliteral">&#39;--input&#39;</span>,</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>                        required=<span class="keyword">True</span>,</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>                        help=<span class="stringliteral">&#39;Path to the file containing input data (e.g., .npy or raw)&#39;</span>)</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    parser.add_argument(</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        <span class="stringliteral">&#39;-l&#39;</span>,</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>        <span class="stringliteral">&#39;--label&#39;</span>,</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        required=<span class="keyword">True</span>,</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>        help=<span class="stringliteral">&#39;Path to the file containing label data (e.g., .npy or raw).&#39;</span>)</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    parser.add_argument(<span class="stringliteral">&#39;--data_length&#39;</span>, required=<span class="keyword">True</span>, type=int, help=<span class="stringliteral">&#39;data length&#39;</span>)</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    parser.add_argument(<span class="stringliteral">&#39;--backends&#39;</span>, default=<span class="stringliteral">&#39;train&#39;</span>, help=<span class="stringliteral">&#39;Backends to use&#39;</span>)</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    parser.add_argument(<span class="stringliteral">&#39;--batch_size&#39;</span>, default=16, type=int, help=<span class="stringliteral">&#39;batch size&#39;</span>)</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    parser.add_argument(<span class="stringliteral">&#39;--epoch&#39;</span>, default=5, type=int, help=<span class="stringliteral">&#39;epoch number&#39;</span>)</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    parser.add_argument(<span class="stringliteral">&#39;--learning_rate&#39;</span>, default=0.01, type=float, help=<span class="stringliteral">&#39;learning rate&#39;</span>)</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    parser.add_argument(<span class="stringliteral">&#39;--loss&#39;</span>, default=<span class="stringliteral">&#39;mse&#39;</span>, choices=[<span class="stringliteral">&#39;mse&#39;</span>, <span class="stringliteral">&#39;cce&#39;</span>])</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    parser.add_argument(<span class="stringliteral">&#39;--optimizer&#39;</span>, default=<span class="stringliteral">&#39;sgd&#39;</span>, choices=[<span class="stringliteral">&#39;sgd&#39;</span>, <span class="stringliteral">&#39;adam&#39;</span>])</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    parser.add_argument(<span class="stringliteral">&#39;--loss_reduction_type&#39;</span>, default=<span class="stringliteral">&#39;mean&#39;</span>, choices=[<span class="stringliteral">&#39;mean&#39;</span>, <span class="stringliteral">&#39;sum&#39;</span>])</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    parser.add_argument(<span class="stringliteral">&#39;--validation_split&#39;</span>,</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>                        default=0.0,</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>                        type=float,</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>                        help=<span class="stringliteral">&#39;validation split rate&#39;</span>)</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordflow">return</span> parser.parse_args()</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
 </div>
-<div class="foldopen" id="foldopen00036" data-start="" data-end="">
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="namespacetrain__with__dataset.html#a55351efbf992774c44565059c828ff64">   36</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacetrain__with__dataset.html#a55351efbf992774c44565059c828ff64">createOptimizer</a>(optimizer_type, learning_rate=0.001, **kwargs):</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="stringliteral">    Create an optimizer based on the specified type.</span></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="stringliteral">    Args:</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="stringliteral">        optimizer_type (str): The type of optimizer (&#39;SGD&#39; or &#39;Adam&#39;).</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="stringliteral">        learning_rate (float): The learning rate for the optimizer.</span></div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="stringliteral">        **kwargs: Additional parameters for the optimizer.</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="stringliteral">    Returns:</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="stringliteral">        Optimizer: The created optimizer instance.</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keywordflow">if</span> optimizer_type.lower() == <span class="stringliteral">&quot;sgd&quot;</span>:</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        <span class="keywordflow">return</span> optimizer.SGD(learning_rate=learning_rate, **kwargs)</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordflow">elif</span> optimizer_type.lower() == <span class="stringliteral">&quot;adam&quot;</span>:</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        <span class="keywordflow">return</span> optimizer.Adam(learning_rate=learning_rate, **kwargs)</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;Unknown optimizer type: {optimizer_type}&quot;</span>)</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="foldopen" id="foldopen00038" data-start="" data-end="">
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="namespacetrain__with__dataset.html#a55351efbf992774c44565059c828ff64">   38</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacetrain__with__dataset.html#a55351efbf992774c44565059c828ff64">createOptimizer</a>(optimizer_type, learning_rate=0.001, **kwargs):</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="stringliteral">    Create an optimizer based on the specified type.</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="stringliteral">    Args:</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="stringliteral">        optimizer_type (str): The type of optimizer (&#39;SGD&#39; or &#39;Adam&#39;).</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="stringliteral">        learning_rate (float): The learning rate for the optimizer.</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="stringliteral">        **kwargs: Additional parameters for the optimizer.</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="stringliteral">    Returns:</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="stringliteral">        Optimizer: The created optimizer instance.</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordflow">if</span> optimizer_type.lower() == <span class="stringliteral">&quot;sgd&quot;</span>:</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        <span class="keywordflow">return</span> optimizer.SGD(learning_rate=learning_rate, **kwargs)</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keywordflow">elif</span> optimizer_type.lower() == <span class="stringliteral">&quot;adam&quot;</span>:</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        <span class="keywordflow">return</span> optimizer.Adam(learning_rate=learning_rate, **kwargs)</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;Unknown optimizer type: {optimizer_type}&quot;</span>)</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
 </div>
-<div class="foldopen" id="foldopen00054" data-start="" data-end="">
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="namespacetrain__with__dataset.html#a108acf2df482b0f0f08e970923f0416d">   54</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacetrain__with__dataset.html#a108acf2df482b0f0f08e970923f0416d">createLoss</a>(loss_type, reduction=&quot;mean&quot;):</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="stringliteral">    Create a loss function based on the specified type and reduction.</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="stringliteral">    Args:</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="stringliteral">        loss_type (str): The type of loss function (&#39;mse&#39;, &#39;cce&#39;).</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="stringliteral">        reduction (str): Reduction type (&#39;mean&#39;, &#39;sum&#39;).</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="stringliteral">    Returns:</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="stringliteral">        object: An instance of the specified loss function.</span></div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keywordflow">if</span> loss_type.lower() == <span class="stringliteral">&quot;mse&quot;</span>:</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        <span class="keywordflow">return</span> losses.MeanSquaredError(reduction=reduction)</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keywordflow">elif</span> loss_type.lower() == <span class="stringliteral">&quot;cce&quot;</span>:</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        <span class="keywordflow">return</span> losses.CategoricalCrossentropy(reduction=reduction)</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;Unknown loss type: {loss_type}&quot;</span>)</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="foldopen" id="foldopen00056" data-start="" data-end="">
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="namespacetrain__with__dataset.html#a108acf2df482b0f0f08e970923f0416d">   56</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacetrain__with__dataset.html#a108acf2df482b0f0f08e970923f0416d">createLoss</a>(loss_type, reduction=&quot;mean&quot;):</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="stringliteral">    Create a loss function based on the specified type and reduction.</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="stringliteral">    Args:</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="stringliteral">        loss_type (str): The type of loss function (&#39;mse&#39;, &#39;cce&#39;).</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="stringliteral">        reduction (str): Reduction type (&#39;mean&#39;, &#39;sum&#39;).</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="stringliteral">    Returns:</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="stringliteral">        object: An instance of the specified loss function.</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keywordflow">if</span> loss_type.lower() == <span class="stringliteral">&quot;mse&quot;</span>:</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        <span class="keywordflow">return</span> losses.MeanSquaredError(reduction=reduction)</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keywordflow">elif</span> loss_type.lower() == <span class="stringliteral">&quot;cce&quot;</span>:</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        <span class="keywordflow">return</span> losses.CategoricalCrossentropy(reduction=reduction)</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;Unknown loss type: {loss_type}&quot;</span>)</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
 </div>
-<div class="foldopen" id="foldopen00071" data-start="" data-end="">
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="namespacetrain__with__dataset.html#a5aec5fb19360f057e82122316a7cdea0">   71</a></span><span class="keyword">def </span>train(args):</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="stringliteral">    Main function to train the model.</span></div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="comment"># Create session and load nnpackage</span></div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    sess = session(args.nnpkg, args.backends)</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="comment"># Load data</span></div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    input_shape = sess.input_tensorinfo(0).dims</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    label_shape = sess.output_tensorinfo(0).dims</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    input_shape[0] = args.data_length</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    label_shape[0] = args.data_length</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    data_loader = <a class="code hl_class" href="classonert_1_1experimental_1_1train_1_1dataloader_1_1_data_loader.html">DataLoader</a>(args.input,</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>                             args.label,</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>                             args.batch_size,</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>                             input_shape=input_shape,</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>                             expected_shape=label_shape)</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    print(<span class="stringliteral">&#39;Load data&#39;</span>)</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="comment"># optimizer</span></div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    opt_fn = <a class="code hl_function" href="namespacetrain__with__dataset.html#a55351efbf992774c44565059c828ff64">createOptimizer</a>(args.optimizer, args.learning_rate)</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="comment"># loss</span></div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    loss_fn = <a class="code hl_function" href="namespacetrain__with__dataset.html#a108acf2df482b0f0f08e970923f0416d">createLoss</a>(args.loss, reduction=args.loss_reduction_type)</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    sess.compile(optimizer=opt_fn,</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                 loss=loss_fn,</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>                 batch_size=args.batch_size,</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>                 metrics=[metrics.CategoricalAccuracy()])</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    <span class="comment"># Train model</span></div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    total_time = sess.train(data_loader,</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>                            epochs=args.epoch,</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>                            validation_split=args.validation_split,</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>                            checkpoint_path=<span class="stringliteral">&quot;checkpoint.ckpt&quot;</span>)</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    <span class="comment"># Print timing summary</span></div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    print(<span class="stringliteral">&quot;=&quot;</span> * 35)</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    print(f<span class="stringliteral">&quot;MODEL_LOAD   takes {total_time[&#39;MODEL_LOAD&#39;]:.4f} ms&quot;</span>)</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    print(f<span class="stringliteral">&quot;COMPILE      takes {total_time[&#39;COMPILE&#39;]:.4f} ms&quot;</span>)</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    print(f<span class="stringliteral">&quot;EXECUTE      takes {total_time[&#39;EXECUTE&#39;]:.4f} ms&quot;</span>)</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    epoch_times = total_time[<span class="stringliteral">&#39;EPOCH_TIMES&#39;</span>]</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    <span class="keywordflow">for</span> i, epoch_time <span class="keywordflow">in</span> enumerate(epoch_times):</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        print(f<span class="stringliteral">&quot;- Epoch {i + 1}      takes {epoch_time:.4f} ms&quot;</span>)</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    print(<span class="stringliteral">&quot;=&quot;</span> * 35)</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    print(f<span class="stringliteral">&quot;nnpackage {args.nnpkg.split(&#39;/&#39;)[-1]} trains successfully.&quot;</span>)</div>
+<div class="foldopen" id="foldopen00073" data-start="" data-end="">
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="namespacetrain__with__dataset.html#a5aec5fb19360f057e82122316a7cdea0">   73</a></span><span class="keyword">def </span>train(args):</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="stringliteral">    Main function to train the model.</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="comment"># Create session and load nnpackage</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    sess = session(args.nnpkg, args.backends)</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <span class="comment"># Load data</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    input_shape = sess.input_tensorinfo(0).dims</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    label_shape = sess.output_tensorinfo(0).dims</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    input_shape[0] = args.data_length</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    label_shape[0] = args.data_length</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    data_loader = <a class="code hl_class" href="classonert_1_1experimental_1_1train_1_1dataloader_1_1_data_loader.html">DataLoader</a>(args.input,</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>                             args.label,</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>                             args.batch_size,</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>                             input_shape=input_shape,</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>                             expected_shape=label_shape)</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    print(<span class="stringliteral">&#39;Load data&#39;</span>)</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="comment"># optimizer</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    opt_fn = <a class="code hl_function" href="namespacetrain__with__dataset.html#a55351efbf992774c44565059c828ff64">createOptimizer</a>(args.optimizer, args.learning_rate)</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="comment"># loss</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    loss_fn = <a class="code hl_function" href="namespacetrain__with__dataset.html#a108acf2df482b0f0f08e970923f0416d">createLoss</a>(args.loss, reduction=args.loss_reduction_type)</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    sess.compile(optimizer=opt_fn,</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>                 loss=loss_fn,</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>                 batch_size=args.batch_size,</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>                 metrics=[metrics.CategoricalAccuracy()])</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="comment"># Train model</span></div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    total_time = sess.train(data_loader,</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>                            epochs=args.epoch,</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>                            validation_split=args.validation_split,</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>                            checkpoint_path=<span class="stringliteral">&quot;checkpoint.ckpt&quot;</span>)</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="comment"># Print timing summary</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    print(<span class="stringliteral">&quot;=&quot;</span> * 35)</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    print(f<span class="stringliteral">&quot;MODEL_LOAD   takes {total_time[&#39;MODEL_LOAD&#39;]:.4f} ms&quot;</span>)</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    print(f<span class="stringliteral">&quot;COMPILE      takes {total_time[&#39;COMPILE&#39;]:.4f} ms&quot;</span>)</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    print(f<span class="stringliteral">&quot;EXECUTE      takes {total_time[&#39;EXECUTE&#39;]:.4f} ms&quot;</span>)</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    epoch_times = total_time[<span class="stringliteral">&#39;EPOCH_TIMES&#39;</span>]</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    <span class="keywordflow">for</span> i, epoch_time <span class="keywordflow">in</span> enumerate(epoch_times):</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        print(f<span class="stringliteral">&quot;- Epoch {i + 1}      takes {epoch_time:.4f} ms&quot;</span>)</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    print(<span class="stringliteral">&quot;=&quot;</span> * 35)</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    print(f<span class="stringliteral">&quot;nnpackage {args.nnpkg.split(&#39;/&#39;)[-1]} trains successfully.&quot;</span>)</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
 </div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="keywordflow">if</span> __name__ == <span class="stringliteral">&quot;__main__&quot;</span>:</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="namespacetrain__with__dataset.html#af9735dd9ae0eb5e72b192724ad108122">  123</a></span>    args = <a class="code hl_function" href="namespacetrain__with__dataset.html#afdf0a665deea3c4bceae85d863295a50">initParse</a>()</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    train(args)</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="keywordflow">if</span> __name__ == <span class="stringliteral">&quot;__main__&quot;</span>:</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno"><a class="line" href="namespacetrain__with__dataset.html#af9735dd9ae0eb5e72b192724ad108122">  125</a></span>    args = <a class="code hl_function" href="namespacetrain__with__dataset.html#afdf0a665deea3c4bceae85d863295a50">initParse</a>()</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    train(args)</div>
 <div class="ttc" id="aclassonert_1_1experimental_1_1train_1_1dataloader_1_1_data_loader_html"><div class="ttname"><a href="classonert_1_1experimental_1_1train_1_1dataloader_1_1_data_loader.html">onert.experimental.train.dataloader.DataLoader</a></div><div class="ttdef"><b>Definition</b> <a href="dataloader_8py_source.html#l00006">dataloader.py:6</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1experimental_1_1train_html"><div class="ttname"><a href="namespaceonert_1_1experimental_1_1train.html">onert.experimental.train</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2api_2python_2onert_2experimental_2train_2____init_____8py_source.html#l00001">__init__.py:1</a></div></div>
-<div class="ttc" id="anamespacetrain__with__dataset_html_a108acf2df482b0f0f08e970923f0416d"><div class="ttname"><a href="namespacetrain__with__dataset.html#a108acf2df482b0f0f08e970923f0416d">train_with_dataset.createLoss</a></div><div class="ttdeci">createLoss(loss_type, reduction=&quot;mean&quot;)</div><div class="ttdef"><b>Definition</b> <a href="train__with__dataset_8py_source.html#l00054">train_with_dataset.py:54</a></div></div>
-<div class="ttc" id="anamespacetrain__with__dataset_html_a55351efbf992774c44565059c828ff64"><div class="ttname"><a href="namespacetrain__with__dataset.html#a55351efbf992774c44565059c828ff64">train_with_dataset.createOptimizer</a></div><div class="ttdeci">createOptimizer(optimizer_type, learning_rate=0.001, **kwargs)</div><div class="ttdef"><b>Definition</b> <a href="train__with__dataset_8py_source.html#l00036">train_with_dataset.py:36</a></div></div>
-<div class="ttc" id="anamespacetrain__with__dataset_html_afdf0a665deea3c4bceae85d863295a50"><div class="ttname"><a href="namespacetrain__with__dataset.html#afdf0a665deea3c4bceae85d863295a50">train_with_dataset.initParse</a></div><div class="ttdeci">initParse()</div><div class="ttdef"><b>Definition</b> <a href="train__with__dataset_8py_source.html#l00005">train_with_dataset.py:5</a></div></div>
+<div class="ttc" id="anamespacetrain__with__dataset_html_a108acf2df482b0f0f08e970923f0416d"><div class="ttname"><a href="namespacetrain__with__dataset.html#a108acf2df482b0f0f08e970923f0416d">train_with_dataset.createLoss</a></div><div class="ttdeci">createLoss(loss_type, reduction=&quot;mean&quot;)</div><div class="ttdef"><b>Definition</b> <a href="train__with__dataset_8py_source.html#l00056">train_with_dataset.py:56</a></div></div>
+<div class="ttc" id="anamespacetrain__with__dataset_html_a55351efbf992774c44565059c828ff64"><div class="ttname"><a href="namespacetrain__with__dataset.html#a55351efbf992774c44565059c828ff64">train_with_dataset.createOptimizer</a></div><div class="ttdeci">createOptimizer(optimizer_type, learning_rate=0.001, **kwargs)</div><div class="ttdef"><b>Definition</b> <a href="train__with__dataset_8py_source.html#l00038">train_with_dataset.py:38</a></div></div>
+<div class="ttc" id="anamespacetrain__with__dataset_html_afdf0a665deea3c4bceae85d863295a50"><div class="ttname"><a href="namespacetrain__with__dataset.html#afdf0a665deea3c4bceae85d863295a50">train_with_dataset.initParse</a></div><div class="ttdeci">initParse()</div><div class="ttdef"><b>Definition</b> <a href="train__with__dataset_8py_source.html#l00007">train_with_dataset.py:7</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

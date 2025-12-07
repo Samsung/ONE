@@ -343,10 +343,10 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  124</span>  <span class="keywordflow">if</span> (!<a class="code hl_enumvalue" href="namespacennc.html#ae2631b9af15870ed7af4a3a0fd88d416abe8f80182e0c983916da7338c2c1c040">obj</a>.isConstant())</div>
 <div class="line"><span class="lineno">  125</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">  126</span> </div>
-<div class="line"><span class="lineno">  127</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#ab89ed5258ead024638290064e52469c8">type</a> = <a class="code hl_enumvalue" href="namespacennc.html#ae2631b9af15870ed7af4a3a0fd88d416abe8f80182e0c983916da7338c2c1c040">obj</a>.typeInfo().type();</div>
+<div class="line"><span class="lineno">  127</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a> = <a class="code hl_enumvalue" href="namespacennc.html#ae2631b9af15870ed7af4a3a0fd88d416abe8f80182e0c983916da7338c2c1c040">obj</a>.typeInfo().type();</div>
 <div class="line"><span class="lineno">  128</span>  <span class="keyword">using </span><a class="code hl_enumeration" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331">ir::DataType</a>;</div>
 <div class="line"><span class="lineno">  129</span> </div>
-<div class="line"><span class="lineno">  130</span>  <span class="keywordflow">switch</span> (type)</div>
+<div class="line"><span class="lineno">  130</span>  <span class="keywordflow">switch</span> (<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</div>
 <div class="line"><span class="lineno">  131</span>  {</div>
 <div class="line"><span class="lineno">  132</span>    <span class="keywordflow">case</span> DataType::FLOAT32:</div>
 <div class="line"><span class="lineno">  133</span>      <a class="code hl_variable" href="classonert_1_1backend_1_1acl__common_1_1_acl_constant_initializer.html#a460b6deaef0cf00b3bed4c3ba0dcad13">_init_map</a>[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>] = copyInit&lt;float&gt;;</div>
@@ -376,12 +376,12 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  157</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  158</span>  }</div>
 <div class="line"><span class="lineno">  159</span>}</div>
-<div class="ttc" id="anamespaceinfer_html_ab89ed5258ead024638290064e52469c8"><div class="ttname"><a href="namespaceinfer.html#ab89ed5258ead024638290064e52469c8">infer.type</a></div><div class="ttdeci">type</div><div class="ttdef"><b>Definition</b> <a href="infer_8py_source.html#l00018">infer.py:18</a></div></div>
+<div class="ttc" id="a_bulk_pipeline_buffer_8cc_html_a449e574ed6911881dc55507cb5635c2c"><div class="ttname"><a href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a></div><div class="ttdeci">int32_t type</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_buffer_8cc_source.html#l00000">BulkPipelineBuffer.cc:0</a></div></div>
 <div class="ttc" id="anamespacemoco_html_a2a0fb57b3701512b54ae18c23908f047"><div class="ttname"><a href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">moco::index</a></div><div class="ttdeci">loco::GraphInputIndex index(const TFPlaceholder *node)</div><div class="ttdef"><b>Definition</b> <a href="_t_f_node_8cpp_source.html#l00054">TFNode.cpp:54</a></div></div>
 <div class="ttc" id="anamespacennc_html_ae2631b9af15870ed7af4a3a0fd88d416abe8f80182e0c983916da7338c2c1c040"><div class="ttname"><a href="namespacennc.html#ae2631b9af15870ed7af4a3a0fd88d416abe8f80182e0c983916da7338c2c1c040">nnc::ArtifactCallType::obj</a></div><div class="ttdeci">@ obj</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a0343744557a8c62c8f3ac225760f8331"><div class="ttname"><a href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331">onert::ir::DataType</a></div><div class="ttdeci">DataType</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_data_type_8h_source.html#l00025">DataType.h:26</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_acl_constant_initializer_8h_source.html#l00194">_init_map</a>.</p>
+<p class="reference">References <a class="el" href="_acl_constant_initializer_8h_source.html#l00194">_init_map</a>, and <a class="el" href="_bulk_pipeline_buffer_8cc_source.html#l00000">type</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_acl_constant_initializer_8cc_source.html#l00029">copyInputInitialize()</a>, and <a class="el" href="_acl_constant_initializer_8h_source.html#l00170">registerDefaultInitializer()</a>.</p>
 

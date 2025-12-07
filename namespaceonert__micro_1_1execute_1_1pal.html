@@ -499,10 +499,10 @@ Functions</h2></td></tr>
 <tr class="memitem:aaeb5859c7b3b2745b6deaf5a12b87a20"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#aaeb5859c7b3b2745b6deaf5a12b87a20">copyDimsToDesc</a> (const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;input_shape, <a class="el" href="structonert__micro_1_1execute_1_1pal_1_1_nd_array_desc.html">NdArrayDesc</a>&lt; N &gt; *desc_out)</td></tr>
 <tr class="separator:aaeb5859c7b3b2745b6deaf5a12b87a20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a239a7a5e9c2007a2478baa0449d52f" id="r_a0a239a7a5e9c2007a2478baa0449d52f"><td class="memTemplParams" colspan="2">template&lt;int N, int DIM, typename Calc &gt; </td></tr>
-<tr class="memitem:a0a239a7a5e9c2007a2478baa0449d52f"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if&lt; DIM==N-1, void &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#a0a239a7a5e9c2007a2478baa0449d52f">NDOpsHelperImpl</a> (const <a class="el" href="structonert__micro_1_1execute_1_1pal_1_1_nd_array_desc.html">NdArrayDesc</a>&lt; N &gt; &amp;output, const Calc &amp;calc, int indexes[N])</td></tr>
+<tr class="memitem:a0a239a7a5e9c2007a2478baa0449d52f"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if&lt; DIM==N-1, void &gt;<a class="el" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">::type</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#a0a239a7a5e9c2007a2478baa0449d52f">NDOpsHelperImpl</a> (const <a class="el" href="structonert__micro_1_1execute_1_1pal_1_1_nd_array_desc.html">NdArrayDesc</a>&lt; N &gt; &amp;output, const Calc &amp;calc, int indexes[N])</td></tr>
 <tr class="separator:a0a239a7a5e9c2007a2478baa0449d52f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a5f16a95a032769c3a82e18eee5e00b" id="r_a9a5f16a95a032769c3a82e18eee5e00b"><td class="memTemplParams" colspan="2">template&lt;int N, int DIM, typename Calc &gt; </td></tr>
-<tr class="memitem:a9a5f16a95a032769c3a82e18eee5e00b"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if&lt; DIM!=N-1, void &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#a9a5f16a95a032769c3a82e18eee5e00b">NDOpsHelperImpl</a> (const <a class="el" href="structonert__micro_1_1execute_1_1pal_1_1_nd_array_desc.html">NdArrayDesc</a>&lt; N &gt; &amp;output, const Calc &amp;calc, int indexes[N])</td></tr>
+<tr class="memitem:a9a5f16a95a032769c3a82e18eee5e00b"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if&lt; DIM!=N-1, void &gt;<a class="el" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">::type</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#a9a5f16a95a032769c3a82e18eee5e00b">NDOpsHelperImpl</a> (const <a class="el" href="structonert__micro_1_1execute_1_1pal_1_1_nd_array_desc.html">NdArrayDesc</a>&lt; N &gt; &amp;output, const Calc &amp;calc, int indexes[N])</td></tr>
 <tr class="separator:a9a5f16a95a032769c3a82e18eee5e00b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ababa872b76a3cfe132c116ce961ab52f" id="r_ababa872b76a3cfe132c116ce961ab52f"><td class="memTemplParams" colspan="2">template&lt;int N, typename Calc &gt; </td></tr>
 <tr class="memitem:ababa872b76a3cfe132c116ce961ab52f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#ababa872b76a3cfe132c116ce961ab52f">NDOpsHelper</a> (const <a class="el" href="structonert__micro_1_1execute_1_1pal_1_1_nd_array_desc.html">NdArrayDesc</a>&lt; N &gt; &amp;output, const Calc &amp;calc)</td></tr>
@@ -8093,7 +8093,7 @@ template&lt;int N, typename Calc &gt; </div>
 template&lt;int N, int DIM, typename Calc &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::enable_if&lt; DIM==N-1, void &gt;::type onert_micro::execute::pal::NDOpsHelperImpl </td>
+          <td class="memname">std::enable_if&lt; DIM==N-1, void &gt;<a class="el" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">::type</a> onert_micro::execute::pal::NDOpsHelperImpl </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structonert__micro_1_1execute_1_1pal_1_1_nd_array_desc.html">NdArrayDesc</a>&lt; N &gt; &amp;&#160;</td>
           <td class="paramname"><em>output</em>, </td>
@@ -8137,7 +8137,7 @@ template&lt;int N, int DIM, typename Calc &gt; </div>
 template&lt;int N, int DIM, typename Calc &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::enable_if&lt; DIM!=N-1, void &gt;::type onert_micro::execute::pal::NDOpsHelperImpl </td>
+          <td class="memname">std::enable_if&lt; DIM!=N-1, void &gt;<a class="el" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">::type</a> onert_micro::execute::pal::NDOpsHelperImpl </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structonert__micro_1_1execute_1_1pal_1_1_nd_array_desc.html">NdArrayDesc</a>&lt; N &gt; &amp;&#160;</td>
           <td class="paramname"><em>output</em>, </td>

@@ -124,7 +124,7 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a6ac617de424af6503ed7b578df0b9fe6" id="r_a6ac617de424af6503ed7b578df0b9fe6"><td class="memItemLeft" align="right" valign="top">typedef std::conditional&lt; Is64Aware, uoffset64_t, uoffset_t &gt;::type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classflatbuffers_1_1_flat_buffer_builder_impl.html#a6ac617de424af6503ed7b578df0b9fe6">SizeT</a></td></tr>
+<tr class="memitem:a6ac617de424af6503ed7b578df0b9fe6" id="r_a6ac617de424af6503ed7b578df0b9fe6"><td class="memItemLeft" align="right" valign="top">typedef std::conditional&lt; Is64Aware, uoffset64_t, uoffset_t &gt;<a class="el" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">::type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classflatbuffers_1_1_flat_buffer_builder_impl.html#a6ac617de424af6503ed7b578df0b9fe6">SizeT</a></td></tr>
 <tr class="separator:a6ac617de424af6503ed7b578df0b9fe6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -151,11 +151,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a8a256e49d00ffc1f1a34b07feae14db3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current size of the serialized buffer, counting from the end.  <br /></td></tr>
 <tr class="separator:a8a256e49d00ffc1f1a34b07feae14db3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9b2834c1cb85db3750313d1b2134616" id="r_ae9b2834c1cb85db3750313d1b2134616"><td class="memTemplParams" colspan="2">template&lt;bool is_64 = Is64Aware&gt; </td></tr>
-<tr class="memitem:ae9b2834c1cb85db3750313d1b2134616"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if&lt; is_64, uoffset_t &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classflatbuffers_1_1_flat_buffer_builder_impl.html#ae9b2834c1cb85db3750313d1b2134616">GetSizeRelative32BitRegion</a> () const</td></tr>
+<tr class="memitem:ae9b2834c1cb85db3750313d1b2134616"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if&lt; is_64, uoffset_t &gt;<a class="el" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">::type</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classflatbuffers_1_1_flat_buffer_builder_impl.html#ae9b2834c1cb85db3750313d1b2134616">GetSizeRelative32BitRegion</a> () const</td></tr>
 <tr class="memdesc:ae9b2834c1cb85db3750313d1b2134616"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current size of the serialized buffer relative to the end of the 32-bit region.  <br /></td></tr>
 <tr class="separator:ae9b2834c1cb85db3750313d1b2134616"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a970c88a72bc06235b931fea7642f6721" id="r_a970c88a72bc06235b931fea7642f6721"><td class="memTemplParams" colspan="2">template&lt;bool is_64 = Is64Aware&gt; </td></tr>
-<tr class="memitem:a970c88a72bc06235b931fea7642f6721"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if&lt;!is_64, uoffset_t &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classflatbuffers_1_1_flat_buffer_builder_impl.html#a970c88a72bc06235b931fea7642f6721">GetSizeRelative32BitRegion</a> () const</td></tr>
+<tr class="memitem:a970c88a72bc06235b931fea7642f6721"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if&lt;!is_64, uoffset_t &gt;<a class="el" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">::type</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classflatbuffers_1_1_flat_buffer_builder_impl.html#a970c88a72bc06235b931fea7642f6721">GetSizeRelative32BitRegion</a> () const</td></tr>
 <tr class="separator:a970c88a72bc06235b931fea7642f6721"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af9648566859d51578dfc9bb3f9462f07" id="r_af9648566859d51578dfc9bb3f9462f07"><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classflatbuffers_1_1_flat_buffer_builder_impl.html#af9648566859d51578dfc9bb3f9462f07">GetBufferPointer</a> () const</td></tr>
 <tr class="memdesc:af9648566859d51578dfc9bb3f9462f07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the serialized buffer (after you call <code>Finish()</code>).  <br /></td></tr>
@@ -406,7 +406,7 @@ class flatbuffers::FlatBufferBuilderImpl&lt; Is64Aware &gt;</div>
 template&lt;bool Is64Aware = false&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::conditional&lt;Is64Aware,uoffset64_t,uoffset_t&gt;::type <a class="el" href="classflatbuffers_1_1_flat_buffer_builder_impl.html">flatbuffers::FlatBufferBuilderImpl</a>&lt; Is64Aware &gt;::SizeT</td>
+          <td class="memname">typedef std::conditional&lt;Is64Aware,uoffset64_t,uoffset_t&gt;<a class="el" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">::type</a> <a class="el" href="classflatbuffers_1_1_flat_buffer_builder_impl.html">flatbuffers::FlatBufferBuilderImpl</a>&lt; Is64Aware &gt;::SizeT</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -3584,7 +3584,7 @@ template&lt;bool is_64 = Is64Aware&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::enable_if&lt; is_64, uoffset_t &gt;::type <a class="el" href="classflatbuffers_1_1_flat_buffer_builder_impl.html">flatbuffers::FlatBufferBuilderImpl</a>&lt; Is64Aware &gt;::GetSizeRelative32BitRegion </td>
+          <td class="memname">std::enable_if&lt; is_64, uoffset_t &gt;<a class="el" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">::type</a> <a class="el" href="classflatbuffers_1_1_flat_buffer_builder_impl.html">flatbuffers::FlatBufferBuilderImpl</a>&lt; Is64Aware &gt;::GetSizeRelative32BitRegion </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -3629,7 +3629,7 @@ template&lt;bool is_64 = Is64Aware&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::enable_if&lt;!is_64, uoffset_t &gt;::type <a class="el" href="classflatbuffers_1_1_flat_buffer_builder_impl.html">flatbuffers::FlatBufferBuilderImpl</a>&lt; Is64Aware &gt;::GetSizeRelative32BitRegion </td>
+          <td class="memname">std::enable_if&lt;!is_64, uoffset_t &gt;<a class="el" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">::type</a> <a class="el" href="classflatbuffers_1_1_flat_buffer_builder_impl.html">flatbuffers::FlatBufferBuilderImpl</a>&lt; Is64Aware &gt;::GetSizeRelative32BitRegion </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>

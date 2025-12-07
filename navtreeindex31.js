@@ -1,5 +1,15 @@
 var NAVTREEINDEX31 =
 {
+"_tensor_planner_8h.html":[43,0,3,4,1,7,24],
+"_tensor_planner_8h_source.html":[43,0,3,4,1,7,24],
+"_tensor_rank_sparse_backpropagation_handler_8cpp.html":[43,0,2,6,1,2],
+"_tensor_rank_sparse_backpropagation_handler_8cpp.html#a609febbafa682bd13f7cffc78ee9130f":[43,0,2,6,1,2,0],
+"_tensor_rank_sparse_backpropagation_handler_8cpp.html#a8b43bafee90b30676faae508c21cb8d7":[43,0,2,6,1,2,1],
+"_tensor_rank_sparse_backpropagation_handler_8cpp_source.html":[43,0,2,6,1,2],
+"_tensor_rank_sparse_backpropagation_handler_8h.html":[43,0,2,6,0,2],
+"_tensor_rank_sparse_backpropagation_handler_8h.html#ada3d386b6d0dcb043ef82a786a1e6f63":[43,0,2,6,0,2,0],
+"_tensor_rank_sparse_backpropagation_handler_8h_source.html":[43,0,2,6,0,2],
+"_tensor_reduce_8cpp.html":[43,0,0,54,1,0,31],
 "_tensor_reduce_8cpp_source.html":[43,0,0,54,1,0,31],
 "_tensor_reduce_converter_8cpp.html":[43,0,0,41,1,1,37],
 "_tensor_reduce_converter_8cpp_source.html":[43,0,0,41,1,1,37],
@@ -239,15 +249,5 @@ var NAVTREEINDEX31 =
 "_training_module_8h.html":[43,0,2,4,2,0,10],
 "_training_module_8h_source.html":[43,0,2,4,2,0,10],
 "_training_onert_micro_8cpp.html":[43,0,2,4,2,5],
-"_training_onert_micro_8cpp_source.html":[43,0,2,4,2,5],
-"_training_onert_micro_8h.html":[43,0,2,4,0,0,6],
-"_training_onert_micro_8h_source.html":[43,0,2,4,0,0,6],
-"_training_settings_8h.html":[43,0,2,4,0,0,7],
-"_training_settings_8h_source.html":[43,0,2,4,0,0,7],
-"_transform_8cpp.html":[43,0,0,77,1,29],
-"_transform_8cpp.html#a7c22a2c41fa731f528d37349047f8c77":[43,0,0,77,1,29,0],
-"_transform_8cpp_source.html":[43,0,0,77,1,29],
-"_transform_8h.html":[43,0,0,77,1,30],
-"_transform_8h.html#a293c74c4843cde635205d03fde3302ba":[43,0,0,77,1,30,1],
-"_transform_8h.html#a7c22a2c41fa731f528d37349047f8c77":[43,0,0,77,1,30,2]
+"_training_onert_micro_8cpp_source.html":[43,0,2,4,2,5]
 };

@@ -369,7 +369,7 @@ var namespaces_dup =
       [ "testcases_dir", "namespaceinfer__testcases.html#a4952978a3ab596b5ce1ca96b641e30ab", null ]
     ] ],
     [ "inference_benchmark", "namespaceinference__benchmark.html", [
-      [ "benchmark_inference", "namespaceinference__benchmark.html#a1b1e7330826a69f6a5052abfba79d744", null ],
+      [ "benchmark_inference", "namespaceinference__benchmark.html#af11f543ec75ce78be722f17f96bf8aab", null ],
       [ "get_memory_usage_mb", "namespaceinference__benchmark.html#a9230bbbeba298957eb49c02ce2d53014", null ],
       [ "get_validated_input_tensorinfos", "namespaceinference__benchmark.html#afa30cd1d0b5d9676d2cd095e4988d1a9", null ],
       [ "main", "namespaceinference__benchmark.html#a89b1a96205c34e19ccbd95f1eca9bd85", null ],

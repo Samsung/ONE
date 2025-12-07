@@ -97,45 +97,47 @@ $(document).ready(function(){initNavTree('dynamic__shape__inference_8py_source.h
   <div class="headertitle"><div class="title">dynamic_shape_inference.py</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="dynamic__shape__inference_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespacedynamic__shape__inference.html">    1</a></span><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="keyword">import</span> random</div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="keyword">import</span> sys</div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">from</span> onert <span class="keyword">import</span> infer</div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="foldopen" id="foldopen00007" data-start="" data-end="">
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="namespacedynamic__shape__inference.html#aa4c392e16470aa1f631734eeb5a19a56">    7</a></span><span class="keyword">def </span><a class="code hl_function" href="circle-input-names_8cpp.html#a840291bc02cba5474a4cb46a9b9566fe">main</a>(nnpackage_path, backends=&quot;cpu&quot;):</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    <span class="comment"># Create session and load nnpackage</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    session = infer.session(nnpackage_path, backends)</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <span class="comment"># Prepare input. Here we just allocate dummy input arrays.</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    input_infos = session.get_inputs_tensorinfo()</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    <span class="comment"># Call infer() 10 times</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(10):</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>        dummy_inputs = []</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>        <span class="keywordflow">for</span> info <span class="keywordflow">in</span> input_infos:</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>            <span class="comment"># Retrieve the dimensions list from tensorinfo property.</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>            dims = list(info.dims)</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>            <span class="comment"># Replace -1 with a random value between 1 and 10</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>            dims = [random.randint(1, 10) <span class="keywordflow">if</span> d == -1 <span class="keywordflow">else</span> d <span class="keywordflow">for</span> d <span class="keywordflow">in</span> dims]</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>            <span class="comment"># Build the shape tuple from tensorinfo dimensions.</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>            shape = tuple(dims[:info.rank])</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>            <span class="comment"># Create a dummy numpy array filled with uniform random values in [0,1).</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>            dummy_inputs.append(</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>                np.random.uniform(low=0.0, high=1.0, size=shape).astype(info.dtype))</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>        outputs = session.infer(dummy_inputs)</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>        print(f<span class="stringliteral">&quot;Inference run {i+1}/10 completed.&quot;</span>)</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    print(f<span class="stringliteral">&quot;nnpackage {nnpackage_path.split(&#39;/&#39;)[-1]} runs successfully.&quot;</span>)</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keywordflow">return</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<a href="dynamic__shape__inference_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespacedynamic__shape__inference.html">    1</a></span><span class="comment">#!/usr/bin/env python3</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">import</span> random</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">import</span> sys</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">from</span> onert <span class="keyword">import</span> infer</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="foldopen" id="foldopen00009" data-start="" data-end="">
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="namespacedynamic__shape__inference.html#aa4c392e16470aa1f631734eeb5a19a56">    9</a></span><span class="keyword">def </span><a class="code hl_function" href="circle-input-names_8cpp.html#a840291bc02cba5474a4cb46a9b9566fe">main</a>(nnpackage_path, backends=&quot;cpu&quot;):</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    <span class="comment"># Create session and load nnpackage</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    session = infer.session(nnpackage_path, backends)</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <span class="comment"># Prepare input. Here we just allocate dummy input arrays.</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    input_infos = session.get_inputs_tensorinfo()</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="comment"># Call infer() 10 times</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(10):</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        dummy_inputs = []</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>        <span class="keywordflow">for</span> info <span class="keywordflow">in</span> input_infos:</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>            <span class="comment"># Retrieve the dimensions list from tensorinfo property.</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>            dims = list(info.dims)</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>            <span class="comment"># Replace -1 with a random value between 1 and 10</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>            dims = [random.randint(1, 10) <span class="keywordflow">if</span> d == -1 <span class="keywordflow">else</span> d <span class="keywordflow">for</span> d <span class="keywordflow">in</span> dims]</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>            <span class="comment"># Build the shape tuple from tensorinfo dimensions.</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>            shape = tuple(dims[:info.rank])</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>            <span class="comment"># Create a dummy numpy array filled with uniform random values in [0,1).</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>            dummy_inputs.append(</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>                np.random.uniform(low=0.0, high=1.0, size=shape).astype(info.dtype))</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        outputs = session.infer(dummy_inputs)</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        print(f<span class="stringliteral">&quot;Inference run {i+1}/10 completed.&quot;</span>)</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    print(f<span class="stringliteral">&quot;nnpackage {nnpackage_path.split(&#39;/&#39;)[-1]} runs successfully.&quot;</span>)</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordflow">return</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
 </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keywordflow">if</span> __name__ == <span class="stringliteral">&quot;__main__&quot;</span>:</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="namespacedynamic__shape__inference.html#a1626c53dd9ca4a28fc47c3eb6b61221a">   36</a></span>    argv = sys.argv[1:]</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <a class="code hl_function" href="circle-input-names_8cpp.html#a840291bc02cba5474a4cb46a9b9566fe">main</a>(*argv)</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="keywordflow">if</span> __name__ == <span class="stringliteral">&quot;__main__&quot;</span>:</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="namespacedynamic__shape__inference.html#a1626c53dd9ca4a28fc47c3eb6b61221a">   38</a></span>    argv = sys.argv[1:]</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <a class="code hl_function" href="circle-input-names_8cpp.html#a840291bc02cba5474a4cb46a9b9566fe">main</a>(*argv)</div>
 <div class="ttc" id="acircle-input-names_8cpp_html_a840291bc02cba5474a4cb46a9b9566fe"><div class="ttname"><a href="circle-input-names_8cpp.html#a840291bc02cba5474a4cb46a9b9566fe">main</a></div><div class="ttdeci">int main(void)</div><div class="ttdef"><b>Definition</b> <a href="circle-input-names_8cpp_source.html#l00170">circle-input-names.cpp:170</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

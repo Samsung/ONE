@@ -125,7 +125,7 @@ Public Member Functions</h2></td></tr>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a4dd7a12f901f6e35d530e9a71f592e28" id="r_a4dd7a12f901f6e35d530e9a71f592e28"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_i_permute_function.html#a4dd7a12f901f6e35d530e9a71f592e28">permute</a> (<a class="el" href="classonert_1_1backend_1_1_i_tensor.html">backend::ITensor</a> *<a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a5e402ec5119ad0ebf56f68815c047082">src_tensor</a>, <a class="el" href="classonert_1_1backend_1_1_i_tensor.html">backend::ITensor</a> *<a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#aa48a2b28b89b66b791e096eef57c83f1">dst_tensor</a>, size_t rank, std::vector&lt; size_t &gt; &amp;src_offsets, std::vector&lt; size_t &gt; &amp;dst_offsets, const <a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817a">ir::PermuteType</a> &amp;permute_type)</td></tr>
 <tr class="separator:a4dd7a12f901f6e35d530e9a71f592e28"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8174dbba1a0c5f449d891e5b31a6bfd4" id="r_a8174dbba1a0c5f449d891e5b31a6bfd4"><td class="memItemLeft" align="right" valign="top">const std::type_info &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_i_permute_function.html#a8174dbba1a0c5f449d891e5b31a6bfd4">underlying_type</a> (<a class="el" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331">ir::DataType</a> type) const</td></tr>
+<tr class="memitem:a8174dbba1a0c5f449d891e5b31a6bfd4" id="r_a8174dbba1a0c5f449d891e5b31a6bfd4"><td class="memItemLeft" align="right" valign="top">const std::type_info &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_i_permute_function.html#a8174dbba1a0c5f449d891e5b31a6bfd4">underlying_type</a> (<a class="el" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331">ir::DataType</a> <a class="el" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>) const</td></tr>
 <tr class="separator:a8174dbba1a0c5f449d891e5b31a6bfd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
@@ -378,7 +378,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_i_permute_function_8cc_source.html#l00288">288</a> of file <a class="el" href="_i_permute_function_8cc_source.html">IPermuteFunction.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  289</span>{</div>
-<div class="line"><span class="lineno">  290</span>  <span class="keywordflow">switch</span> (type)</div>
+<div class="line"><span class="lineno">  290</span>  <span class="keywordflow">switch</span> (<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</div>
 <div class="line"><span class="lineno">  291</span>  {</div>
 <div class="line"><span class="lineno">  292</span>    <span class="keywordflow">case</span> ir::DataType::FLOAT32:</div>
 <div class="line"><span class="lineno">  293</span>      <span class="keywordflow">return</span> <span class="keyword">typeid</span>(float);</div>
@@ -401,7 +401,10 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  310</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;IPermuteFunction: Not supported data type&quot;</span>);</div>
 <div class="line"><span class="lineno">  311</span>  }</div>
 <div class="line"><span class="lineno">  312</span>}</div>
+<div class="ttc" id="a_bulk_pipeline_buffer_8cc_html_a449e574ed6911881dc55507cb5635c2c"><div class="ttname"><a href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a></div><div class="ttdeci">int32_t type</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_buffer_8cc_source.html#l00000">BulkPipelineBuffer.cc:0</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="_bulk_pipeline_buffer_8cc_source.html#l00000">type</a>.</p>
+
 <p class="reference">Referenced by <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00040">onert::backend::builtin::kernel::PermuteLayer::optimize()</a>, <a class="el" href="_i_permute_function_8cc_source.html#l00238">permute()</a>, and <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00184">onert::backend::builtin::kernel::PermuteLayer::run()</a>.</p>
 
 </div>

@@ -137,7 +137,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af70ca7d36cd7cc0da77fd6145da505aa" id="r_af70ca7d36cd7cc0da77fd6145da505aa"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmir_1_1_tensor_type.html">TensorType</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmir_1_1_operation_1_1_output.html#af70ca7d36cd7cc0da77fd6145da505aa">getType</a> () const</td></tr>
 <tr class="memdesc:af70ca7d36cd7cc0da77fd6145da505aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the type of this output.  <br /></td></tr>
 <tr class="separator:af70ca7d36cd7cc0da77fd6145da505aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa888176ef345d125765a29196c73a476" id="r_aa888176ef345d125765a29196c73a476"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmir_1_1_operation_1_1_output.html#aa888176ef345d125765a29196c73a476">setType</a> (const <a class="el" href="classmir_1_1_tensor_type.html">TensorType</a> &amp;type)</td></tr>
+<tr class="memitem:aa888176ef345d125765a29196c73a476" id="r_aa888176ef345d125765a29196c73a476"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmir_1_1_operation_1_1_output.html#aa888176ef345d125765a29196c73a476">setType</a> (const <a class="el" href="classmir_1_1_tensor_type.html">TensorType</a> &amp;<a class="el" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</td></tr>
 <tr class="memdesc:aa888176ef345d125765a29196c73a476"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the type of this output.  <br /></td></tr>
 <tr class="separator:aa888176ef345d125765a29196c73a476"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a017dfff2bfe2b386f84fb83c67cdbbd8" id="r_a017dfff2bfe2b386f84fb83c67cdbbd8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemir.html#a07dec47866bd63b8e967cabdc82d39e3">DataType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmir_1_1_operation_1_1_output.html#a017dfff2bfe2b386f84fb83c67cdbbd8">getElementType</a> () const</td></tr>
@@ -799,9 +799,11 @@ Public Member Functions</h2></td></tr>
 <dl class="section warning"><dt>Warning</dt><dd>Use with caution, because it can make the IR inconsistent. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00095">95</a> of file <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html">Operation.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   95</span>{ _type = <a class="code hl_variable" href="namespaceinfer.html#ab89ed5258ead024638290064e52469c8">type</a>; }</div>
-<div class="ttc" id="anamespaceinfer_html_ab89ed5258ead024638290064e52469c8"><div class="ttname"><a href="namespaceinfer.html#ab89ed5258ead024638290064e52469c8">infer.type</a></div><div class="ttdeci">type</div><div class="ttdef"><b>Definition</b> <a href="infer_8py_source.html#l00018">infer.py:18</a></div></div>
+<div class="fragment"><div class="line"><span class="lineno">   95</span>{ _type = <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>; }</div>
+<div class="ttc" id="a_bulk_pipeline_buffer_8cc_html_a449e574ed6911881dc55507cb5635c2c"><div class="ttname"><a href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a></div><div class="ttdeci">int32_t type</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_buffer_8cc_source.html#l00000">BulkPipelineBuffer.cc:0</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="_bulk_pipeline_buffer_8cc_source.html#l00000">type</a>.</p>
+
 <p class="reference">Referenced by <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00172">mir::Operation::setOutputType()</a>, <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00108">setQuantization()</a>, and <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00102">setShape()</a>.</p>
 
 </div>

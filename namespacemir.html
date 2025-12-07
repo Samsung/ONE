@@ -187,7 +187,7 @@ Functions</h2></td></tr>
 <tr class="separator:abe91e4ac72a54cde2baa3105e7e8eccd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab238701619b208f13d696dcd5094aca0" id="r_ab238701619b208f13d696dcd5094aca0"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemir.html#ab238701619b208f13d696dcd5094aca0">toString</a> (<a class="el" href="namespacemir.html#a5cce564a10e4fe951db542fe06445970">DataFormat</a> data_format)</td></tr>
 <tr class="separator:ab238701619b208f13d696dcd5094aca0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a509da1eabb726e97044e48b8f8213ce4" id="r_a509da1eabb726e97044e48b8f8213ce4"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemir.html#a509da1eabb726e97044e48b8f8213ce4">getDataTypeSize</a> (<a class="el" href="namespacemir.html#a07dec47866bd63b8e967cabdc82d39e3">DataType</a> type)</td></tr>
+<tr class="memitem:a509da1eabb726e97044e48b8f8213ce4" id="r_a509da1eabb726e97044e48b8f8213ce4"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemir.html#a509da1eabb726e97044e48b8f8213ce4">getDataTypeSize</a> (<a class="el" href="namespacemir.html#a07dec47866bd63b8e967cabdc82d39e3">DataType</a> <a class="el" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</td></tr>
 <tr class="separator:a509da1eabb726e97044e48b8f8213ce4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf7f8fc0215983ba36a402319779e34e" id="r_aaf7f8fc0215983ba36a402319779e34e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classmir_1_1_operation.html">Operation</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemir.html#aaf7f8fc0215983ba36a402319779e34e">getSortedNodes</a> (<a class="el" href="classmir_1_1_graph.html">Graph</a> *graph)</td></tr>
 <tr class="memdesc:aaf7f8fc0215983ba36a402319779e34e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns nodes of the graph sorted topologically.  <br /></td></tr>
@@ -196,7 +196,7 @@ Functions</h2></td></tr>
 <tr class="separator:aab9b6221bd4daff739f879d0b0e941ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3acdf51459b8b2246d314b6fcd43b20" id="r_ab3acdf51459b8b2246d314b6fcd43b20"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemir.html#ab3acdf51459b8b2246d314b6fcd43b20">dumpGraph</a> (const <a class="el" href="classmir_1_1_graph.html">Graph</a> *graph, std::ostream &amp;stream)</td></tr>
 <tr class="separator:ab3acdf51459b8b2246d314b6fcd43b20"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19d1aaca482813f5c42a05137a6ce665" id="r_a19d1aaca482813f5c42a05137a6ce665"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemir.html#a19d1aaca482813f5c42a05137a6ce665">getTypeName</a> (Operation::Type type)</td></tr>
+<tr class="memitem:a19d1aaca482813f5c42a05137a6ce665" id="r_a19d1aaca482813f5c42a05137a6ce665"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemir.html#a19d1aaca482813f5c42a05137a6ce665">getTypeName</a> (Operation::Type <a class="el" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</td></tr>
 <tr class="separator:a19d1aaca482813f5c42a05137a6ce665"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9075d33378e0568bd7c08b0a248ac60" id="r_ab9075d33378e0568bd7c08b0a248ac60"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmir_1_1_shape.html">Shape</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemir.html#ab9075d33378e0568bd7c08b0a248ac60">broadcastShapes</a> (const <a class="el" href="classmir_1_1_shape.html">Shape</a> &amp;lhs_shape, const <a class="el" href="classmir_1_1_shape.html">Shape</a> &amp;rhs_shape)</td></tr>
 <tr class="separator:ab9075d33378e0568bd7c08b0a248ac60"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -570,7 +570,7 @@ Variables</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="compiler_2mir_2include_2mir_2_data_type_8h_source.html#l00036">36</a> of file <a class="el" href="compiler_2mir_2include_2mir_2_data_type_8h_source.html">DataType.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   37</span>{</div>
-<div class="line"><span class="lineno">   38</span>  <span class="keywordflow">switch</span> (type)</div>
+<div class="line"><span class="lineno">   38</span>  <span class="keywordflow">switch</span> (<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</div>
 <div class="line"><span class="lineno">   39</span>  {</div>
 <div class="line"><span class="lineno">   40</span>    <span class="keywordflow">case</span> DataType::FLOAT32:</div>
 <div class="line"><span class="lineno">   41</span>      <span class="keywordflow">return</span> <span class="keyword">sizeof</span>(float);</div>
@@ -587,7 +587,10 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">   52</span>      <span class="keywordflow">return</span> 0;</div>
 <div class="line"><span class="lineno">   53</span>  }</div>
 <div class="line"><span class="lineno">   54</span>}</div>
+<div class="ttc" id="a_bulk_pipeline_buffer_8cc_html_a449e574ed6911881dc55507cb5635c2c"><div class="ttname"><a href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a></div><div class="ttdeci">int32_t type</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_buffer_8cc_source.html#l00000">BulkPipelineBuffer.cc:0</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="_bulk_pipeline_buffer_8cc_source.html#l00000">type</a>.</p>
+
 <p class="reference">Referenced by <a class="el" href="src_2_tensor_variant_8cpp_source.html#l00023">mir::TensorVariant::TensorVariant()</a>.</p>
 
 </div>
@@ -681,7 +684,7 @@ Variables</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="src_2_operation_8cpp_source.html#l00071">71</a> of file <a class="el" href="src_2_operation_8cpp_source.html">Operation.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   72</span>{</div>
-<div class="line"><span class="lineno">   73</span>  <span class="keywordflow">switch</span> (type)</div>
+<div class="line"><span class="lineno">   73</span>  <span class="keywordflow">switch</span> (<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</div>
 <div class="line"><span class="lineno">   74</span>  {</div>
 <div class="line"><span class="lineno">   75</span><span class="preprocessor">#define HANDLE_OP(OpType, OpClass)          \</span></div>
 <div class="line"><span class="lineno">   76</span><span class="preprocessor">  case Operation::Type::OpType:             \</span></div>
@@ -696,6 +699,8 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">   85</span>}</div>
 <div class="ttc" id="a_operations_8inc_html"><div class="ttname"><a href="_operations_8inc.html">Operations.inc</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="_bulk_pipeline_buffer_8cc_source.html#l00000">type</a>.</p>
+
 <p class="reference">Referenced by <a class="el" href="_dot_node_builder_8cpp_source.html#l00038">mir::DotNodeBuilder::DotNodeBuilder()</a>.</p>
 
 </div>

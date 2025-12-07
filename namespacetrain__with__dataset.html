@@ -145,26 +145,26 @@ Args:
 Returns:
     object: An instance of the specified loss function.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="train__with__dataset_8py_source.html#l00054">54</a> of file <a class="el" href="train__with__dataset_8py_source.html">train_with_dataset.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   54</span><span class="keyword">def </span>createLoss(loss_type, reduction=&quot;mean&quot;):</div>
-<div class="line"><span class="lineno">   55</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   56</span><span class="stringliteral">    Create a loss function based on the specified type and reduction.</span></div>
-<div class="line"><span class="lineno">   57</span><span class="stringliteral">    Args:</span></div>
-<div class="line"><span class="lineno">   58</span><span class="stringliteral">        loss_type (str): The type of loss function (&#39;mse&#39;, &#39;cce&#39;).</span></div>
-<div class="line"><span class="lineno">   59</span><span class="stringliteral">        reduction (str): Reduction type (&#39;mean&#39;, &#39;sum&#39;).</span></div>
-<div class="line"><span class="lineno">   60</span><span class="stringliteral">    Returns:</span></div>
-<div class="line"><span class="lineno">   61</span><span class="stringliteral">        object: An instance of the specified loss function.</span></div>
-<div class="line"><span class="lineno">   62</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   63</span>    <span class="keywordflow">if</span> loss_type.lower() == <span class="stringliteral">&quot;mse&quot;</span>:</div>
-<div class="line"><span class="lineno">   64</span>        <span class="keywordflow">return</span> losses.MeanSquaredError(reduction=reduction)</div>
-<div class="line"><span class="lineno">   65</span>    <span class="keywordflow">elif</span> loss_type.lower() == <span class="stringliteral">&quot;cce&quot;</span>:</div>
-<div class="line"><span class="lineno">   66</span>        <span class="keywordflow">return</span> losses.CategoricalCrossentropy(reduction=reduction)</div>
-<div class="line"><span class="lineno">   67</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   68</span>        <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;Unknown loss type: {loss_type}&quot;</span>)</div>
-<div class="line"><span class="lineno">   69</span> </div>
-<div class="line"><span class="lineno">   70</span> </div>
+<p class="definition">Definition at line <a class="el" href="train__with__dataset_8py_source.html#l00056">56</a> of file <a class="el" href="train__with__dataset_8py_source.html">train_with_dataset.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   56</span><span class="keyword">def </span>createLoss(loss_type, reduction=&quot;mean&quot;):</div>
+<div class="line"><span class="lineno">   57</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   58</span><span class="stringliteral">    Create a loss function based on the specified type and reduction.</span></div>
+<div class="line"><span class="lineno">   59</span><span class="stringliteral">    Args:</span></div>
+<div class="line"><span class="lineno">   60</span><span class="stringliteral">        loss_type (str): The type of loss function (&#39;mse&#39;, &#39;cce&#39;).</span></div>
+<div class="line"><span class="lineno">   61</span><span class="stringliteral">        reduction (str): Reduction type (&#39;mean&#39;, &#39;sum&#39;).</span></div>
+<div class="line"><span class="lineno">   62</span><span class="stringliteral">    Returns:</span></div>
+<div class="line"><span class="lineno">   63</span><span class="stringliteral">        object: An instance of the specified loss function.</span></div>
+<div class="line"><span class="lineno">   64</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   65</span>    <span class="keywordflow">if</span> loss_type.lower() == <span class="stringliteral">&quot;mse&quot;</span>:</div>
+<div class="line"><span class="lineno">   66</span>        <span class="keywordflow">return</span> losses.MeanSquaredError(reduction=reduction)</div>
+<div class="line"><span class="lineno">   67</span>    <span class="keywordflow">elif</span> loss_type.lower() == <span class="stringliteral">&quot;cce&quot;</span>:</div>
+<div class="line"><span class="lineno">   68</span>        <span class="keywordflow">return</span> losses.CategoricalCrossentropy(reduction=reduction)</div>
+<div class="line"><span class="lineno">   69</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   70</span>        <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;Unknown loss type: {loss_type}&quot;</span>)</div>
+<div class="line"><span class="lineno">   71</span> </div>
+<div class="line"><span class="lineno">   72</span> </div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="train__with__dataset_8py_source.html#l00071">train()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="train__with__dataset_8py_source.html#l00073">train()</a>.</p>
 
 </div>
 </div>
@@ -207,27 +207,27 @@ Args:
 Returns:
     Optimizer: The created optimizer instance.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="train__with__dataset_8py_source.html#l00036">36</a> of file <a class="el" href="train__with__dataset_8py_source.html">train_with_dataset.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   36</span><span class="keyword">def </span>createOptimizer(optimizer_type, learning_rate=0.001, **kwargs):</div>
-<div class="line"><span class="lineno">   37</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   38</span><span class="stringliteral">    Create an optimizer based on the specified type.</span></div>
-<div class="line"><span class="lineno">   39</span><span class="stringliteral">    Args:</span></div>
-<div class="line"><span class="lineno">   40</span><span class="stringliteral">        optimizer_type (str): The type of optimizer (&#39;SGD&#39; or &#39;Adam&#39;).</span></div>
-<div class="line"><span class="lineno">   41</span><span class="stringliteral">        learning_rate (float): The learning rate for the optimizer.</span></div>
-<div class="line"><span class="lineno">   42</span><span class="stringliteral">        **kwargs: Additional parameters for the optimizer.</span></div>
-<div class="line"><span class="lineno">   43</span><span class="stringliteral">    Returns:</span></div>
-<div class="line"><span class="lineno">   44</span><span class="stringliteral">        Optimizer: The created optimizer instance.</span></div>
-<div class="line"><span class="lineno">   45</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   46</span>    <span class="keywordflow">if</span> optimizer_type.lower() == <span class="stringliteral">&quot;sgd&quot;</span>:</div>
-<div class="line"><span class="lineno">   47</span>        <span class="keywordflow">return</span> optimizer.SGD(learning_rate=learning_rate, **kwargs)</div>
-<div class="line"><span class="lineno">   48</span>    <span class="keywordflow">elif</span> optimizer_type.lower() == <span class="stringliteral">&quot;adam&quot;</span>:</div>
-<div class="line"><span class="lineno">   49</span>        <span class="keywordflow">return</span> optimizer.Adam(learning_rate=learning_rate, **kwargs)</div>
-<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   51</span>        <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;Unknown optimizer type: {optimizer_type}&quot;</span>)</div>
-<div class="line"><span class="lineno">   52</span> </div>
-<div class="line"><span class="lineno">   53</span> </div>
+<p class="definition">Definition at line <a class="el" href="train__with__dataset_8py_source.html#l00038">38</a> of file <a class="el" href="train__with__dataset_8py_source.html">train_with_dataset.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   38</span><span class="keyword">def </span>createOptimizer(optimizer_type, learning_rate=0.001, **kwargs):</div>
+<div class="line"><span class="lineno">   39</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   40</span><span class="stringliteral">    Create an optimizer based on the specified type.</span></div>
+<div class="line"><span class="lineno">   41</span><span class="stringliteral">    Args:</span></div>
+<div class="line"><span class="lineno">   42</span><span class="stringliteral">        optimizer_type (str): The type of optimizer (&#39;SGD&#39; or &#39;Adam&#39;).</span></div>
+<div class="line"><span class="lineno">   43</span><span class="stringliteral">        learning_rate (float): The learning rate for the optimizer.</span></div>
+<div class="line"><span class="lineno">   44</span><span class="stringliteral">        **kwargs: Additional parameters for the optimizer.</span></div>
+<div class="line"><span class="lineno">   45</span><span class="stringliteral">    Returns:</span></div>
+<div class="line"><span class="lineno">   46</span><span class="stringliteral">        Optimizer: The created optimizer instance.</span></div>
+<div class="line"><span class="lineno">   47</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   48</span>    <span class="keywordflow">if</span> optimizer_type.lower() == <span class="stringliteral">&quot;sgd&quot;</span>:</div>
+<div class="line"><span class="lineno">   49</span>        <span class="keywordflow">return</span> optimizer.SGD(learning_rate=learning_rate, **kwargs)</div>
+<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">elif</span> optimizer_type.lower() == <span class="stringliteral">&quot;adam&quot;</span>:</div>
+<div class="line"><span class="lineno">   51</span>        <span class="keywordflow">return</span> optimizer.Adam(learning_rate=learning_rate, **kwargs)</div>
+<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   53</span>        <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;Unknown optimizer type: {optimizer_type}&quot;</span>)</div>
+<div class="line"><span class="lineno">   54</span> </div>
+<div class="line"><span class="lineno">   55</span> </div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="train__with__dataset_8py_source.html#l00071">train()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="train__with__dataset_8py_source.html#l00073">train()</a>.</p>
 
 </div>
 </div>
@@ -246,38 +246,38 @@ Returns:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train__with__dataset_8py_source.html#l00005">5</a> of file <a class="el" href="train__with__dataset_8py_source.html">train_with_dataset.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    5</span><span class="keyword">def </span>initParse():</div>
-<div class="line"><span class="lineno">    6</span>    parser = argparse.ArgumentParser()</div>
-<div class="line"><span class="lineno">    7</span>    parser.add_argument(<span class="stringliteral">&#39;-m&#39;</span>,</div>
-<div class="line"><span class="lineno">    8</span>                        <span class="stringliteral">&#39;--nnpkg&#39;</span>,</div>
-<div class="line"><span class="lineno">    9</span>                        required=<span class="keyword">True</span>,</div>
-<div class="line"><span class="lineno">   10</span>                        help=<span class="stringliteral">&#39;Path to the nnpackage file or directory&#39;</span>)</div>
-<div class="line"><span class="lineno">   11</span>    parser.add_argument(<span class="stringliteral">&#39;-i&#39;</span>,</div>
-<div class="line"><span class="lineno">   12</span>                        <span class="stringliteral">&#39;--input&#39;</span>,</div>
-<div class="line"><span class="lineno">   13</span>                        required=<span class="keyword">True</span>,</div>
-<div class="line"><span class="lineno">   14</span>                        help=<span class="stringliteral">&#39;Path to the file containing input data (e.g., .npy or raw)&#39;</span>)</div>
-<div class="line"><span class="lineno">   15</span>    parser.add_argument(</div>
-<div class="line"><span class="lineno">   16</span>        <span class="stringliteral">&#39;-l&#39;</span>,</div>
-<div class="line"><span class="lineno">   17</span>        <span class="stringliteral">&#39;--label&#39;</span>,</div>
-<div class="line"><span class="lineno">   18</span>        required=<span class="keyword">True</span>,</div>
-<div class="line"><span class="lineno">   19</span>        help=<span class="stringliteral">&#39;Path to the file containing label data (e.g., .npy or raw).&#39;</span>)</div>
-<div class="line"><span class="lineno">   20</span>    parser.add_argument(<span class="stringliteral">&#39;--data_length&#39;</span>, required=<span class="keyword">True</span>, type=int, help=<span class="stringliteral">&#39;data length&#39;</span>)</div>
-<div class="line"><span class="lineno">   21</span>    parser.add_argument(<span class="stringliteral">&#39;--backends&#39;</span>, default=<span class="stringliteral">&#39;train&#39;</span>, help=<span class="stringliteral">&#39;Backends to use&#39;</span>)</div>
-<div class="line"><span class="lineno">   22</span>    parser.add_argument(<span class="stringliteral">&#39;--batch_size&#39;</span>, default=16, type=int, help=<span class="stringliteral">&#39;batch size&#39;</span>)</div>
-<div class="line"><span class="lineno">   23</span>    parser.add_argument(<span class="stringliteral">&#39;--epoch&#39;</span>, default=5, type=int, help=<span class="stringliteral">&#39;epoch number&#39;</span>)</div>
-<div class="line"><span class="lineno">   24</span>    parser.add_argument(<span class="stringliteral">&#39;--learning_rate&#39;</span>, default=0.01, type=float, help=<span class="stringliteral">&#39;learning rate&#39;</span>)</div>
-<div class="line"><span class="lineno">   25</span>    parser.add_argument(<span class="stringliteral">&#39;--loss&#39;</span>, default=<span class="stringliteral">&#39;mse&#39;</span>, choices=[<span class="stringliteral">&#39;mse&#39;</span>, <span class="stringliteral">&#39;cce&#39;</span>])</div>
-<div class="line"><span class="lineno">   26</span>    parser.add_argument(<span class="stringliteral">&#39;--optimizer&#39;</span>, default=<span class="stringliteral">&#39;sgd&#39;</span>, choices=[<span class="stringliteral">&#39;sgd&#39;</span>, <span class="stringliteral">&#39;adam&#39;</span>])</div>
-<div class="line"><span class="lineno">   27</span>    parser.add_argument(<span class="stringliteral">&#39;--loss_reduction_type&#39;</span>, default=<span class="stringliteral">&#39;mean&#39;</span>, choices=[<span class="stringliteral">&#39;mean&#39;</span>, <span class="stringliteral">&#39;sum&#39;</span>])</div>
-<div class="line"><span class="lineno">   28</span>    parser.add_argument(<span class="stringliteral">&#39;--validation_split&#39;</span>,</div>
-<div class="line"><span class="lineno">   29</span>                        default=0.0,</div>
-<div class="line"><span class="lineno">   30</span>                        type=float,</div>
-<div class="line"><span class="lineno">   31</span>                        help=<span class="stringliteral">&#39;validation split rate&#39;</span>)</div>
-<div class="line"><span class="lineno">   32</span> </div>
-<div class="line"><span class="lineno">   33</span>    <span class="keywordflow">return</span> parser.parse_args()</div>
+<p class="definition">Definition at line <a class="el" href="train__with__dataset_8py_source.html#l00007">7</a> of file <a class="el" href="train__with__dataset_8py_source.html">train_with_dataset.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">    7</span><span class="keyword">def </span>initParse():</div>
+<div class="line"><span class="lineno">    8</span>    parser = argparse.ArgumentParser()</div>
+<div class="line"><span class="lineno">    9</span>    parser.add_argument(<span class="stringliteral">&#39;-m&#39;</span>,</div>
+<div class="line"><span class="lineno">   10</span>                        <span class="stringliteral">&#39;--nnpkg&#39;</span>,</div>
+<div class="line"><span class="lineno">   11</span>                        required=<span class="keyword">True</span>,</div>
+<div class="line"><span class="lineno">   12</span>                        help=<span class="stringliteral">&#39;Path to the nnpackage file or directory&#39;</span>)</div>
+<div class="line"><span class="lineno">   13</span>    parser.add_argument(<span class="stringliteral">&#39;-i&#39;</span>,</div>
+<div class="line"><span class="lineno">   14</span>                        <span class="stringliteral">&#39;--input&#39;</span>,</div>
+<div class="line"><span class="lineno">   15</span>                        required=<span class="keyword">True</span>,</div>
+<div class="line"><span class="lineno">   16</span>                        help=<span class="stringliteral">&#39;Path to the file containing input data (e.g., .npy or raw)&#39;</span>)</div>
+<div class="line"><span class="lineno">   17</span>    parser.add_argument(</div>
+<div class="line"><span class="lineno">   18</span>        <span class="stringliteral">&#39;-l&#39;</span>,</div>
+<div class="line"><span class="lineno">   19</span>        <span class="stringliteral">&#39;--label&#39;</span>,</div>
+<div class="line"><span class="lineno">   20</span>        required=<span class="keyword">True</span>,</div>
+<div class="line"><span class="lineno">   21</span>        help=<span class="stringliteral">&#39;Path to the file containing label data (e.g., .npy or raw).&#39;</span>)</div>
+<div class="line"><span class="lineno">   22</span>    parser.add_argument(<span class="stringliteral">&#39;--data_length&#39;</span>, required=<span class="keyword">True</span>, type=int, help=<span class="stringliteral">&#39;data length&#39;</span>)</div>
+<div class="line"><span class="lineno">   23</span>    parser.add_argument(<span class="stringliteral">&#39;--backends&#39;</span>, default=<span class="stringliteral">&#39;train&#39;</span>, help=<span class="stringliteral">&#39;Backends to use&#39;</span>)</div>
+<div class="line"><span class="lineno">   24</span>    parser.add_argument(<span class="stringliteral">&#39;--batch_size&#39;</span>, default=16, type=int, help=<span class="stringliteral">&#39;batch size&#39;</span>)</div>
+<div class="line"><span class="lineno">   25</span>    parser.add_argument(<span class="stringliteral">&#39;--epoch&#39;</span>, default=5, type=int, help=<span class="stringliteral">&#39;epoch number&#39;</span>)</div>
+<div class="line"><span class="lineno">   26</span>    parser.add_argument(<span class="stringliteral">&#39;--learning_rate&#39;</span>, default=0.01, type=float, help=<span class="stringliteral">&#39;learning rate&#39;</span>)</div>
+<div class="line"><span class="lineno">   27</span>    parser.add_argument(<span class="stringliteral">&#39;--loss&#39;</span>, default=<span class="stringliteral">&#39;mse&#39;</span>, choices=[<span class="stringliteral">&#39;mse&#39;</span>, <span class="stringliteral">&#39;cce&#39;</span>])</div>
+<div class="line"><span class="lineno">   28</span>    parser.add_argument(<span class="stringliteral">&#39;--optimizer&#39;</span>, default=<span class="stringliteral">&#39;sgd&#39;</span>, choices=[<span class="stringliteral">&#39;sgd&#39;</span>, <span class="stringliteral">&#39;adam&#39;</span>])</div>
+<div class="line"><span class="lineno">   29</span>    parser.add_argument(<span class="stringliteral">&#39;--loss_reduction_type&#39;</span>, default=<span class="stringliteral">&#39;mean&#39;</span>, choices=[<span class="stringliteral">&#39;mean&#39;</span>, <span class="stringliteral">&#39;sum&#39;</span>])</div>
+<div class="line"><span class="lineno">   30</span>    parser.add_argument(<span class="stringliteral">&#39;--validation_split&#39;</span>,</div>
+<div class="line"><span class="lineno">   31</span>                        default=0.0,</div>
+<div class="line"><span class="lineno">   32</span>                        type=float,</div>
+<div class="line"><span class="lineno">   33</span>                        help=<span class="stringliteral">&#39;validation split rate&#39;</span>)</div>
 <div class="line"><span class="lineno">   34</span> </div>
-<div class="line"><span class="lineno">   35</span> </div>
+<div class="line"><span class="lineno">   35</span>    <span class="keywordflow">return</span> parser.parse_args()</div>
+<div class="line"><span class="lineno">   36</span> </div>
+<div class="line"><span class="lineno">   37</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -298,60 +298,60 @@ Returns:
 </div><div class="memdoc">
 <pre class="fragment">Main function to train the model.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="train__with__dataset_8py_source.html#l00071">71</a> of file <a class="el" href="train__with__dataset_8py_source.html">train_with_dataset.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   71</span><span class="keyword">def </span>train(args):</div>
-<div class="line"><span class="lineno">   72</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   73</span><span class="stringliteral">    Main function to train the model.</span></div>
-<div class="line"><span class="lineno">   74</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   75</span>    <span class="comment"># Create session and load nnpackage</span></div>
-<div class="line"><span class="lineno">   76</span>    sess = session(args.nnpkg, args.backends)</div>
-<div class="line"><span class="lineno">   77</span> </div>
-<div class="line"><span class="lineno">   78</span>    <span class="comment"># Load data</span></div>
-<div class="line"><span class="lineno">   79</span>    input_shape = sess.input_tensorinfo(0).dims</div>
-<div class="line"><span class="lineno">   80</span>    label_shape = sess.output_tensorinfo(0).dims</div>
-<div class="line"><span class="lineno">   81</span> </div>
-<div class="line"><span class="lineno">   82</span>    input_shape[0] = args.data_length</div>
-<div class="line"><span class="lineno">   83</span>    label_shape[0] = args.data_length</div>
-<div class="line"><span class="lineno">   84</span> </div>
-<div class="line"><span class="lineno">   85</span>    data_loader = DataLoader(args.input,</div>
-<div class="line"><span class="lineno">   86</span>                             args.label,</div>
-<div class="line"><span class="lineno">   87</span>                             args.batch_size,</div>
-<div class="line"><span class="lineno">   88</span>                             input_shape=input_shape,</div>
-<div class="line"><span class="lineno">   89</span>                             expected_shape=label_shape)</div>
-<div class="line"><span class="lineno">   90</span>    print(<span class="stringliteral">&#39;Load data&#39;</span>)</div>
-<div class="line"><span class="lineno">   91</span> </div>
-<div class="line"><span class="lineno">   92</span>    <span class="comment"># optimizer</span></div>
-<div class="line"><span class="lineno">   93</span>    opt_fn = createOptimizer(args.optimizer, args.learning_rate)</div>
-<div class="line"><span class="lineno">   94</span> </div>
-<div class="line"><span class="lineno">   95</span>    <span class="comment"># loss</span></div>
-<div class="line"><span class="lineno">   96</span>    loss_fn = createLoss(args.loss, reduction=args.loss_reduction_type)</div>
-<div class="line"><span class="lineno">   97</span> </div>
-<div class="line"><span class="lineno">   98</span>    sess.compile(optimizer=opt_fn,</div>
-<div class="line"><span class="lineno">   99</span>                 loss=loss_fn,</div>
-<div class="line"><span class="lineno">  100</span>                 batch_size=args.batch_size,</div>
-<div class="line"><span class="lineno">  101</span>                 metrics=[metrics.CategoricalAccuracy()])</div>
-<div class="line"><span class="lineno">  102</span> </div>
-<div class="line"><span class="lineno">  103</span>    <span class="comment"># Train model</span></div>
-<div class="line"><span class="lineno">  104</span>    total_time = sess.train(data_loader,</div>
-<div class="line"><span class="lineno">  105</span>                            epochs=args.epoch,</div>
-<div class="line"><span class="lineno">  106</span>                            validation_split=args.validation_split,</div>
-<div class="line"><span class="lineno">  107</span>                            checkpoint_path=<span class="stringliteral">&quot;checkpoint.ckpt&quot;</span>)</div>
-<div class="line"><span class="lineno">  108</span> </div>
-<div class="line"><span class="lineno">  109</span>    <span class="comment"># Print timing summary</span></div>
-<div class="line"><span class="lineno">  110</span>    print(<span class="stringliteral">&quot;=&quot;</span> * 35)</div>
-<div class="line"><span class="lineno">  111</span>    print(f<span class="stringliteral">&quot;MODEL_LOAD   takes {total_time[&#39;MODEL_LOAD&#39;]:.4f} ms&quot;</span>)</div>
-<div class="line"><span class="lineno">  112</span>    print(f<span class="stringliteral">&quot;COMPILE      takes {total_time[&#39;COMPILE&#39;]:.4f} ms&quot;</span>)</div>
-<div class="line"><span class="lineno">  113</span>    print(f<span class="stringliteral">&quot;EXECUTE      takes {total_time[&#39;EXECUTE&#39;]:.4f} ms&quot;</span>)</div>
-<div class="line"><span class="lineno">  114</span>    epoch_times = total_time[<span class="stringliteral">&#39;EPOCH_TIMES&#39;</span>]</div>
-<div class="line"><span class="lineno">  115</span>    <span class="keywordflow">for</span> i, epoch_time <span class="keywordflow">in</span> enumerate(epoch_times):</div>
-<div class="line"><span class="lineno">  116</span>        print(f<span class="stringliteral">&quot;- Epoch {i + 1}      takes {epoch_time:.4f} ms&quot;</span>)</div>
-<div class="line"><span class="lineno">  117</span>    print(<span class="stringliteral">&quot;=&quot;</span> * 35)</div>
-<div class="line"><span class="lineno">  118</span> </div>
-<div class="line"><span class="lineno">  119</span>    print(f<span class="stringliteral">&quot;nnpackage {args.nnpkg.split(&#39;/&#39;)[-1]} trains successfully.&quot;</span>)</div>
+<p class="definition">Definition at line <a class="el" href="train__with__dataset_8py_source.html#l00073">73</a> of file <a class="el" href="train__with__dataset_8py_source.html">train_with_dataset.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   73</span><span class="keyword">def </span>train(args):</div>
+<div class="line"><span class="lineno">   74</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   75</span><span class="stringliteral">    Main function to train the model.</span></div>
+<div class="line"><span class="lineno">   76</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   77</span>    <span class="comment"># Create session and load nnpackage</span></div>
+<div class="line"><span class="lineno">   78</span>    sess = session(args.nnpkg, args.backends)</div>
+<div class="line"><span class="lineno">   79</span> </div>
+<div class="line"><span class="lineno">   80</span>    <span class="comment"># Load data</span></div>
+<div class="line"><span class="lineno">   81</span>    input_shape = sess.input_tensorinfo(0).dims</div>
+<div class="line"><span class="lineno">   82</span>    label_shape = sess.output_tensorinfo(0).dims</div>
+<div class="line"><span class="lineno">   83</span> </div>
+<div class="line"><span class="lineno">   84</span>    input_shape[0] = args.data_length</div>
+<div class="line"><span class="lineno">   85</span>    label_shape[0] = args.data_length</div>
+<div class="line"><span class="lineno">   86</span> </div>
+<div class="line"><span class="lineno">   87</span>    data_loader = DataLoader(args.input,</div>
+<div class="line"><span class="lineno">   88</span>                             args.label,</div>
+<div class="line"><span class="lineno">   89</span>                             args.batch_size,</div>
+<div class="line"><span class="lineno">   90</span>                             input_shape=input_shape,</div>
+<div class="line"><span class="lineno">   91</span>                             expected_shape=label_shape)</div>
+<div class="line"><span class="lineno">   92</span>    print(<span class="stringliteral">&#39;Load data&#39;</span>)</div>
+<div class="line"><span class="lineno">   93</span> </div>
+<div class="line"><span class="lineno">   94</span>    <span class="comment"># optimizer</span></div>
+<div class="line"><span class="lineno">   95</span>    opt_fn = createOptimizer(args.optimizer, args.learning_rate)</div>
+<div class="line"><span class="lineno">   96</span> </div>
+<div class="line"><span class="lineno">   97</span>    <span class="comment"># loss</span></div>
+<div class="line"><span class="lineno">   98</span>    loss_fn = createLoss(args.loss, reduction=args.loss_reduction_type)</div>
+<div class="line"><span class="lineno">   99</span> </div>
+<div class="line"><span class="lineno">  100</span>    sess.compile(optimizer=opt_fn,</div>
+<div class="line"><span class="lineno">  101</span>                 loss=loss_fn,</div>
+<div class="line"><span class="lineno">  102</span>                 batch_size=args.batch_size,</div>
+<div class="line"><span class="lineno">  103</span>                 metrics=[metrics.CategoricalAccuracy()])</div>
+<div class="line"><span class="lineno">  104</span> </div>
+<div class="line"><span class="lineno">  105</span>    <span class="comment"># Train model</span></div>
+<div class="line"><span class="lineno">  106</span>    total_time = sess.train(data_loader,</div>
+<div class="line"><span class="lineno">  107</span>                            epochs=args.epoch,</div>
+<div class="line"><span class="lineno">  108</span>                            validation_split=args.validation_split,</div>
+<div class="line"><span class="lineno">  109</span>                            checkpoint_path=<span class="stringliteral">&quot;checkpoint.ckpt&quot;</span>)</div>
+<div class="line"><span class="lineno">  110</span> </div>
+<div class="line"><span class="lineno">  111</span>    <span class="comment"># Print timing summary</span></div>
+<div class="line"><span class="lineno">  112</span>    print(<span class="stringliteral">&quot;=&quot;</span> * 35)</div>
+<div class="line"><span class="lineno">  113</span>    print(f<span class="stringliteral">&quot;MODEL_LOAD   takes {total_time[&#39;MODEL_LOAD&#39;]:.4f} ms&quot;</span>)</div>
+<div class="line"><span class="lineno">  114</span>    print(f<span class="stringliteral">&quot;COMPILE      takes {total_time[&#39;COMPILE&#39;]:.4f} ms&quot;</span>)</div>
+<div class="line"><span class="lineno">  115</span>    print(f<span class="stringliteral">&quot;EXECUTE      takes {total_time[&#39;EXECUTE&#39;]:.4f} ms&quot;</span>)</div>
+<div class="line"><span class="lineno">  116</span>    epoch_times = total_time[<span class="stringliteral">&#39;EPOCH_TIMES&#39;</span>]</div>
+<div class="line"><span class="lineno">  117</span>    <span class="keywordflow">for</span> i, epoch_time <span class="keywordflow">in</span> enumerate(epoch_times):</div>
+<div class="line"><span class="lineno">  118</span>        print(f<span class="stringliteral">&quot;- Epoch {i + 1}      takes {epoch_time:.4f} ms&quot;</span>)</div>
+<div class="line"><span class="lineno">  119</span>    print(<span class="stringliteral">&quot;=&quot;</span> * 35)</div>
 <div class="line"><span class="lineno">  120</span> </div>
-<div class="line"><span class="lineno">  121</span> </div>
+<div class="line"><span class="lineno">  121</span>    print(f<span class="stringliteral">&quot;nnpackage {args.nnpkg.split(&#39;/&#39;)[-1]} trains successfully.&quot;</span>)</div>
+<div class="line"><span class="lineno">  122</span> </div>
+<div class="line"><span class="lineno">  123</span> </div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="train__with__dataset_8py_source.html#l00054">createLoss()</a>, and <a class="el" href="train__with__dataset_8py_source.html#l00036">createOptimizer()</a>.</p>
+<p class="reference">References <a class="el" href="train__with__dataset_8py_source.html#l00056">createLoss()</a>, and <a class="el" href="train__with__dataset_8py_source.html#l00038">createOptimizer()</a>.</p>
 
 </div>
 </div>
@@ -368,7 +368,7 @@ Returns:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train__with__dataset_8py_source.html#l00123">123</a> of file <a class="el" href="train__with__dataset_8py_source.html">train_with_dataset.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="train__with__dataset_8py_source.html#l00125">125</a> of file <a class="el" href="train__with__dataset_8py_source.html">train_with_dataset.py</a>.</p>
 
 </div>
 </div>

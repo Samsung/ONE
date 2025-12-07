@@ -1,5 +1,15 @@
 var NAVTREEINDEX21 =
 {
+"_optimizations_8cpp.html":[43,0,0,38,1,1,4,32],
+"_optimizations_8cpp.html#a3ec5886b4893e8f1a13f7d13b22f5abc":[43,0,0,38,1,1,4,32,1],
+"_optimizations_8cpp.html#ab3cc83e6040b60f16d1cd9e5a61eb0be":[43,0,0,38,1,1,4,32,0],
+"_optimizations_8cpp_source.html":[43,0,0,38,1,1,4,32],
+"_optimizations_8h.html":[43,0,0,38,1,1,4,33],
+"_optimizations_8h.html#a3ec5886b4893e8f1a13f7d13b22f5abc":[43,0,0,38,1,1,4,33,2],
+"_optimizations_8h.html#ab3cc83e6040b60f16d1cd9e5a61eb0be":[43,0,0,38,1,1,4,33,1],
+"_optimizations_8h_source.html":[43,0,0,38,1,1,4,33],
+"_optimized_utils_8h.html":[43,0,3,0,1,0,0,3,1,7],
+"_optimized_utils_8h.html#a3faac8ad96bfaec0b409322c20a42230":[43,0,3,0,1,0,0,3,1,7,2],
 "_optimized_utils_8h.html#a403e08d865d6f45ba561998b93304d57":[43,0,3,0,1,0,0,3,1,7,0],
 "_optimized_utils_8h.html#a94dc0ed7df7b941c9a6f0b67a1155e51":[43,0,3,0,1,0,0,3,1,7,3],
 "_optimized_utils_8h.html#ac7c3ecad381acad6f04dbc55ed5f750e":[43,0,3,0,1,0,0,3,1,7,1],
@@ -239,15 +249,5 @@ var NAVTREEINDEX21 =
 "_p_config_8h.html#af18033eec632ea32c753731b0b430106":[43,0,0,32,0,0,0,3],
 "_p_config_8h_source.html":[43,0,0,32,0,0,0],
 "_p_config_ini_8cpp.html":[43,0,0,32,1,1],
-"_p_config_ini_8cpp.html#a0ae03a45a18934e27b566f921b83a608":[43,0,0,32,1,1,0],
-"_p_config_ini_8cpp.html#a0ed5ffd0f2f236e712fc7c28ae9e77b5":[43,0,0,32,1,1,5],
-"_p_config_ini_8cpp.html#a1adaf4bc2fc59106841cab3e3ab31753":[43,0,0,32,1,1,3],
-"_p_config_ini_8cpp.html#a8d77c71410fe54e57624a20ece9ec2f4":[43,0,0,32,1,1,4],
-"_p_config_ini_8cpp.html#a97bc5b58ba6787d57c4fa91965d9e794":[43,0,0,32,1,1,1],
-"_p_config_ini_8cpp.html#ae90c48db60e66a440cfa66322f0bb42c":[43,0,0,32,1,1,2],
-"_p_config_ini_8cpp_source.html":[43,0,0,32,1,1],
-"_p_config_ini_8h.html":[43,0,0,32,0,0,1],
-"_p_config_ini_8h.html#a0ae03a45a18934e27b566f921b83a608":[43,0,0,32,0,0,1,3],
-"_p_config_ini_8h.html#a0ed5ffd0f2f236e712fc7c28ae9e77b5":[43,0,0,32,0,0,1,8],
-"_p_config_ini_8h.html#a1adaf4bc2fc59106841cab3e3ab31753":[43,0,0,32,0,0,1,6]
+"_p_config_ini_8cpp.html#a0ae03a45a18934e27b566f921b83a608":[43,0,0,32,1,1,0]
 };

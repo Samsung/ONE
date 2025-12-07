@@ -344,8 +344,8 @@ $(document).ready(function(){initNavTree('_sparsity_format_converter_8cpp_source
 <div class="foldopen" id="foldopen00237" data-start="{" data-end="}">
 <div class="line"><a id="l00237" name="l00237"></a><span class="lineno"><a class="line" href="namespaceluci.html#a394c597a34528788e4fcb8eda135c808">  237</a></span><a class="code hl_struct" href="structsparsity_1_1_tf_lite_int_array.html">sparsity::TfLiteIntArray</a> *<a class="code hl_function" href="namespaceluci.html#ab55bc17df3c225df15fbc8800c4b3652">to_tflite_sparsity</a>(<span class="keyword">const</span> <a class="code hl_class" href="classluci_1_1_sparse_index_vector.html">luci::SparseIndexVector</a> &amp;data)</div>
 <div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>{</div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>  <span class="keyword">auto</span> type = data.type();</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>  <span class="keywordflow">switch</span> (type)</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a> = data.type();</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>  <span class="keywordflow">switch</span> (<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</div>
 <div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>  {</div>
 <div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceluci.html#aa97d351a90b9ad93b0b192878b9f95bca42e7d6ad1f87c7aeeb92b7259da47494">luci::SparseIndexVectorType::NONE</a>:</div>
 <div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>    {</div>
@@ -359,7 +359,7 @@ $(document).ready(function(){initNavTree('_sparsity_format_converter_8cpp_source
 <div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceluci.html#aa97d351a90b9ad93b0b192878b9f95bcac810538dc5d66745dffbc771e26e6118">luci::SparseIndexVectorType::U8</a>:</div>
 <div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>      <span class="keywordflow">return</span> makeTfLiteArray&lt;uint8_t&gt;(*data.as_uint8_vector());</div>
 <div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>      <a class="code hl_define" href="_internal_exn_8h.html#a85a54bde7508d03710f64718d6b8766b">INTERNAL_EXN_V</a>(<span class="stringliteral">&quot;unsupported SparseIndexVectorType&quot;</span>, <a class="code hl_function" href="namespaceoops.html#a705121a6e83fcc6d985a794183d55635">oops::to_uint32</a>(type));</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>      <a class="code hl_define" href="_internal_exn_8h.html#a85a54bde7508d03710f64718d6b8766b">INTERNAL_EXN_V</a>(<span class="stringliteral">&quot;unsupported SparseIndexVectorType&quot;</span>, <a class="code hl_function" href="namespaceoops.html#a705121a6e83fcc6d985a794183d55635">oops::to_uint32</a>(<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>));</div>
 <div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>  }</div>
 <div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>}</div>
 </div>
@@ -429,6 +429,7 @@ $(document).ready(function(){initNavTree('_sparsity_format_converter_8cpp_source
 </div>
 <div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span> </div>
 <div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>} <span class="comment">// namespace luci</span></div>
+<div class="ttc" id="a_bulk_pipeline_buffer_8cc_html_a449e574ed6911881dc55507cb5635c2c"><div class="ttname"><a href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a></div><div class="ttdeci">int32_t type</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_buffer_8cc_source.html#l00000">BulkPipelineBuffer.cc:0</a></div></div>
 <div class="ttc" id="a_internal_exn_8h_html"><div class="ttname"><a href="_internal_exn_8h.html">InternalExn.h</a></div></div>
 <div class="ttc" id="a_internal_exn_8h_html_a85a54bde7508d03710f64718d6b8766b"><div class="ttname"><a href="_internal_exn_8h.html#a85a54bde7508d03710f64718d6b8766b">INTERNAL_EXN_V</a></div><div class="ttdeci">#define INTERNAL_EXN_V(msg, val)</div><div class="ttdoc">@ brief throw internal exception with message and value</div><div class="ttdef"><b>Definition</b> <a href="_internal_exn_8h_source.html#l00028">InternalExn.h:28</a></div></div>
 <div class="ttc" id="a_sparsity_format_converter_8h_html"><div class="ttname"><a href="_sparsity_format_converter_8h.html">SparsityFormatConverter.h</a></div></div>

@@ -150,7 +150,7 @@ $(document).ready(function(){initNavTree('import_2src_2_nodes_2_circle_elu_8cpp_
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  }</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  assert(tensors[outputs[0]] != <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keywordflow">if</span> (tensors[outputs[0]]-&gt;type() != tensor-&gt;type())</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keywordflow">if</span> (tensors[outputs[0]]-&gt;<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>() != tensor-&gt;type())</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
@@ -168,6 +168,7 @@ $(document).ready(function(){initNavTree('import_2src_2_nodes_2_circle_elu_8cpp_
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>}</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>} <span class="comment">// namespace luci</span></div>
+<div class="ttc" id="a_bulk_pipeline_buffer_8cc_html_a449e574ed6911881dc55507cb5635c2c"><div class="ttname"><a href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a></div><div class="ttdeci">int32_t type</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_buffer_8cc_source.html#l00000">BulkPipelineBuffer.cc:0</a></div></div>
 <div class="ttc" id="aclassloco_1_1_graph_html"><div class="ttname"><a href="classloco_1_1_graph.html">loco::Graph</a></div><div class="ttdoc">A neural network graph.</div><div class="ttdef"><b>Definition</b> <a href="compiler_2loco_2include_2loco_2_i_r_2_graph_8h_source.html#l00160">Graph.h:161</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_elu_graph_builder_html_a2ee2bd43643f10da020fdebca8282f7f"><div class="ttname"><a href="classluci_1_1_circle_elu_graph_builder.html#a2ee2bd43643f10da020fdebca8282f7f">luci::CircleEluGraphBuilder::validate</a></div><div class="ttdeci">bool validate(const ValidateArgs &amp;args) const final</div><div class="ttdef"><b>Definition</b> <a href="import_2src_2_nodes_2_circle_elu_8cpp_source.html#l00026">CircleElu.cpp:26</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_elu_html"><div class="ttname"><a href="classluci_1_1_circle_elu.html">luci::CircleElu</a></div><div class="ttdoc">ELU in Circle.</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_elu_8h_source.html#l00031">CircleElu.h:32</a></div></div>

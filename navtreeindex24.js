@@ -1,5 +1,15 @@
 var NAVTREEINDEX24 =
 {
+"_quant_s8_unidirectional_l_s_t_m_8h.html":[43,0,2,4,0,0,1,83,1],
+"_quant_s8_unidirectional_l_s_t_m_8h.html#aac003f5c3df51e8f5159287857dc7f50":[43,0,2,4,0,0,1,83,1,1],
+"_quant_s8_unidirectional_l_s_t_m_8h.html#ab489ee9f9d0fdeef2f47a710e24ab23a":[43,0,2,4,0,0,1,83,1,3],
+"_quant_s8_unidirectional_l_s_t_m_8h.html#af1683fe3f0ba359571ada9ca89d9e4ed":[43,0,2,4,0,0,1,83,1,2],
+"_quant_s8_unidirectional_l_s_t_m_8h_source.html":[43,0,2,4,0,0,1,83,1],
+"_quant_softmax_kernel_8h.html":[43,0,2,5,0,6,62,2],
+"_quant_softmax_kernel_8h.html#a0cf73bce4b22e8c76ebbecef24f8cdb3":[43,0,2,5,0,6,62,2,3],
+"_quant_softmax_kernel_8h.html#a3edd637f947573c6092f64dd156e4ee8":[43,0,2,5,0,6,62,2,2],
+"_quant_softmax_kernel_8h.html#aa1fbc50204ae84be3ce666e6c950013f":[43,0,2,5,0,6,62,2,1],
+"_quant_softmax_kernel_8h_source.html":[43,0,2,5,0,6,62,2],
 "_quant_u8_slice_kernel_8h.html":[43,0,2,4,0,0,1,67,3],
 "_quant_u8_slice_kernel_8h.html#a091e562491449fa5eeeddfc750cae5ce":[43,0,2,4,0,0,1,67,3,1],
 "_quant_u8_slice_kernel_8h.html#aa9fd4c8298bc519e7af8b6a1fde896e8":[43,0,2,4,0,0,1,67,3,2],
@@ -239,15 +249,5 @@ var NAVTREEINDEX24 =
 "_rank_layer_8h.html":[43,0,3,4,1,4,0,65],
 "_rank_layer_8h_source.html":[43,0,3,4,1,4,0,65],
 "_rank_options_8cpp.html":[43,0,0,126,2,0,116],
-"_rank_options_8cpp.html#aa16d2bc26e45988406f76c1669a4a293":[43,0,0,126,2,0,116,0],
-"_rank_options_8cpp_source.html":[43,0,0,126,2,0,116],
-"_rank_options_8h.html":[43,0,0,126,2,0,117],
-"_rank_options_8h.html#aa16d2bc26e45988406f76c1669a4a293":[43,0,0,126,2,0,117,0],
-"_rank_options_8h_source.html":[43,0,0,126,2,0,117],
-"_raw_model_8h.html":[43,0,0,38,2,1,0,11],
-"_raw_model_8h_source.html":[43,0,0,38,2,1,0,11],
-"_raw_model_loader_8cpp.html":[43,0,0,38,2,1,0,12],
-"_raw_model_loader_8cpp.html#a7a2770d9809444dbee350a6d032e2e0e":[43,0,0,38,2,1,0,12,0],
-"_raw_model_loader_8cpp_source.html":[43,0,0,38,2,1,0,12],
-"_raw_model_loader_8h.html":[43,0,0,38,2,1,0,13]
+"_rank_options_8cpp.html#aa16d2bc26e45988406f76c1669a4a293":[43,0,0,126,2,0,116,0]
 };

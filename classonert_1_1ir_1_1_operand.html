@@ -193,12 +193,12 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00036">36</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html">Operand.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   37</span>    : _info{<a class="code hl_function" href="classonert_1_1ir_1_1_operand.html#a701cef233994b0f0b209ffc7b0517589">shape</a>, <a class="code hl_function" href="classonert_1_1ir_1_1_operand.html#ae6894566a889a31fa5a2c194ab54db42">type</a>, <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#af862512a289794dc81b59605ee79a18eafe6f99ef1ec99efbdc19a9786cf1facc">MemAllocType::STATIC</a>}</div>
+<div class="fragment"><div class="line"><span class="lineno">   37</span>    : _info{<a class="code hl_function" href="classonert_1_1ir_1_1_operand.html#a701cef233994b0f0b209ffc7b0517589">shape</a>, <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>, <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#af862512a289794dc81b59605ee79a18eafe6f99ef1ec99efbdc19a9786cf1facc">MemAllocType::STATIC</a>}</div>
 <div class="line"><span class="lineno">   38</span>  {</div>
 <div class="line"><span class="lineno">   39</span>    <span class="comment">// DO NOTHING</span></div>
 <div class="line"><span class="lineno">   40</span>  }</div>
+<div class="ttc" id="a_bulk_pipeline_buffer_8cc_html_a449e574ed6911881dc55507cb5635c2c"><div class="ttname"><a href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a></div><div class="ttdeci">int32_t type</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_buffer_8cc_source.html#l00000">BulkPipelineBuffer.cc:0</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_operand_html_a701cef233994b0f0b209ffc7b0517589"><div class="ttname"><a href="classonert_1_1ir_1_1_operand.html#a701cef233994b0f0b209ffc7b0517589">onert::ir::Operand::shape</a></div><div class="ttdeci">const Shape &amp; shape(void) const</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00044">Operand.h:44</a></div></div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_operand_html_ae6894566a889a31fa5a2c194ab54db42"><div class="ttname"><a href="classonert_1_1ir_1_1_operand.html#ae6894566a889a31fa5a2c194ab54db42">onert::ir::Operand::type</a></div><div class="ttdeci">void type(const DataType type)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00059">Operand.h:59</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_af862512a289794dc81b59605ee79a18eafe6f99ef1ec99efbdc19a9786cf1facc"><div class="ttname"><a href="namespaceonert_1_1ir.html#af862512a289794dc81b59605ee79a18eafe6f99ef1ec99efbdc19a9786cf1facc">onert::ir::MemAllocType::STATIC</a></div><div class="ttdeci">@ STATIC</div><div class="ttdoc">At compile time, shape for a tensor is known, thus requried memory capacity can be calculated.</div></div>
 </div><!-- fragment -->
 </div>
@@ -649,8 +649,8 @@ template&lt;typename T , typename... Args&gt; </div>
 <div class="line"><span class="lineno">   29</span>    elements *= <a class="code hl_function" href="classonert_1_1ir_1_1_operand.html#a701cef233994b0f0b209ffc7b0517589">shape</a>().dim(rank);</div>
 <div class="line"><span class="lineno">   30</span>  }</div>
 <div class="line"><span class="lineno">   31</span> </div>
-<div class="line"><span class="lineno">   32</span>  <a class="code hl_enumeration" href="namespaceloco.html#ad30d86ce5bd365deae8ef4398fb16d3c">DataType</a> <a class="code hl_function" href="classonert_1_1ir_1_1_operand.html#ae6894566a889a31fa5a2c194ab54db42">type</a> = <a class="code hl_function" href="classonert_1_1ir_1_1_operand.html#a1d8cca581e5a51292e66e6efd7c7b086">typeInfo</a>().<a class="code hl_function" href="classonert_1_1ir_1_1_type_info.html#ac59d0c3025a812eba13a113a7c7c85a5">type</a>();</div>
-<div class="line"><span class="lineno">   33</span>  <span class="keywordtype">size_t</span> element_size = <a class="code hl_function" href="namespaceonert_1_1ir.html#a306303df14f9f20079574f5a9cc37f26">sizeOfDataType</a>(<a class="code hl_function" href="classonert_1_1ir_1_1_operand.html#ae6894566a889a31fa5a2c194ab54db42">type</a>);</div>
+<div class="line"><span class="lineno">   32</span>  <a class="code hl_enumeration" href="namespaceloco.html#ad30d86ce5bd365deae8ef4398fb16d3c">DataType</a> <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a> = <a class="code hl_function" href="classonert_1_1ir_1_1_operand.html#a1d8cca581e5a51292e66e6efd7c7b086">typeInfo</a>().<a class="code hl_function" href="classonert_1_1ir_1_1_type_info.html#ac59d0c3025a812eba13a113a7c7c85a5">type</a>();</div>
+<div class="line"><span class="lineno">   33</span>  <span class="keywordtype">size_t</span> element_size = <a class="code hl_function" href="namespaceonert_1_1ir.html#a306303df14f9f20079574f5a9cc37f26">sizeOfDataType</a>(<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>);</div>
 <div class="line"><span class="lineno">   34</span> </div>
 <div class="line"><span class="lineno">   35</span>  <span class="comment">// Value of type is matched with OperandCode enum in NeuralNetworks.h</span></div>
 <div class="line"><span class="lineno">   36</span>  <span class="keywordflow">return</span> element_size * elements;</div>
@@ -660,7 +660,7 @@ template&lt;typename T , typename... Args&gt; </div>
 <div class="ttc" id="anamespaceloco_html_ad30d86ce5bd365deae8ef4398fb16d3c"><div class="ttname"><a href="namespaceloco.html#ad30d86ce5bd365deae8ef4398fb16d3c">loco::DataType</a></div><div class="ttdeci">DataType</div><div class="ttdoc">&quot;scalar&quot; value type</div><div class="ttdef"><b>Definition</b> <a href="compiler_2loco_2include_2loco_2_i_r_2_data_type_8h_source.html#l00026">DataType.h:27</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a306303df14f9f20079574f5a9cc37f26"><div class="ttname"><a href="namespaceonert_1_1ir.html#a306303df14f9f20079574f5a9cc37f26">onert::ir::sizeOfDataType</a></div><div class="ttdeci">size_t sizeOfDataType(DataType data_type)</div><div class="ttdef"><b>Definition</b> <a href="_data_type_8cc_source.html#l00027">DataType.cc:27</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00044">shape()</a>, <a class="el" href="_data_type_8cc_source.html#l00027">onert::ir::sizeOfDataType()</a>, <a class="el" href="_type_info_8h_source.html#l00063">onert::ir::TypeInfo::type()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00059">type()</a>, and <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00045">typeInfo()</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00044">shape()</a>, <a class="el" href="_data_type_8cc_source.html#l00027">onert::ir::sizeOfDataType()</a>, <a class="el" href="_bulk_pipeline_buffer_8cc_source.html#l00000">type</a>, <a class="el" href="_type_info_8h_source.html#l00063">onert::ir::TypeInfo::type()</a>, and <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00045">typeInfo()</a>.</p>
 
 </div>
 </div>
@@ -893,12 +893,10 @@ template&lt;typename T , typename... Args&gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00059">59</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html">Operand.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   59</span>{ _info.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#a8ac489517a0b5a4999fe63cb94ace5fa">type</a>(<a class="code hl_function" href="classonert_1_1ir_1_1_operand.html#ae6894566a889a31fa5a2c194ab54db42">type</a>); };</div>
+<div class="fragment"><div class="line"><span class="lineno">   59</span>{ _info.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#a8ac489517a0b5a4999fe63cb94ace5fa">type</a>(<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>); };</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_a8ac489517a0b5a4999fe63cb94ace5fa"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#a8ac489517a0b5a4999fe63cb94ace5fa">onert::ir::OperandInfo::type</a></div><div class="ttdeci">void type(const DataType type)</div><div class="ttdoc">Set tensor data type.</div><div class="ttdef"><b>Definition</b> <a href="_operand_info_8h_source.html#l00122">OperandInfo.h:122</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00059">type()</a>, and <a class="el" href="_operand_info_8h_source.html#l00122">onert::ir::OperandInfo::type()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="_operand_8cc_source.html#l00022">operandSize()</a>, and <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00059">type()</a>.</p>
+<p class="reference">References <a class="el" href="_bulk_pipeline_buffer_8cc_source.html#l00000">type</a>, and <a class="el" href="_operand_info_8h_source.html#l00122">onert::ir::OperandInfo::type()</a>.</p>
 
 </div>
 </div>

@@ -167,16 +167,23 @@ $(document).ready(function(){initNavTree('backend_2trix_2_kernel_generator_8cc_s
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    input_tensors.emplace_back(_tensor_reg-&gt;getPortableTensor(ifm_idx));</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="comment">// parameters</span></div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;binary_path = node.<a class="code hl_function" href="classonert_1_1ir_1_1operation_1_1_bulk.html#a9c92220107023d8df3f3325ef9757ebd">param</a>().<a class="code hl_variable" href="structonert_1_1ir_1_1operation_1_1_bulk_1_1_param.html#a07d59e474bb4d8a946d0b6cc20b6d421">binary_path</a>;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;binary_path = node.<a class="code hl_function" href="classonert_1_1ir_1_1operation_1_1_bulk.html#a9c92220107023d8df3f3325ef9757ebd">param</a>().<a class="code hl_variable" href="structonert_1_1ir_1_1operation_1_1_bulk_1_1_param.html#ad31a5b55db075a9c4b2136f31dce1341">binary_path</a>;</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="keyword">auto</span> fn = std::make_unique&lt;ops::BulkLayer&gt;();</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  fn-&gt;configure(input_tensors, output_tensors, binary_path, _dev_context);</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_kernel_generator_base.html#a0641657bea8e14881f1ed6e604ee7e19">_return_fn</a> = std::move(fn);</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>}</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>} <span class="comment">// namespace onert::backend::trix</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="keywordflow">if</span> (binary_path.size() == 1)</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  {</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="comment">// For single model execution</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="keyword">auto</span> fn = std::make_unique&lt;ops::BulkLayer&gt;();</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    fn-&gt;configure(input_tensors, output_tensors, binary_path.front(), _dev_context);</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_kernel_generator_base.html#a0641657bea8e14881f1ed6e604ee7e19">_return_fn</a> = std::move(fn);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  }</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  {</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="comment">// TODO: Implement multiple model execution</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;NYI: multiple model execution&quot;</span>);</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  }</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>}</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>} <span class="comment">// namespace onert::backend::trix</span></div>
 <div class="ttc" id="a_bulk_layer_8h_html"><div class="ttname"><a href="_bulk_layer_8h.html">BulkLayer.h</a></div></div>
 <div class="ttc" id="a_dynamic_shape_inferer_8h_html"><div class="ttname"><a href="_dynamic_shape_inferer_8h.html">DynamicShapeInferer.h</a></div></div>
 <div class="ttc" id="a_i_config_8h_html"><div class="ttname"><a href="_i_config_8h.html">IConfig.h</a></div></div>
@@ -196,7 +203,7 @@ $(document).ready(function(){initNavTree('backend_2trix_2_kernel_generator_8cc_s
 <div class="ttc" id="aruntime_2onert_2core_2include_2backend_2_backend_8h_html"><div class="ttname"><a href="runtime_2onert_2core_2include_2backend_2_backend_8h.html">Backend.h</a></div></div>
 <div class="ttc" id="aruntime_2onert_2core_2include_2util_2_logging_8h_html"><div class="ttname"><a href="runtime_2onert_2core_2include_2util_2_logging_8h.html">logging.h</a></div></div>
 <div class="ttc" id="aruntime_2onert_2core_2include_2util_2_utils_8h_html"><div class="ttname"><a href="runtime_2onert_2core_2include_2util_2_utils_8h.html">Utils.h</a></div><div class="ttdoc">This file contains utility macro.</div></div>
-<div class="ttc" id="astructonert_1_1ir_1_1operation_1_1_bulk_1_1_param_html_a07d59e474bb4d8a946d0b6cc20b6d421"><div class="ttname"><a href="structonert_1_1ir_1_1operation_1_1_bulk_1_1_param.html#a07d59e474bb4d8a946d0b6cc20b6d421">onert::ir::operation::Bulk::Param::binary_path</a></div><div class="ttdeci">std::string binary_path</div><div class="ttdef"><b>Definition</b> <a href="_bulk_8h_source.html#l00030">Bulk.h:30</a></div></div>
+<div class="ttc" id="astructonert_1_1ir_1_1operation_1_1_bulk_1_1_param_html_ad31a5b55db075a9c4b2136f31dce1341"><div class="ttname"><a href="structonert_1_1ir_1_1operation_1_1_bulk_1_1_param.html#ad31a5b55db075a9c4b2136f31dce1341">onert::ir::operation::Bulk::Param::binary_path</a></div><div class="ttdeci">std::vector&lt; std::string &gt; binary_path</div><div class="ttdef"><b>Definition</b> <a href="_bulk_8h_source.html#l00030">Bulk.h:30</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

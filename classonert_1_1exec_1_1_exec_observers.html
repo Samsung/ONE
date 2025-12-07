@@ -101,7 +101,7 @@ $(document).ready(function(){initNavTree('classonert_1_1exec_1_1_exec_observers.
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a975688d45e95f50589a193473c4cd6e6" id="r_a975688d45e95f50589a193473c4cd6e6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_exec_observers.html#a975688d45e95f50589a193473c4cd6e6">add</a> (std::unique_ptr&lt; <a class="el" href="classonert_1_1exec_1_1_i_execution_observer.html">IExecutionObserver</a> &gt; &amp;&amp;observer)</td></tr>
 <tr class="separator:a975688d45e95f50589a193473c4cd6e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6bade5c57e90d2cff311f044b9cfd80" id="r_ab6bade5c57e90d2cff311f044b9cfd80"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classonert_1_1exec_1_1_i_execution_observer.html">IExecutionObserver</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_exec_observers.html#ab6bade5c57e90d2cff311f044b9cfd80">get</a> (<a class="el" href="namespaceonert_1_1exec.html#a7197df3298167805c3fe9e0646ba9068">ObserverType</a> type) const</td></tr>
+<tr class="memitem:ab6bade5c57e90d2cff311f044b9cfd80" id="r_ab6bade5c57e90d2cff311f044b9cfd80"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classonert_1_1exec_1_1_i_execution_observer.html">IExecutionObserver</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_exec_observers.html#ab6bade5c57e90d2cff311f044b9cfd80">get</a> (<a class="el" href="namespaceonert_1_1exec.html#a7197df3298167805c3fe9e0646ba9068">ObserverType</a> <a class="el" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>) const</td></tr>
 <tr class="separator:ab6bade5c57e90d2cff311f044b9cfd80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -167,12 +167,15 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_execution_observers_8h_source.html#l00068">68</a> of file <a class="el" href="_execution_observers_8h_source.html">ExecutionObservers.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   69</span>  {</div>
-<div class="line"><span class="lineno">   70</span>    <span class="keywordflow">if</span> (_observers.find(type) != _observers.end())</div>
-<div class="line"><span class="lineno">   71</span>      <span class="keywordflow">return</span> _observers.at(type).get();</div>
+<div class="line"><span class="lineno">   70</span>    <span class="keywordflow">if</span> (_observers.find(<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>) != _observers.end())</div>
+<div class="line"><span class="lineno">   71</span>      <span class="keywordflow">return</span> _observers.at(<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>).get();</div>
 <div class="line"><span class="lineno">   72</span> </div>
 <div class="line"><span class="lineno">   73</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
 <div class="line"><span class="lineno">   74</span>  }</div>
+<div class="ttc" id="a_bulk_pipeline_buffer_8cc_html_a449e574ed6911881dc55507cb5635c2c"><div class="ttname"><a href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a></div><div class="ttdeci">int32_t type</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_buffer_8cc_source.html#l00000">BulkPipelineBuffer.cc:0</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="_bulk_pipeline_buffer_8cc_source.html#l00000">type</a>.</p>
+
 <p class="reference">Referenced by <a class="el" href="_execution_observee_8cc_source.html#l00022">onert::exec::ExecutionObservee::ExecutionObservee()</a>.</p>
 
 </div>

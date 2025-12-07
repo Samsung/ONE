@@ -119,9 +119,9 @@ $(document).ready(function(){initNavTree('tflchef_2tflite_2src_2_convert_8cpp_so
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>{</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
 <div class="foldopen" id="foldopen00022" data-start="{" data-end="}">
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="namespacetflchef.html#ac7e727581ace986a5398db3565432186">   22</a></span>tflchef::TensorType <a class="code hl_function" href="namespacetflchef.html#ac7e727581ace986a5398db3565432186">as_tflchef_type</a>(<span class="keyword">const</span> tflite::TensorType type)</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="namespacetflchef.html#ac7e727581ace986a5398db3565432186">   22</a></span>tflchef::TensorType <a class="code hl_function" href="namespacetflchef.html#ac7e727581ace986a5398db3565432186">as_tflchef_type</a>(<span class="keyword">const</span> tflite::TensorType <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>{</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  <span class="keywordflow">switch</span> (type)</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  <span class="keywordflow">switch</span> (<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  {</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <span class="keywordflow">case</span> tflite::TensorType_FLOAT32:</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>      <span class="keywordflow">return</span> tflchef::FLOAT32;</div>
@@ -149,9 +149,9 @@ $(document).ready(function(){initNavTree('tflchef_2tflite_2src_2_convert_8cpp_so
 </div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
 <div class="foldopen" id="foldopen00050" data-start="{" data-end="}">
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="namespacetflchef.html#af70fa66b2c38cfac03cae0770c795301">   50</a></span>tflchef::Activation <a class="code hl_function" href="namespacetflchef.html#af70fa66b2c38cfac03cae0770c795301">as_tflchef_activation</a>(<span class="keyword">const</span> tflite::ActivationFunctionType type)</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="namespacetflchef.html#af70fa66b2c38cfac03cae0770c795301">   50</a></span>tflchef::Activation <a class="code hl_function" href="namespacetflchef.html#af70fa66b2c38cfac03cae0770c795301">as_tflchef_activation</a>(<span class="keyword">const</span> tflite::ActivationFunctionType <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>{</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keywordflow">switch</span> (type)</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keywordflow">switch</span> (<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  {</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keywordflow">case</span> tflite::ActivationFunctionType_NONE:</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>      <span class="keywordflow">return</span> tflchef::NONE;</div>
@@ -202,9 +202,9 @@ $(document).ready(function(){initNavTree('tflchef_2tflite_2src_2_convert_8cpp_so
 </div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
 <div class="foldopen" id="foldopen00097" data-start="{" data-end="}">
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="namespacetflchef.html#a7bfed56b2d56fe86f9905b655056b5d2">   97</a></span>tflchef::DimensionType <a class="code hl_function" href="namespacetflchef.html#a7bfed56b2d56fe86f9905b655056b5d2">as_tflchef_sparse_dim_type</a>(<span class="keyword">const</span> tflite::DimensionType type)</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="namespacetflchef.html#a7bfed56b2d56fe86f9905b655056b5d2">   97</a></span>tflchef::DimensionType <a class="code hl_function" href="namespacetflchef.html#a7bfed56b2d56fe86f9905b655056b5d2">as_tflchef_sparse_dim_type</a>(<span class="keyword">const</span> tflite::DimensionType <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>{</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  <span class="keywordflow">switch</span> (type)</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  <span class="keywordflow">switch</span> (<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  {</div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="keywordflow">case</span> tflite::DimensionType_DENSE:</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>      <span class="keywordflow">return</span> tflchef::DimensionType::DENSE;</div>
@@ -217,9 +217,9 @@ $(document).ready(function(){initNavTree('tflchef_2tflite_2src_2_convert_8cpp_so
 </div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
 <div class="foldopen" id="foldopen00110" data-start="{" data-end="}">
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="namespacetflchef.html#ab68d05ef145f351d1b60d312d2b5be80">  110</a></span>tflchef::SparseIndexVecType <a class="code hl_function" href="namespacetflchef.html#ab68d05ef145f351d1b60d312d2b5be80">as_tflchef_sparse_idx_vec_type</a>(<span class="keyword">const</span> tflite::SparseIndexVector type)</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="namespacetflchef.html#ab68d05ef145f351d1b60d312d2b5be80">  110</a></span>tflchef::SparseIndexVecType <a class="code hl_function" href="namespacetflchef.html#ab68d05ef145f351d1b60d312d2b5be80">as_tflchef_sparse_idx_vec_type</a>(<span class="keyword">const</span> tflite::SparseIndexVector <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>{</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  <span class="keywordflow">switch</span> (type)</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  <span class="keywordflow">switch</span> (<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</div>
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  {</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <span class="keywordflow">case</span> tflite::SparseIndexVector_NONE:</div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>      <span class="keywordflow">return</span> tflchef::SparseIndexVecType::SparseIdxVecType_NONE;</div>
@@ -236,6 +236,7 @@ $(document).ready(function(){initNavTree('tflchef_2tflite_2src_2_convert_8cpp_so
 </div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>} <span class="comment">// namespace tflchef</span></div>
+<div class="ttc" id="a_bulk_pipeline_buffer_8cc_html_a449e574ed6911881dc55507cb5635c2c"><div class="ttname"><a href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a></div><div class="ttdeci">int32_t type</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_buffer_8cc_source.html#l00000">BulkPipelineBuffer.cc:0</a></div></div>
 <div class="ttc" id="anamespacetflchef_html"><div class="ttname"><a href="namespacetflchef.html">tflchef</a></div><div class="ttdef"><b>Definition</b> <a href="tflchef_2core_2include_2tflchef_2_model_chef_8h_source.html#l00024">ModelChef.h:25</a></div></div>
 <div class="ttc" id="anamespacetflchef_html_a0c3e4109f53e4a42dba6496638893ad3"><div class="ttname"><a href="namespacetflchef.html#a0c3e4109f53e4a42dba6496638893ad3">tflchef::as_tflchef_mirrorpadmode</a></div><div class="ttdeci">tflchef::MirrorPadMode as_tflchef_mirrorpadmode(const tflite::MirrorPadMode mode)</div><div class="ttdef"><b>Definition</b> <a href="tflchef_2tflite_2src_2_convert_8cpp_source.html#l00084">Convert.cpp:84</a></div></div>
 <div class="ttc" id="anamespacetflchef_html_a61c64eb65ff516bdcb1cacdaea104160"><div class="ttname"><a href="namespacetflchef.html#a61c64eb65ff516bdcb1cacdaea104160">tflchef::as_tflchef_padding</a></div><div class="ttdeci">tflchef::Padding as_tflchef_padding(const tflite::Padding padding)</div><div class="ttdef"><b>Definition</b> <a href="tflchef_2tflite_2src_2_convert_8cpp_source.html#l00071">Convert.cpp:71</a></div></div>

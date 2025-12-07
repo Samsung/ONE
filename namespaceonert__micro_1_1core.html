@@ -281,7 +281,7 @@ Functions</h2></td></tr>
 <tr class="memitem:a694c85e75c52964da7e1bbbe844549b0" id="r_a694c85e75c52964da7e1bbbe844549b0"><td class="memTemplParams" colspan="2">template&lt;typename IntType , class RuntimeKernel &gt; </td></tr>
 <tr class="memitem:a694c85e75c52964da7e1bbbe844549b0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classonert__micro_1_1core_1_1_o_m_axis_data.html">OMAxisData</a>&lt; IntType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1core.html#a694c85e75c52964da7e1bbbe844549b0">MakeAxisData</a> (RuntimeKernel &amp;rtk, size_t axisTensorIdx)</td></tr>
 <tr class="separator:a694c85e75c52964da7e1bbbe844549b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03b1ecfcab135cda983a94895d82de6f" id="r_a03b1ecfcab135cda983a94895d82de6f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro_1_1core.html#ad685c328cb57eb4f4e9081ada4020a70">OMDataType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1core.html#a03b1ecfcab135cda983a94895d82de6f">onertMicroDatatype</a> (const circle::TensorType type)</td></tr>
+<tr class="memitem:a03b1ecfcab135cda983a94895d82de6f" id="r_a03b1ecfcab135cda983a94895d82de6f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro_1_1core.html#ad685c328cb57eb4f4e9081ada4020a70">OMDataType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1core.html#a03b1ecfcab135cda983a94895d82de6f">onertMicroDatatype</a> (const circle::TensorType <a class="el" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</td></tr>
 <tr class="separator:a03b1ecfcab135cda983a94895d82de6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9320e9d80cf98617368833a1b553871d" id="r_a9320e9d80cf98617368833a1b553871d"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1core.html#a9320e9d80cf98617368833a1b553871d">size</a> (<a class="el" href="namespaceonert__micro_1_1core.html#ad685c328cb57eb4f4e9081ada4020a70">OMDataType</a> data_type)</td></tr>
 <tr class="memdesc:a9320e9d80cf98617368833a1b553871d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the size of the data type.  <br /></td></tr>
@@ -1074,7 +1074,7 @@ template&lt;typename T , class RuntimeKernel &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="_o_m_data_type_8cpp_source.html#l00019">19</a> of file <a class="el" href="_o_m_data_type_8cpp_source.html">OMDataType.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   20</span>{</div>
-<div class="line"><span class="lineno">   21</span>  <span class="keywordflow">switch</span> (type)</div>
+<div class="line"><span class="lineno">   21</span>  <span class="keywordflow">switch</span> (<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</div>
 <div class="line"><span class="lineno">   22</span>  {</div>
 <div class="line"><span class="lineno">   23</span>    <span class="keywordflow">case</span> circle::TensorType_FLOAT32:</div>
 <div class="line"><span class="lineno">   24</span>      <span class="keywordflow">return</span> OMDataType::FLOAT32;</div>
@@ -1100,7 +1100,10 @@ template&lt;typename T , class RuntimeKernel &gt; </div>
 <div class="line"><span class="lineno">   44</span>  assert(<span class="keyword">false</span>);</div>
 <div class="line"><span class="lineno">   45</span>  <span class="keywordflow">return</span> OMDataType::Unknown;</div>
 <div class="line"><span class="lineno">   46</span>}</div>
+<div class="ttc" id="a_bulk_pipeline_buffer_8cc_html_a449e574ed6911881dc55507cb5635c2c"><div class="ttname"><a href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a></div><div class="ttdeci">int32_t type</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_buffer_8cc_source.html#l00000">BulkPipelineBuffer.cc:0</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="_bulk_pipeline_buffer_8cc_source.html#l00000">type</a>.</p>
+
 <p class="reference">Referenced by <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00057">onert_micro::core::memory::OMRuntimeAllocator::allocate()</a>, <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00177">onert_micro::core::memory::OMRuntimeAllocator::allocateGraphInputs()</a>, and <a class="el" href="_reshape_common_8cpp_source.html#l00036">onert_micro::execute::execute_reshape_common()</a>.</p>
 
 </div>

@@ -150,7 +150,7 @@ $(document).ready(function(){initNavTree('tflchef_2core_2src_2_model_chef_8cpp_s
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>{</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>};</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>DataChefRegistry &amp;data_chef_registry(<span class="keyword">const</span> tflchef::TensorType &amp;type)</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>DataChefRegistry &amp;data_chef_registry(<span class="keyword">const</span> tflchef::TensorType &amp;<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>{</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="keyword">static</span> DataChefRegistry s32;</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keyword">static</span> DataChefRegistry s64;</div>
@@ -163,7 +163,7 @@ $(document).ready(function(){initNavTree('tflchef_2core_2src_2_model_chef_8cpp_s
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keyword">static</span> DataChefRegistry s8;</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="keyword">static</span> DataChefRegistry s4;</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keywordflow">switch</span> (type)</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keywordflow">switch</span> (<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  {</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keywordflow">case</span> tflchef::INT32:</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>      <span class="keywordflow">return</span> s32;</div>
@@ -1306,6 +1306,7 @@ $(document).ready(function(){initNavTree('tflchef_2core_2src_2_model_chef_8cpp_s
 <div class="line"><a id="l01212" name="l01212"></a><span class="lineno"> 1212</span>}</div>
 <div class="line"><a id="l01213" name="l01213"></a><span class="lineno"> 1213</span> </div>
 <div class="line"><a id="l01214" name="l01214"></a><span class="lineno"> 1214</span>} <span class="comment">// namespace tflchef</span></div>
+<div class="ttc" id="a_bulk_pipeline_buffer_8cc_html_a449e574ed6911881dc55507cb5635c2c"><div class="ttname"><a href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a></div><div class="ttdeci">int32_t type</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_buffer_8cc_source.html#l00000">BulkPipelineBuffer.cc:0</a></div></div>
 <div class="ttc" id="a_data_chefs_8h_html"><div class="ttname"><a href="_data_chefs_8h.html">DataChefs.h</a></div></div>
 <div class="ttc" id="a_dataset_8h_html"><div class="ttname"><a href="_dataset_8h.html">Dataset.h</a></div></div>
 <div class="ttc" id="a_ranged_arguments_8h_html"><div class="ttname"><a href="_ranged_arguments_8h.html">RangedArguments.h</a></div></div>

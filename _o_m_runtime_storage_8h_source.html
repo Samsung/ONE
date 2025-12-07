@@ -168,9 +168,9 @@ $(document).ready(function(){initNavTree('_o_m_runtime_storage_8h_source.html','
 </div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
 <div class="foldopen" id="foldopen00068" data-start="{" data-end="}">
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html#a1155f0c0d202bca845833c8c92b0856e">   68</a></span>  <a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html#a1155f0c0d202bca845833c8c92b0856e">setKernelType</a>(uint16_t op_index, <a class="code hl_enumeration" href="namespaceonert__micro_1_1core.html#aa8207dbb94c1edf390c8d19d2da15402">OMKernelType</a> type)</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html#a1155f0c0d202bca845833c8c92b0856e">   68</a></span>  <a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html#a1155f0c0d202bca845833c8c92b0856e">setKernelType</a>(uint16_t op_index, <a class="code hl_enumeration" href="namespaceonert__micro_1_1core.html#aa8207dbb94c1edf390c8d19d2da15402">OMKernelType</a> <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  {</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    _operator_index_to_kernel_type[op_index] = type;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    _operator_index_to_kernel_type[op_index] = <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>;</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  }</div>
 </div>
@@ -203,6 +203,7 @@ $(document).ready(function(){initNavTree('_o_m_runtime_storage_8h_source.html','
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>} <span class="comment">// namespace onert_micro</span></div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="preprocessor">#endif </span><span class="comment">// ONERT_MICRO_CORE_RUNTIME_STORAGE_H</span></div>
+<div class="ttc" id="a_bulk_pipeline_buffer_8cc_html_a449e574ed6911881dc55507cb5635c2c"><div class="ttname"><a href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a></div><div class="ttdeci">int32_t type</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_buffer_8cc_source.html#l00000">BulkPipelineBuffer.cc:0</a></div></div>
 <div class="ttc" id="a_o_m_kernel_type_8h_html"><div class="ttname"><a href="_o_m_kernel_type_8h.html">OMKernelType.h</a></div></div>
 <div class="ttc" id="a_o_m_log_8h_html"><div class="ttname"><a href="_o_m_log_8h.html">OMLog.h</a></div></div>
 <div class="ttc" id="a_o_m_runtime_shape_8h_html"><div class="ttname"><a href="_o_m_runtime_shape_8h.html">OMRuntimeShape.h</a></div></div>

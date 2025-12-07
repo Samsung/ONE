@@ -118,8 +118,8 @@ $(document).ready(function(){initNavTree('test__utils_8py_source.html',''); init
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="comment"># Replace npy to the path to the npy file</span></div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="keywordflow">for</span> tensor_name, qparam <span class="keywordflow">in</span> json_content.items():</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>        <span class="keyword">assert</span> type(tensor_name) == str</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>        <span class="keyword">assert</span> type(qparam) == dict</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>        <span class="keyword">assert</span> <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>(tensor_name) == str</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>        <span class="keyword">assert</span> <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>(qparam) == dict</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        <span class="keywordflow">for</span> field, value <span class="keywordflow">in</span> qparam.items():</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>            <span class="keywordflow">if</span> isinstance(value, np.ndarray):</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>                npy_name = str(_index) + <span class="stringliteral">&#39;.npy&#39;</span></div>
@@ -209,6 +209,7 @@ $(document).ready(function(){initNavTree('test__utils_8py_source.html',''); init
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>                                    test_case.generate())</div>
 </div>
 </div>
+<div class="ttc" id="a_bulk_pipeline_buffer_8cc_html_a449e574ed6911881dc55507cb5635c2c"><div class="ttname"><a href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a></div><div class="ttdeci">int32_t type</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_buffer_8cc_source.html#l00000">BulkPipelineBuffer.cc:0</a></div></div>
 <div class="ttc" id="aclasstest__utils_1_1_test_case_html"><div class="ttname"><a href="classtest__utils_1_1_test_case.html">test_utils.TestCase</a></div><div class="ttdef"><b>Definition</b> <a href="test__utils_8py_source.html#l00072">test_utils.py:72</a></div></div>
 <div class="ttc" id="aclasstest__utils_1_1_test_case_html_a76a7b148313f516d49f3c4ba82f26926"><div class="ttname"><a href="classtest__utils_1_1_test_case.html#a76a7b148313f516d49f3c4ba82f26926">test_utils.TestCase.__init__</a></div><div class="ttdeci">__init__(self)</div><div class="ttdef"><b>Definition</b> <a href="test__utils_8py_source.html#l00073">test_utils.py:73</a></div></div>
 <div class="ttc" id="aclasstest__utils_1_1_test_case_html_aeb101a41e507f64f910d573f48b48d55"><div class="ttname"><a href="classtest__utils_1_1_test_case.html#aeb101a41e507f64f910d573f48b48d55">test_utils.TestCase.generate</a></div><div class="ttdeci">dict generate(self)</div><div class="ttdef"><b>Definition</b> <a href="test__utils_8py_source.html#l00076">test_utils.py:76</a></div></div>

@@ -4865,7 +4865,7 @@ template&lt;typename T , typename AccType &gt; </div>
 <div class="line"><span class="lineno">   92</span>  <a class="code hl_class" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html">execute::OMRuntimeKernel</a> runtime_kernel;</div>
 <div class="line"><span class="lineno">   93</span>  runtime_kernel.<a class="code hl_function" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#a9d1e53f55b9a2cd90b9f1add8c01643c">readKernel</a>(op_index, runtime_context);</div>
 <div class="line"><span class="lineno">   94</span> </div>
-<div class="line"><span class="lineno">   95</span>  <span class="keyword">const</span> <span class="keyword">auto</span> type = runtime_kernel.<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#af34c85abb206d91e55e3e28b975692c5">inputs</a>[0]-&gt;type();</div>
+<div class="line"><span class="lineno">   95</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a> = runtime_kernel.<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#af34c85abb206d91e55e3e28b975692c5">inputs</a>[0]-&gt;type();</div>
 <div class="line"><span class="lineno">   96</span>  <a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> status = <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
 <div class="line"><span class="lineno">   97</span> </div>
 <div class="line"><span class="lineno">   98</span>  status = runtime_kernel.<a class="code hl_function" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#a637cef05fffa2180f89636987e705b4d">getDataFromStorage</a>(op_index, runtime_storage, runtime_context);</div>
@@ -4873,7 +4873,7 @@ template&lt;typename T , typename AccType &gt; </div>
 <div class="line"><span class="lineno">  100</span>  <span class="keywordflow">if</span> (status != <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>)</div>
 <div class="line"><span class="lineno">  101</span>    <span class="keywordflow">return</span> status;</div>
 <div class="line"><span class="lineno">  102</span> </div>
-<div class="line"><span class="lineno">  103</span>  <span class="keywordflow">switch</span> (type)</div>
+<div class="line"><span class="lineno">  103</span>  <span class="keywordflow">switch</span> (<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</div>
 <div class="line"><span class="lineno">  104</span>  {</div>
 <div class="line"><span class="lineno">  105</span><span class="preprocessor">#ifndef DIS_FLOAT</span></div>
 <div class="line"><span class="lineno">  106</span>    <span class="keywordflow">case</span> circle::TensorType_FLOAT32:</div>
@@ -4898,8 +4898,9 @@ template&lt;typename T , typename AccType &gt; </div>
 <div class="line"><span class="lineno">  125</span> </div>
 <div class="line"><span class="lineno">  126</span>  <span class="keywordflow">return</span> status;</div>
 <div class="line"><span class="lineno">  127</span>}</div>
+<div class="ttc" id="a_bulk_pipeline_buffer_8cc_html_a449e574ed6911881dc55507cb5635c2c"><div class="ttname"><a href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a></div><div class="ttdeci">int32_t type</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_buffer_8cc_source.html#l00000">BulkPipelineBuffer.cc:0</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00067">onert_micro::execute::OMRuntimeKernel::getDataFromStorage()</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00052">onert_micro::execute::OMRuntimeKernel::inputs</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00034">onert_micro::execute::OMExecuteArgs::kernel_index</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00022">onert_micro::execute::OMRuntimeKernel::readKernel()</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00033">onert_micro::execute::OMExecuteArgs::runtime_context</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00032">onert_micro::execute::OMExecuteArgs::runtime_storage</a>, and <a class="el" href="_o_m_status_8h_source.html#l00026">onert_micro::UnsupportedType</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00067">onert_micro::execute::OMRuntimeKernel::getDataFromStorage()</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00052">onert_micro::execute::OMRuntimeKernel::inputs</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00034">onert_micro::execute::OMExecuteArgs::kernel_index</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00022">onert_micro::execute::OMRuntimeKernel::readKernel()</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00033">onert_micro::execute::OMExecuteArgs::runtime_context</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00032">onert_micro::execute::OMExecuteArgs::runtime_storage</a>, <a class="el" href="_bulk_pipeline_buffer_8cc_source.html#l00000">type</a>, and <a class="el" href="_o_m_status_8h_source.html#l00026">onert_micro::UnsupportedType</a>.</p>
 
 </div>
 </div>

@@ -192,184 +192,167 @@ $(document).ready(function(){initNavTree('_trix_loader_8cc_source.html',''); ini
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="comment">   */</span></div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  <span class="keywordtype">void</span> loadModel(std::unique_ptr&lt;ir::Model&gt; &amp;model);</div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  std::unique_ptr&lt;ir::Graph&gt; loadSubgraph();</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  <span class="keywordtype">void</span> loadOperands(<a class="code hl_class" href="classonert_1_1ir_1_1_graph.html">ir::Graph</a> &amp;subg);</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a> loadOperandFromInput(uint32_t i, <a class="code hl_class" href="classonert_1_1ir_1_1_graph.html">ir::Graph</a> &amp;subg);</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a> loadOperandFromOutput(uint32_t i, <a class="code hl_class" href="classonert_1_1ir_1_1_graph.html">ir::Graph</a> &amp;subg);</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  <span class="keywordtype">void</span> loadBulk(<a class="code hl_class" href="classonert_1_1ir_1_1_graph.html">ir::Graph</a> &amp;subg);</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  <span class="keywordtype">void</span> loadOperationIO(<a class="code hl_class" href="classonert_1_1ir_1_1_operand_index_sequence.html">ir::OperandIndexSequence</a> &amp;inputs, <a class="code hl_class" href="classonert_1_1ir_1_1_operand_index_sequence.html">ir::OperandIndexSequence</a> &amp;outputs);</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a> inputIdxToOperandIdx(uint32_t i) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a> outputIdxToOperandIdx(uint32_t i) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  <a class="code hl_enumeration" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331">ir::DataType</a> toDataType(<span class="keyword">const</span> data_type type) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  std::string _model_path;</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  std::vector&lt;ir::Shape&gt; _origin_input_shapes;</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  std::vector&lt;ir::Shape&gt; _origin_output_shapes;</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <a class="code hl_class" href="classonert_1_1trix__loader_1_1_trix_meta_reader.html">TrixMetaReader</a> _meta;</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>};</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  <span class="keywordtype">void</span> loadBulk(<a class="code hl_class" href="classonert_1_1ir_1_1_graph.html">ir::Graph</a> &amp;subg);</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a> inputIdxToOperandIdx(uint32_t i) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a> outputIdxToOperandIdx(uint32_t i) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  <a class="code hl_enumeration" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331">ir::DataType</a> toDataType(<span class="keyword">const</span> data_type <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  <span class="keywordtype">void</span> loadInputOperands(<a class="code hl_class" href="classonert_1_1trix__loader_1_1_trix_meta_reader.html">TrixMetaReader</a> &amp;meta, <a class="code hl_class" href="classonert_1_1ir_1_1_graph.html">ir::Graph</a> &amp;subg);</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  <span class="keywordtype">void</span> loadOutputOperands(<a class="code hl_class" href="classonert_1_1trix__loader_1_1_trix_meta_reader.html">TrixMetaReader</a> &amp;meta, <a class="code hl_class" href="classonert_1_1ir_1_1_graph.html">ir::Graph</a> &amp;subg);</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  std::vector&lt;std::string&gt; _model_path;</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  std::vector&lt;ir::Shape&gt; _origin_input_shapes;</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  std::vector&lt;ir::Shape&gt; _origin_output_shapes;</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  <a class="code hl_class" href="classonert_1_1trix__loader_1_1_trix_meta_reader.html">TrixMetaReader</a> _meta;</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>};</div>
 </div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><a class="code hl_enumeration" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331">ir::DataType</a> TrixLoader::toDataType(<span class="keyword">const</span> data_type type)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <span class="keywordflow">switch</span> (type)</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  {</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="keywordflow">case</span> DATA_TYPE_QASYMM8:</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>      <span class="keywordflow">return</span> ir::DataType::QUANT_UINT8_ASYMM;</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    <span class="keywordflow">case</span> DATA_TYPE_QSYMM16:</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>      <span class="keywordflow">return</span> ir::DataType::QUANT_INT16_SYMM;</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported data type from trix model&quot;</span>);</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  }</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>}</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><a class="code hl_typedef" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> TrixLoader::inputIdxToOperandIdx(uint32_t i)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a>(i); }</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><a class="code hl_typedef" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> TrixLoader::outputIdxToOperandIdx(uint32_t i)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  <span class="keywordflow">return</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a>(_meta.<a class="code hl_function" href="classonert_1_1trix__loader_1_1_trix_meta_reader.html#ac216102950f52cb86884e1c00fbb3b6f">input_seg_num</a>() + i);</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>}</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="keywordtype">void</span> TrixLoader::loadOperationIO(ir::OperandIndexSequence &amp;inputs,</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>                                 ir::OperandIndexSequence &amp;outputs)</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>{</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; _meta.<a class="code hl_function" href="classonert_1_1trix__loader_1_1_trix_meta_reader.html#ac216102950f52cb86884e1c00fbb3b6f">input_seg_num</a>(); ++i)</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>  {</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>.append(inputIdxToOperandIdx(i));</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>  }</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; _meta.<a class="code hl_function" href="classonert_1_1trix__loader_1_1_trix_meta_reader.html#a57f51f45dbe4f062f6f78d65a11e33c8">output_seg_num</a>(); ++i)</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>  {</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    outputs.append(outputIdxToOperandIdx(i));</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  }</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>}</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span><span class="keywordtype">void</span> TrixLoader::loadBulk(ir::Graph &amp;subg)</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>{</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>  ir::operation::Bulk::Param param;</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>  param.binary_path = _model_path;</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>  param.origin_input_shapes = _origin_input_shapes;</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  param.origin_output_shapes = _origin_output_shapes;</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> </div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>  ir::OperandIndexSequence <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>;</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>  ir::OperandIndexSequence outputs;</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>  loadOperationIO(inputs, outputs);</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>  std::unique_ptr&lt;ir::operation::Bulk&gt; bulk(<span class="keyword">new</span> ir::operation::Bulk(inputs, outputs, param));</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>  subg.addOperation(std::move(bulk));</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><a class="code hl_enumeration" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331">ir::DataType</a> TrixLoader::toDataType(<span class="keyword">const</span> data_type <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <span class="keywordflow">switch</span> (<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  {</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    <span class="keywordflow">case</span> DATA_TYPE_QASYMM8:</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>      <span class="keywordflow">return</span> ir::DataType::QUANT_UINT8_ASYMM;</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="keywordflow">case</span> DATA_TYPE_QSYMM16:</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>      <span class="keywordflow">return</span> ir::DataType::QUANT_INT16_SYMM;</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported data type from trix model&quot;</span>);</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  }</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>}</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><a class="code hl_typedef" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> TrixLoader::inputIdxToOperandIdx(uint32_t i)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a>(i); }</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><a class="code hl_typedef" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> TrixLoader::outputIdxToOperandIdx(uint32_t i)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  <span class="keywordflow">return</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a>(_meta.<a class="code hl_function" href="classonert_1_1trix__loader_1_1_trix_meta_reader.html#ac216102950f52cb86884e1c00fbb3b6f">input_seg_num</a>() + i);</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>}</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span><span class="keywordtype">void</span> TrixLoader::loadBulk(ir::Graph &amp;subg)</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>{</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>  ir::operation::Bulk::Param param;</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  param.binary_path = _model_path;</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>  param.origin_input_shapes = _origin_input_shapes;</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>  param.origin_output_shapes = _origin_output_shapes;</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>  std::unique_ptr&lt;ir::operation::Bulk&gt; bulk(</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    <span class="keyword">new</span> ir::operation::Bulk(subg.getInputs(), subg.getOutputs(), param));</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>  subg.addOperation(std::move(bulk));</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>}</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span><span class="keywordtype">void</span> TrixLoader::loadInputOperands(TrixMetaReader &amp;meta, ir::Graph &amp;subg)</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>{</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; meta.input_seg_num(); ++i)</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>  {</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    <span class="comment">// Shape</span></div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    ir::Shape shape;</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>    <span class="keywordflow">for</span> (uint32_t d = 0; d &lt; MAX_RANK; ++d)</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>      shape.append(meta.input_seg_dims(i, d));</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    <span class="comment">// TypeInfo</span></div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    ir::TypeInfo type_info(toDataType(meta.input_seg_quant_type(i)), meta.input_seg_quant_scale(i),</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>                           meta.input_seg_quant_zp(i));</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    _origin_input_shapes.push_back(shape);</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    <span class="comment">// Create operand</span></div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    subg.addOperand(shape, type_info);</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    subg.addInput(<a class="code hl_typedef" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a>(i), <span class="stringliteral">&quot;tvn_input&quot;</span> + std::to_string(i));</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>  }</div>
 <div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>}</div>
 <div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span><a class="code hl_typedef" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> TrixLoader::loadOperandFromInput(uint32_t idx, ir::Graph &amp;subg)</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span><span class="keywordtype">void</span> TrixLoader::loadOutputOperands(TrixMetaReader &amp;meta, ir::Graph &amp;subg)</div>
 <div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>{</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>  <span class="comment">// Shape</span></div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  ir::Shape shape;</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>  <span class="keywordflow">for</span> (uint32_t d = 0; d &lt; MAX_RANK; ++d)</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    shape.append(_meta.<a class="code hl_function" href="classonert_1_1trix__loader_1_1_trix_meta_reader.html#a425b9b88d86874245e33c0b723b427e1">input_seg_dims</a>(idx, d));</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>  <span class="comment">// TypeInfo</span></div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>  ir::TypeInfo type_info(toDataType(_meta.<a class="code hl_function" href="classonert_1_1trix__loader_1_1_trix_meta_reader.html#a9b9453164dbca2cc6c9130c089217f2c">input_seg_quant_type</a>(idx)),</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>                         _meta.<a class="code hl_function" href="classonert_1_1trix__loader_1_1_trix_meta_reader.html#a670e5ce3f4bce3995108608d17eb6e81">input_seg_quant_scale</a>(idx), _meta.<a class="code hl_function" href="classonert_1_1trix__loader_1_1_trix_meta_reader.html#a7ebecae1ca11a5978e6dd991aa439fe5">input_seg_quant_zp</a>(idx));</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span> </div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>  _origin_input_shapes.push_back(shape);</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>  <span class="comment">// Create operand</span></div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>  <span class="keyword">const</span> <span class="keyword">auto</span> operand_index = subg.addOperand(shape, type_info);</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>  <span class="keywordflow">return</span> operand_index;</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>}</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> </div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span><a class="code hl_typedef" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> TrixLoader::loadOperandFromOutput(uint32_t idx, ir::Graph &amp;subg)</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>{</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>  <span class="comment">// Shape</span></div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>  ir::Shape shape;</div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>  <span class="keywordflow">for</span> (uint32_t d = 0; d &lt; MAX_RANK; ++d)</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    shape.append(_meta.<a class="code hl_function" href="classonert_1_1trix__loader_1_1_trix_meta_reader.html#a8c99b4649e948ed6ad56f9ccd4bcbd7d">output_seg_dims</a>(idx, d));</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; meta.output_seg_num(); ++i)</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  {</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    <span class="comment">// Shape</span></div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    ir::Shape shape;</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    <span class="keywordflow">for</span> (uint32_t d = 0; d &lt; MAX_RANK; ++d)</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>      shape.append(meta.output_seg_dims(i, d));</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span> </div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    <span class="comment">// TypeInfo</span></div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    ir::TypeInfo type_info(toDataType(meta.output_seg_quant_type(i)),</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>                           meta.output_seg_quant_scale(i), meta.output_seg_quant_zp(i));</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span> </div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    _origin_output_shapes.push_back(shape);</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    <span class="comment">// Create operand</span></div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    subg.addOperand(shape, type_info);</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    subg.addOutput(<a class="code hl_typedef" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a>(subg.getInputs().size() + i), <span class="stringliteral">&quot;tvn_out&quot;</span> + std::to_string(i));</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>  }</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>}</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span> </div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>std::unique_ptr&lt;ir::Graph&gt; TrixLoader::loadSubgraph()</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>{</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>  <span class="keyword">auto</span> subg = std::make_unique&lt;ir::Graph&gt;();</div>
 <div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span> </div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>  <span class="comment">// TypeInfo</span></div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>  ir::TypeInfo type_info(toDataType(_meta.<a class="code hl_function" href="classonert_1_1trix__loader_1_1_trix_meta_reader.html#ac763b58455800f3c8f8e01d375752eb2">output_seg_quant_type</a>(idx)),</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>                         _meta.<a class="code hl_function" href="classonert_1_1trix__loader_1_1_trix_meta_reader.html#a7cfd996361bb3c286382705d969acc29">output_seg_quant_scale</a>(idx), _meta.<a class="code hl_function" href="classonert_1_1trix__loader_1_1_trix_meta_reader.html#a4bbe4f7e21f46937087181c9b1af7851">output_seg_quant_zp</a>(idx));</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span> </div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>  _origin_output_shapes.push_back(shape);</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>  <span class="comment">// Create operand</span></div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>  <span class="keyword">const</span> <span class="keyword">auto</span> operand_index = subg.addOperand(shape, type_info);</div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>  <span class="keywordflow">return</span> operand_index;</div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>}</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span> </div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span><span class="keywordtype">void</span> TrixLoader::loadOperands(ir::Graph &amp;subg)</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>{</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>  <span class="keyword">auto</span> in_num = _meta.<a class="code hl_function" href="classonert_1_1trix__loader_1_1_trix_meta_reader.html#ac216102950f52cb86884e1c00fbb3b6f">input_seg_num</a>();</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; in_num; ++i)</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>  {</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    loadOperandFromInput(i, subg);</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>  <span class="keywordflow">if</span> (_model_path.size() == 1)</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>  {</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    <span class="comment">// Single model</span></div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>    TrixMetaReader meta;</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    meta.init(_model_path.front().c_str());</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    loadInputOperands(meta, *subg);</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    loadOutputOperands(meta, *subg);</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>  }</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>  <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>  {</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    <span class="comment">// Multiple models</span></div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    TrixMetaReader head_model_meta, tail_model_meta;</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>    head_model_meta.init(_model_path.front().c_str());</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>    tail_model_meta.init(_model_path.back().c_str());</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    loadInputOperands(head_model_meta, *subg);</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    loadOutputOperands(tail_model_meta, *subg);</div>
 <div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>  }</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>  <span class="keyword">auto</span> out_num = _meta.<a class="code hl_function" href="classonert_1_1trix__loader_1_1_trix_meta_reader.html#a57f51f45dbe4f062f6f78d65a11e33c8">output_seg_num</a>();</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; out_num; ++i)</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>  {</div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>    loadOperandFromOutput(i, subg);</div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>  }</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>}</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span> </div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>std::unique_ptr&lt;ir::Graph&gt; TrixLoader::loadSubgraph()</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>{</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>  <span class="keyword">auto</span> subg = std::make_unique&lt;ir::Graph&gt;();</div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>  _meta.<a class="code hl_function" href="classonert_1_1trix__loader_1_1_trix_meta_reader.html#aff746e4be9c51fbe30d3493665f853a9">init</a>(_model_path.c_str());</div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span> </div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>  <span class="comment">// Load tensors</span></div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>  loadOperands(*subg);</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span> </div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>  <span class="comment">// Create operations</span></div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>  loadBulk(*subg);</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span> </div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>  subg-&gt;verify();</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>  <span class="keywordflow">return</span> subg;</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>}</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span> </div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span><span class="keywordtype">void</span> TrixLoader::loadModel(std::unique_ptr&lt;ir::Model&gt; &amp;model)</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>{</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>  <span class="comment">// one subgraph only</span></div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>  <span class="keyword">auto</span> subg = loadSubgraph();</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>  <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a>-&gt;push(<a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>(0), std::move(subg));</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>}</div>
 <div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span> </div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>  <span class="comment">// Set inputs</span></div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; _meta.<a class="code hl_function" href="classonert_1_1trix__loader_1_1_trix_meta_reader.html#ac216102950f52cb86884e1c00fbb3b6f">input_seg_num</a>(); ++i)</div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>  {</div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>    subg-&gt;addInput(inputIdxToOperandIdx(i), <span class="stringliteral">&quot;tvn_input&quot;</span> + std::to_string(i));</div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>  }</div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>  <span class="comment">// Set outputs</span></div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; _meta.<a class="code hl_function" href="classonert_1_1trix__loader_1_1_trix_meta_reader.html#a57f51f45dbe4f062f6f78d65a11e33c8">output_seg_num</a>(); ++i)</div>
+<div class="foldopen" id="foldopen00219" data-start="{" data-end="}">
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno"><a class="line" href="classonert_1_1trix__loader_1_1_trix_loader.html#a4de05511d27f3c45fc9772435badeee8">  219</a></span>std::unique_ptr&lt;ir::Model&gt; <a class="code hl_function" href="classonert_1_1trix__loader_1_1_trix_loader.html#a4de05511d27f3c45fc9772435badeee8">TrixLoader::loadFromFile</a>(<span class="keyword">const</span> std::string &amp;file_path)</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>{</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>  <span class="keyword">auto</span> model = std::make_unique&lt;ir::Model&gt;();</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span> </div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>  std::stringstream ss{file_path};</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>  std::string path;</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>  <span class="keywordflow">while</span> (std::getline(ss, path, <span class="charliteral">&#39;;&#39;</span>))</div>
 <div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>  {</div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>    subg-&gt;addOutput(outputIdxToOperandIdx(i), <span class="stringliteral">&quot;tvn_out&quot;</span> + std::to_string(i));</div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>  }</div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>  <span class="comment">// Create operations</span></div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>  loadBulk(*subg);</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>    <span class="comment">// model path will be used to set Bulk param</span></div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>    <span class="comment">// , and it can be more than one for multiple models</span></div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>    _model_path.push_back(path);</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>  }</div>
 <div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span> </div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>  subg-&gt;verify();</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>  <span class="keywordflow">return</span> subg;</div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>}</div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span> </div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span><span class="keywordtype">void</span> TrixLoader::loadModel(std::unique_ptr&lt;ir::Model&gt; &amp;model)</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>{</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>  <span class="comment">// one subgraph only</span></div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>  <span class="keyword">auto</span> subg = loadSubgraph();</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>  <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a>-&gt;push(<a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>(0), std::move(subg));</div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>}</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>  loadModel(model);</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span> </div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>  <span class="keywordflow">return</span> model;</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>}</div>
+</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span> </div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>} <span class="comment">// namespace onert::trix_loader</span></div>
+</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span> </div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span> </div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno"><a class="line" href="_trix_loader_8cc.html#a2f95014c3afd5ae3875e7f92140e17b1">  241</a></span><a class="code hl_class" href="classonert_1_1loader_1_1_i_loader.html">onert::loader::ILoader</a> *<a class="code hl_function" href="_trix_loader_8cc.html#a2f95014c3afd5ae3875e7f92140e17b1">onert_loader_create</a>() { <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code hl_class" href="classonert_1_1trix__loader_1_1_trix_loader.html">onert::trix_loader::TrixLoader</a>; }</div>
 <div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span> </div>
-<div class="foldopen" id="foldopen00243" data-start="{" data-end="}">
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno"><a class="line" href="classonert_1_1trix__loader_1_1_trix_loader.html#a4de05511d27f3c45fc9772435badeee8">  243</a></span>std::unique_ptr&lt;ir::Model&gt; <a class="code hl_function" href="classonert_1_1trix__loader_1_1_trix_loader.html#a4de05511d27f3c45fc9772435badeee8">TrixLoader::loadFromFile</a>(<span class="keyword">const</span> std::string &amp;file_path)</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>{</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>  <span class="keyword">auto</span> model = std::make_unique&lt;ir::Model&gt;();</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>  <span class="comment">// model path will be used to set Bulk param</span></div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>  _model_path = file_path;</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>  <span class="comment">// metadata is initialized from model path since it is loadFromFile</span></div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>  _meta.<a class="code hl_function" href="classonert_1_1trix__loader_1_1_trix_meta_reader.html#aff746e4be9c51fbe30d3493665f853a9">init</a>(_model_path.c_str());</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>  loadModel(model);</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>  <span class="keywordflow">return</span> model;</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>}</div>
-</div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span> </div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>} <span class="comment">// namespace onert::trix_loader</span></div>
-</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span> </div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span> </div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno"><a class="line" href="_trix_loader_8cc.html#a2f95014c3afd5ae3875e7f92140e17b1">  258</a></span><a class="code hl_class" href="classonert_1_1loader_1_1_i_loader.html">onert::loader::ILoader</a> *<a class="code hl_function" href="_trix_loader_8cc.html#a2f95014c3afd5ae3875e7f92140e17b1">onert_loader_create</a>() { <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code hl_class" href="classonert_1_1trix__loader_1_1_trix_loader.html">onert::trix_loader::TrixLoader</a>; }</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span> </div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno"><a class="line" href="_trix_loader_8cc.html#af497ab4bea755c643f69cb522da4db40">  260</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="_trix_loader_8cc.html#af497ab4bea755c643f69cb522da4db40">onert_loader_destroy</a>(<a class="code hl_class" href="classonert_1_1loader_1_1_i_loader.html">onert::loader::ILoader</a> *loader) { <span class="keyword">delete</span> loader; }</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>}</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno"><a class="line" href="_trix_loader_8cc.html#af497ab4bea755c643f69cb522da4db40">  243</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="_trix_loader_8cc.html#af497ab4bea755c643f69cb522da4db40">onert_loader_destroy</a>(<a class="code hl_class" href="classonert_1_1loader_1_1_i_loader.html">onert::loader::ILoader</a> *loader) { <span class="keyword">delete</span> loader; }</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>}</div>
 <div class="ttc" id="a_bulk_8h_html"><div class="ttname"><a href="_bulk_8h.html">Bulk.h</a></div></div>
+<div class="ttc" id="a_bulk_pipeline_buffer_8cc_html_a449e574ed6911881dc55507cb5635c2c"><div class="ttname"><a href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a></div><div class="ttdeci">int32_t type</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_buffer_8cc_source.html#l00000">BulkPipelineBuffer.cc:0</a></div></div>
 <div class="ttc" id="a_i_loader_8h_html"><div class="ttname"><a href="_i_loader_8h.html">ILoader.h</a></div></div>
-<div class="ttc" id="a_trix_loader_8cc_html_a2f95014c3afd5ae3875e7f92140e17b1"><div class="ttname"><a href="_trix_loader_8cc.html#a2f95014c3afd5ae3875e7f92140e17b1">onert_loader_create</a></div><div class="ttdeci">onert::loader::ILoader * onert_loader_create()</div><div class="ttdef"><b>Definition</b> <a href="_trix_loader_8cc_source.html#l00258">TrixLoader.cc:258</a></div></div>
-<div class="ttc" id="a_trix_loader_8cc_html_af497ab4bea755c643f69cb522da4db40"><div class="ttname"><a href="_trix_loader_8cc.html#af497ab4bea755c643f69cb522da4db40">onert_loader_destroy</a></div><div class="ttdeci">void onert_loader_destroy(onert::loader::ILoader *loader)</div><div class="ttdef"><b>Definition</b> <a href="_trix_loader_8cc_source.html#l00260">TrixLoader.cc:260</a></div></div>
+<div class="ttc" id="a_trix_loader_8cc_html_a2f95014c3afd5ae3875e7f92140e17b1"><div class="ttname"><a href="_trix_loader_8cc.html#a2f95014c3afd5ae3875e7f92140e17b1">onert_loader_create</a></div><div class="ttdeci">onert::loader::ILoader * onert_loader_create()</div><div class="ttdef"><b>Definition</b> <a href="_trix_loader_8cc_source.html#l00241">TrixLoader.cc:241</a></div></div>
+<div class="ttc" id="a_trix_loader_8cc_html_af497ab4bea755c643f69cb522da4db40"><div class="ttname"><a href="_trix_loader_8cc.html#af497ab4bea755c643f69cb522da4db40">onert_loader_destroy</a></div><div class="ttdeci">void onert_loader_destroy(onert::loader::ILoader *loader)</div><div class="ttdef"><b>Definition</b> <a href="_trix_loader_8cc_source.html#l00243">TrixLoader.cc:243</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_graph_html"><div class="ttname"><a href="classonert_1_1ir_1_1_graph.html">onert::ir::Graph</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00031">Graph.h:32</a></div></div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_operand_index_sequence_html"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_index_sequence.html">onert::ir::OperandIndexSequence</a></div><div class="ttdef"><b>Definition</b> <a href="_operand_index_sequence_8h_source.html#l00034">OperandIndexSequence.h:35</a></div></div>
 <div class="ttc" id="aclassonert_1_1loader_1_1_i_loader_html"><div class="ttname"><a href="classonert_1_1loader_1_1_i_loader.html">onert::loader::ILoader</a></div><div class="ttdef"><b>Definition</b> <a href="_i_loader_8h_source.html#l00028">ILoader.h:29</a></div></div>
 <div class="ttc" id="aclassonert_1_1trix__loader_1_1_trix_loader_html"><div class="ttname"><a href="classonert_1_1trix__loader_1_1_trix_loader.html">onert::trix_loader::TrixLoader</a></div><div class="ttdef"><b>Definition</b> <a href="_trix_loader_8cc_source.html#l00075">TrixLoader.cc:76</a></div></div>
 <div class="ttc" id="aclassonert_1_1trix__loader_1_1_trix_loader_html_a2dd79186c65f09291f414784b4d6f479"><div class="ttname"><a href="classonert_1_1trix__loader_1_1_trix_loader.html#a2dd79186c65f09291f414784b4d6f479">onert::trix_loader::TrixLoader::TrixLoader</a></div><div class="ttdeci">TrixLoader()=default</div><div class="ttdoc">Construct a new Loader object.</div></div>
-<div class="ttc" id="aclassonert_1_1trix__loader_1_1_trix_loader_html_a4de05511d27f3c45fc9772435badeee8"><div class="ttname"><a href="classonert_1_1trix__loader_1_1_trix_loader.html#a4de05511d27f3c45fc9772435badeee8">onert::trix_loader::TrixLoader::loadFromFile</a></div><div class="ttdeci">std::unique_ptr&lt; ir::Model &gt; loadFromFile(const std::string &amp;file_path) override</div><div class="ttdoc">Load a model from file.</div><div class="ttdef"><b>Definition</b> <a href="_trix_loader_8cc_source.html#l00243">TrixLoader.cc:243</a></div></div>
+<div class="ttc" id="aclassonert_1_1trix__loader_1_1_trix_loader_html_a4de05511d27f3c45fc9772435badeee8"><div class="ttname"><a href="classonert_1_1trix__loader_1_1_trix_loader.html#a4de05511d27f3c45fc9772435badeee8">onert::trix_loader::TrixLoader::loadFromFile</a></div><div class="ttdeci">std::unique_ptr&lt; ir::Model &gt; loadFromFile(const std::string &amp;file_path) override</div><div class="ttdoc">Load a model from file.</div><div class="ttdef"><b>Definition</b> <a href="_trix_loader_8cc_source.html#l00219">TrixLoader.cc:219</a></div></div>
 <div class="ttc" id="aclassonert_1_1trix__loader_1_1_trix_meta_reader_html"><div class="ttname"><a href="classonert_1_1trix__loader_1_1_trix_meta_reader.html">onert::trix_loader::TrixMetaReader</a></div><div class="ttdoc">A tvn metadata reader.</div><div class="ttdef"><b>Definition</b> <a href="_trix_loader_8cc_source.html#l00031">TrixLoader.cc:32</a></div></div>
 <div class="ttc" id="aclassonert_1_1trix__loader_1_1_trix_meta_reader_html_a312b30f5d1bc5bf0b73b3539a050d584"><div class="ttname"><a href="classonert_1_1trix__loader_1_1_trix_meta_reader.html#a312b30f5d1bc5bf0b73b3539a050d584">onert::trix_loader::TrixMetaReader::input_seg_layout</a></div><div class="ttdeci">data_layout input_seg_layout(uint32_t n) const</div><div class="ttdef"><b>Definition</b> <a href="_trix_loader_8cc_source.html#l00038">TrixLoader.cc:38</a></div></div>
 <div class="ttc" id="aclassonert_1_1trix__loader_1_1_trix_meta_reader_html_a3ca04fc08c80d66649b1dcdeca4a98f9"><div class="ttname"><a href="classonert_1_1trix__loader_1_1_trix_meta_reader.html#a3ca04fc08c80d66649b1dcdeca4a98f9">onert::trix_loader::TrixMetaReader::output_seg_layout</a></div><div class="ttdeci">data_layout output_seg_layout(uint32_t n) const</div><div class="ttdef"><b>Definition</b> <a href="_trix_loader_8cc_source.html#l00039">TrixLoader.cc:39</a></div></div>
@@ -388,7 +371,6 @@ $(document).ready(function(){initNavTree('_trix_loader_8cc_source.html',''); ini
 <div class="ttc" id="aclassonert_1_1trix__loader_1_1_trix_meta_reader_html_aff746e4be9c51fbe30d3493665f853a9"><div class="ttname"><a href="classonert_1_1trix__loader_1_1_trix_meta_reader.html#aff746e4be9c51fbe30d3493665f853a9">onert::trix_loader::TrixMetaReader::init</a></div><div class="ttdeci">void init(const char *path)</div><div class="ttdef"><b>Definition</b> <a href="_trix_loader_8cc_source.html#l00061">TrixLoader.cc:61</a></div></div>
 <div class="ttc" id="aclassonert_1_1util_1_1_index_html"><div class="ttname"><a href="classonert_1_1util_1_1_index.html">onert::util::Index&lt; uint32_t, OperandIndexTag &gt;</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_ab0b89ce5ecc21d39e6665fcf96a623ca"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">GenH5RandomInputs.model</a></div><div class="ttdeci">model</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00038">GenH5RandomInputs.py:38</a></div></div>
-<div class="ttc" id="anamespace_gen_h5_random_inputs_html_abcab13752e1826b70991e56f8e9a834d"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">GenH5RandomInputs.inputs</a></div><div class="ttdeci">inputs</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00049">GenH5RandomInputs.py:49</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a0343744557a8c62c8f3ac225760f8331"><div class="ttname"><a href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331">onert::ir::DataType</a></div><div class="ttdeci">DataType</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_data_type_8h_source.html#l00025">DataType.h:26</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_ae9d6514c748e05f0254717f688bc458f"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">onert::ir::OperandIndex</a></div><div class="ttdeci">::onert::util::Index&lt; uint32_t, OperandIndexTag &gt; OperandIndex</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00033">Index.h:33</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_afff9e77cac191f4fcc8c447e4bea053c"><div class="ttname"><a href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">onert::ir::SubgraphIndex</a></div><div class="ttdeci">::onert::util::Index&lt; uint16_t, SubgraphIndexTag &gt; SubgraphIndex</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00039">Index.h:39</a></div></div>

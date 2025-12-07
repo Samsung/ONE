@@ -317,7 +317,7 @@ Functions</h2></td></tr>
 <tr class="separator:afc22736e0da6f4516d09f994d0e9d07a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03d14d78d8be88975e381ff1c795bd5c" id="r_a03d14d78d8be88975e381ff1c795bd5c"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a03d14d78d8be88975e381ff1c795bd5c">CalculateInputRadius</a> (int input_integer_bits, int input_left_shift)</td></tr>
 <tr class="separator:a03d14d78d8be88975e381ff1c795bd5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5698db9da4bb6ebb7fb8c86cb9576c5d" id="r_a5698db9da4bb6ebb7fb8c86cb9576c5d"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5698db9da4bb6ebb7fb8c86cb9576c5d">sizeOfData</a> (<a class="el" href="_operand_type_8h.html#aeb6507c1024b22251bb08c413044d1fd">OperandType</a> type, const std::vector&lt; int32_t &gt; &amp;dimensions)</td></tr>
+<tr class="memitem:a5698db9da4bb6ebb7fb8c86cb9576c5d" id="r_a5698db9da4bb6ebb7fb8c86cb9576c5d"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5698db9da4bb6ebb7fb8c86cb9576c5d">sizeOfData</a> (<a class="el" href="_operand_type_8h.html#aeb6507c1024b22251bb08c413044d1fd">OperandType</a> <a class="el" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>, const std::vector&lt; int32_t &gt; &amp;dimensions)</td></tr>
 <tr class="separator:a5698db9da4bb6ebb7fb8c86cb9576c5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5650844753363f826ab47f2e9a947983" id="r_a5650844753363f826ab47f2e9a947983"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacennfw_1_1cker.html#a214af5851ca7b77819a78cf4177eb754">nnfw::cker::PaddingType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5650844753363f826ab47f2e9a947983">getPaddingType</a> (<a class="el" href="namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693">ir::PaddingType</a> ir_padding_type)</td></tr>
 <tr class="separator:a5650844753363f826ab47f2e9a947983"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1811,7 +1811,7 @@ template&lt;typename T &gt; </div>
 <div class="fragment"><div class="line"><span class="lineno">  230</span>{</div>
 <div class="line"><span class="lineno">  231</span>  uint32_t <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = 4;</div>
 <div class="line"><span class="lineno">  232</span> </div>
-<div class="line"><span class="lineno">  233</span>  <span class="keywordflow">switch</span> (type)</div>
+<div class="line"><span class="lineno">  233</span>  <span class="keywordflow">switch</span> (<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</div>
 <div class="line"><span class="lineno">  234</span>  {</div>
 <div class="line"><span class="lineno">  235</span>    <span class="keywordflow">case</span> OperandType::FLOAT32:</div>
 <div class="line"><span class="lineno">  236</span>    <span class="keywordflow">case</span> OperandType::INT32:</div>
@@ -1839,9 +1839,10 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  258</span> </div>
 <div class="line"><span class="lineno">  259</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>;</div>
 <div class="line"><span class="lineno">  260</span>}</div>
+<div class="ttc" id="a_bulk_pipeline_buffer_8cc_html_a449e574ed6911881dc55507cb5635c2c"><div class="ttname"><a href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a></div><div class="ttdeci">int32_t type</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_buffer_8cc_source.html#l00000">BulkPipelineBuffer.cc:0</a></div></div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>, and <a class="el" href="_bulk_pipeline_buffer_8cc_source.html#l00000">type</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_split_layer_8cc_source.html#l00062">onert::backend::cpu::ops::SplitLayer::split()</a>, and <a class="el" href="_split_v_layer_8cc_source.html#l00065">onert::backend::cpu::ops::SplitVLayer::splitV()</a>.</p>
 

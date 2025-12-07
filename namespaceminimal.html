@@ -133,29 +133,29 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="minimal_8py_source.html#l00006">6</a> of file <a class="el" href="minimal_8py_source.html">minimal.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    6</span><span class="keyword">def </span><a class="code hl_function" href="circle-input-names_8cpp.html#a840291bc02cba5474a4cb46a9b9566fe">main</a>(nnpackage_path, backends=&quot;cpu&quot;):</div>
-<div class="line"><span class="lineno">    7</span>    <span class="comment"># Create session and load nnpackage</span></div>
-<div class="line"><span class="lineno">    8</span>    <span class="comment"># The default value of backends is &quot;cpu&quot;.</span></div>
-<div class="line"><span class="lineno">    9</span>    session = infer.session(nnpackage_path, backends)</div>
-<div class="line"><span class="lineno">   10</span> </div>
-<div class="line"><span class="lineno">   11</span>    <span class="comment"># Prepare input. Here we just allocate dummy input arrays.</span></div>
-<div class="line"><span class="lineno">   12</span>    input_infos = session.get_inputs_tensorinfo()</div>
-<div class="line"><span class="lineno">   13</span>    dummy_inputs = []</div>
-<div class="line"><span class="lineno">   14</span>    <span class="keywordflow">for</span> info <span class="keywordflow">in</span> input_infos:</div>
-<div class="line"><span class="lineno">   15</span>        <span class="comment"># Retrieve the dimensions list from tensorinfo property.</span></div>
-<div class="line"><span class="lineno">   16</span>        dims = list(info.dims)</div>
-<div class="line"><span class="lineno">   17</span>        <span class="comment"># Build the shape tuple from tensorinfo dimensions.</span></div>
-<div class="line"><span class="lineno">   18</span>        shape = tuple(dims[:info.rank])</div>
-<div class="line"><span class="lineno">   19</span>        <span class="comment"># Create a dummy numpy array filled with zeros.</span></div>
-<div class="line"><span class="lineno">   20</span>        dummy_inputs.append(np.zeros(shape, dtype=info.dtype))</div>
-<div class="line"><span class="lineno">   21</span> </div>
-<div class="line"><span class="lineno">   22</span>    outputs = session.infer(dummy_inputs)</div>
+<p class="definition">Definition at line <a class="el" href="minimal_8py_source.html#l00008">8</a> of file <a class="el" href="minimal_8py_source.html">minimal.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">    8</span><span class="keyword">def </span><a class="code hl_function" href="circle-input-names_8cpp.html#a840291bc02cba5474a4cb46a9b9566fe">main</a>(nnpackage_path, backends=&quot;cpu&quot;):</div>
+<div class="line"><span class="lineno">    9</span>    <span class="comment"># Create session and load nnpackage</span></div>
+<div class="line"><span class="lineno">   10</span>    <span class="comment"># The default value of backends is &quot;cpu&quot;.</span></div>
+<div class="line"><span class="lineno">   11</span>    session = infer.session(nnpackage_path, backends)</div>
+<div class="line"><span class="lineno">   12</span> </div>
+<div class="line"><span class="lineno">   13</span>    <span class="comment"># Prepare input. Here we just allocate dummy input arrays.</span></div>
+<div class="line"><span class="lineno">   14</span>    input_infos = session.get_inputs_tensorinfo()</div>
+<div class="line"><span class="lineno">   15</span>    dummy_inputs = []</div>
+<div class="line"><span class="lineno">   16</span>    <span class="keywordflow">for</span> info <span class="keywordflow">in</span> input_infos:</div>
+<div class="line"><span class="lineno">   17</span>        <span class="comment"># Retrieve the dimensions list from tensorinfo property.</span></div>
+<div class="line"><span class="lineno">   18</span>        dims = list(info.dims)</div>
+<div class="line"><span class="lineno">   19</span>        <span class="comment"># Build the shape tuple from tensorinfo dimensions.</span></div>
+<div class="line"><span class="lineno">   20</span>        shape = tuple(dims[:info.rank])</div>
+<div class="line"><span class="lineno">   21</span>        <span class="comment"># Create a dummy numpy array filled with zeros.</span></div>
+<div class="line"><span class="lineno">   22</span>        dummy_inputs.append(np.zeros(shape, dtype=info.dtype))</div>
 <div class="line"><span class="lineno">   23</span> </div>
-<div class="line"><span class="lineno">   24</span>    print(f<span class="stringliteral">&quot;nnpackage {nnpackage_path.split(&#39;/&#39;)[-1]} runs successfully.&quot;</span>)</div>
-<div class="line"><span class="lineno">   25</span>    <span class="keywordflow">return</span></div>
-<div class="line"><span class="lineno">   26</span> </div>
-<div class="line"><span class="lineno">   27</span> </div>
+<div class="line"><span class="lineno">   24</span>    outputs = session.infer(dummy_inputs)</div>
+<div class="line"><span class="lineno">   25</span> </div>
+<div class="line"><span class="lineno">   26</span>    print(f<span class="stringliteral">&quot;nnpackage {nnpackage_path.split(&#39;/&#39;)[-1]} runs successfully.&quot;</span>)</div>
+<div class="line"><span class="lineno">   27</span>    <span class="keywordflow">return</span></div>
+<div class="line"><span class="lineno">   28</span> </div>
+<div class="line"><span class="lineno">   29</span> </div>
 <div class="ttc" id="acircle-input-names_8cpp_html_a840291bc02cba5474a4cb46a9b9566fe"><div class="ttname"><a href="circle-input-names_8cpp.html#a840291bc02cba5474a4cb46a9b9566fe">main</a></div><div class="ttdeci">int main(void)</div><div class="ttdef"><b>Definition</b> <a href="circle-input-names_8cpp_source.html#l00170">circle-input-names.cpp:170</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -173,7 +173,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="minimal_8py_source.html#l00029">29</a> of file <a class="el" href="minimal_8py_source.html">minimal.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="minimal_8py_source.html#l00031">31</a> of file <a class="el" href="minimal_8py_source.html">minimal.py</a>.</p>
 
 </div>
 </div>

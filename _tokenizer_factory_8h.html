@@ -116,7 +116,7 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a7c4bf4fc74d2cfc18835bb7611e39800" id="r_a7c4bf4fc74d2cfc18835bb7611e39800"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_tokenizer_factory_8h.html#a7c4bf4fc74d2cfc18835bb7611e39800">REGISTER_TOKENIZER</a>(name,  type)</td></tr>
+<tr class="memitem:a7c4bf4fc74d2cfc18835bb7611e39800" id="r_a7c4bf4fc74d2cfc18835bb7611e39800"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_tokenizer_factory_8h.html#a7c4bf4fc74d2cfc18835bb7611e39800">REGISTER_TOKENIZER</a>(name,  <a class="el" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</td></tr>
 <tr class="separator:a7c4bf4fc74d2cfc18835bb7611e39800"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
@@ -136,7 +136,7 @@ Macros</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">type&#160;</td>
+          <td class="paramname"><a class="el" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -147,30 +147,30 @@ Macros</h2></td></tr>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">  <span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceggma.html">ggma</a>                                                                             \</div>
 <div class="line">  {                                                                                          \</div>
-<div class="line">  <span class="keyword">struct </span>Registrar_##type                                                                    \</div>
+<div class="line">  <span class="keyword">struct </span>Registrar_##<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>                                                                    \</div>
 <div class="line">  {                                                                                          \</div>
-<div class="line">    Registrar_##type()                                                                       \</div>
+<div class="line">    Registrar_##<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>()                                                                       \</div>
 <div class="line">    {                                                                                        \</div>
 <div class="line">      ::ggma::TokenizerFactory::add(                                                         \</div>
 <div class="line">        name, [](<span class="keyword">const</span> std::string &amp;tokenizer_dir) { <span class="keywordflow">return</span> type::create(tokenizer_dir); }); \</div>
 <div class="line">    }                                                                                        \</div>
 <div class="line">  };                                                                                         \</div>
-<div class="line">  <span class="keyword">static</span> Registrar_##<a class="code hl_variable" href="namespaceinfer.html#ab89ed5258ead024638290064e52469c8">type</a> registrar_##<a class="code hl_variable" href="namespaceinfer.html#ab89ed5258ead024638290064e52469c8">type</a>;                                                  \</div>
+<div class="line">  <span class="keyword">static</span> Registrar_##<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a> registrar_##<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>;                                                  \</div>
 <div class="line">  }</div>
+<div class="ttc" id="a_bulk_pipeline_buffer_8cc_html_a449e574ed6911881dc55507cb5635c2c"><div class="ttname"><a href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a></div><div class="ttdeci">int32_t type</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_buffer_8cc_source.html#l00000">BulkPipelineBuffer.cc:0</a></div></div>
 <div class="ttc" id="anamespaceggma_html"><div class="ttname"><a href="namespaceggma.html">ggma</a></div><div class="ttdef"><b>Definition</b> <a href="ggma_2src_2_config_8cc_source.html#l00023">Config.cc:24</a></div></div>
-<div class="ttc" id="anamespaceinfer_html_ab89ed5258ead024638290064e52469c8"><div class="ttname"><a href="namespaceinfer.html#ab89ed5258ead024638290064e52469c8">infer.type</a></div><div class="ttdeci">type</div><div class="ttdef"><b>Definition</b> <a href="infer_8py_source.html#l00018">infer.py:18</a></div></div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="_tokenizer_factory_8h_source.html#l00051">51</a> of file <a class="el" href="_tokenizer_factory_8h_source.html">TokenizerFactory.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   53</span>  {                                                                                          \</div>
-<div class="line"><span class="lineno">   54</span>  <span class="keyword">struct </span>Registrar_##<a class="code hl_variable" href="namespaceinfer.html#ab89ed5258ead024638290064e52469c8">type</a>                                                                    \</div>
+<div class="line"><span class="lineno">   54</span>  <span class="keyword">struct </span>Registrar_##<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>                                                                    \</div>
 <div class="line"><span class="lineno">   55</span>  {                                                                                          \</div>
-<div class="line"><span class="lineno">   56</span>    Registrar_##<a class="code hl_variable" href="namespaceinfer.html#ab89ed5258ead024638290064e52469c8">type</a>()                                                                       \</div>
+<div class="line"><span class="lineno">   56</span>    Registrar_##<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>()                                                                       \</div>
 <div class="line"><span class="lineno">   57</span>    {                                                                                        \</div>
 <div class="line"><span class="lineno">   58</span>      ::ggma::TokenizerFactory::add(                                                         \</div>
 <div class="line"><span class="lineno">   59</span>        name, [](<span class="keyword">const</span> std::string &amp;tokenizer_dir) { <span class="keywordflow">return</span> type::create(tokenizer_dir); }); \</div>
 <div class="line"><span class="lineno">   60</span>    }                                                                                        \</div>
 <div class="line"><span class="lineno">   61</span>  };                                                                                         \</div>
-<div class="line"><span class="lineno">   62</span>  <span class="keyword">static</span> Registrar_##<a class="code hl_variable" href="namespaceinfer.html#ab89ed5258ead024638290064e52469c8">type</a> registrar_##<a class="code hl_variable" href="namespaceinfer.html#ab89ed5258ead024638290064e52469c8">type</a>;                                                  \</div>
+<div class="line"><span class="lineno">   62</span>  <span class="keyword">static</span> Registrar_##<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a> registrar_##<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>;                                                  \</div>
 <div class="line"><span class="lineno">   63</span>  }</div>
 </div><!-- fragment -->
 </div>

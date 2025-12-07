@@ -116,9 +116,9 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:aafffaacd008a5a680278758f27895c94" id="r_aafffaacd008a5a680278758f27895c94"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_select_layer_8cc.html#aafffaacd008a5a680278758f27895c94">KERNEL_SELECT</a>(type,  op)</td></tr>
+<tr class="memitem:aafffaacd008a5a680278758f27895c94" id="r_aafffaacd008a5a680278758f27895c94"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_select_layer_8cc.html#aafffaacd008a5a680278758f27895c94">KERNEL_SELECT</a>(<a class="el" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>,  op)</td></tr>
 <tr class="separator:aafffaacd008a5a680278758f27895c94"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1327004010b84cb19659537df90867e7" id="r_a1327004010b84cb19659537df90867e7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_select_layer_8cc.html#a1327004010b84cb19659537df90867e7">KERNEL_SWITCH</a>(type,  op)</td></tr>
+<tr class="memitem:a1327004010b84cb19659537df90867e7" id="r_a1327004010b84cb19659537df90867e7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_select_layer_8cc.html#a1327004010b84cb19659537df90867e7">KERNEL_SWITCH</a>(<a class="el" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>,  op)</td></tr>
 <tr class="separator:a1327004010b84cb19659537df90867e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
@@ -132,7 +132,7 @@ Macros</h2></td></tr>
           <td class="memname">#define KERNEL_SELECT</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">type, </td>
+          <td class="paramname"><a class="el" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -163,7 +163,7 @@ Macros</h2></td></tr>
           <td class="memname">#define KERNEL_SWITCH</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">type, </td>
+          <td class="paramname"><a class="el" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -178,7 +178,7 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">switch</span> (type)                                                  \</div>
+<b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">switch</span> (<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)                                                  \</div>
 <div class="line">  {                                                              \</div>
 <div class="line">    <span class="keywordflow">break</span>;                                                       \</div>
 <div class="line">    <span class="keywordflow">case</span> OperandType::FLOAT32:                                   \</div>
@@ -187,6 +187,7 @@ Macros</h2></td></tr>
 <div class="line">    <span class="keywordflow">default</span>:                                                     \</div>
 <div class="line">      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Select: unsupported data type&quot;</span>}; \</div>
 <div class="line">  }</div>
+<div class="ttc" id="a_bulk_pipeline_buffer_8cc_html_a449e574ed6911881dc55507cb5635c2c"><div class="ttname"><a href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a></div><div class="ttdeci">int32_t type</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_buffer_8cc_source.html#l00000">BulkPipelineBuffer.cc:0</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

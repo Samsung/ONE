@@ -183,7 +183,7 @@ $(document).ready(function(){initNavTree('nnkit-onnxrt_2support_2src_2_runner_8c
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    status.<a class="code hl_function" href="classnnkit_1_1support_1_1onnx_1_1_status.html#a2f08735070e2f7551edc55b2a45b5189">throwOnError</a>();</div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keyword">const</span> OrtTensorTypeAndShapeInfo *tensor_info = OrtCastTypeInfoToTensorInfo(typeinfo);</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    ONNXTensorElementDataType type = OrtGetTensorElementType(tensor_info);</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    ONNXTensorElementDataType <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a> = OrtGetTensorElementType(tensor_info);</div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    uint32_t num_dims = OrtGetNumOfDimensions(tensor_info);</div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    std::vector&lt;size_t&gt; dims(num_dims);</div>
@@ -203,7 +203,7 @@ $(document).ready(function(){initNavTree('nnkit-onnxrt_2support_2src_2_runner_8c
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    }</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    OrtReleaseTypeInfo(typeinfo);</div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    _inputs-&gt;set(i, name, type, dims);</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    _inputs-&gt;set(i, name, <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>, dims);</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  }</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>}</div>
 </div>
@@ -237,7 +237,7 @@ $(document).ready(function(){initNavTree('nnkit-onnxrt_2support_2src_2_runner_8c
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    status.<a class="code hl_function" href="classnnkit_1_1support_1_1onnx_1_1_status.html#a2f08735070e2f7551edc55b2a45b5189">throwOnError</a>();</div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    <span class="keyword">const</span> OrtTensorTypeAndShapeInfo *tensor_info = OrtCastTypeInfoToTensorInfo(typeinfo);</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    ONNXTensorElementDataType type = OrtGetTensorElementType(tensor_info);</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    ONNXTensorElementDataType <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a> = OrtGetTensorElementType(tensor_info);</div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> </div>
 <div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    uint32_t num_dims = OrtGetNumOfDimensions(tensor_info);</div>
 <div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    std::vector&lt;size_t&gt; dims(num_dims);</div>
@@ -257,7 +257,7 @@ $(document).ready(function(){initNavTree('nnkit-onnxrt_2support_2src_2_runner_8c
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    }</div>
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    OrtReleaseTypeInfo(typeinfo);</div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> </div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    _outputs-&gt;set(i, name, type, dims);</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    _outputs-&gt;set(i, name, <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>, dims);</div>
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>  }</div>
 <div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>}</div>
 </div>
@@ -290,6 +290,7 @@ $(document).ready(function(){initNavTree('nnkit-onnxrt_2support_2src_2_runner_8c
 <div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>} <span class="comment">// namespace onnx</span></div>
 <div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>} <span class="comment">// namespace support</span></div>
 <div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>} <span class="comment">// namespace nnkit</span></div>
+<div class="ttc" id="a_bulk_pipeline_buffer_8cc_html_a449e574ed6911881dc55507cb5635c2c"><div class="ttname"><a href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a></div><div class="ttdeci">int32_t type</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_buffer_8cc_source.html#l00000">BulkPipelineBuffer.cc:0</a></div></div>
 <div class="ttc" id="a_status_8h_html"><div class="ttname"><a href="_status_8h.html">Status.h</a></div></div>
 <div class="ttc" id="aclassnnkit_1_1support_1_1onnx_1_1_allocator_html"><div class="ttname"><a href="classnnkit_1_1support_1_1onnx_1_1_allocator.html">nnkit::support::onnx::Allocator</a></div><div class="ttdef"><b>Definition</b> <a href="compiler_2nnkit-onnxrt_2support_2include_2nnkit_2support_2onnx_2_allocator_8h_source.html#l00031">Allocator.h:32</a></div></div>
 <div class="ttc" id="aclassnnkit_1_1support_1_1onnx_1_1_runner_html_a029dae4f881afc98df295d003ae91973"><div class="ttname"><a href="classnnkit_1_1support_1_1onnx_1_1_runner.html#a029dae4f881afc98df295d003ae91973">nnkit::support::onnx::Runner::prepareOutputs</a></div><div class="ttdeci">void prepareOutputs(void)</div><div class="ttdef"><b>Definition</b> <a href="nnkit-onnxrt_2support_2src_2_runner_8cpp_source.html#l00106">Runner.cpp:106</a></div></div>

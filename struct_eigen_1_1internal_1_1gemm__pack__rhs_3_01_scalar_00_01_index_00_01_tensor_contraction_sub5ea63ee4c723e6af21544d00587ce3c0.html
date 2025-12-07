@@ -104,7 +104,7 @@ Public Types</h2></td></tr>
 <tr class="separator:a4bb66855cc7bf52e88f1e76830ea97c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c95f1483c30bbb500e3087559b1a4a9" id="r_a5c95f1483c30bbb500e3087559b1a4a9"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="struct_eigen_1_1internal_1_1gemm__pack__rhs_3_01_scalar_00_01_index_00_01_tensor_contraction_sub5ea63ee4c723e6af21544d00587ce3c0.html#a4bb66855cc7bf52e88f1e76830ea97c4">SubMapper</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_eigen_1_1internal_1_1gemm__pack__rhs_3_01_scalar_00_01_index_00_01_tensor_contraction_sub5ea63ee4c723e6af21544d00587ce3c0.html#a5c95f1483c30bbb500e3087559b1a4a9">DataMapper</a></td></tr>
 <tr class="separator:a5c95f1483c30bbb500e3087559b1a4a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a41eda514c8d010eb30fc58189804dafa" id="r_a41eda514c8d010eb30fc58189804dafa"><td class="memItemLeft" align="right" valign="top">typedef packet_traits&lt; Scalar &gt;::type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_eigen_1_1internal_1_1gemm__pack__rhs_3_01_scalar_00_01_index_00_01_tensor_contraction_sub5ea63ee4c723e6af21544d00587ce3c0.html#a41eda514c8d010eb30fc58189804dafa">Packet</a></td></tr>
+<tr class="memitem:a41eda514c8d010eb30fc58189804dafa" id="r_a41eda514c8d010eb30fc58189804dafa"><td class="memItemLeft" align="right" valign="top">typedef packet_traits&lt; Scalar &gt;<a class="el" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">::type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_eigen_1_1internal_1_1gemm__pack__rhs_3_01_scalar_00_01_index_00_01_tensor_contraction_sub5ea63ee4c723e6af21544d00587ce3c0.html#a41eda514c8d010eb30fc58189804dafa">Packet</a></td></tr>
 <tr class="separator:a41eda514c8d010eb30fc58189804dafa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -144,7 +144,7 @@ template&lt;typename NewDimension , Index Rows, Index Cols, typename ArgType , t
 template&lt;typename NewDimension , Index Rows, Index Cols, typename ArgType , typename Device , typename Scalar , typename Index , typename nocontract_t , typename contract_t , bool inner_dim_contiguous, bool inner_dim_reordered, int Alignment, int nr&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">typedef packet_traits&lt;Scalar&gt;::type Eigen::internal::gemm_pack_rhs&lt; Scalar, Index, TensorContractionSubMapper&lt; Scalar, Index, Rhs, TensorEvaluator&lt; const TensorReshapingOp&lt; NewDimension, const TensorImagePatchOp&lt; Rows, Cols, ArgType &gt; &gt;, Device &gt;, nocontract_t, contract_t, 2, inner_dim_contiguous, inner_dim_reordered, Alignment &gt;, nr, ColMajor, false, false &gt;::Packet</td>
+          <td class="memname">typedef packet_traits&lt;Scalar&gt;<a class="el" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">::type</a> Eigen::internal::gemm_pack_rhs&lt; Scalar, Index, TensorContractionSubMapper&lt; Scalar, Index, Rhs, TensorEvaluator&lt; const TensorReshapingOp&lt; NewDimension, const TensorImagePatchOp&lt; Rows, Cols, ArgType &gt; &gt;, Device &gt;, nocontract_t, contract_t, 2, inner_dim_contiguous, inner_dim_reordered, Alignment &gt;, nr, ColMajor, false, false &gt;::Packet</td>
         </tr>
       </table>
 </div><div class="memdoc">

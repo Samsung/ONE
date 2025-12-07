@@ -1,5 +1,15 @@
 var NAVTREEINDEX16 =
 {
+"_loss_code_8h.html#a2cdc7e5960a14869ceeefc3320b35e52aec0fc0100c4fc1ce4eea230c3dc10360":[43,0,3,4,2,0,4,1,4,0,0],
+"_loss_code_8h.html#aebfbfb608742622c99e8b6b88a7df17b":[43,0,3,4,2,0,4,1,4,1],
+"_loss_code_8h_source.html":[43,0,3,4,2,0,4,1,4],
+"_loss_info_8h.html":[43,0,3,4,2,0,4,1,5],
+"_loss_info_8h.html#a6f49cb07ede6d9ac557f51419c43226d":[43,0,3,4,2,0,4,1,5,2],
+"_loss_info_8h.html#a6f49cb07ede6d9ac557f51419c43226da92ef614c82507294071fcf3d9c77b8fc":[43,0,3,4,2,0,4,1,5,2,1],
+"_loss_info_8h.html#a6f49cb07ede6d9ac557f51419c43226daa0ec87054b5e5b7847d0d8780a01a3d5":[43,0,3,4,2,0,4,1,5,2,2],
+"_loss_info_8h.html#a6f49cb07ede6d9ac557f51419c43226daec0fc0100c4fc1ce4eea230c3dc10360":[43,0,3,4,2,0,4,1,5,2,0],
+"_loss_info_8h_source.html":[43,0,3,4,2,0,4,1,5],
+"_loss_insertion_pass_8cc.html":[43,0,3,4,2,1,1,1,0,0],
 "_loss_insertion_pass_8cc_source.html":[43,0,3,4,2,1,1,1,0,0],
 "_loss_insertion_pass_8h.html":[43,0,3,4,2,1,1,1,0,1],
 "_loss_insertion_pass_8h_source.html":[43,0,3,4,2,1,1,1,0,1],
@@ -239,15 +249,5 @@ var NAVTREEINDEX16 =
 "_min_max_data_8h_source.html":[43,0,3,4,2,1,3,28],
 "_min_max_observer_8cpp.html":[43,0,0,110,2,4],
 "_min_max_observer_8cpp.html#a10cf8673026514239e92b79d072d7e7b":[43,0,0,110,2,4,0],
-"_min_max_observer_8cpp_source.html":[43,0,0,110,2,4],
-"_min_max_observer_8h.html":[43,0,0,110,1,6],
-"_min_max_observer_8h_source.html":[43,0,0,110,1,6],
-"_min_max_reader_8cc.html":[43,0,3,4,4,2],
-"_min_max_reader_8cc_source.html":[43,0,3,4,4,2],
-"_min_max_reader_8h.html":[43,0,3,4,4,3],
-"_min_max_reader_8h_source.html":[43,0,3,4,4,3],
-"_min_max_recorder_8cc.html":[43,0,3,4,2,1,3,29],
-"_min_max_recorder_8cc.html#a066a36efca45963d0e0d80fadace30e2":[43,0,3,4,2,1,3,29,0],
-"_min_max_recorder_8cc_source.html":[43,0,3,4,2,1,3,29],
-"_min_max_recorder_8h.html":[43,0,3,4,2,1,3,30]
+"_min_max_observer_8cpp_source.html":[43,0,0,110,2,4]
 };

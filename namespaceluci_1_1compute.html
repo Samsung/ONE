@@ -138,9 +138,9 @@ Enumerations</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:ae4ee2fd01c261cc9208fb58e4904f54f" id="r_ae4ee2fd01c261cc9208fb58e4904f54f"><td class="memItemLeft" align="right" valign="top">tflite::RuntimeShape&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci_1_1compute.html#ae4ee2fd01c261cc9208fb58e4904f54f">tflite_shape</a> (<a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">const</a> <a class="el" href="classloco_1_1_tensor_shape.html">loco::TensorShape</a> &amp;shape)</td></tr>
 <tr class="separator:ae4ee2fd01c261cc9208fb58e4904f54f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a01e2269d95c82f55a227d9382504be10" id="r_a01e2269d95c82f55a227d9382504be10"><td class="memItemLeft" align="right" valign="top">tflite::PaddingType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci_1_1compute.html#a01e2269d95c82f55a227d9382504be10">tflite_padding</a> (<a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">const</a> <a class="el" href="namespaceluci_1_1compute.html#a52381b052bdb6a24da6275568a80d75a">PaddingType</a> type)</td></tr>
+<tr class="memitem:a01e2269d95c82f55a227d9382504be10" id="r_a01e2269d95c82f55a227d9382504be10"><td class="memItemLeft" align="right" valign="top">tflite::PaddingType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci_1_1compute.html#a01e2269d95c82f55a227d9382504be10">tflite_padding</a> (<a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">const</a> <a class="el" href="namespaceluci_1_1compute.html#a52381b052bdb6a24da6275568a80d75a">PaddingType</a> <a class="el" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</td></tr>
 <tr class="separator:a01e2269d95c82f55a227d9382504be10"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abfa8da6955e81b1f2e3fb5c15058bf24" id="r_abfa8da6955e81b1f2e3fb5c15058bf24"><td class="memItemLeft" align="right" valign="top">tflite::FullyConnectedWeightsFormat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci_1_1compute.html#abfa8da6955e81b1f2e3fb5c15058bf24">tflite_weights_format</a> (<a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">const</a> <a class="el" href="namespaceluci_1_1compute.html#a156ca988c8cb195bf32faef3c4521518">FullyConnectedWeightsFormat</a> type)</td></tr>
+<tr class="memitem:abfa8da6955e81b1f2e3fb5c15058bf24" id="r_abfa8da6955e81b1f2e3fb5c15058bf24"><td class="memItemLeft" align="right" valign="top">tflite::FullyConnectedWeightsFormat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci_1_1compute.html#abfa8da6955e81b1f2e3fb5c15058bf24">tflite_weights_format</a> (<a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">const</a> <a class="el" href="namespaceluci_1_1compute.html#a156ca988c8cb195bf32faef3c4521518">FullyConnectedWeightsFormat</a> <a class="el" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</td></tr>
 <tr class="separator:abfa8da6955e81b1f2e3fb5c15058bf24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab610b986109530fb45fa29144537b655" id="r_ab610b986109530fb45fa29144537b655"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci_1_1compute.html#ab610b986109530fb45fa29144537b655">get_act_minmax</a> (<a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">const</a> <a class="el" href="namespaceluci_1_1compute.html#a3d972542e21a05eed61ab95bab2ecc61">FusedActFunc</a> <a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">act</a>, <a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">float</a> &amp;<a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">act_min</a>, <a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">float</a> &amp;<a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">act_max</a>)</td></tr>
 <tr class="separator:ab610b986109530fb45fa29144537b655"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -349,7 +349,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_convert_types_8cpp_source.html#l00038">38</a> of file <a class="el" href="_convert_types_8cpp_source.html">ConvertTypes.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   39</span>{</div>
-<div class="line"><span class="lineno">   40</span>  <span class="keywordflow">switch</span> (type)</div>
+<div class="line"><span class="lineno">   40</span>  <span class="keywordflow">switch</span> (<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</div>
 <div class="line"><span class="lineno">   41</span>  {</div>
 <div class="line"><span class="lineno">   42</span>    <span class="keywordflow">case</span> PaddingType::kSame:</div>
 <div class="line"><span class="lineno">   43</span>      <span class="keywordflow">return</span> tflite::PaddingType::kSame;</div>
@@ -360,8 +360,9 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   48</span>  }</div>
 <div class="line"><span class="lineno">   49</span>  <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;luci-comp tflite_padding unsupported type.&quot;</span>);</div>
 <div class="line"><span class="lineno">   50</span>}</div>
+<div class="ttc" id="a_bulk_pipeline_buffer_8cc_html_a449e574ed6911881dc55507cb5635c2c"><div class="ttname"><a href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a></div><div class="ttdeci">int32_t type</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_buffer_8cc_source.html#l00000">BulkPipelineBuffer.cc:0</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="namespaceluci_1_1compute.html#a52381b052bdb6a24da6275568a80d75aad523906435f67e94367d4fab5b9380da">kSame</a>, and <a class="el" href="namespaceluci_1_1compute.html#a52381b052bdb6a24da6275568a80d75aa4d3576c37e6f03700bad4345238fffa0">kValid</a>.</p>
+<p class="reference">References <a class="el" href="namespaceluci_1_1compute.html#a52381b052bdb6a24da6275568a80d75aad523906435f67e94367d4fab5b9380da">kSame</a>, <a class="el" href="namespaceluci_1_1compute.html#a52381b052bdb6a24da6275568a80d75aa4d3576c37e6f03700bad4345238fffa0">kValid</a>, and <a class="el" href="_bulk_pipeline_buffer_8cc_source.html#l00000">type</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="compiler_2luci-compute_2src_2_depthwise_conv2_d_8cpp_source.html#l00129">luci::compute::DepthwiseConv2D::compute()</a>.</p>
 
@@ -423,7 +424,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_convert_types_8cpp_source.html#l00052">52</a> of file <a class="el" href="_convert_types_8cpp_source.html">ConvertTypes.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   53</span>{</div>
-<div class="line"><span class="lineno">   54</span>  <span class="keywordflow">switch</span> (type)</div>
+<div class="line"><span class="lineno">   54</span>  <span class="keywordflow">switch</span> (<a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>)</div>
 <div class="line"><span class="lineno">   55</span>  {</div>
 <div class="line"><span class="lineno">   56</span>    <span class="keywordflow">case</span> FullyConnectedWeightsFormat::kDefault:</div>
 <div class="line"><span class="lineno">   57</span>      <span class="keywordflow">return</span> tflite::FullyConnectedWeightsFormat::kDefault;</div>
@@ -435,7 +436,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   63</span>  <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;luci-comp tflite_weights_format unsupported type.&quot;</span>);</div>
 <div class="line"><span class="lineno">   64</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="namespaceluci_1_1compute.html#a156ca988c8cb195bf32faef3c4521518a6867faeaa475fda467e48267db2bb8a8">kDefault</a>, and <a class="el" href="namespaceluci_1_1compute.html#a156ca988c8cb195bf32faef3c4521518a3373f5dce891a3dd9ad189b7d42842f7">kShuffled4x16Int8</a>.</p>
+<p class="reference">References <a class="el" href="namespaceluci_1_1compute.html#a156ca988c8cb195bf32faef3c4521518a6867faeaa475fda467e48267db2bb8a8">kDefault</a>, <a class="el" href="namespaceluci_1_1compute.html#a156ca988c8cb195bf32faef3c4521518a3373f5dce891a3dd9ad189b7d42842f7">kShuffled4x16Int8</a>, and <a class="el" href="_bulk_pipeline_buffer_8cc_source.html#l00000">type</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="compiler_2luci-compute_2src_2_fully_connected_8cpp_source.html#l00076">luci::compute::FullyConnected::compute()</a>.</p>
 

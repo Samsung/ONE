@@ -193,7 +193,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   83</span>    <span class="keywordflow">for</span> opt <span class="keywordflow">in</span> _constant.CONSTANT.OPTIMIZATION_OPTS:</div>
 <div class="line"><span class="lineno">   84</span>        <span class="keywordflow">if</span> is_valid_attr(args, opt[0]):</div>
 <div class="line"><span class="lineno">   85</span>            <span class="comment"># ./driver --opt[0]</span></div>
-<div class="line"><span class="lineno">   86</span>            <span class="keywordflow">if</span> type(getattr(args, opt[0])) <span class="keywordflow">is</span> bool:</div>
+<div class="line"><span class="lineno">   86</span>            <span class="keywordflow">if</span> <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>(getattr(args, opt[0])) <span class="keywordflow">is</span> bool:</div>
 <div class="line"><span class="lineno">   87</span>                cmd.append(<span class="stringliteral">&#39;--&#39;</span> + opt[0])</div>
 <div class="line"><span class="lineno">   88</span>            <span class="stringliteral">&quot;&quot;&quot;</span></div>
 <div class="line"><span class="lineno">   89</span><span class="stringliteral">            This condition check is for config file interface, usually would be</span></div>
@@ -202,13 +202,14 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   92</span><span class="stringliteral">             SomeOption=False</span></div>
 <div class="line"><span class="lineno">   93</span><span class="stringliteral">            instead of removing SomeOption option</span></div>
 <div class="line"><span class="lineno">   94</span><span class="stringliteral">            &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   95</span>            <span class="keywordflow">if</span> type(getattr(args, opt[0])) <span class="keywordflow">is</span> str <span class="keywordflow">and</span> <span class="keywordflow">not</span> getattr(</div>
+<div class="line"><span class="lineno">   95</span>            <span class="keywordflow">if</span> <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>(getattr(args, opt[0])) <span class="keywordflow">is</span> str <span class="keywordflow">and</span> <span class="keywordflow">not</span> getattr(</div>
 <div class="line"><span class="lineno">   96</span>                    args, opt[0]).lower() <span class="keywordflow">in</span> [<span class="stringliteral">&#39;false&#39;</span>, <span class="stringliteral">&#39;0&#39;</span>, <span class="stringliteral">&#39;n&#39;</span>]:</div>
 <div class="line"><span class="lineno">   97</span>                cmd.append(<span class="stringliteral">&#39;--&#39;</span> + opt[0])</div>
 <div class="line"><span class="lineno">   98</span> </div>
 <div class="line"><span class="lineno">   99</span>    <span class="keywordflow">return</span> cmd</div>
+<div class="ttc" id="a_bulk_pipeline_buffer_8cc_html_a449e574ed6911881dc55507cb5635c2c"><div class="ttname"><a href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a></div><div class="ttdeci">int32_t type</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_buffer_8cc_source.html#l00000">BulkPipelineBuffer.cc:0</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="make__cmd_8py_source.html#l00023">is_valid_attr()</a>.</p>
+<p class="reference">References <a class="el" href="make__cmd_8py_source.html#l00023">is_valid_attr()</a>, and <a class="el" href="_bulk_pipeline_buffer_8cc_source.html#l00000">type</a>.</p>
 
 </div>
 </div>

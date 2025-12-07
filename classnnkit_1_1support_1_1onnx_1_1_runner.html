@@ -344,7 +344,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   79</span>    status.throwOnError();</div>
 <div class="line"><span class="lineno">   80</span> </div>
 <div class="line"><span class="lineno">   81</span>    <span class="keyword">const</span> OrtTensorTypeAndShapeInfo *tensor_info = OrtCastTypeInfoToTensorInfo(typeinfo);</div>
-<div class="line"><span class="lineno">   82</span>    ONNXTensorElementDataType <a class="code hl_variable" href="namespaceinfer.html#ab89ed5258ead024638290064e52469c8">type</a> = OrtGetTensorElementType(tensor_info);</div>
+<div class="line"><span class="lineno">   82</span>    ONNXTensorElementDataType <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a> = OrtGetTensorElementType(tensor_info);</div>
 <div class="line"><span class="lineno">   83</span> </div>
 <div class="line"><span class="lineno">   84</span>    uint32_t num_dims = OrtGetNumOfDimensions(tensor_info);</div>
 <div class="line"><span class="lineno">   85</span>    std::vector&lt;size_t&gt; <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>(num_dims);</div>
@@ -364,14 +364,14 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   99</span>    }</div>
 <div class="line"><span class="lineno">  100</span>    OrtReleaseTypeInfo(typeinfo);</div>
 <div class="line"><span class="lineno">  101</span> </div>
-<div class="line"><span class="lineno">  102</span>    _inputs-&gt;set(i, name, type, dims);</div>
+<div class="line"><span class="lineno">  102</span>    _inputs-&gt;set(i, name, <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>, dims);</div>
 <div class="line"><span class="lineno">  103</span>  }</div>
 <div class="line"><span class="lineno">  104</span>}</div>
-<div class="ttc" id="anamespaceinfer_html_ab89ed5258ead024638290064e52469c8"><div class="ttname"><a href="namespaceinfer.html#ab89ed5258ead024638290064e52469c8">infer.type</a></div><div class="ttdeci">type</div><div class="ttdef"><b>Definition</b> <a href="infer_8py_source.html#l00018">infer.py:18</a></div></div>
+<div class="ttc" id="a_bulk_pipeline_buffer_8cc_html_a449e574ed6911881dc55507cb5635c2c"><div class="ttname"><a href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a></div><div class="ttdeci">int32_t type</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_buffer_8cc_source.html#l00000">BulkPipelineBuffer.cc:0</a></div></div>
 <div class="ttc" id="anamespacekbenchmark_html_a0f4026f3dfa7f3d4d876efc26dca96ea"><div class="ttname"><a href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">kbenchmark::dims</a></div><div class="ttdeci">std::vector&lt; int &gt; dims(const std::string &amp;src)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2_utils_8h_source.html#l00035">Utils.h:35</a></div></div>
 <div class="ttc" id="anamespacesetup_html_ab3a7a0638d76a01367c5bc3cc699447f"><div class="ttname"><a href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">setup.name</a></div><div class="ttdeci">name</div><div class="ttdef"><b>Definition</b> <a href="setup_8py_source.html#l00158">setup.py:158</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_status_8h_source.html#l00065">nnkit::support::onnx::Status::throwOnError()</a>.</p>
+<p class="reference">References <a class="el" href="_status_8h_source.html#l00065">nnkit::support::onnx::Status::throwOnError()</a>, and <a class="el" href="_bulk_pipeline_buffer_8cc_source.html#l00000">type</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="nnkit-onnxrt_2support_2src_2_backend_8cpp_source.html#l00027">nnkit::support::onnx::Backend::prepare()</a>.</p>
 
@@ -421,7 +421,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  131</span>    status.throwOnError();</div>
 <div class="line"><span class="lineno">  132</span> </div>
 <div class="line"><span class="lineno">  133</span>    <span class="keyword">const</span> OrtTensorTypeAndShapeInfo *tensor_info = OrtCastTypeInfoToTensorInfo(typeinfo);</div>
-<div class="line"><span class="lineno">  134</span>    ONNXTensorElementDataType <a class="code hl_variable" href="namespaceinfer.html#ab89ed5258ead024638290064e52469c8">type</a> = OrtGetTensorElementType(tensor_info);</div>
+<div class="line"><span class="lineno">  134</span>    ONNXTensorElementDataType <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a> = OrtGetTensorElementType(tensor_info);</div>
 <div class="line"><span class="lineno">  135</span> </div>
 <div class="line"><span class="lineno">  136</span>    uint32_t num_dims = OrtGetNumOfDimensions(tensor_info);</div>
 <div class="line"><span class="lineno">  137</span>    std::vector&lt;size_t&gt; <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>(num_dims);</div>
@@ -441,11 +441,11 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  151</span>    }</div>
 <div class="line"><span class="lineno">  152</span>    OrtReleaseTypeInfo(typeinfo);</div>
 <div class="line"><span class="lineno">  153</span> </div>
-<div class="line"><span class="lineno">  154</span>    _outputs-&gt;set(i, name, type, dims);</div>
+<div class="line"><span class="lineno">  154</span>    _outputs-&gt;set(i, name, <a class="code hl_variable" href="_bulk_pipeline_buffer_8cc.html#a449e574ed6911881dc55507cb5635c2c">type</a>, dims);</div>
 <div class="line"><span class="lineno">  155</span>  }</div>
 <div class="line"><span class="lineno">  156</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_status_8h_source.html#l00065">nnkit::support::onnx::Status::throwOnError()</a>.</p>
+<p class="reference">References <a class="el" href="_status_8h_source.html#l00065">nnkit::support::onnx::Status::throwOnError()</a>, and <a class="el" href="_bulk_pipeline_buffer_8cc_source.html#l00000">type</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="nnkit-onnxrt_2support_2src_2_backend_8cpp_source.html#l00027">nnkit::support::onnx::Backend::prepare()</a>.</p>
 

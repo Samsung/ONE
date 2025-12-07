@@ -1,5 +1,15 @@
 var NAVTREEINDEX13 =
 {
+"_global_average_pool_8h.html":[43,0,0,72,1,2,0,31],
+"_global_average_pool_8h.html#a7901a4c55e5f2f2048fdfba5e50aaed4":[43,0,0,72,1,2,0,31,0],
+"_global_average_pool_8h_source.html":[43,0,0,72,1,2,0,31],
+"_global_data_generation_8cpp.html":[43,0,0,38,1,1,4,24],
+"_global_data_generation_8cpp.html#a24990c06c9bf79de7411e1e1d0e4afaa":[43,0,0,38,1,1,4,24,0],
+"_global_data_generation_8cpp_source.html":[43,0,0,38,1,1,4,24],
+"_global_data_generation_8h.html":[43,0,0,38,1,1,4,25],
+"_global_data_generation_8h.html#a24990c06c9bf79de7411e1e1d0e4afaa":[43,0,0,38,1,1,4,25,2],
+"_global_data_generation_8h.html#a81b59f2e10a9142e39eaccf332e9b9ef":[43,0,0,38,1,1,4,25,1],
+"_global_data_generation_8h_source.html":[43,0,0,38,1,1,4,25],
 "_gradient_applier_8cc.html":[43,0,3,4,1,7,0,14],
 "_gradient_applier_8cc_source.html":[43,0,3,4,1,7,0,14],
 "_gradient_applier_8h.html":[43,0,3,4,1,7,0,15],
@@ -239,15 +249,5 @@ var NAVTREEINDEX13 =
 "_i_scheduler_8h.html":[43,0,3,4,2,1,1,15],
 "_i_scheduler_8h_source.html":[43,0,3,4,2,1,1,15],
 "_i_scratchpad_helper_8h.html":[43,0,0,10,0,0],
-"_i_scratchpad_helper_8h_source.html":[43,0,0,10,0,0],
-"_i_tensor_8cc.html":[43,0,3,4,2,1,0,4],
-"_i_tensor_8cc_source.html":[43,0,3,4,2,1,0,4],
-"_i_tensor_8h.html":[43,0,3,4,2,0,0,7],
-"_i_tensor_8h_source.html":[43,0,3,4,2,0,0,7],
-"_i_tensor_registry_8h.html":[43,0,3,4,2,0,0,8],
-"_i_tensor_registry_8h_source.html":[43,0,3,4,2,0,0,8],
-"_i_timer_8h.html":[43,0,3,4,2,0,7,4],
-"_i_timer_8h_source.html":[43,0,3,4,2,0,7,4],
-"_i_trainable_backend_8h.html":[43,0,3,4,2,0,0,1,1],
-"_i_trainable_backend_8h_source.html":[43,0,3,4,2,0,0,1,1]
+"_i_scratchpad_helper_8h_source.html":[43,0,0,10,0,0]
 };
