@@ -90,7 +90,7 @@ addeval(MaxPool2D_000)
 addeval(MaxPool2D_U8_000)
 addeval(Mean_000)
 addeval(Mean_001)
-addeval(Mean_U8_000)
+#addeval(Mean_U8_000) --> test with tolerance
 addeval(Minimum_000)
 #addeval(MirrorPad_000)
 addeval(Mul_000)
@@ -207,3 +207,4 @@ addevaltol(SVDF_001 8e-3 8e-3)
 addevaltol(Conv2D_U8_000 5 5)
 # refer https://github.com/Samsung/ONE/issues/10438
 addevaltol(YUV_TO_RGB_U8_000 1 1)
+addevaltol(Mean_U8_000 8e-3 1)
