@@ -119,6 +119,7 @@ for idx in range(len(inpt_output_details)):
         if output_details["dtype"] == np.uint8:
             if np.allclose(luci_output_data, intp_output_data, rtol=rtolint,
                            atol=atolint) == False:
+                print("input data", input_data)
                 print("intp_output_data", intp_output_data)
                 print("luci_output_data", luci_output_data)
                 raise SystemExit("Execution result of " + tflite_model +
@@ -127,6 +128,7 @@ for idx in range(len(inpt_output_details)):
         elif output_details["dtype"] == np.float32:
             if np.allclose(luci_output_data, intp_output_data, rtol=rtolf32,
                            atol=atolf32) == False:
+                print("input data", input_data)
                 print("intp_output_data", intp_output_data)
                 print("luci_output_data", luci_output_data)
                 raise SystemExit("Execution result of " + tflite_model +
@@ -135,6 +137,7 @@ for idx in range(len(inpt_output_details)):
         elif output_details["dtype"] == np.int64:
             if np.allclose(luci_output_data, intp_output_data, rtol=rtolint,
                            atol=atolint) == False:
+                print("input data", input_data)
                 print("intp_output_data", intp_output_data)
                 print("luci_output_data", luci_output_data)
                 raise SystemExit("Execution result of " + tflite_model +
@@ -143,6 +146,7 @@ for idx in range(len(inpt_output_details)):
         elif output_details["dtype"] == np.int32:
             if np.allclose(luci_output_data, intp_output_data, rtol=rtolint,
                            atol=atolint) == False:
+                print("input data", input_data)
                 print("intp_output_data", intp_output_data)
                 print("luci_output_data", luci_output_data)
                 raise SystemExit("Execution result of " + tflite_model +
@@ -151,6 +155,7 @@ for idx in range(len(inpt_output_details)):
         elif output_details["dtype"] == np.int16:
             if np.allclose(luci_output_data, intp_output_data, rtol=rtolint,
                            atol=atolint) == False:
+                print("input data", input_data)
                 print("intp_output_data", intp_output_data)
                 print("luci_output_data", luci_output_data)
                 raise SystemExit("Execution result of " + tflite_model +
@@ -158,6 +163,7 @@ for idx in range(len(inpt_output_details)):
             output_dtype = "int16"
         elif output_details["dtype"] == np.bool_:
             if np.allclose(luci_output_data, intp_output_data, rtol=0, atol=0) == False:
+                print("input data", input_data)
                 print("intp_output_data", intp_output_data)
                 print("luci_output_data", luci_output_data)
                 raise SystemExit("Execution result of " + tflite_model +
