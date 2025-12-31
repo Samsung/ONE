@@ -1,6 +1,7 @@
 import os
 import numpy as np
 from typing import List, Tuple, Union, Optional, Any, Iterator
+import onert
 
 
 class DataLoader:
@@ -14,7 +15,7 @@ class DataLoader:
                  batch_size: int,
                  input_shape: Optional[Tuple[int, ...]] = None,
                  expected_shape: Optional[Tuple[int, ...]] = None,
-                 dtype: Any = np.float32) -> None:
+                 dtype: Any = onert.float32) -> None:
         """
         Initialize the DataLoader.
 
@@ -28,7 +29,7 @@ class DataLoader:
             batch_size (int): Number of samples per batch.
             input_shape (tuple[int, ...], optional): Shape of the input data if raw format is used.
             expected_shape (tuple[int, ...], optional): Shape of the expected data if raw format is used.
-            dtype (type, optional): Data type of the raw file (default: np.float32).
+            dtype (type, optional): Data type of the raw file (default: onert.float32).
         """
         self.batch_size: int = batch_size
         self.inputs: List[np.ndarray] = self._process_dataset(input_dataset, input_shape,
@@ -49,7 +50,7 @@ class DataLoader:
     def _process_dataset(self,
                          data: Union[List[np.ndarray], np.ndarray, str],
                          shape: Optional[Tuple[int, ...]],
-                         dtype: Any = np.float32) -> List[np.ndarray]:
+                         dtype: Any = onert.float32) -> List[np.ndarray]:
         """
         Process a dataset or file path.
 
@@ -83,14 +84,14 @@ class DataLoader:
     def _load_data(self,
                    file_path: str,
                    shape: Optional[Tuple[int, ...]],
-                   dtype: Any = np.float32) -> np.ndarray:
+                   dtype: Any = onert.float32) -> np.ndarray:
         """
         Load data from a file, supporting both .npy and raw formats.
 
         Args:
             file_path (str): Path to the file to load.
             shape (tuple[int, ...], optional): Shape of the data if raw format is used.
-            dtype (type, optional): Data type of the raw file (default: np.float32).
+            dtype (type, optional): Data type of the raw file (default: onert.float32).
 
         Returns:
             np.ndarray: Loaded data as a NumPy array.
