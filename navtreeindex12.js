@@ -1,5 +1,9 @@
 var NAVTREEINDEX12 =
 {
+"_fuse_add_with_fully_connected_pass_8cpp.html":[43,0,0,59,7,1,35],
+"_fuse_add_with_fully_connected_pass_8cpp_source.html":[43,0,0,59,7,1,35],
+"_fuse_add_with_fully_connected_pass_8h.html":[43,0,0,59,7,0,0,0,29],
+"_fuse_add_with_fully_connected_pass_8h_source.html":[43,0,0,59,7,0,0,0,29],
 "_fuse_add_with_t_conv_pass_8cpp.html":[43,0,0,59,7,1,36],
 "_fuse_add_with_t_conv_pass_8cpp.html#afeefeb03342f01cad24a8985936fc3ff":[43,0,0,59,7,1,36,0],
 "_fuse_add_with_t_conv_pass_8cpp_source.html":[43,0,0,59,7,1,36],
@@ -245,9 +249,5 @@ var NAVTREEINDEX12 =
 "_generator_8cpp_source.html":[43,0,0,81,6,3,2],
 "_generic_node_summary_builder_8cpp.html":[43,0,0,55,1,4],
 "_generic_node_summary_builder_8cpp_source.html":[43,0,0,55,1,4],
-"_generic_node_summary_builder_8h.html":[43,0,0,55,0,0,3],
-"_generic_node_summary_builder_8h_source.html":[43,0,0,55,0,0,3],
-"_global_average_pool_8cpp.html":[43,0,0,72,1,2,0,30],
-"_global_average_pool_8cpp.html#a7901a4c55e5f2f2048fdfba5e50aaed4":[43,0,0,72,1,2,0,30,0],
-"_global_average_pool_8cpp_source.html":[43,0,0,72,1,2,0,30]
+"_generic_node_summary_builder_8h.html":[43,0,0,55,0,0,3]
 };

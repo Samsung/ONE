@@ -73,7 +73,7 @@ var searchData=
   ['bisectionsolver_70',['BisectionSolver',['../classmpqsolver_1_1bisection_1_1_bisection_solver.html',1,'mpqsolver::bisection']]],
   ['blob_71',['Blob',['../classflexbuffers_1_1_blob.html',1,'flexbuffers']]],
   ['blobcontext_72',['BlobContext',['../structnnkit_1_1support_1_1caffe_1_1_blob_context.html',1,'nnkit::support::caffe']]],
-  ['block_73',['block',['../structonert_1_1backend_1_1basic_1_1_block.html',1,'onert::backend::basic::Block'],['../structnest_1_1_block.html',1,'nest::Block'],['../classcoco_1_1_block.html',1,'coco::Block']]],
+  ['block_73',['block',['../structonert_1_1backend_1_1basic_1_1_block.html',1,'onert::backend::basic::Block'],['../classcoco_1_1_block.html',1,'coco::Block'],['../structnest_1_1_block.html',1,'nest::Block']]],
   ['blockindex_74',['BlockIndex',['../classcoco_1_1_block_index.html',1,'coco']]],
   ['blockmanager_75',['BlockManager',['../classcoco_1_1_block_manager.html',1,'coco']]],
   ['bool_5fconstant_76',['bool_constant',['../structflatbuffers_1_1bool__constant.html',1,'flatbuffers']]],
@@ -99,7 +99,8 @@ var searchData=
   ['bulk_96',['Bulk',['../classonert_1_1ir_1_1operation_1_1_bulk.html',1,'onert::ir::operation']]],
   ['bulklayer_97',['BulkLayer',['../classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_layer.html',1,'onert::backend::trix::ops']]],
   ['bulkpipelinebuffer_98',['BulkPipelineBuffer',['../classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_buffer.html',1,'onert::backend::trix::ops']]],
-  ['bumpplanner_99',['bumpplanner',['../classonert_1_1backend_1_1basic_1_1_bump_planner.html',1,'onert::backend::basic::BumpPlanner'],['../classonert_1_1backend_1_1train_1_1_bump_planner.html',1,'onert::backend::train::BumpPlanner&lt; Index &gt;']]],
-  ['bundle_100',['Bundle',['../classenco_1_1_bundle.html',1,'enco']]],
-  ['bypassgenerationpass_101',['BypassGenerationPass',['../structenco_1_1_bypass_generation_pass.html',1,'enco']]]
+  ['bulkpipelinemodel_99',['BulkPipelineModel',['../classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_model.html',1,'onert::backend::trix::ops']]],
+  ['bumpplanner_100',['bumpplanner',['../classonert_1_1backend_1_1basic_1_1_bump_planner.html',1,'onert::backend::basic::BumpPlanner'],['../classonert_1_1backend_1_1train_1_1_bump_planner.html',1,'onert::backend::train::BumpPlanner&lt; Index &gt;']]],
+  ['bundle_101',['Bundle',['../classenco_1_1_bundle.html',1,'enco']]],
+  ['bypassgenerationpass_102',['BypassGenerationPass',['../structenco_1_1_bypass_generation_pass.html',1,'enco']]]
 ];

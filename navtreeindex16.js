@@ -1,5 +1,9 @@
 var NAVTREEINDEX16 =
 {
+"_loss_code_8h.html":[43,0,3,4,2,0,4,1,4],
+"_loss_code_8h.html#a2cdc7e5960a14869ceeefc3320b35e52":[43,0,3,4,2,0,4,1,4,0],
+"_loss_code_8h.html#a2cdc7e5960a14869ceeefc3320b35e52ac9485718dbb9bad98903eed8bee75deb":[43,0,3,4,2,0,4,1,4,0,1],
+"_loss_code_8h.html#a2cdc7e5960a14869ceeefc3320b35e52acc5af9d845d3fb5644ea6c729dd25d44":[43,0,3,4,2,0,4,1,4,0,2],
 "_loss_code_8h.html#a2cdc7e5960a14869ceeefc3320b35e52aec0fc0100c4fc1ce4eea230c3dc10360":[43,0,3,4,2,0,4,1,4,0,0],
 "_loss_code_8h.html#aebfbfb608742622c99e8b6b88a7df17b":[43,0,3,4,2,0,4,1,4,1],
 "_loss_code_8h_source.html":[43,0,3,4,2,0,4,1,4],
@@ -245,9 +249,5 @@ var NAVTREEINDEX16 =
 "_min_max_computer_8h_source.html":[43,0,0,110,1,5],
 "_min_max_data_8cc.html":[43,0,3,4,2,1,3,27],
 "_min_max_data_8cc_source.html":[43,0,3,4,2,1,3,27],
-"_min_max_data_8h.html":[43,0,3,4,2,1,3,28],
-"_min_max_data_8h_source.html":[43,0,3,4,2,1,3,28],
-"_min_max_observer_8cpp.html":[43,0,0,110,2,4],
-"_min_max_observer_8cpp.html#a10cf8673026514239e92b79d072d7e7b":[43,0,0,110,2,4,0],
-"_min_max_observer_8cpp_source.html":[43,0,0,110,2,4]
+"_min_max_data_8h.html":[43,0,3,4,2,1,3,28]
 };

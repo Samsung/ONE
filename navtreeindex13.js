@@ -1,5 +1,9 @@
 var NAVTREEINDEX13 =
 {
+"_generic_node_summary_builder_8h_source.html":[43,0,0,55,0,0,3],
+"_global_average_pool_8cpp.html":[43,0,0,72,1,2,0,30],
+"_global_average_pool_8cpp.html#a7901a4c55e5f2f2048fdfba5e50aaed4":[43,0,0,72,1,2,0,30,0],
+"_global_average_pool_8cpp_source.html":[43,0,0,72,1,2,0,30],
 "_global_average_pool_8h.html":[43,0,0,72,1,2,0,31],
 "_global_average_pool_8h.html#a7901a4c55e5f2f2048fdfba5e50aaed4":[43,0,0,72,1,2,0,31,0],
 "_global_average_pool_8h_source.html":[43,0,0,72,1,2,0,31],
@@ -245,9 +249,5 @@ var NAVTREEINDEX13 =
 "_i_r_validator_8cpp_source.html":[43,0,0,38,1,1,15],
 "_i_r_validator_8h.html":[43,0,0,38,1,1,16],
 "_i_r_validator_8h.html#af0e745d9916ba307aaa323a54f10c92d":[43,0,0,38,1,1,16,0],
-"_i_r_validator_8h_source.html":[43,0,0,38,1,1,16],
-"_i_scheduler_8h.html":[43,0,3,4,2,1,1,15],
-"_i_scheduler_8h_source.html":[43,0,3,4,2,1,1,15],
-"_i_scratchpad_helper_8h.html":[43,0,0,10,0,0],
-"_i_scratchpad_helper_8h_source.html":[43,0,0,10,0,0]
+"_i_r_validator_8h_source.html":[43,0,0,38,1,1,16]
 };

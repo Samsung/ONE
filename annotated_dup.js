@@ -3056,6 +3056,7 @@ var annotated_dup =
           [ "ops", "namespaceonert_1_1backend_1_1trix_1_1ops.html", [
             [ "BulkLayer", "classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_layer.html", "classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_layer" ],
             [ "BulkPipelineBuffer", "classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_buffer.html", "classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_buffer" ],
+            [ "BulkPipelineModel", "classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_model.html", "classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_model" ],
             [ "trix_ioctl_hwmem", "structonert_1_1backend_1_1trix_1_1ops_1_1trix__ioctl__hwmem.html", "structonert_1_1backend_1_1trix_1_1ops_1_1trix__ioctl__hwmem" ]
           ] ],
           [ "Backend", "classonert_1_1backend_1_1trix_1_1_backend.html", "classonert_1_1backend_1_1trix_1_1_backend" ],

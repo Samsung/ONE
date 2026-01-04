@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['w_0',['w',['../structonert_1_1ir_1_1_feature_shape.html#ab1fd4de58e6a8991b916c3c25b1b3b34',1,'onert::ir::FeatureShape::W'],['../namespacejpeg2hdf5.html#ac7eea56215106b0908497982f6eed453',1,'jpeg2hdf5.w'],['../structonert_1_1backend_1_1cpu_1_1ops_1_1_detection_post_process_layer_1_1_center_size_box.html#ac4b6e180d5cde8fdd87d732f6075b504',1,'onert::backend::cpu::ops::DetectionPostProcessLayer::CenterSizeBox::w']]],
+  ['w_0',['w',['../structonert_1_1backend_1_1cpu_1_1ops_1_1_detection_post_process_layer_1_1_center_size_box.html#ac4b6e180d5cde8fdd87d732f6075b504',1,'onert::backend::cpu::ops::DetectionPostProcessLayer::CenterSizeBox::w'],['../namespacejpeg2hdf5.html#ac7eea56215106b0908497982f6eed453',1,'jpeg2hdf5.w'],['../structonert_1_1ir_1_1_feature_shape.html#ab1fd4de58e6a8991b916c3c25b1b3b34',1,'onert::ir::FeatureShape::W']]],
   ['w_5fscale_1',['w_scale',['../structonert_1_1ir_1_1operation_1_1_detection_post_process_1_1_scale.html#a2b356afc69175fcdecbe8b96f8f4ee12',1,'onert::ir::operation::DetectionPostProcess::Scale']]],
   ['warn_5ffn_2',['warn_fn',['../structflatbuffers_1_1_flat_compiler_1_1_init_params.html#ac8ee38d58650ce90a19e8a281071cb70',1,'flatbuffers::FlatCompiler::InitParams']]],
   ['warnings_5fas_5ferrors_3',['warnings_as_errors',['../structflatbuffers_1_1_i_d_l_options.html#a3eb1ff748dd85d5f179ec564e5b88da6',1,'flatbuffers::IDLOptions']]],

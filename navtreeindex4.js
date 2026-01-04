@@ -1,5 +1,9 @@
 var NAVTREEINDEX4 =
 {
+"_circle_eval_diff_8cpp_source.html":[43,0,0,9,2,0],
+"_circle_eval_diff_8h.html":[43,0,0,9,1,0],
+"_circle_eval_diff_8h.html#a5c3f0374bf404b03613f7ad266e587cc":[43,0,0,9,1,0,2],
+"_circle_eval_diff_8h.html#a5c3f0374bf404b03613f7ad266e587cca24adc071fd630c4b9a4db82da4a9e58c":[43,0,0,9,1,0,2,3],
 "_circle_eval_diff_8h.html#a5c3f0374bf404b03613f7ad266e587cca5e394e26b207237793aa5b4dcd9e18dc":[43,0,0,9,1,0,2,5],
 "_circle_eval_diff_8h.html#a5c3f0374bf404b03613f7ad266e587cca70634721b3df588b2bda7e8697e1dd57":[43,0,0,9,1,0,2,4],
 "_circle_eval_diff_8h.html#a5c3f0374bf404b03613f7ad266e587ccaa9fc1a03386ae38b64e06c8172994963":[43,0,0,9,1,0,2,6],
@@ -165,11 +169,11 @@ var NAVTREEINDEX4 =
 "_circle_op_chefs_8h.html":[43,0,0,27,0,1,4],
 "_circle_op_chefs_8h_source.html":[43,0,0,27,0,1,4],
 "_circle_op_code_8cpp.html":[43,0,0,59,6,1,1],
-"_circle_op_code_8cpp.html#a0869ffef04bd651c00a81cb7b10b4f4f":[43,0,0,59,6,1,1,3],
 "_circle_op_code_8cpp.html#a0869ffef04bd651c00a81cb7b10b4f4f":[43,0,0,59,6,1,1,2],
+"_circle_op_code_8cpp.html#a0869ffef04bd651c00a81cb7b10b4f4f":[43,0,0,59,6,1,1,3],
 "_circle_op_code_8cpp.html#a3ecf4be562fa9dde5bbc387ea5a26e0a":[43,0,0,59,6,1,1,4],
-"_circle_op_code_8cpp.html#acd6355225daabf033d129b51d6c88f8e":[43,0,0,59,6,1,1,1],
 "_circle_op_code_8cpp.html#acd6355225daabf033d129b51d6c88f8e":[43,0,0,59,6,1,1,0],
+"_circle_op_code_8cpp.html#acd6355225daabf033d129b51d6c88f8e":[43,0,0,59,6,1,1,1],
 "_circle_op_code_8cpp_source.html":[43,0,0,59,6,1,1],
 "_circle_op_registry_8h.html":[43,0,0,27,0,1,5],
 "_circle_op_registry_8h.html#aa66c2999fc9be140c8089f1a1525fe60":[43,0,0,27,0,1,5,1],
@@ -245,9 +249,5 @@ var NAVTREEINDEX4 =
 "_circle_referencing_const_8h_source.html":[43,0,0,62,2,1,0,1],
 "_circle_resizer_8cpp.html":[43,0,0,23,0,0],
 "_circle_resizer_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000":[43,0,0,23,0,0,0],
-"_circle_resizer_8cpp_source.html":[43,0,0,23,0,0],
-"_circle_shape_inference_8cpp.html":[43,0,0,59,10,1,6],
-"_circle_shape_inference_8cpp_source.html":[43,0,0,59,10,1,6],
-"_circle_shape_inference_8h.html":[43,0,0,59,10,0,0,0,3],
-"_circle_shape_inference_8h_source.html":[43,0,0,59,10,0,0,0,3]
+"_circle_resizer_8cpp_source.html":[43,0,0,23,0,0]
 };

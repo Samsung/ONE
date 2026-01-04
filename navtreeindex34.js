@@ -1,5 +1,9 @@
 var NAVTREEINDEX34 =
 {
+"ann-ref_2src_2ops_2internal_2_pooling_8h.html#a7df901abe33c31af4a4b0a6cf2d5552f":[43,0,0,3,0,0,0,13,0],
+"ann-ref_2src_2ops_2internal_2_pooling_8h_source.html":[43,0,0,3,0,0,0,13],
+"annotated.html":[42,0],
+"argumentparse_8py.html":[43,0,0,92,1,0],
 "argumentparse_8py_source.html":[43,0,0,92,1,0],
 "backend_2acl__cl_2_backend_context_8h.html":[43,0,3,4,1,0,4],
 "backend_2acl__cl_2_backend_context_8h.html#ace222bac587e5e2b57816736b97909e3":[43,0,3,4,1,0,4,0],
@@ -245,9 +249,5 @@ var NAVTREEINDEX34 =
 "backend_2ruy_2_kernel_generator_8h_source.html":[43,0,3,4,1,6,8],
 "backend_2ruy_2_static_tensor_manager_8h.html":[43,0,3,4,1,6,10],
 "backend_2ruy_2_static_tensor_manager_8h.html#af7ef5b7decc45586dee42c9cd19c8444":[43,0,3,4,1,6,10,0],
-"backend_2ruy_2_static_tensor_manager_8h_source.html":[43,0,3,4,1,6,10],
-"backend_2ruy_2_tensor_builder_8h.html":[43,0,3,4,1,6,12],
-"backend_2ruy_2_tensor_builder_8h.html#a8295289e59d31ff8afb39a139a60bc67":[43,0,3,4,1,6,12,0],
-"backend_2ruy_2_tensor_builder_8h_source.html":[43,0,3,4,1,6,12],
-"backend_2train_2_backend_context_8cc.html":[43,0,3,4,1,7,3]
+"backend_2ruy_2_static_tensor_manager_8h_source.html":[43,0,3,4,1,6,10]
 };

@@ -1373,6 +1373,7 @@ var hierarchy =
     [ "luci::GraphBuilderMultiOutput::BuildNodeArgs", "structluci_1_1_graph_builder_multi_output_1_1_build_node_args.html", null ],
     [ "luci::GraphBuilderMultiOutput::BuildOutArgs", "structluci_1_1_graph_builder_multi_output_1_1_build_out_args.html", null ],
     [ "onert::backend::trix::ops::BulkPipelineBuffer", "classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_buffer.html", null ],
+    [ "onert::backend::trix::ops::BulkPipelineModel", "classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_model.html", null ],
     [ "enco::Bundle", "classenco_1_1_bundle.html", null ],
     [ "mir_caffe2::Caffe2OpCreator", "classmir__caffe2_1_1_caffe2_op_creator.html", null ],
     [ "mir_caffe::CaffeOpCreator", "classmir__caffe_1_1_caffe_op_creator.html", null ],
