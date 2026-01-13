@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_TRIX_OPS_BULK_PIPE_LINE_MANAGER_H__
-#define __ONERT_BACKEND_TRIX_OPS_BULK_PIPE_LINE_MANAGER_H__
+#ifndef __ONERT_BACKEND_TRIX_OPS_BULK_PIPELINE_MANAGER_H__
+#define __ONERT_BACKEND_TRIX_OPS_BULK_PIPELINE_MANAGER_H__
 
 #include <memory>
 #include <vector>
@@ -27,13 +27,7 @@
 #include <backend/IPortableTensor.h>
 #include "BulkPipelineModel.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace trix
-{
-namespace ops
+namespace onert::backend::trix::ops
 {
 
 class BulkPipelineManager
@@ -72,9 +66,6 @@ private:
   std::vector<std::shared_ptr<BulkPipelineModel>> _models;
 };
 
-} // namespace ops
-} // namespace trix
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::trix::ops
 
-#endif // __ONERT_BACKEND_TRIX_OPS_BULK_PIPE_LINE_MANAGER_H__
+#endif // __ONERT_BACKEND_TRIX_OPS_BULK_PIPELINE_MANAGER_H__

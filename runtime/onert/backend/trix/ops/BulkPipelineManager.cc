@@ -22,13 +22,7 @@
 #include <thread>
 #include <chrono>
 
-namespace onert
-{
-namespace backend
-{
-namespace trix
-{
-namespace ops
+namespace onert::backend::trix::ops
 {
 
 BulkPipelineManager::BulkPipelineManager(const PipelineConfig &config) : _config(config)
@@ -169,7 +163,4 @@ void BulkPipelineManager::prepareModels()
   }
 }
 
-} // namespace ops
-} // namespace trix
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::trix::ops

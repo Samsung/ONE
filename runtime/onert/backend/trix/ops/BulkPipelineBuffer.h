@@ -14,21 +14,15 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_TRIX_OPS_BULKPIPELINEBUFFER_H__
-#define __ONERT_BACKEND_TRIX_OPS_BULKPIPELINEBUFFER_H__
+#ifndef __ONERT_BACKEND_TRIX_OPS_BULK_PIPELINE_BUFFER_H__
+#define __ONERT_BACKEND_TRIX_OPS_BULK_PIPELINE_BUFFER_H__
 
 #include <memory>
 #include <cstdio>
 #include <stdexcept>
 #include <libnpuhost.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace trix
-{
-namespace ops
+namespace onert::backend::trix::ops
 {
 
 class BulkPipelineBuffer
@@ -70,9 +64,6 @@ private:
   generic_buffer *_buffer{nullptr};
 };
 
-} // namespace ops
-} // namespace trix
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::trix::ops
 
-#endif // __ONERT_BACKEND_TRIX_OPS_BULKPIPELINEBUFFER_H__
+#endif // __ONERT_BACKEND_TRIX_OPS_BULK_PIPELINE_BUFFER_H__

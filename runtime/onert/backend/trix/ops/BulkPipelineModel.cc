@@ -20,13 +20,7 @@
 #include <cstring>
 #include <algorithm>
 
-namespace onert
-{
-namespace backend
-{
-namespace trix
-{
-namespace ops
+namespace onert::backend::trix::ops
 {
 
 BulkPipelineModel::BulkPipelineModel(const std::string &model_path, int device_id)
@@ -275,7 +269,4 @@ void BulkPipelineModel::closeDevice()
   }
 }
 
-} // namespace ops
-} // namespace trix
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::trix::ops
