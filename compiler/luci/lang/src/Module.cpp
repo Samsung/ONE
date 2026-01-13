@@ -35,6 +35,14 @@ loco::Graph *Module::graph(void) const
   return graph.get();
 }
 
+void Module::removeGraphByIndex(size_t idx)
+{
+  if (idx >= _graphs.size() or idx == 0)
+    throw std::invalid_argument("Module: Invalid graph index to be deleted");
+
+  _graphs.erase(_graphs.begin() + idx);
+}
+
 loco::Graph *Module::graph(size_t idx) const
 {
   auto &graph = _graphs.at(idx);
