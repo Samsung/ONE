@@ -29,11 +29,22 @@ protected:
   {
     BulkPipelineManager::PipelineConfig config;
     config.device_id = 0;
-    config.model_paths.push_back("model_path");
+    config.model_paths.push_back("model_path_0");
+    config.model_paths.push_back("model_path_1");
+    config.n_inputs = 0;
+    config.n_outputs = 0;
     manager = std::make_unique<BulkPipelineManager>(config);
 
     // Reset all mock syscalls before each test
     MockSyscallsManager::getInstance().resetAll();
+
+    MockSyscallsManager::getInstance().setFopenHook([](const char *path, const char *) -> FILE * {
+      if (strcmp(path, "model_path_0") == 0)
+      {
+        return (FILE *)1;
+      }
+      return (FILE *)2;
+    });
 
     MockSyscallsManager::getInstance().setFreadHook(
       [](void *ptr, size_t size, size_t, FILE *) -> int {
@@ -43,6 +54,8 @@ protected:
           meta->program_size = 1024;
           meta->weight_size = 1024;
           meta->size = 4096;
+          meta->input_seg_num = 0;
+          meta->output_seg_num = 0;
         }
         return 1;
       });
@@ -82,4 +95,30 @@ TEST_F(BulkPipelineManagerTest, test_execute)
   const std::vector<const onert::backend::IPortableTensor *> inputs;
   std::vector<onert::backend::IPortableTensor *> outputs;
   EXPECT_NO_THROW(manager->execute(inputs, outputs));
+}
+
+TEST_F(BulkPipelineManagerTest, test_verify_models)
+{
+  MockSyscallsManager::getInstance().clearFreadHook();
+  MockSyscallsManager::getInstance().setFreadHook(
+    [](void *ptr, size_t size, size_t, FILE *fp) -> int {
+      if (size == NPUBIN_META_SIZE)
+      {
+        auto meta = reinterpret_cast<npubin_meta *>(ptr);
+        meta->program_size = 1024;
+        meta->weight_size = 1024;
+        meta->size = 4096;
+        meta->input_seg_num = 0;
+        if (fp == (FILE *)1)
+        {
+          meta->output_seg_num = 1;
+        }
+        else
+        {
+          meta->output_seg_num = 0;
+        }
+      }
+      return 1;
+    });
+  EXPECT_FALSE(manager->initialize());
 }
