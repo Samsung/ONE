@@ -23,13 +23,7 @@
 #include <cstring>
 #include <iostream>
 
-namespace onert
-{
-namespace backend
-{
-namespace trix
-{
-namespace ops
+namespace onert::backend::trix::ops
 {
 
 // FIXME: Using higher level API instead of raw API
@@ -170,7 +164,4 @@ size_t BulkPipelineBuffer::getAlignedSize(size_t size) const
   return (size + _4KB_M_1) & ~_4KB_M_1;
 }
 
-} // namespace ops
-} // namespace trix
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::trix::ops

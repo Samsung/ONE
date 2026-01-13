@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_TRIX_OPS_BULKPIPELINEMODEL_H__
-#define __ONERT_BACKEND_TRIX_OPS_BULKPIPELINEMODEL_H__
+#ifndef __ONERT_BACKEND_TRIX_OPS_BULK_PIPELINE_MODEL_H__
+#define __ONERT_BACKEND_TRIX_OPS_BULK_PIPELINE_MODEL_H__
 
 #include <memory>
 #include <string>
@@ -29,13 +29,7 @@
 
 #include "BulkPipelineBuffer.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace trix
-{
-namespace ops
+namespace onert::backend::trix::ops
 {
 
 class BulkPipelineModel
@@ -96,9 +90,6 @@ private:
   std::atomic<bool> _buffer_ready{false};
 };
 
-} // namespace ops
-} // namespace trix
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::trix::ops
 
-#endif // __ONERT_BACKEND_TRIX_OPS_BULKPIPELINEMODEL_H__
+#endif // __ONERT_BACKEND_TRIX_OPS_BULK_PIPELINE_MODEL_H__
