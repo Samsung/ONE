@@ -42,7 +42,8 @@ void BulkPipelineLayer::configure(const std::vector<const IPortableTensor *> &in
   // Configure BulkPipeLineManager
   BulkPipelineManager::PipelineConfig config;
   config.model_paths = binary_path;
-  config.device_id = 0; // default device id = 0
+  config.device_id = 0;      // default device id = 0
+  config.n_owner_models = 2; // Use 2 owner models for buffer sharing
 
   _pipeline_manager = std::make_unique<BulkPipelineManager>(config);
 
