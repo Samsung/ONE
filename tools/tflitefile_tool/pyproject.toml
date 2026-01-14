@@ -1,0 +1,22 @@
+[build-system]
+requires = ["uv_build==0.9.10"]
+build-backend = "uv_build"
+
+[project]
+name = "tflitefile-tool"
+version = "1.0.0"
+description = "Tool for parsing and analyzing TFLite model files"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "flatbuffers==23.5.26", # Same version with runtime/infra/buildtool/CMakeLists.txt
+    "numpy>=2.0",
+]
+
+[project.scripts]
+tflite-parser = "tflitefile_tool.model_parser:main"
+tflite-selector = "tflitefile_tool.select_operator:main"
+
+[project.urls]
+Homepage = "https://github.com/Samsung/ONE"
+Repository = "https://github.com/Samsung/ONE.git"
