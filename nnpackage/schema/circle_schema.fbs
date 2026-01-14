@@ -87,6 +87,13 @@ enum TensorType : byte {
   GGML_Q8_1 = -5,
 
   // MX dtypes
+  // Current restrictions of MX dtypes
+  // - MX dtypes are not used for model I/O
+  // - MX dtypes are used for activations, not for constant inputs (ex. weight)
+  // - MX dtype's parameters (block size, exponent scale, etc) follows
+  //   OCP Microscaling Formats Specification
+  // - Model does not have exponent scale data.
+  //   Backend should define and use internally if needed
   MXFP4 = -6,
   MXINT8 = -7,
 }
