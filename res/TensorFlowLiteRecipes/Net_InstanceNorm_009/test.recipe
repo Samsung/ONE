@@ -1,0 +1,501 @@
+operand {
+  name: "Hole"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 16
+    dim: 16
+    dim: 32
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "arith.constant"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 32
+    dim: 1
+  }
+  filler {
+    tag: "explicit"
+    arg: "0.114853"
+    arg: "-0.145884"
+    arg: "0.000288477"
+    arg: "0.072668"
+    arg: "-0.0115676"
+    arg: "-0.0495203"
+    arg: "-0.0356469"
+    arg: "0.139527"
+    arg: "0.0527096"
+    arg: "-0.0443251"
+    arg: "0.131108"
+    arg: "0.0130369"
+    arg: "0.00880178"
+    arg: "0.061071"
+    arg: "-0.114424"
+    arg: "-0.105022"
+    arg: "-0.0345281"
+    arg: "0.230728"
+    arg: "-0.0588748"
+    arg: "-0.0701458"
+    arg: "-0.0118293"
+    arg: "-0.126593"
+    arg: "0.103911"
+    arg: "-0.0138327"
+    arg: "0.041414"
+    arg: "0.151033"
+    arg: "-0.139292"
+    arg: "-0.0766383"
+    arg: "-0.0777909"
+    arg: "0.054893"
+    arg: "0.0450233"
+    arg: "-0.0593961"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "arith.constant1"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 32
+    dim: 1
+  }
+  filler {
+    tag: "explicit"
+    arg: "-0.0514705"
+    arg: "0.233236"
+    arg: "-0.100748"
+    arg: "-0.167489"
+    arg: "0.0184573"
+    arg: "-0.00721665"
+    arg: "-0.197328"
+    arg: "0.0999073"
+    arg: "0.0355112"
+    arg: "0.130076"
+    arg: "0.0359651"
+    arg: "-0.0605629"
+    arg: "0.0270538"
+    arg: "-0.260015"
+    arg: "-0.0438121"
+    arg: "0.0185184"
+    arg: "0.00184861"
+    arg: "0.0865002"
+    arg: "-0.0278637"
+    arg: "-0.20192"
+    arg: "-0.11208"
+    arg: "0.0625163"
+    arg: "0.0900164"
+    arg: "-0.242315"
+    arg: "-0.036523"
+    arg: "-0.0695031"
+    arg: "-0.0945726"
+    arg: "-0.0425843"
+    arg: "0.0297771"
+    arg: "-0.179274"
+    arg: "-0.0588298"
+    arg: "-0.00256352"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "arith.constant2"
+  type: INT32
+  shape {
+    dim: 3
+  }
+  filler {
+    tag: "explicit"
+    arg: "1"
+    arg: "2"
+    arg: "4"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "arith.constant3"
+  type: FLOAT32
+  shape {
+  }
+  filler {
+    tag: "explicit"
+    arg: "1e-06"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "arith.constant4"
+  type: INT32
+  shape {
+    dim: 4
+  }
+  filler {
+    tag: "explicit"
+    arg: "1"
+    arg: "16"
+    arg: "16"
+    arg: "32"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "arith.constant5"
+  type: INT32
+  shape {
+    dim: 5
+  }
+  filler {
+    tag: "explicit"
+    arg: "-1"
+    arg: "16"
+    arg: "16"
+    arg: "32"
+    arg: "1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "group_normalization_1/Reshape"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 16
+    dim: 16
+    dim: 32
+    dim: 1
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "group_normalization_1/moments/mean"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 32
+    dim: 1
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "group_normalization_1/Neg"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 32
+    dim: 1
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "group_normalization_1/moments/SquaredDifference"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 16
+    dim: 16
+    dim: 32
+    dim: 1
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "group_normalization_1/moments/SquaredDifference1"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 16
+    dim: 16
+    dim: 32
+    dim: 1
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "group_normalization_1/moments/variance"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 32
+    dim: 1
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "group_normalization_1/add"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 32
+    dim: 1
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "group_normalization_1/Rsqrt"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 32
+    dim: 1
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "group_normalization_1/mul"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 32
+    dim: 1
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "group_normalization_1/mul_1"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 32
+    dim: 1
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "group_normalization_1/add_1"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 32
+    dim: 1
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "group_normalization_1/mul_2"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 16
+    dim: 16
+    dim: 32
+    dim: 1
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "group_normalization_1/add_2"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 16
+    dim: 16
+    dim: 32
+    dim: 1
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "group_normalization_1/Reshape_3"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 16
+    dim: 16
+    dim: 32
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operation {
+  type: "Reshape"
+  input: "Hole"
+  input: "arith.constant5"
+  output: "group_normalization_1/Reshape"
+}
+operation {
+  type: "Mean"
+  input: "group_normalization_1/Reshape"
+  input: "arith.constant2"
+  output: "group_normalization_1/moments/mean"
+  mean_options {
+    keep_dims: true
+  }
+}
+operation {
+  type: "Neg"
+  input: "group_normalization_1/moments/mean"
+  output: "group_normalization_1/Neg"
+}
+operation {
+  type: "Sub"
+  input: "group_normalization_1/Reshape"
+  input: "group_normalization_1/moments/mean"
+  output: "group_normalization_1/moments/SquaredDifference"
+  sub_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Square"
+  input: "group_normalization_1/moments/SquaredDifference"
+  output: "group_normalization_1/moments/SquaredDifference1"
+}
+operation {
+  type: "Mean"
+  input: "group_normalization_1/moments/SquaredDifference1"
+  input: "arith.constant2"
+  output: "group_normalization_1/moments/variance"
+  mean_options {
+    keep_dims: true
+  }
+}
+operation {
+  type: "Add"
+  input: "group_normalization_1/moments/variance"
+  input: "arith.constant3"
+  output: "group_normalization_1/add"
+  add_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Rsqrt"
+  input: "group_normalization_1/add"
+  output: "group_normalization_1/Rsqrt"
+}
+operation {
+  type: "Mul"
+  input: "group_normalization_1/Rsqrt"
+  input: "arith.constant1"
+  output: "group_normalization_1/mul"
+  mul_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Mul"
+  input: "group_normalization_1/Neg"
+  input: "group_normalization_1/mul"
+  output: "group_normalization_1/mul_1"
+  mul_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Add"
+  input: "group_normalization_1/mul_1"
+  input: "arith.constant"
+  output: "group_normalization_1/add_1"
+  add_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Mul"
+  input: "group_normalization_1/Reshape"
+  input: "group_normalization_1/mul"
+  output: "group_normalization_1/mul_2"
+  mul_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Add"
+  input: "group_normalization_1/mul_2"
+  input: "group_normalization_1/add_1"
+  output: "group_normalization_1/add_2"
+  add_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Reshape"
+  input: "group_normalization_1/add_2"
+  input: "arith.constant4"
+  output: "group_normalization_1/Reshape_3"
+}
+input: "Hole"
+output: "group_normalization_1/Reshape_3"
