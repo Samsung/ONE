@@ -37,6 +37,9 @@ public:
   {
     std::vector<std::string> model_paths;
     int device_id{0};
+    int n_owner_models{2}; // number of models that share the buffers
+    uint32_t n_inputs{1};
+    uint32_t n_outputs{1};
   };
 
 public:
@@ -56,11 +59,14 @@ public:
 
 private:
   void createModels();
+  void linkModels();
   void prepareModels();
+  void verifyModels();
 
 private:
   PipelineConfig _config;
   std::atomic<bool> _initialized{false};
+  std::atomic<bool> _use_buffer_sharing;
   std::atomic<bool> _executing{false};
 
   std::vector<std::shared_ptr<BulkPipelineModel>> _models;

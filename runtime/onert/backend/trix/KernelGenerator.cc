@@ -16,6 +16,7 @@
 
 #include "KernelGenerator.h"
 
+#include "ops/BulkPipelineLayer.h"
 #include "ops/BulkLayer.h"
 
 #include <backend/Backend.h>
@@ -75,8 +76,10 @@ void KernelGenerator::visit(const ir::operation::Bulk &node)
   }
   else
   {
-    // TODO: Implement multiple model execution
-    throw std::runtime_error("NYI: multiple model execution");
+    // For pipeline execution (multiple models)
+    auto fn = std::make_unique<ops::BulkPipelineLayer>();
+    fn->configure(input_tensors, output_tensors, binary_path);
+    _return_fn = std::move(fn);
   }
 }
 

@@ -23,8 +23,9 @@
 namespace onert::backend::trix::ops
 {
 
-BulkPipelineModel::BulkPipelineModel(const std::string &model_path, int device_id)
-  : _model_path(model_path), _device_id(device_id)
+BulkPipelineModel::BulkPipelineModel(const std::string &model_path, int device_id,
+                                     BufferOwnership ownership)
+  : _model_path(model_path), _device_id(device_id), _ownership(ownership)
 {
   // DO NOTHING
 }
@@ -56,11 +57,14 @@ bool BulkPipelineModel::prepare()
 
   try
   {
-    openDevice();
-    allocateBuffers();
-    fillBuffers();
-    markBufferReady();
-    registerModel();
+    if (_ownership == BufferOwnership::OWNER)
+    {
+      openDevice();
+      allocateBuffers();
+      fillBuffers();
+      markBufferReady();
+      registerModel();
+    }
 
     _prepared = true;
     return true;
@@ -80,8 +84,17 @@ void BulkPipelineModel::release()
     return;
   }
 
-  unregisterModel();
-  closeDevice();
+  // Cancel a asynchronous job
+  if (_async_fill_future.valid())
+  {
+    _async_fill_future.wait();
+  }
+
+  if (_ownership == BufferOwnership::OWNER)
+  {
+    unregisterModel();
+    closeDevice();
+  }
 
   if (_fp)
   {
@@ -142,6 +155,32 @@ void BulkPipelineModel::run(const std::vector<const IPortableTensor *> &inputs,
   }
 }
 
+void BulkPipelineModel::shareBuffersFrom(const BulkPipelineModel &owner)
+{
+  if (_ownership == BufferOwnership::OWNER)
+  {
+    throw std::runtime_error("Cannot share buffers with owner model: " + _model_path);
+  }
+
+  if (!owner.isPrepared())
+  {
+    throw std::runtime_error("Owner model is not prepared: " + owner.modelPath());
+  }
+
+  // Sharing the buffers
+  _program_buffer = owner._program_buffer;
+  _weight_buffer = owner._weight_buffer;
+
+  // Sharing the device and model id
+  _dev = owner.device();
+  _model_id = owner.modelId();
+}
+
+void BulkPipelineModel::setNextModel(std::shared_ptr<BulkPipelineModel> next)
+{
+  _next_model = next;
+}
+
 void BulkPipelineModel::waitForBufferReady()
 {
   std::unique_lock<std::mutex> lock(_buffer_mutex);
@@ -155,6 +194,22 @@ void BulkPipelineModel::markBufferReady()
     _buffer_ready = true;
   }
   _buffer_cv.notify_all();
+}
+
+void BulkPipelineModel::startAsyncBufferFill()
+{
+  _buffer_ready = false;
+  _async_fill_future = std::async(std::launch::async, [this] {
+    try
+    {
+      fillBuffers();
+      markBufferReady();
+    }
+    catch (const std::exception &e)
+    {
+      std::cerr << "Failed to fill buffers asynchronously: " << e.what() << std::endl;
+    }
+  });
 }
 
 bool BulkPipelineModel::loadMetadata()
@@ -179,6 +234,11 @@ bool BulkPipelineModel::loadMetadata()
 
 void BulkPipelineModel::allocateBuffers()
 {
+  if (_ownership != BufferOwnership::OWNER)
+  {
+    throw std::runtime_error("Not allowed to allocate buffers for non-owner model: " + _model_path);
+  }
+
   if (!_meta)
   {
     throw std::runtime_error("Metadata not loaded for: " + _model_path);
