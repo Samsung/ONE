@@ -33,7 +33,8 @@
   if (not(condition))             \
     return false;
 
-/// @return true  When node has shape with one dim other than `1`  (like '1 x .. x 1 x depth' or '1 x .. x depth' x 1)
+/// @return true  When node has shape with one dim other than `1`  (like '1 x .. x 1 x depth' or '1
+/// x .. x depth' x 1)
 bool is_1D_with_dummy_dim(luci::CircleConst *node, uint32_t depth)
 {
   const auto rank = node->rank();
@@ -58,26 +59,28 @@ bool is_1D_with_dummy_dim(luci::CircleConst *node, uint32_t depth)
 }
 
 /// @return true if the provided begin_reshape Reshape op adds `1` dimension
-///         and terminal_reshape Reshape op removes it (the result is neutral for further processing)
-bool is_unsqueeze_squeeze_pair(luci::CircleReshape *begin_reshape, luci::CircleReshape *terminal_reshape)
+///         and terminal_reshape Reshape op removes it (the result is neutral for further
+///         processing)
+bool is_unsqueeze_squeeze_pair(luci::CircleReshape *begin_reshape,
+                               luci::CircleReshape *terminal_reshape)
 {
   auto const begin_ifm = dynamic_cast<luci::CircleNode *>(begin_reshape->tensor());
   CHECK_OR_FALSE(begin_ifm);
   auto const begin_ofm = loco::must_cast<luci::CircleNode *>(begin_reshape);
   CHECK_OR_FALSE(begin_ofm);
 
-    // check last axis
+  // check last axis
   CHECK_OR_FALSE((begin_ifm->rank() + 1) == begin_ofm->rank());
 
   // check unchanged part of begin_shape
-  for(uint32_t axis=0;axis<begin_ifm->rank();++axis)
+  for (uint32_t axis = 0; axis < begin_ifm->rank(); ++axis)
   {
     // skip dynamic cases
     CHECK_OR_FALSE(begin_ifm->dim(axis).known() && begin_ofm->dim(axis).known());
     CHECK_OR_FALSE(begin_ifm->dim(axis).value() == begin_ofm->dim(axis).value());
   }
   // check last axis
-  CHECK_OR_FALSE(begin_ofm->dim(begin_ofm->rank()-1) == 1);
+  CHECK_OR_FALSE(begin_ofm->dim(begin_ofm->rank() - 1) == 1);
 
   auto const terminal_ifm = dynamic_cast<luci::CircleNode *>(terminal_reshape->tensor());
   CHECK_OR_FALSE(terminal_ifm);
@@ -87,10 +90,10 @@ bool is_unsqueeze_squeeze_pair(luci::CircleReshape *begin_reshape, luci::CircleR
   CHECK_OR_FALSE(terminal_ifm->rank() == terminal_ofm->rank() + 1);
 
   // check last axis
-  CHECK_OR_FALSE(terminal_ifm->dim(begin_ofm->rank()-1) == 1);
+  CHECK_OR_FALSE(terminal_ifm->dim(begin_ofm->rank() - 1) == 1);
 
   // check unchanged part of terminal_reshape
-  for(uint32_t axis=0;axis<terminal_ofm->rank();++axis)
+  for (uint32_t axis = 0; axis < terminal_ofm->rank(); ++axis)
   {
     // skip dynamic cases
     CHECK_OR_FALSE(terminal_ifm->dim(axis).known() && terminal_ofm->dim(axis).known());
@@ -874,8 +877,10 @@ template <> bool InstanceNormPattern::match<InstanceNormPattern::PatternVersion:
   add_as_terminal = dynamic_cast<luci::CircleAdd *>(reshape_as_terminal->tensor());
   CHECK_OR_FALSE(add_as_terminal);
 
-  CHECK_OR_FALSE(luci::fill(&mul_as_scaled_ifm, &add_neg_mul).with_commutative_args_of(add_as_terminal));
-  CHECK_OR_FALSE(luci::fill(&reshape_of_ifm, &mul_gamma).with_commutative_args_of(mul_as_scaled_ifm));
+  CHECK_OR_FALSE(
+    luci::fill(&mul_as_scaled_ifm, &add_neg_mul).with_commutative_args_of(add_as_terminal));
+  CHECK_OR_FALSE(
+    luci::fill(&reshape_of_ifm, &mul_gamma).with_commutative_args_of(mul_as_scaled_ifm));
 
   mul_as_scaled_mean = dynamic_cast<luci::CircleMul *>(add_neg_mul->x());
   CHECK_OR_FALSE(mul_as_scaled_mean);
@@ -886,9 +891,8 @@ template <> bool InstanceNormPattern::match<InstanceNormPattern::PatternVersion:
   luci::CircleMul *mul_gamma_should_be = nullptr;
   luci::CircleNeg *neg_should_be = nullptr;
 
-  CHECK_OR_FALSE(luci::fill(&mul_gamma_should_be, &neg_should_be)
-                   .with_commutative_args_of(mul_as_scaled_mean));
-
+  CHECK_OR_FALSE(
+    luci::fill(&mul_gamma_should_be, &neg_should_be).with_commutative_args_of(mul_as_scaled_mean));
 
   CHECK_OR_FALSE(mul_gamma == mul_gamma_should_be);
   CHECK_OR_FALSE(neg_mean == neg_should_be);
@@ -919,7 +923,8 @@ template <> bool InstanceNormPattern::match<InstanceNormPattern::PatternVersion:
   add_as_variance = dynamic_cast<luci::CircleAdd *>(rsqrt->x());
   CHECK_OR_FALSE(add_as_variance);
 
-  CHECK_OR_FALSE(luci::fill(&mean_as_variance, &const_as_epsilon).with_commutative_args_of(add_as_variance));
+  CHECK_OR_FALSE(
+    luci::fill(&mean_as_variance, &const_as_epsilon).with_commutative_args_of(add_as_variance));
   CHECK_OR_FALSE(mean_as_variance);
 
   CHECK_OR_FALSE(const_as_epsilon->dtype() == loco::DataType::FLOAT32);
@@ -931,7 +936,7 @@ template <> bool InstanceNormPattern::match<InstanceNormPattern::PatternVersion:
 
   sub_2 = dynamic_cast<luci::CircleSub *>(square->x());
   CHECK_OR_FALSE(sub_2);
-  
+
   auto mean_of_ifm_should_be = dynamic_cast<luci::CircleMean *>(sub_2->y());
   CHECK_OR_FALSE(mean_of_ifm == mean_of_ifm_should_be);
 
