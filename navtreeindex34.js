@@ -1,5 +1,13 @@
 var NAVTREEINDEX34 =
 {
+"ann-ref_2src_2ops_2internal_2_dims_8h.html#a7d31d5861ee29211ad7b0ba31527c58a":[43,0,0,3,0,0,0,2,8],
+"ann-ref_2src_2ops_2internal_2_dims_8h.html#a93604338a7a3801ed30692282ff124ce":[43,0,0,3,0,0,0,2,5],
+"ann-ref_2src_2ops_2internal_2_dims_8h.html#abdda18d951947fa9a112349b694c2859":[43,0,0,3,0,0,0,2,2],
+"ann-ref_2src_2ops_2internal_2_dims_8h_source.html":[43,0,0,3,0,0,0,2],
+"ann-ref_2src_2ops_2internal_2_pooling_8cpp.html":[43,0,0,3,0,0,0,12],
+"ann-ref_2src_2ops_2internal_2_pooling_8cpp.html#a7df901abe33c31af4a4b0a6cf2d5552f":[43,0,0,3,0,0,0,12,0],
+"ann-ref_2src_2ops_2internal_2_pooling_8cpp_source.html":[43,0,0,3,0,0,0,12],
+"ann-ref_2src_2ops_2internal_2_pooling_8h.html":[43,0,0,3,0,0,0,13],
 "ann-ref_2src_2ops_2internal_2_pooling_8h.html#a7df901abe33c31af4a4b0a6cf2d5552f":[43,0,0,3,0,0,0,13,0],
 "ann-ref_2src_2ops_2internal_2_pooling_8h_source.html":[43,0,0,3,0,0,0,13],
 "annotated.html":[42,0],
@@ -241,13 +249,5 @@ var NAVTREEINDEX34 =
 "backend_2ruy_2_backend_context_8h.html":[43,0,3,4,1,6,3],
 "backend_2ruy_2_backend_context_8h_source.html":[43,0,3,4,1,6,3],
 "backend_2ruy_2_external_context_8h.html":[43,0,3,4,1,6,6],
-"backend_2ruy_2_external_context_8h_source.html":[43,0,3,4,1,6,6],
-"backend_2ruy_2_kernel_generator_8cc.html":[43,0,3,4,1,6,7],
-"backend_2ruy_2_kernel_generator_8cc_source.html":[43,0,3,4,1,6,7],
-"backend_2ruy_2_kernel_generator_8h.html":[43,0,3,4,1,6,8],
-"backend_2ruy_2_kernel_generator_8h.html#a483f3fdd345d5f6e4a4062a15104a44a":[43,0,3,4,1,6,8,1],
-"backend_2ruy_2_kernel_generator_8h_source.html":[43,0,3,4,1,6,8],
-"backend_2ruy_2_static_tensor_manager_8h.html":[43,0,3,4,1,6,10],
-"backend_2ruy_2_static_tensor_manager_8h.html#af7ef5b7decc45586dee42c9cd19c8444":[43,0,3,4,1,6,10,0],
-"backend_2ruy_2_static_tensor_manager_8h_source.html":[43,0,3,4,1,6,10]
+"backend_2ruy_2_external_context_8h_source.html":[43,0,3,4,1,6,6]
 };

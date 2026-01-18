@@ -1373,6 +1373,7 @@ var hierarchy =
     [ "luci::GraphBuilderMultiOutput::BuildNodeArgs", "structluci_1_1_graph_builder_multi_output_1_1_build_node_args.html", null ],
     [ "luci::GraphBuilderMultiOutput::BuildOutArgs", "structluci_1_1_graph_builder_multi_output_1_1_build_out_args.html", null ],
     [ "onert::backend::trix::ops::BulkPipelineBuffer", "classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_buffer.html", null ],
+    [ "onert::backend::trix::ops::BulkPipelineManager", "classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_manager.html", null ],
     [ "onert::backend::trix::ops::BulkPipelineModel", "classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_model.html", null ],
     [ "enco::Bundle", "classenco_1_1_bundle.html", null ],
     [ "mir_caffe2::Caffe2OpCreator", "classmir__caffe2_1_1_caffe2_op_creator.html", null ],
@@ -2510,6 +2511,7 @@ var hierarchy =
       [ "onert::backend::ruy::ops::ConvolutionLayer", "classonert_1_1backend_1_1ruy_1_1ops_1_1_convolution_layer.html", null ],
       [ "onert::backend::ruy::ops::FullyConnectedLayer", "classonert_1_1backend_1_1ruy_1_1ops_1_1_fully_connected_layer.html", null ],
       [ "onert::backend::trix::ops::BulkLayer", "classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_layer.html", null ],
+      [ "onert::backend::trix::ops::BulkPipelineLayer", "classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_layer.html", null ],
       [ "onert::exec::FunctionSequence", "classonert_1_1exec_1_1_function_sequence.html", null ],
       [ "onert::exec::HookFunction", "classonert_1_1exec_1_1_hook_function.html", null ],
       [ "onert::exec::IPermuteFunction", "classonert_1_1exec_1_1_i_permute_function.html", [
@@ -4781,6 +4783,7 @@ var hierarchy =
     ] ],
     [ "nnfw::cker::random::PhiloxRandom", "classnnfw_1_1cker_1_1random_1_1_philox_random.html", null ],
     [ "enco::Pipeline", "classenco_1_1_pipeline.html", null ],
+    [ "onert::backend::trix::ops::BulkPipelineManager::PipelineConfig", "structonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_manager_1_1_pipeline_config.html", null ],
     [ "coco::PlainWeightContext< T >", "structcoco_1_1_plain_weight_context.html", null ],
     [ "moco::PlaneInference", "classmoco_1_1_plane_inference.html", [
       [ "moco::Padding2DInference", "classmoco_1_1_padding2_d_inference.html", null ]

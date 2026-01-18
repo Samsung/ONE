@@ -1,5 +1,13 @@
 var NAVTREEINDEX9 =
 {
+"_dumping_hooks_8cpp.html":[43,0,0,15,0,1,4],
+"_dumping_hooks_8cpp_source.html":[43,0,0,15,0,1,4],
+"_dumping_hooks_8h.html":[43,0,0,15,0,1,5],
+"_dumping_hooks_8h_source.html":[43,0,0,15,0,1,5],
+"_duplicate_8cpp.html":[43,0,0,38,1,1,4,14],
+"_duplicate_8cpp.html#a64ffef250ffa33efadd30fe871066da2":[43,0,0,38,1,1,4,14,0],
+"_duplicate_8cpp_source.html":[43,0,0,38,1,1,4,14],
+"_duplicate_8h.html":[43,0,0,38,1,1,4,15],
 "_duplicate_8h.html#a64ffef250ffa33efadd30fe871066da2":[43,0,0,38,1,1,4,15,1],
 "_duplicate_8h_source.html":[43,0,0,38,1,1,4,15],
 "_duplicated_object_reduction_8cpp.html":[43,0,0,38,1,1,4,16],
@@ -241,13 +249,5 @@ var NAVTREEINDEX9 =
 "_event_writer_8h.html":[43,0,3,4,2,1,8,7],
 "_event_writer_8h_source.html":[43,0,3,4,2,1,8,7],
 "_example_graph_8h.html":[43,0,0,55,1,1],
-"_example_graph_8h_source.html":[43,0,0,55,1,1],
-"_exceptions_8h.html":[43,0,3,4,2,0,7,2],
-"_exceptions_8h_source.html":[43,0,3,4,2,0,7,2],
-"_exec_time_8cc.html":[43,0,3,4,2,1,3,8],
-"_exec_time_8cc_source.html":[43,0,3,4,2,1,3,8],
-"_exec_time_8h.html":[43,0,3,4,2,1,3,9],
-"_exec_time_8h_source.html":[43,0,3,4,2,1,3,9],
-"_execution_8cc.html":[43,0,3,4,2,1,3,10],
-"_execution_8cc_source.html":[43,0,3,4,2,1,3,10]
+"_example_graph_8h_source.html":[43,0,0,55,1,1]
 };

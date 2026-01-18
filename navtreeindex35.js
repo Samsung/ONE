@@ -1,5 +1,13 @@
 var NAVTREEINDEX35 =
 {
+"backend_2ruy_2_kernel_generator_8cc.html":[43,0,3,4,1,6,7],
+"backend_2ruy_2_kernel_generator_8cc_source.html":[43,0,3,4,1,6,7],
+"backend_2ruy_2_kernel_generator_8h.html":[43,0,3,4,1,6,8],
+"backend_2ruy_2_kernel_generator_8h.html#a483f3fdd345d5f6e4a4062a15104a44a":[43,0,3,4,1,6,8,1],
+"backend_2ruy_2_kernel_generator_8h_source.html":[43,0,3,4,1,6,8],
+"backend_2ruy_2_static_tensor_manager_8h.html":[43,0,3,4,1,6,10],
+"backend_2ruy_2_static_tensor_manager_8h.html#af7ef5b7decc45586dee42c9cd19c8444":[43,0,3,4,1,6,10,0],
+"backend_2ruy_2_static_tensor_manager_8h_source.html":[43,0,3,4,1,6,10],
 "backend_2ruy_2_tensor_builder_8h.html":[43,0,3,4,1,6,12],
 "backend_2ruy_2_tensor_builder_8h.html#a8295289e59d31ff8afb39a139a60bc67":[43,0,3,4,1,6,12,0],
 "backend_2ruy_2_tensor_builder_8h_source.html":[43,0,3,4,1,6,12],
@@ -240,14 +248,6 @@ var NAVTREEINDEX35 =
 "circle-eval-diff_2src_2_tensor_8cpp.html#ad1515c4010b62f2e17704bb149a64d6b":[43,0,0,9,2,5,1],
 "circle-eval-diff_2src_2_tensor_8cpp_source.html":[43,0,0,9,2,5],
 "circle-input-names_8cpp.html":[43,0,0,11,0,0],
-"circle-input-names_8cpp.html#a0bf95843a4ca2404557403f869f84fc3":[43,0,0,11,0,0,13],
 "circle-input-names_8cpp.html#a0bf95843a4ca2404557403f869f84fc3":[43,0,0,11,0,0,14],
-"circle-input-names_8cpp.html#a1539ebd71ffa69856945e99e92d0ab08":[43,0,0,11,0,0,18],
-"circle-input-names_8cpp.html#a4edd29d5bb92eb98d22fb0e9162552fd":[43,0,0,11,0,0,19],
-"circle-input-names_8cpp.html#a5f0cd3d97cf0e240937536cd2536e26c":[43,0,0,11,0,0,21],
-"circle-input-names_8cpp.html#a6b4891850b53ff613b850c65f98612b4":[43,0,0,11,0,0,20],
-"circle-input-names_8cpp.html#a80604487a994cfc044457c13ce07fadd":[43,0,0,11,0,0,12],
-"circle-input-names_8cpp.html#a840291bc02cba5474a4cb46a9b9566fe":[43,0,0,11,0,0,23],
-"circle-input-names_8cpp.html#a86c244f94e5f525b0031f00b00a9062e":[43,0,0,11,0,0,16],
-"circle-input-names_8cpp.html#ae18e57b1ae64aa06c8cfb2065cf0dfe3":[43,0,0,11,0,0,17]
+"circle-input-names_8cpp.html#a0bf95843a4ca2404557403f869f84fc3":[43,0,0,11,0,0,13]
 };
