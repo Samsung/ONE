@@ -12,18 +12,7 @@ ONE$ find ./nnpackage -name "add.tflite"
 ## Test
 
 ```
-ONE/tools/tflitefile_tool$ python -m unittest discover
-
-----------------------------------------------------------------------
-Ran 1 tests in 0.000s
-
-OK
-```
-
-OR
-
-```
-ONE/tools/tflitefile_tool$ python ./tests/main.py
+ONE/tools/tflitefile_tool$ uv run ./tests/main.py
 
 ----------------------------------------------------------------------
 Ran 1 tests in 0.000s
