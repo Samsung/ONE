@@ -79,7 +79,6 @@ public:
 
       if (element_type.isInteger(32))
       {
-        LLVM_DEBUG({ llvm::dbgs() << "element_type.isInteger(32)" << "\n"; });
         llvm::SmallVector<int32_t, 8> v32;
         v32.reserve(indices_values.size());
         for (int64_t v : indices_values)
@@ -95,7 +94,6 @@ public:
       }
       else if (element_type.isInteger(64))
       {
-        LLVM_DEBUG({ llvm::dbgs() << "element_type.isInteger(64)" << "\n"; });
         auto const_type =
           mlir::RankedTensorType::get(ranked_indices_type.getShape(), rewriter.getI64Type());
         indices = rewriter.create<ConstOp>(
@@ -106,7 +104,6 @@ public:
     }
     else
     {
-      LLVM_DEBUG({ llvm::dbgs() << "indices are not constant()" << "\n"; });
       // Add operators that correct invalid indices values to valid indices values if indices is not
       // constant
       mlir::Location y_loc = mlir::NameLoc::get(rewriter.getStringAttr(op_name + "/y"));
@@ -114,19 +111,17 @@ public:
         mlir::RankedTensorType::get({}, ranked_indices_type.getElementType());
       mlir::Value const_y;
 
-      if (idx_elem_ty.isInteger(32))
+      if (element_type.isInteger(32))
       {
         if (y < std::numeric_limits<int32_t>::min() || y > std::numeric_limits<int32_t>::max())
           return rewriter.notifyMatchFailure(op, "axis dim out of int32 range for indices i32");
         const_y = rewriter.create<ConstOp>(
-            y_loc,
-            mlir::DenseIntElementsAttr::get(scalar_type, {static_cast<int32_t>(y)}));
+          y_loc, mlir::DenseIntElementsAttr::get(scalar_type, {static_cast<int32_t>(y)}));
       }
-      else if (idx_elem_ty.isInteger(64))
+      else if (element_type.isInteger(64))
       {
         const_y = rewriter.create<ConstOp>(
-            y_loc,
-            mlir::DenseIntElementsAttr::get(scalar_type, {static_cast<int64_t>(y)}));
+          y_loc, mlir::DenseIntElementsAttr::get(scalar_type, {static_cast<int64_t>(y)}));
       }
       else
         return rewriter.notifyMatchFailure(op, "non-constant indices element type is not i32/i64");
