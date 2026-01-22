@@ -35,7 +35,7 @@
 
 /// @return true  When node has shape with one dim other than `1`  (like '1 x .. x 1 x depth' or '1
 /// x .. x depth' x 1)
-bool is_flat_tensor(luci::CircleConst *node, uint32_t depth)
+bool is_unsqueezed_1D(luci::CircleConst *node, uint32_t depth)
 {
   const auto rank = node->rank();
   std::optional<uint32_t> depth_axis;
@@ -589,7 +589,7 @@ bool InstanceNormPattern::condition_common_1_5(uint32_t ifm_channel_depth)
 
   const_as_beta = dynamic_cast<luci::CircleConst *>(sub->x());
   CHECK_OR_FALSE(const_as_beta);
-  CHECK_OR_FALSE(is_flat_tensor(const_as_beta, ifm_channel_depth));
+  CHECK_OR_FALSE(is_unsqueezed_1D(const_as_beta, ifm_channel_depth));
 
   return true;
 }
@@ -651,7 +651,7 @@ template <> bool InstanceNormPattern::match<InstanceNormPattern::PatternVersion:
 
   CHECK_OR_FALSE(luci::fill(&rsqrt, &const_as_gamma).with_commutative_args_of(mul_gamma));
 
-  CHECK_OR_FALSE(is_flat_tensor(const_as_gamma, ifm_channel_depth));
+  CHECK_OR_FALSE(is_unsqueezed_1D(const_as_gamma, ifm_channel_depth));
 
   CHECK_OR_FALSE(condition_common_1_5(ifm_channel_depth));
 
@@ -911,10 +911,10 @@ template <> bool InstanceNormPattern::match<InstanceNormPattern::PatternVersion:
 
   const_as_beta = dynamic_cast<luci::CircleConst *>(add_neg_mul->y());
   CHECK_OR_FALSE(const_as_beta);
-  CHECK_OR_FALSE(is_flat_tensor(const_as_beta, ifm_channel_depth));
+  CHECK_OR_FALSE(is_unsqueezed_1D(const_as_beta, ifm_channel_depth));
 
   CHECK_OR_FALSE(luci::fill(&rsqrt, &const_as_gamma).with_commutative_args_of(mul_gamma));
-  CHECK_OR_FALSE(is_flat_tensor(const_as_gamma, ifm_channel_depth));
+  CHECK_OR_FALSE(is_unsqueezed_1D(const_as_gamma, ifm_channel_depth));
 
   add_as_variance = dynamic_cast<luci::CircleAdd *>(rsqrt->x());
   CHECK_OR_FALSE(add_as_variance);
