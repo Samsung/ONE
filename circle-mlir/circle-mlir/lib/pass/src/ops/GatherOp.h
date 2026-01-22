@@ -60,6 +60,11 @@ public:
 
     // Assume input have shape
     const auto y = ranked_input_type.getShape()[axis];
+    mlir::RankedTensorType ranked_indices_type =
+      mlir::dyn_cast<mlir::RankedTensorType>(indices.getType());
+    LLVM_DEBUG(
+      { llvm::dbgs() << "ConvGather ranked_indices_type: " << ranked_indices_type << "\n"; });
+    auto element_type = ranked_indices_type.getElementType();
 
     std::vector<int64_t> indices_values;
     if (ExtractConstantValues(indices, indices_values))
@@ -70,16 +75,32 @@ public:
         e = (x + y) - ((x + y) / y) * y;
       }
 
-      mlir::RankedTensorType ranked_indices_type =
-        mlir::dyn_cast_or_null<mlir::RankedTensorType>(indices.getType());
-      LLVM_DEBUG(
-        { llvm::dbgs() << "ConvGather ranked_indices_type: " << ranked_indices_type << "\n"; });
-      const auto const_type = mlir::RankedTensorType::get(ranked_indices_type.getShape(),
-                                                          ranked_indices_type.getElementType());
-
       mlir::Location indices_loc = mlir::NameLoc::get(rewriter.getStringAttr(op_name + "/indices"));
-      indices = rewriter.create<ConstOp>(indices_loc,
-                                         DenseIntElementsAttr::get(const_type, indices_values));
+
+      if (element_type.isInteger(32))
+      {
+        llvm::SmallVector<int32_t, 8> v32;
+        v32.reserve(indices_values.size());
+        for (int64_t v : indices_values)
+        {
+          if (v < std::numeric_limits<int32_t>::min() || v > std::numeric_limits<int32_t>::max())
+            return rewriter.notifyMatchFailure(op, "index out of int32 range");
+          v32.push_back(static_cast<int32_t>(v));
+          auto const_type =
+            mlir::RankedTensorType::get(ranked_indices_type.getShape(), rewriter.getI32Type());
+          indices =
+            rewriter.create<ConstOp>(indices_loc, mlir::DenseIntElementsAttr::get(const_type, v32));
+        }
+      }
+      else if (element_type.isInteger(64))
+      {
+        auto const_type =
+          mlir::RankedTensorType::get(ranked_indices_type.getShape(), rewriter.getI64Type());
+        indices = rewriter.create<ConstOp>(
+          indices_loc, mlir::DenseIntElementsAttr::get(const_type, indices_values));
+      }
+      else
+        return rewriter.notifyMatchFailure(op, "indices element type is not i32/i64");
     }
     else
     {
