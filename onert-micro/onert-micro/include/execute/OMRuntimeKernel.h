@@ -24,7 +24,7 @@
 
 #include <cstdint>
 
-constexpr static uint32_t maxInputSize = 6;
+constexpr static uint32_t maxInputSize = 24; // was 6, but lstm takes 24 inputs
 constexpr static uint32_t maxOutputSize = 5;
 
 namespace onert_micro
