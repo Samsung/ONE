@@ -68,8 +68,10 @@ AddModel(Flatten_F32_R4_0)
 AddModel(Flatten_F32_R4_1)
 AddModel(Floor_F32_R4)
 AddModel(Gather_F32_R2)
+# AddModel(Gather_F32_R2_2) # Need to enable after int32 indices type support
 AddModel(Gather_F32_R2_C1)
 AddModel(Gather_F32_R2_C1_2)
+# AddModel(Gather_F32_R2_C1_3) # Need to enable after int32 indices type support
 AddModel(Gemm_F32_R2)
 AddModel(Gemm_F32_R2_a0b1)
 AddModel(Gemm_F32_R2_a1b0)
