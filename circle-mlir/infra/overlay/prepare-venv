@@ -34,7 +34,7 @@ fi
 
 set -e
 
-DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 if [[ -z "$VENV_NAME" ]]; then
   VENV_NAME="venv"
 fi
