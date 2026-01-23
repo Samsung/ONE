@@ -16,6 +16,8 @@ import util_h5_file
 def get_np_type(onnx_type):
     if onnx_type == 'tensor(float)':
         return np.float32
+    if onnx_type == 'tensor(int32)':
+        return np.int32
     if onnx_type == 'tensor(int64)':
         return np.int64
     if onnx_type == 'tensor(bool)':
@@ -91,6 +93,10 @@ def exec_model(filepath, is_nchw=False):
             random_data = np.random.random(inputs[i].shape).astype(np_type)
         elif np_type == np.uint8:
             random_data = np.random.randint(0, 256, size=inputs[i].shape).astype(np_type)
+        elif np_type == np.int32:
+            low, high = get_input_limit(onnx_model.graph.input[i], 0, 100)
+            random_data = np.random.randint(low, high,
+                                            size=inputs[i].shape).astype(np_type)
         elif np_type == np.int64:
             low, high = get_input_limit(onnx_model.graph.input[i], 0, 100)
             random_data = np.random.randint(low, high,
