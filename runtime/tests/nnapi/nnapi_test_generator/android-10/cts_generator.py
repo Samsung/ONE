@@ -99,13 +99,14 @@ def NeedRegenerate():
 def InitializeFiles(model_fd, example_fd, test_fd):
     fileHeader = "// clang-format off\n// Generated file (from: {spec_file}). Do not edit"
     testFileHeader = """\
-#include "../../TestGenerated.h"\n
-namespace {spec_name} {{
+#include "../../TestGenerated.h"
+namespace cts_gen_{spec_name} {{
 // Generated {spec_name} test
 #include "{example_file}"
 // Generated model constructor
 #include "{model_file}"
-}} // namespace {spec_name}\n"""
+}} // namespace cts_gen_{spec_name}
+"""
     # This regex is to remove prefix and get relative path for #include
     # Fix for onert: update path
     pathRegex = r".*(runtime/tests/nnapi/src/)"
@@ -272,13 +273,13 @@ def DumpCtsExample(example, example_fd):
 def DumpCtsTest(example, test_fd):
     testTemplate = """\
 TEST_F({test_case_name}, {test_name}) {{
-    execute({namespace}::{create_model_name},
-            {namespace}::{is_ignored_name},
-            {namespace}::get_{examples_name}(){log_file});\n}}\n"""
-    # Fix for onert: Remove version check
-    #if example.model.version is not None:
-        #testTemplate += """\
-#TEST_AVAILABLE_SINCE({version}, {test_name}, {namespace}::{create_model_name})\n"""
+    execute(cts_gen_{namespace}::{create_model_name},
+            cts_gen_{namespace}::{is_ignored_name},
+            cts_gen_{namespace}::get_{examples_name}(){log_file});\n}}\n"""
+# Fix for onert: Remove version check
+#     if example.model.version is not None:
+#         testTemplate += """\
+# TEST_AVAILABLE_SINCE({version}, {test_name}, {namespace}::{create_model_name})\n"""
     print(testTemplate.format(
         test_case_name="DynamicOutputShapeTest" if example.model.hasDynamicOutputShape \
                        else "GeneratedTests",

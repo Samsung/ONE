@@ -1,5 +1,8 @@
+#!/bin/bash
+
 #
 # Copyright (C) 2017 The Android Open Source Project
+# Copyright (C) 2026 Samsung Electronics Co., Ltd. All Rights Reserved
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,20 +32,20 @@ function generate_one_testcase {
     -e $VTS_PATH/generated/examples/$BASENAME.example.cpp
   # Paste these lines into TestGenerated.cpp
   echo
-  echo namespace $BASENAME {
-  echo std::vector\<MixedTypedExample\> examples \= {
-  echo // Generated $BASENAME test
-  echo \#include \"examples/$BASENAME.example.cpp\"
-  echo }\;
-  echo // Generated model constructor
-  echo \#include \"vts_models/$BASENAME.model.cpp\"
-  echo }  // namespace $BASENAME
-  echo TEST_F\(NeuralnetworksHidlTest\, $BASENAME\) {
-  echo '    generated_tests::Execute'\(device,
-  echo '                             '$BASENAME\:\:createTestModel\,
-  echo '                             '$BASENAME\:\:is_ignored\,
-  echo '                             '$BASENAME\:\:examples\)\;
-  echo }
+  echo "namespace vts_gen_$BASENAME {"
+  echo "std::vector<MixedTypedExample> examples = {"
+  echo "// Generated $BASENAME test"
+  echo "#include \"examples/$BASENAME.example.cpp\""
+  echo "};"
+  echo "// Generated model constructor"
+  echo "#include \"vts_models/$BASENAME.model.cpp\""
+  echo "} // namespace vts_gen_$BASENAME"
+  echo "TEST_F(NeuralnetworksHidlTest, $BASENAME) {"
+  echo "    generated_tests::Execute(device,"
+  echo "                             vts_gen_$BASENAME::createTestModel,"
+  echo "                             vts_gen_$BASENAME::is_ignored,"
+  echo "                             vts_gen_$BASENAME::examples);"
+  echo "}"
 }
 
 for ver in $NNAPI_VERSION;
