@@ -1,3 +1,9 @@
+onnx2circle (0.4.1~jammy) jammy; urgency=medium
+
+  * Fix GatherOp to accept both int32/int64 types
+
+ -- On-device AI developers <nnfw@samsung.com>  Wed, 28 Jan 2026 10:59:35 +0000
+
 onnx2circle (0.4.0~202507100754~jammy) jammy; urgency=medium
 
   * Supprot folding of SplitOp
