@@ -23,6 +23,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # Fetch all history and branch (default: 1)
+          # Require all history to get file creation date
+          fetch-depth: 0
 
       - name: Install uv
         uses: astral-sh/setup-uv@v7
@@ -32,19 +36,3 @@ jobs:
       - name: Check format all files
         run: |
           uv run pre-commit run -a
-
-  check-copyright:
-    name: Check copyright
-    runs-on: ubuntu-22.04
-    if: github.repository_owner == 'Samsung'
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          # Fetch all history and branch (default: 1)
-          # Require all history to get file creation date
-          fetch-depth: 0
-
-      - name: Check copyright
-        run: ./nnas copyright-check

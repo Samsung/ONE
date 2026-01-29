@@ -58,3 +58,11 @@ repos:
       id: clang-format
       types_or: [file]  # override default type check to cl files
       files: ((\.c[cl]?)|(\.cpp)|(\.h(pp)?))$
+
+  - repo: local
+    hooks:
+      - name: 'Check copyright headers'
+        id: copyright-check
+        entry: 'nnas copyright-check' # Use trick to use nnas command
+        language: script
+        pass_filenames: false
