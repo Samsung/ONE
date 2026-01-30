@@ -69,6 +69,7 @@
 #include "ops/ReduceMeanOp.h"
 #include "ops/ReduceProdOp.h"
 #include "ops/ReduceSumOp.h"
+#include "ops/ReduceSumSquareOp.h"
 #include "ops/ReluOp.h"
 #include "ops/ReshapeOp.h"
 #include "ops/ResizeOp.h"
@@ -255,6 +256,7 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvReduceProdV13>(typeConverter, context);
   patterns.insert<ConvReduceSum>(typeConverter, context);
   patterns.insert<ConvReduceSumV11>(typeConverter, context);
+  patterns.insert<ConvReduceSumSquareV13>(typeConverter, context);
   patterns.insert<ConvRelu>(typeConverter, context);
   patterns.insert<ConvReshape>(typeConverter, context);
   patterns.insert<ConvResize>(typeConverter, context);
