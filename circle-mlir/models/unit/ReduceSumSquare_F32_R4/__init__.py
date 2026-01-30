@@ -31,6 +31,7 @@ class net_ReduceSumSquare(torch.nn.Module):
         onnx.checker.check_model(onnx_model)
         onnx.save(onnx_model, model_path)
 
+
 _model_ = net_ReduceSumSquare()
 
 _inputs_ = torch.randn(1, 2, 3, 3)
