@@ -64,7 +64,12 @@ public:
     prepareAxes(op, intype, axesValue);
     mlir::Value axes = CreateI32Const(rewriter, axesValue, op_name + "/axes");
 
-    rewriter.replaceOpWithNewOp<SumOp>(op, op.getType(), input, axes, keep_dims);
+    // get Mul(input, input) for Square
+    auto none = rewriter.getStringAttr("NONE");
+    mlir::Location mul_loc = mlir::NameLoc::get(rewriter.getStringAttr(op_name + "/mul"));
+    mlir::Value squared = rewriter.create<MulOp>(mul_loc, input.getType(), input, input, none);
+
+    rewriter.replaceOpWithNewOp<SumOp>(op, op.getType(), squared, axes, keep_dims);
 
     return mlir::success();
   }
