@@ -580,6 +580,12 @@ enum ActivationFunctionType : byte {
   TANH = 4,
   SIGN_BIT = 5,
 }
+// LINT.IfChange
+enum WeightCompressionType : byte {
+  NONE = 0,
+  Huffman = 1
+}
+// LINT.ThenChange(//tensorflow/compiler/mlir/lite/ir/tfl_op_enums.td)
 
 table Conv2DOptions {
   padding:Padding;
@@ -588,6 +594,7 @@ table Conv2DOptions {
   fused_activation_function:ActivationFunctionType;
   dilation_w_factor:int = 1;
   dilation_h_factor:int = 1;
+  weight_compression_type:WeightCompressionType = NONE;
 }
 
 // Options for both Conv3D and Conv3DTranspose.

@@ -161,12 +161,23 @@ OMStatus execute_kernel_CircleConv2D(const OMExecuteArgs &execute_args)
       assert(status == Ok);
       if (status != Ok)
         return status;
+      if(options->weight_compression_type() == circle::WeightCompressionType::WeightCompressionType_Huffman)
+      {
+        status =
+          pal::ConvPerChannel(params, input_shape, core::utils::castInputData<int8_t>(input_data),
+                              weight_shape, core::utils::castInputData<int8_t>(weight_data),
+                              core::utils::castInputData<int32_t>(bias_data), output_shape,
+                              core::utils::castOutputData<int8_t>(output_data),true);
+      }
+      else
+      {
+        status =
+          pal::ConvPerChannel(params, input_shape, core::utils::castInputData<int8_t>(input_data),
+                              weight_shape, core::utils::castInputData<int8_t>(weight_data),
+                              core::utils::castInputData<int32_t>(bias_data), output_shape,
+                              core::utils::castOutputData<int8_t>(output_data),false);
+      }
 
-      status =
-        pal::ConvPerChannel(params, input_shape, core::utils::castInputData<int8_t>(input_data),
-                            weight_shape, core::utils::castInputData<int8_t>(weight_data),
-                            core::utils::castInputData<int32_t>(bias_data), output_shape,
-                            core::utils::castOutputData<int8_t>(output_data));
     }
     break;
 #endif // DIS_QUANT
