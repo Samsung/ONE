@@ -5,7 +5,8 @@ var searchData=
   ['binaryarithmeticoptype_2',['BinaryArithmeticOpType',['../namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27',1,'nnfw::cker']]],
   ['bitwidth_3',['BitWidth',['../namespaceflexbuffers.html#a76cc4a8eb404468982af5bd160912e8b',1,'flexbuffers']]],
   ['broadcastableopcategory_4',['broadcastableopcategory',['../namespaceluci__interpreter__pal.html#a06f2777ae390466061247361a9a416c2',1,'luci_interpreter_pal::BroadcastableOpCategory'],['../namespaceonert__micro_1_1core.html#a965b8f3e9c466ba0fe86487daabf7e46',1,'onert_micro::core::BroadcastableOpCategory'],['../namespacennfw_1_1cker.html#a098b43a9a087b975a86725a93009c82e',1,'nnfw::cker::BroadcastableOpCategory']]],
-  ['buffertype_5',['BufferType',['../classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_buffer.html#a8557eee6dfea211a241e4846055db856',1,'onert::backend::trix::ops::BulkPipelineBuffer']]],
-  ['builderflag_6',['BuilderFlag',['../namespaceflexbuffers.html#a1d799e72faa9a9fe98270bb33a6864af',1,'flexbuffers']]],
-  ['builderid_7',['builderid',['../namespaceluci__interpreter.html#a1f2a0f001c3cf88ea589d4b263616ab8',1,'luci_interpreter::BuilderId'],['../namespaceluci__interpreter.html#a1efdf32fd3fbe30235ca3e2312d7d30c',1,'luci_interpreter::BuilderID']]]
+  ['bufferownership_5',['BufferOwnership',['../classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_model.html#aa1b761f0c373ee2b7c030ba8f3c065e0',1,'onert::backend::trix::ops::BulkPipelineModel']]],
+  ['buffertype_6',['BufferType',['../classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_buffer.html#a8557eee6dfea211a241e4846055db856',1,'onert::backend::trix::ops::BulkPipelineBuffer']]],
+  ['builderflag_7',['BuilderFlag',['../namespaceflexbuffers.html#a1d799e72faa9a9fe98270bb33a6864af',1,'flexbuffers']]],
+  ['builderid_8',['builderid',['../namespaceluci__interpreter.html#a1f2a0f001c3cf88ea589d4b263616ab8',1,'luci_interpreter::BuilderId'],['../namespaceluci__interpreter.html#a1efdf32fd3fbe30235ca3e2312d7d30c',1,'luci_interpreter::BuilderID']]]
 ];

@@ -146,45 +146,46 @@ $(document).ready(function(){initNavTree('_bulk_pipeline_layer_8cc_source.html',
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="comment">// Configure BulkPipeLineManager</span></div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <a class="code hl_struct" href="structonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_manager_1_1_pipeline_config.html">BulkPipelineManager::PipelineConfig</a> config;</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  config.model_paths = binary_path;</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  config.device_id = 0; <span class="comment">// default device id = 0</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  _pipeline_manager = std::make_unique&lt;BulkPipelineManager&gt;(config);</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keywordflow">if</span> (!_pipeline_manager-&gt;initialize())</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  {</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to initialize BulkPipelineManager&quot;</span>);</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  }</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>}</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  config.device_id = 0;      <span class="comment">// default device id = 0</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  config.n_owner_models = 2; <span class="comment">// Use 2 owner models for buffer sharing</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  _pipeline_manager = std::make_unique&lt;BulkPipelineManager&gt;(config);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keywordflow">if</span> (!_pipeline_manager-&gt;initialize())</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  {</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to initialize BulkPipelineManager&quot;</span>);</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  }</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>}</div>
 </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
-<div class="foldopen" id="foldopen00055" data-start="{" data-end="}">
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_layer.html#a8c2b11ad7b63e00f901034ae50f851db">   55</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_layer.html#a8c2b11ad7b63e00f901034ae50f851db">BulkPipelineLayer::run</a>()</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>{</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keywordflow">try</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  {</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    _pipeline_manager-&gt;execute(_inputs, _outputs);</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  }</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e)</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  {</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;BulkPipelineLayer execution failed: &quot;</span> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="keywordflow">throw</span>;</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  }</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>}</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="foldopen" id="foldopen00056" data-start="{" data-end="}">
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_layer.html#a8c2b11ad7b63e00f901034ae50f851db">   56</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_layer.html#a8c2b11ad7b63e00f901034ae50f851db">BulkPipelineLayer::run</a>()</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>{</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="keywordflow">try</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  {</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    _pipeline_manager-&gt;execute(_inputs, _outputs);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  }</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e)</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  {</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;BulkPipelineLayer execution failed: &quot;</span> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keywordflow">throw</span>;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  }</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>}</div>
 </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
-<div class="foldopen" id="foldopen00068" data-start="{" data-end="}">
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_layer.html#a6d223d61f093677202c3520827522580">   68</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_layer.html#a6d223d61f093677202c3520827522580">BulkPipelineLayer::prepare</a>()</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>{</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="comment">// DO NOTHING</span></div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>}</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="foldopen" id="foldopen00069" data-start="{" data-end="}">
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_layer.html#a6d223d61f093677202c3520827522580">   69</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_layer.html#a6d223d61f093677202c3520827522580">BulkPipelineLayer::prepare</a>()</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>{</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>}</div>
 </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>} <span class="comment">// namespace onert::backend::trix::ops</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>} <span class="comment">// namespace onert::backend::trix::ops</span></div>
 <div class="ttc" id="a_bulk_pipeline_layer_8h_html"><div class="ttname"><a href="_bulk_pipeline_layer_8h.html">BulkPipelineLayer.h</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_layer_html_a5882127c357790c1af8b1de27d8b0bae"><div class="ttname"><a href="classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_layer.html#a5882127c357790c1af8b1de27d8b0bae">onert::backend::trix::ops::BulkPipelineLayer::~BulkPipelineLayer</a></div><div class="ttdeci">~BulkPipelineLayer() override</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_layer_8cc_source.html#l00030">BulkPipelineLayer.cc:30</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_layer_html_a617b247469333c101111623c054f59a6"><div class="ttname"><a href="classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_layer.html#a617b247469333c101111623c054f59a6">onert::backend::trix::ops::BulkPipelineLayer::BulkPipelineLayer</a></div><div class="ttdeci">BulkPipelineLayer()</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_layer_8cc_source.html#l00025">BulkPipelineLayer.cc:25</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_layer_html_a6d223d61f093677202c3520827522580"><div class="ttname"><a href="classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_layer.html#a6d223d61f093677202c3520827522580">onert::backend::trix::ops::BulkPipelineLayer::prepare</a></div><div class="ttdeci">void prepare() override</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_layer_8cc_source.html#l00068">BulkPipelineLayer.cc:68</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_layer_html_a8c2b11ad7b63e00f901034ae50f851db"><div class="ttname"><a href="classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_layer.html#a8c2b11ad7b63e00f901034ae50f851db">onert::backend::trix::ops::BulkPipelineLayer::run</a></div><div class="ttdeci">void run() override</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_layer_8cc_source.html#l00055">BulkPipelineLayer.cc:55</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_layer_html_a6d223d61f093677202c3520827522580"><div class="ttname"><a href="classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_layer.html#a6d223d61f093677202c3520827522580">onert::backend::trix::ops::BulkPipelineLayer::prepare</a></div><div class="ttdeci">void prepare() override</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_layer_8cc_source.html#l00069">BulkPipelineLayer.cc:69</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_layer_html_a8c2b11ad7b63e00f901034ae50f851db"><div class="ttname"><a href="classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_layer.html#a8c2b11ad7b63e00f901034ae50f851db">onert::backend::trix::ops::BulkPipelineLayer::run</a></div><div class="ttdeci">void run() override</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_layer_8cc_source.html#l00056">BulkPipelineLayer.cc:56</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_layer_html_ab8574fd94600fd76bafe7f7486738d99"><div class="ttname"><a href="classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_layer.html#ab8574fd94600fd76bafe7f7486738d99">onert::backend::trix::ops::BulkPipelineLayer::configure</a></div><div class="ttdeci">void configure(const std::vector&lt; const IPortableTensor * &gt; &amp;inputs, std::vector&lt; IPortableTensor * &gt; &amp;outputs, const std::vector&lt; std::string &gt; &amp;binary_path)</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_layer_8cc_source.html#l00035">BulkPipelineLayer.cc:35</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1trix_1_1ops_html"><div class="ttname"><a href="namespaceonert_1_1backend_1_1trix_1_1ops.html">onert::backend::trix::ops</a></div><div class="ttdef"><b>Definition</b> <a href="_bulk_layer_8cc_source.html#l00021">BulkLayer.cc:22</a></div></div>
 <div class="ttc" id="astructonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_manager_1_1_pipeline_config_html"><div class="ttname"><a href="structonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_manager_1_1_pipeline_config.html">onert::backend::trix::ops::BulkPipelineManager::PipelineConfig</a></div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_manager_8h_source.html#l00036">BulkPipelineManager.h:37</a></div></div>

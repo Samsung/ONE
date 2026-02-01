@@ -133,18 +133,6 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>true When node has shape of '1 x .. x 1 x depth' </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="luci_2pass_2src_2_fuse_instance_norm_pass_8cpp_source.html#l00032">32</a> of file <a class="el" href="luci_2pass_2src_2_fuse_instance_norm_pass_8cpp_source.html">FuseInstanceNormPass.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   33</span>{</div>
-<div class="line"><span class="lineno">   34</span>  <span class="keyword">auto</span> rank = node-&gt;rank();</div>
-<div class="line"><span class="lineno">   35</span>  uint32_t axis;</div>
-<div class="line"><span class="lineno">   36</span>  <span class="keywordflow">for</span> (axis = 0; axis &lt; rank - 1; ++axis)</div>
-<div class="line"><span class="lineno">   37</span>  {</div>
-<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">if</span> (node-&gt;dim(axis).value() != 1)</div>
-<div class="line"><span class="lineno">   39</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">   40</span>  }</div>
-<div class="line"><span class="lineno">   41</span>  <span class="keywordflow">return</span> node-&gt;dim(axis).value() == depth;</div>
-<div class="line"><span class="lineno">   42</span>}</div>
-</div><!-- fragment -->
 </div>
 </div>
 <a id="ae07b2af91321a6488c9f84c242d3dc5d" name="ae07b2af91321a6488c9f84c242d3dc5d"></a>

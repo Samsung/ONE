@@ -221,15 +221,16 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   42</span>  <span class="comment">// Configure BulkPipeLineManager</span></div>
 <div class="line"><span class="lineno">   43</span>  BulkPipelineManager::PipelineConfig <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">config</a>;</div>
 <div class="line"><span class="lineno">   44</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">config</a>.model_paths = binary_path;</div>
-<div class="line"><span class="lineno">   45</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">config</a>.device_id = 0; <span class="comment">// default device id = 0</span></div>
-<div class="line"><span class="lineno">   46</span> </div>
-<div class="line"><span class="lineno">   47</span>  _pipeline_manager = std::make_unique&lt;BulkPipelineManager&gt;(config);</div>
-<div class="line"><span class="lineno">   48</span> </div>
-<div class="line"><span class="lineno">   49</span>  <span class="keywordflow">if</span> (!_pipeline_manager-&gt;initialize())</div>
-<div class="line"><span class="lineno">   50</span>  {</div>
-<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to initialize BulkPipelineManager&quot;</span>);</div>
-<div class="line"><span class="lineno">   52</span>  }</div>
-<div class="line"><span class="lineno">   53</span>}</div>
+<div class="line"><span class="lineno">   45</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">config</a>.device_id = 0;      <span class="comment">// default device id = 0</span></div>
+<div class="line"><span class="lineno">   46</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">config</a>.n_owner_models = 2; <span class="comment">// Use 2 owner models for buffer sharing</span></div>
+<div class="line"><span class="lineno">   47</span> </div>
+<div class="line"><span class="lineno">   48</span>  _pipeline_manager = std::make_unique&lt;BulkPipelineManager&gt;(config);</div>
+<div class="line"><span class="lineno">   49</span> </div>
+<div class="line"><span class="lineno">   50</span>  <span class="keywordflow">if</span> (!_pipeline_manager-&gt;initialize())</div>
+<div class="line"><span class="lineno">   51</span>  {</div>
+<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to initialize BulkPipelineManager&quot;</span>);</div>
+<div class="line"><span class="lineno">   53</span>  }</div>
+<div class="line"><span class="lineno">   54</span>}</div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_abcab13752e1826b70991e56f8e9a834d"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">GenH5RandomInputs.inputs</a></div><div class="ttdeci">inputs</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00049">GenH5RandomInputs.py:49</a></div></div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_ad2e650e5f9a54072f7e063a353ef6489"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">gen_h5_explicit_inputs_all.config</a></div><div class="ttdeci">config</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00068">gen_h5_explicit_inputs_all.py:68</a></div></div>
 </div><!-- fragment -->
@@ -260,10 +261,10 @@ Public Member Functions</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classonert_1_1exec_1_1_i_function.html#a901ae0973ef08a6ca59f6a00bd3bac4c">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_bulk_pipeline_layer_8cc_source.html#l00068">68</a> of file <a class="el" href="_bulk_pipeline_layer_8cc_source.html">BulkPipelineLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   69</span>{</div>
-<div class="line"><span class="lineno">   70</span>  <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">   71</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_bulk_pipeline_layer_8cc_source.html#l00069">69</a> of file <a class="el" href="_bulk_pipeline_layer_8cc_source.html">BulkPipelineLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   70</span>{</div>
+<div class="line"><span class="lineno">   71</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   72</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -292,18 +293,18 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_function.html#aedd6f5e12852d808abb97327b9d229e2">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_bulk_pipeline_layer_8cc_source.html#l00055">55</a> of file <a class="el" href="_bulk_pipeline_layer_8cc_source.html">BulkPipelineLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   56</span>{</div>
-<div class="line"><span class="lineno">   57</span>  <span class="keywordflow">try</span></div>
-<div class="line"><span class="lineno">   58</span>  {</div>
-<div class="line"><span class="lineno">   59</span>    _pipeline_manager-&gt;execute(_inputs, _outputs);</div>
-<div class="line"><span class="lineno">   60</span>  }</div>
-<div class="line"><span class="lineno">   61</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e)</div>
-<div class="line"><span class="lineno">   62</span>  {</div>
-<div class="line"><span class="lineno">   63</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;BulkPipelineLayer execution failed: &quot;</span> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">   64</span>    <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">   65</span>  }</div>
-<div class="line"><span class="lineno">   66</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_bulk_pipeline_layer_8cc_source.html#l00056">56</a> of file <a class="el" href="_bulk_pipeline_layer_8cc_source.html">BulkPipelineLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   57</span>{</div>
+<div class="line"><span class="lineno">   58</span>  <span class="keywordflow">try</span></div>
+<div class="line"><span class="lineno">   59</span>  {</div>
+<div class="line"><span class="lineno">   60</span>    _pipeline_manager-&gt;execute(_inputs, _outputs);</div>
+<div class="line"><span class="lineno">   61</span>  }</div>
+<div class="line"><span class="lineno">   62</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e)</div>
+<div class="line"><span class="lineno">   63</span>  {</div>
+<div class="line"><span class="lineno">   64</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;BulkPipelineLayer execution failed: &quot;</span> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">   65</span>    <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">   66</span>  }</div>
+<div class="line"><span class="lineno">   67</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
