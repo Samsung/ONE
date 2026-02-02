@@ -59,13 +59,6 @@ def compare_outputs(onnx_model,
         onnx_output = onnx_output_data[output_name]
         circle_output = circle_output_data[output_name]
 
-        if circle_output.reshape(-1).shape[0] == 1:
-            scalar_exist = True
-            print('Output tensor `{}` is scalar. Skip circle validation.'.format(
-                output_name))
-            peir_results['output {}'.format(idx)] = 'N/A'
-            continue
-
         diff = np.isclose(onnx_output, circle_output, rtol=rtolerance, atol=atolerance)
 
         result_compare_one = np.all(diff)
@@ -82,9 +75,6 @@ def compare_outputs(onnx_model,
         peir_results['output {}'.format(idx)] = peir_result
 
     save_res = util_validation.save_output_peir_to_json(peir_results, circle_model)
-
-    if (scalar_exist):
-        return 0
 
     if (not result_compare or not save_res):
         return 1
