@@ -33,7 +33,6 @@
 #include <filesystem>
 #include <memory>
 #include <string>
-#include <thread>
 #include <vector>
 
 namespace onert::api
@@ -221,7 +220,6 @@ private:
   std::unique_ptr<onert::compiler::CompilerArtifact> _compiler_artifact;
   std::unique_ptr<onert::exec::Execution> _execution;
   std::shared_ptr<onert::api::CustomKernelRegistry> _kernel_registry;
-  std::vector<std::thread> _threads;
   std::unique_ptr<onert::ir::train::TrainingInfo> _train_info;
   std::unique_ptr<onert::odc::QuantizeManager> _quant_manager;
   std::unique_ptr<onert::odc::CodegenManager> _codegen_manager;
