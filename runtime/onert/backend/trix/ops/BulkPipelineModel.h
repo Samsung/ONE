@@ -106,6 +106,7 @@ private:
   std::mutex _buffer_mutex;
   std::condition_variable _buffer_cv;
   std::atomic<bool> _buffer_ready{false};
+  std::atomic<bool> _buffer_error{false};
   std::future<void> _async_fill_future;
 };
 
