@@ -48,7 +48,8 @@ public:
 
     LLVM_DEBUG({ llvm::dbgs() << "ConvReduceSumSquareV13 name: " << op_name << "\n"; });
     LLVM_DEBUG({ llvm::dbgs() << "ConvReduceSumSquareV13 axes: " << op.getAxes() << "\n"; });
-    LLVM_DEBUG({ llvm::dbgs() << "ConvReduceSumSquareV13 keepdims: " << op.getKeepdims() << "\n"; });
+    LLVM_DEBUG(
+      { llvm::dbgs() << "ConvReduceSumSquareV13 keepdims: " << op.getKeepdims() << "\n"; });
 
     mlir::Value input = adaptor.getData();
     mlir::Location opLoc = op->getLoc();
