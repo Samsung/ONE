@@ -8,11 +8,11 @@ class net_ReduceSum(torch.nn.Module):
         super().__init__()
 
     def forward(self, input):
-        return torch.sum(input)
+        return torch.sum(input)  # This will be replaced with ReduceSumSquare
 
     def onnx_opset_version(self):
         return 13
-    
+
     def post_process(self, model_path):
         onnx_model = onnx.load(model_path)
 

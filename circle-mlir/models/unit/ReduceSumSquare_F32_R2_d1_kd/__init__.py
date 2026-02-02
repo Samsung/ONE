@@ -8,11 +8,12 @@ class net_ReduceSumSquare(torch.nn.Module):
         super().__init__()
 
     def forward(self, input):
-        return torch.sum(input)  # This will be replaced with ReduceSumSquare(axes=1, keepdim=True)
+        return torch.sum(
+            input)  # This will be replaced with ReduceSumSquare(axes=1, keepdim=True)
 
     def onnx_opset_version(self):
         return 13
-    
+
     def post_process(self, model_path):
         onnx_model = onnx.load(model_path)
 
@@ -26,7 +27,7 @@ class net_ReduceSumSquare(torch.nn.Module):
                 break
         if target is None:
             raise RuntimeError("ReduceSum node not found")
-        
+
         data_in = target.input[0]
         data_out = target.output[0]
 
