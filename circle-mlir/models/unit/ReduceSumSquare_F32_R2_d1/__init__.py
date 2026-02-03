@@ -9,7 +9,7 @@ class net_ReduceSum(torch.nn.Module):
 
     def forward(self, input):
         return torch.sum(
-            input)  # This will be replaced with ReduceSumSquare(axes=0, keepdim=False)
+            input)  # This will be replaced with ReduceSumSquare(axes=1, keepdim=False)
 
     def onnx_opset_version(self):
         return 13
