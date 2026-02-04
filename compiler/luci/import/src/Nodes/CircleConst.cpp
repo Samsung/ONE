@@ -131,10 +131,9 @@ void copy_data_4(const VectorWrapper<uint8_t> &raw_data, uint32_t num_elements,
     uint32_t idx = i * 2;
     // for S4, 1bit for sign, 3bit for value
     const_node->at<DT>(idx) = static_cast<T>(data[i] << 4) >> 4;
-    if (idx < num_elements)
+    if (idx + 1 < num_elements)
     {
-      idx++;
-      const_node->at<DT>(idx) = static_cast<T>(data[i]) >> 4;
+      const_node->at<DT>(idx + 1) = static_cast<T>(data[i]) >> 4;
     }
   }
 }
