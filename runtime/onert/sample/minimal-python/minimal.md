@@ -15,5 +15,6 @@ Demonstrates the simplest Python-API workflow to load an NNFW model, allocate in
 ```bash
 python minimal.py /path/to/your_model.nnpackage [backends]
 ```
+
 - `/path/to/your_model.nnpackage` – path to your NNFW package or model file
 - `backends` (optional) – backend string (e.g. "cpu", "gpu"); defaults to "cpu"

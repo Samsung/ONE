@@ -8,6 +8,6 @@ It assumes model of float32 tensor type as an input.
 
 ## Usage
 
-```
-$ python3 minimal.py path_to_nnpackage_directory
+```bash
+python3 minimal.py path_to_nnpackage_directory
 ```

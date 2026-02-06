@@ -25,6 +25,7 @@ python inference_benchmark.py <nnpackage_path> [--backends BACKENDS] [--input-sh
 | `--repeat`         | Number of timed inference repetitions (after 3 warm-up runs). Default: `5`        |
 
 ## Example
+
 ```bash
 # Measure on CPU with default shapes, 5 repeats
 python inference_benchmark.py /path/to/model.nnpackage
@@ -51,7 +52,8 @@ Uses `psutil` to sample `RSS` before model load, after prepare, and after execut
 
 4. Reporting
 Prints latency statistics and memory deltas:
-```
+
+```text
 ======= Inference Benchmark =======
 - Warmup runs   : 3
 - Measured runs : 5
