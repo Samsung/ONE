@@ -137,7 +137,9 @@ public:
   NNFW_STATUS configure_signature(const char *signature);
   NNFW_STATUS set_signature_run(const char *signature);
 
-  static NNFW_STATUS deprecated(const char *msg);
+  NNFW_STATUS get_last_error_message(char *buffer, size_t length) const;
+
+  NNFW_STATUS deprecated(const char *msg);
 
   //
   // Internal-only API
@@ -202,6 +204,9 @@ private:
   uint32_t getInputSize();
   uint32_t getOutputSize();
   NNFW_STATUS loadModelFile(const std::string &model_file_path, const std::string &model_type);
+  NNFW_STATUS getTensorIndexImpl(const onert::ir::IGraph &graph, const char *tensorname,
+                                 uint32_t *index, bool is_input);
+  void setLastErrorMessage(std::string message);
 
   bool isStateInitialized();
   bool isStateModelLoaded();
@@ -236,6 +241,7 @@ private:
   std::filesystem::path _model_path;
   std::unordered_map<onert::ir::SubgraphIndex, std::string> _signature_map;
   onert::ir::SubgraphIndex _selected_signature;
+  std::string _last_error_message;
 };
 
 } // namespace onert::api

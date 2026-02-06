@@ -213,6 +213,19 @@ NNFW_STATUS nnfw_create_session(nnfw_session **session);
 NNFW_STATUS nnfw_close_session(nnfw_session *session);
 
 /**
+ * @brief Get the last error message
+ *
+ * This function retrieves the last error message occurred in the session.
+ *
+ * @param[in]  session The session to get the last error message from
+ * @param[out] buffer  Buffer to store the last error message string
+ * @param[in]  length  The size of the buffer
+ * @return     @c NNFW_STATUS_NO_ERROR if successful, otherwise appropriate
+ *             error code and the content of buffer is not changed.
+ */
+NNFW_STATUS nnfw_get_last_error_message(nnfw_session *session, char *buffer, size_t length);
+
+/**
  * @brief     Load model from path to model or nnpackage
  *
  * The length of \p path must not exceed 1024 bytes including zero at the end.

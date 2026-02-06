@@ -77,32 +77,6 @@ onert::ir::Layout convertLayout(NNFW_LAYOUT layout)
   return onert::ir::Layout::UNKNOWN;
 }
 
-NNFW_STATUS getTensorIndexImpl(const onert::ir::IGraph &graph, const char *tensorname,
-                               uint32_t *index, bool is_input)
-{
-  if (!tensorname || !index)
-    return NNFW_STATUS_UNEXPECTED_NULL;
-
-  if (!null_terminating(tensorname, MAX_TENSOR_NAME_LENGTH))
-  {
-    std::cerr << "nnpackage path is too long" << std::endl;
-    return NNFW_STATUS_ERROR;
-  }
-
-  auto ind_found = is_input ? graph.getInputIndex(tensorname) : graph.getOutputIndex(tensorname);
-
-  if (ind_found.undefined())
-  {
-    // Not found
-    return NNFW_STATUS_ERROR;
-  }
-  else
-  {
-    *index = ind_found.value();
-    return NNFW_STATUS_NO_ERROR;
-  }
-}
-
 std::string trim(std::string_view value)
 {
   constexpr std::string_view whitespace = " \t";
@@ -199,21 +173,11 @@ void fillTensorInfo(nnfw_tensorinfo *ti, const onert::ir::Shape &shape,
 std::unique_ptr<onert::ir::Model> loadModel(const std::string filename,
                                             const std::string model_type)
 {
-  try
-  {
-    if (model_type == "tflite")
-      return onert::loader::loadTFLiteModel(filename.c_str());
-    if (model_type == "circle")
-      return onert::loader::loadCircleModel(filename.c_str());
-
-    return onert::loader::loadModel(filename, model_type);
-  }
-  catch (const std::exception &e)
-  {
-    std::cerr << "Fail to load model: " << e.what() << '\n';
-  }
-
-  return std::unique_ptr<onert::ir::Model>(nullptr);
+  if (model_type == "tflite")
+    return onert::loader::loadTFLiteModel(filename.c_str());
+  if (model_type == "circle")
+    return onert::loader::loadCircleModel(filename.c_str());
+  return onert::loader::loadModel(filename, model_type);
 }
 
 std::unique_ptr<onert::ir::train::TrainingInfo>
@@ -276,12 +240,14 @@ NNFW_STATUS Session::create(Session **session)
   }
   catch (const std::bad_alloc &e)
   {
+    // TODO: Do not write to std::cerr in library code
     std::cerr << "Error during session creation" << std::endl;
     *session = nullptr; // Set nullptr on error to keep the old behavior
     return NNFW_STATUS_OUT_OF_MEMORY;
   }
   catch (const std::exception &e)
   {
+    // TODO: Do not write to std::cerr in library code
     std::cerr << "Error during session initialization : " << e.what() << std::endl;
     *session = nullptr; // Set nullptr on error to keep the old behavior
     return NNFW_STATUS_ERROR;
@@ -294,13 +260,22 @@ Session::~Session() = default;
 NNFW_STATUS Session::load_circle_from_buffer(uint8_t *buffer, size_t size)
 {
   if (!isStateInitialized())
+  {
+    setLastErrorMessage("Invalid state : " + std::to_string(static_cast<int>(_state)));
     return NNFW_STATUS_INVALID_STATE;
+  }
 
   if (!buffer)
+  {
+    setLastErrorMessage("Invalid argument : buffer is NULL");
     return NNFW_STATUS_UNEXPECTED_NULL;
+  }
 
   if (size == 0)
+  {
+    setLastErrorMessage("Invalid argument : size is 0");
     return NNFW_STATUS_ERROR;
+  }
 
   try
   {
@@ -312,7 +287,7 @@ NNFW_STATUS Session::load_circle_from_buffer(uint8_t *buffer, size_t size)
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during model loading : " << e.what() << std::endl;
+    setLastErrorMessage("Error during model loading : " + std::string(e.what()));
     return NNFW_STATUS_ERROR;
   }
   return NNFW_STATUS_NO_ERROR;
@@ -321,17 +296,20 @@ NNFW_STATUS Session::load_circle_from_buffer(uint8_t *buffer, size_t size)
 NNFW_STATUS Session::load_model_from_path(const char *path)
 {
   if (!isStateInitialized())
+  {
+    setLastErrorMessage("Invalid state : " + std::to_string(static_cast<int>(_state)));
     return NNFW_STATUS_INVALID_STATE;
+  }
 
   if (!path)
   {
-    std::cerr << "Path is null." << std::endl;
+    setLastErrorMessage("Invalid argument : path is NULL");
     return NNFW_STATUS_UNEXPECTED_NULL;
   }
 
   if (!null_terminating(path, MAX_PATH_LENGTH))
   {
-    std::cerr << "Path is too long" << std::endl;
+    setLastErrorMessage("Invalid argument : path is too long");
     return NNFW_STATUS_ERROR;
   }
 
@@ -343,8 +321,8 @@ NNFW_STATUS Session::load_model_from_path(const char *path)
       std::string model_type = inferModelType(filename);
       if (model_type.empty())
       {
-        std::cerr << "Error: Cannot determine model type for '" << filename << "'."
-                  << "Please use a file with valid extension." << std::endl;
+        setLastErrorMessage("Cannot determine model type from file name extension '" +
+                            filename.string() + "'");
         return NNFW_STATUS_ERROR;
       }
       else
@@ -356,7 +334,8 @@ NNFW_STATUS Session::load_model_from_path(const char *path)
     // TODO : add support for zipped package file load
     if (!std::filesystem::is_directory(package_dir))
     {
-      std::cerr << "invalid path: " << package_dir << std::endl;
+      setLastErrorMessage("Invalid argument : path '" + package_dir.string() +
+                          "' is not a directory");
       return NNFW_STATUS_ERROR;
     }
 
@@ -385,7 +364,7 @@ NNFW_STATUS Session::load_model_from_path(const char *path)
     auto num_models = models.size();
     if (num_models == 0 || (num_models - 1) > onert::ir::ModelIndex::max())
     {
-      std::cerr << "Invalid model size - " << std::to_string(num_models) << std::endl;
+      setLastErrorMessage("Invalid model size : " + std::to_string(num_models));
       return NNFW_STATUS_ERROR;
     }
 
@@ -393,7 +372,7 @@ NNFW_STATUS Session::load_model_from_path(const char *path)
     // TODO Support this
     if (num_models > 1 && _coptions->manual_scheduler_options.index_to_backend.size() != 0)
     {
-      std::cerr << "Cannot set backend to operator index for multiple models" << std::endl;
+      setLastErrorMessage("Cannot set backend to operator index for multiple models");
       return NNFW_STATUS_ERROR;
     }
 
@@ -410,15 +389,13 @@ NNFW_STATUS Session::load_model_from_path(const char *path)
         model_type = inferModelType(model_file_name);
       if (model_type.empty())
       {
-        std::cerr << "Error: Cannot determine model type for '" << models[i].asString() << "'."
-                  << "Please specify model-types in MANIFEST or use a file with valid extension."
-                  << std::endl;
+        setLastErrorMessage(
+          "Cannot determine model type for '" + models[i].asString() +
+          "' : Please specify model-types in MANIFEST or use a file with valid extension");
         return NNFW_STATUS_ERROR;
       }
 
       auto model = loadModel(model_file_path.string(), model_type);
-      if (model == nullptr)
-        return NNFW_STATUS_ERROR;
       _model_path = model_file_path; // TODO Support multiple models
       model->bindKernelBuilder(_kernel_registry->getBuilder());
       _nnpkg->push(onert::ir::ModelIndex{i}, std::move(model));
@@ -430,6 +407,7 @@ NNFW_STATUS Session::load_model_from_path(const char *path)
       auto indices = nnfw::misc::split(str, ':');
       if (indices.size() != 3)
       {
+        // TODO: Do not write to std::cerr in library code
         std::cerr << "IODesc should be 3-tuple." << std::endl;
         return onert::ir::IODesc{};
       }
@@ -459,7 +437,7 @@ NNFW_STATUS Session::load_model_from_path(const char *path)
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during model loading : " << e.what() << std::endl;
+    setLastErrorMessage("Failed to load model : " + std::string(e.what()));
     return NNFW_STATUS_ERROR;
   }
   return NNFW_STATUS_NO_ERROR;
@@ -470,16 +448,14 @@ NNFW_STATUS Session::prepare()
   // NOTE. If users want to run prepare() more than one time, this could be removed.
   if (!isStateModelLoaded())
   {
-    std::cerr << "Error during model prepare : ";
     if (isStateInitialized())
     {
-      std::cerr << "prepare should be run once";
+      setLastErrorMessage("Error during Session::prepare : prepare should be called once");
     }
     else
     {
-      std::cerr << "invalid state";
+      setLastErrorMessage("Error during Session::prepare : Invalid state");
     }
-    std::cerr << std::endl;
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -492,7 +468,7 @@ NNFW_STATUS Session::prepare()
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during model prepare : " << e.what() << std::endl;
+    setLastErrorMessage("Error during Session::prepare : " + std::string(e.what()));
     return NNFW_STATUS_ERROR;
   }
 
@@ -504,8 +480,7 @@ NNFW_STATUS Session::run()
 {
   if (!isStatePreparedOrFinishedRun())
   {
-    std::cerr << "Error during Session::run : "
-              << "run should be run after prepare" << std::endl;
+    setLastErrorMessage("Error during Session::run : run should be called after prepare");
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -516,12 +491,12 @@ NNFW_STATUS Session::run()
   catch (const onert::InsufficientBufferSizeException &e)
   {
     // Currently insufficient buffer always means output buffer.
-    std::cerr << "Error during Session::run : " << e.what() << std::endl;
+    setLastErrorMessage("Error during Session::run : " + std::string(e.what()));
     return NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE;
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during Session::run : " << e.what() << std::endl;
+    setLastErrorMessage("Error during Session::run : " + std::string(e.what()));
     return NNFW_STATUS_ERROR;
   }
 
@@ -533,8 +508,8 @@ NNFW_STATUS Session::run_async()
 {
   if (!isStatePreparedOrFinishedRun())
   {
-    std::cerr << "Error during Session::run_async : "
-              << "run_async should be run after prepare" << std::endl;
+    setLastErrorMessage(
+      "Error during Session::run_async : run_async should be called after prepare");
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -548,8 +523,8 @@ NNFW_STATUS Session::await()
 {
   if (!isStateRunning())
   {
-    std::cerr << "Error during Session::run_await : "
-              << "run_await should be run after run_async" << std::endl;
+    setLastErrorMessage(
+      "Error during Session::run_await : run_await should be called after run_async");
     return NNFW_STATUS_ERROR;
   }
 
@@ -563,14 +538,13 @@ NNFW_STATUS Session::set_input(uint32_t index, NNFW_TYPE, const void *buffer, si
 {
   if (!isStatePreparedOrFinishedRun())
   {
-    std::cerr << "Error during Session::set_input : invalid state" << std::endl;
+    setLastErrorMessage("Error during Session::set_input : Invalid state");
     return NNFW_STATUS_INVALID_STATE;
   }
 
   if (!buffer && length != 0)
   {
-    std::cerr << "Error during Session::set_input : given buffer is NULL but the length is not 0"
-              << std::endl;
+    setLastErrorMessage("Error during Session::set_input : buffer is NULL but the length is not 0");
     return NNFW_STATUS_ERROR;
   }
 
@@ -580,7 +554,7 @@ NNFW_STATUS Session::set_input(uint32_t index, NNFW_TYPE, const void *buffer, si
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during Session::set_input : " << e.what() << std::endl;
+    setLastErrorMessage("Error during Session::set_input : " + std::string(e.what()));
     return NNFW_STATUS_ERROR;
   }
   return NNFW_STATUS_NO_ERROR;
@@ -590,14 +564,14 @@ NNFW_STATUS Session::set_output(uint32_t index, NNFW_TYPE, void *buffer, size_t 
 {
   if (!isStatePreparedOrFinishedRun())
   {
-    std::cerr << "Error during Session::set_output : invalid state" << std::endl;
+    setLastErrorMessage("Error during Session::set_output : Invalid state");
     return NNFW_STATUS_INVALID_STATE;
   }
 
   if (!buffer && length != 0)
   {
-    std::cerr << "Error during Session::set_output : given buffer is NULL but the length is not 0"
-              << std::endl;
+    setLastErrorMessage(
+      "Error during Session::set_output : buffer is NULL but the length is not 0");
     return NNFW_STATUS_ERROR;
   }
 
@@ -607,7 +581,7 @@ NNFW_STATUS Session::set_output(uint32_t index, NNFW_TYPE, void *buffer, size_t 
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during Session::set_output : " << e.what() << std::endl;
+    setLastErrorMessage("Error during Session::set_output : " + std::string(e.what()));
     return NNFW_STATUS_ERROR;
   }
   return NNFW_STATUS_NO_ERROR;
@@ -615,21 +589,25 @@ NNFW_STATUS Session::set_output(uint32_t index, NNFW_TYPE, void *buffer, size_t 
 
 NNFW_STATUS Session::input_size(uint32_t *number)
 {
-  if (isStateInitialized()) // Model is not loaded
+  if (isStateInitialized())
+  {
+    setLastErrorMessage("Error during Session::input_size : Model is not loaded");
     return NNFW_STATUS_INVALID_STATE;
+  }
+
+  if (number == nullptr)
+  {
+    setLastErrorMessage("Error during Session::input_size : number is NULL");
+    return NNFW_STATUS_UNEXPECTED_NULL;
+  }
 
   try
   {
-    if (number == nullptr)
-    {
-      std::cerr << "Error during Session::input_size, number is null pointer." << std::endl;
-      return NNFW_STATUS_UNEXPECTED_NULL;
-    }
     *number = getInputSize();
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during Session::input_size : " << e.what() << std::endl;
+    setLastErrorMessage("Error during Session::input_size : " + std::string(e.what()));
     return NNFW_STATUS_ERROR;
   }
   return NNFW_STATUS_NO_ERROR;
@@ -637,21 +615,25 @@ NNFW_STATUS Session::input_size(uint32_t *number)
 
 NNFW_STATUS Session::output_size(uint32_t *number)
 {
-  if (isStateInitialized()) // Model is not loaded
+  if (isStateInitialized())
+  {
+    setLastErrorMessage("Error during Session::output_size : Model is not loaded");
     return NNFW_STATUS_INVALID_STATE;
+  }
+
+  if (number == nullptr)
+  {
+    setLastErrorMessage("Error during Session::output_size : number is NULL");
+    return NNFW_STATUS_UNEXPECTED_NULL;
+  }
 
   try
   {
-    if (number == nullptr)
-    {
-      std::cerr << "Error during Session::output_size, number is null pointer." << std::endl;
-      return NNFW_STATUS_UNEXPECTED_NULL;
-    }
     *number = getOutputSize();
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during Session::output_size" << e.what() << std::endl;
+    setLastErrorMessage("Error during Session::output_size : " + std::string(e.what()));
     return NNFW_STATUS_ERROR;
   }
   return NNFW_STATUS_NO_ERROR;
@@ -661,8 +643,7 @@ NNFW_STATUS Session::set_input_layout(uint32_t index, NNFW_LAYOUT layout)
 {
   if (!isStateModelLoaded())
   {
-    std::cerr << "Error during Session::set_input_layout : "
-              << "run should be run before prepare" << std::endl;
+    setLastErrorMessage("Error during Session::set_input_layout : Model is not loaded");
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -671,15 +652,15 @@ NNFW_STATUS Session::set_input_layout(uint32_t index, NNFW_LAYOUT layout)
     if (layout != NNFW_LAYOUT_NONE && layout != NNFW_LAYOUT_CHANNELS_FIRST &&
         layout != NNFW_LAYOUT_CHANNELS_LAST)
     {
-      std::cerr << "Error during Session::set_input_layout, not supported layout" << std::endl;
+      setLastErrorMessage("Error during Session::set_input_layout : Not supported layout");
       return NNFW_STATUS_ERROR;
     }
 
     if (_selected_signature.valid())
     {
       // TODO Support this
-      std::cerr << "Error during Session::set_input_layout : "
-                << "set_input_layout after signature selection is not supported yet" << std::endl;
+      setLastErrorMessage("Error during Session::set_input_layout : set_input_layout after "
+                          "signature selection is not supported yet");
       return NNFW_STATUS_ERROR;
     }
 
@@ -695,7 +676,7 @@ NNFW_STATUS Session::set_input_layout(uint32_t index, NNFW_LAYOUT layout)
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during Session::set_input_layout : " << e.what() << std::endl;
+    setLastErrorMessage("Error during Session::set_input_layout : " + std::string(e.what()));
     return NNFW_STATUS_ERROR;
   }
   return NNFW_STATUS_NO_ERROR;
@@ -705,8 +686,7 @@ NNFW_STATUS Session::set_output_layout(uint32_t index, NNFW_LAYOUT layout)
 {
   if (!isStateModelLoaded())
   {
-    std::cerr << "Error during Session::set_output_layout : "
-              << "run should be run before prepare" << std::endl;
+    setLastErrorMessage("Error during Session::set_output_layout : Model is not loaded");
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -715,15 +695,15 @@ NNFW_STATUS Session::set_output_layout(uint32_t index, NNFW_LAYOUT layout)
     if (layout != NNFW_LAYOUT_NONE && layout != NNFW_LAYOUT_CHANNELS_FIRST &&
         layout != NNFW_LAYOUT_CHANNELS_LAST)
     {
-      std::cerr << "Error during Session::set_output_layout, not supported layout" << std::endl;
+      setLastErrorMessage("Error during Session::set_output_layout : Not supported layout");
       return NNFW_STATUS_ERROR;
     }
 
     if (_selected_signature.valid())
     {
       // TODO Support this
-      std::cerr << "Error during Session::set_output_layout : "
-                << "set_output_layout after signature selection is not supported yet" << std::endl;
+      setLastErrorMessage("Error during Session::set_output_layout : set_output_layout after "
+                          "signature selection is not supported yet");
       return NNFW_STATUS_ERROR;
     }
 
@@ -740,7 +720,7 @@ NNFW_STATUS Session::set_output_layout(uint32_t index, NNFW_LAYOUT layout)
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during Session::set_output_layout : " << e.what() << std::endl;
+    setLastErrorMessage("Error during Session::set_output_layout : " + std::string(e.what()));
     return NNFW_STATUS_ERROR;
   }
   return NNFW_STATUS_NO_ERROR;
@@ -750,8 +730,7 @@ NNFW_STATUS Session::set_input_type(uint32_t index, NNFW_TYPE type)
 {
   if (!isStateModelLoaded())
   {
-    std::cerr << "Error during Session::set_input_type : "
-              << "set_input_type should be called before prepare" << std::endl;
+    setLastErrorMessage("Error during Session::set_input_type : Model is not loaded");
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -759,15 +738,15 @@ NNFW_STATUS Session::set_input_type(uint32_t index, NNFW_TYPE type)
   {
     if (type != NNFW_TYPE_TENSOR_FLOAT32)
     {
-      std::cerr << "Error during Session::set_input_type, not supported type" << std::endl;
+      setLastErrorMessage("Error during Session::set_input_type : Not supported type");
       return NNFW_STATUS_ERROR;
     }
 
     if (_selected_signature.valid())
     {
       // TODO Support this
-      std::cerr << "Error during Session::set_input_type : "
-                << "set_input_type after signature selection is not supported yet" << std::endl;
+      setLastErrorMessage("Error during Session::set_input_type : set_input_type after signature "
+                          "selection is not supported yet");
       return NNFW_STATUS_ERROR;
     }
 
@@ -784,7 +763,7 @@ NNFW_STATUS Session::set_input_type(uint32_t index, NNFW_TYPE type)
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during Session::set_input_type : " << e.what() << std::endl;
+    setLastErrorMessage("Error during Session::set_input_type : " + std::string(e.what()));
     return NNFW_STATUS_ERROR;
   }
 
@@ -795,8 +774,7 @@ NNFW_STATUS Session::set_output_type(uint32_t index, NNFW_TYPE type)
 {
   if (!isStateModelLoaded())
   {
-    std::cerr << "Error during Session::set_output_type : "
-              << "set_output_type should be called before prepare" << std::endl;
+    setLastErrorMessage("Error during Session::set_output_type : Model is not loaded");
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -804,15 +782,15 @@ NNFW_STATUS Session::set_output_type(uint32_t index, NNFW_TYPE type)
   {
     if (type != NNFW_TYPE_TENSOR_FLOAT32)
     {
-      std::cerr << "Error during Session::set_output_type, not supported type" << std::endl;
+      setLastErrorMessage("Error during Session::set_output_type : Not supported type");
       return NNFW_STATUS_ERROR;
     }
 
     if (_selected_signature.valid())
     {
       // TODO Support this
-      std::cerr << "Error during Session::set_output_type : "
-                << "set_output_type after signature selection is not supported yet" << std::endl;
+      setLastErrorMessage("Error during Session::set_output_type : set_output_type after signature "
+                          "selection is not supported yet");
       return NNFW_STATUS_ERROR;
     }
 
@@ -829,7 +807,7 @@ NNFW_STATUS Session::set_output_type(uint32_t index, NNFW_TYPE type)
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during Session::set_output_type : " << e.what() << std::endl;
+    setLastErrorMessage("Error during Session::set_output_type : " + std::string(e.what()));
     return NNFW_STATUS_ERROR;
   }
 
@@ -842,20 +820,20 @@ NNFW_STATUS Session::set_input_tensorinfo(uint32_t index, const nnfw_tensorinfo 
   {
     if (isStateInitialized())
     {
-      std::cerr << "Error during set_input_tensorinfo : should be run after load_model"
-                << std::endl;
+      setLastErrorMessage("Error during Session::set_input_tensorinfo : Model is not loaded");
       return NNFW_STATUS_INVALID_STATE;
     }
 
     if (ti == nullptr)
     {
-      std::cerr << "Error during Session::set_input_tensorinfo : tensorinfo is null" << std::endl;
+      setLastErrorMessage("Error during Session::set_input_tensorinfo : tensorinfo is NULL");
       return NNFW_STATUS_UNEXPECTED_NULL;
     }
 
     if (ti->rank < 0 || ti->rank > NNFW_MAX_RANK)
     {
-      std::cerr << "unsupported rank: " << ti->rank << std::endl;
+      setLastErrorMessage("Error during Session::set_input_tensorinfo : Unsupported rank : " +
+                          std::to_string(ti->rank));
       return NNFW_STATUS_ERROR;
     }
 
@@ -863,7 +841,9 @@ NNFW_STATUS Session::set_input_tensorinfo(uint32_t index, const nnfw_tensorinfo 
     {
       if (ti->dims[i] <= 0)
       {
-        std::cerr << "dim must be positive integer but was " << ti->dims[i] << std::endl;
+        setLastErrorMessage(
+          "Error during Session::set_input_tensorinfo : dim must be positive integer but was " +
+          std::to_string(ti->dims[i]));
         return NNFW_STATUS_ERROR;
       }
     }
@@ -889,20 +869,22 @@ NNFW_STATUS Session::set_input_tensorinfo(uint32_t index, const nnfw_tensorinfo 
 NNFW_STATUS Session::input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
 {
   if (isStateInitialized())
+  {
+    setLastErrorMessage("Error during Session::input_tensorinfo : Model is not loaded");
     return NNFW_STATUS_INVALID_STATE;
+  }
 
   try
   {
     if (ti == nullptr)
     {
-      std::cerr << "Error during Session::input_tensorinfo, tensorinfo is null pointer."
-                << std::endl;
+      setLastErrorMessage("Error during Session::input_tensorinfo : tensorinfo is NULL");
       return NNFW_STATUS_UNEXPECTED_NULL;
     }
 
     if (index >= getInputSize())
     {
-      std::cerr << "Error during Session::input_tensorinfo, index is out of range." << std::endl;
+      setLastErrorMessage("Error during Session::input_tensorinfo : index is out of range");
       return NNFW_STATUS_ERROR;
     }
 
@@ -921,7 +903,7 @@ NNFW_STATUS Session::input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during Session::input_tensorinfo : " << e.what() << std::endl;
+    setLastErrorMessage("Error during Session::input_tensorinfo : " + std::string(e.what()));
     return NNFW_STATUS_ERROR;
   }
   return NNFW_STATUS_NO_ERROR;
@@ -930,12 +912,14 @@ NNFW_STATUS Session::input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
 NNFW_STATUS Session::output_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
 {
   if (isStateInitialized())
+  {
+    setLastErrorMessage("Error during Session::output_tensorinfo : Model is not loaded");
     return NNFW_STATUS_INVALID_STATE;
+  }
 
   if (ti == nullptr)
   {
-    std::cerr << "Error during Session::output_tensorinfo, tensorinfo is null pointer."
-              << std::endl;
+    setLastErrorMessage("Error during Session::output_tensorinfo : tensorinfo is NULL");
     return NNFW_STATUS_UNEXPECTED_NULL;
   }
 
@@ -943,7 +927,7 @@ NNFW_STATUS Session::output_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
   {
     if (index >= getOutputSize())
     {
-      std::cerr << "Error during Session::output_tensorinfo, index is out of range." << std::endl;
+      setLastErrorMessage("Error during Session::output_tensorinfo : index is out of range");
       return NNFW_STATUS_ERROR;
     }
 
@@ -963,7 +947,7 @@ NNFW_STATUS Session::output_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during Session::output_tensorinfo : " << e.what() << std::endl;
+    setLastErrorMessage("Error during Session::output_tensorinfo : " + std::string(e.what()));
     return NNFW_STATUS_ERROR;
   }
 
@@ -980,19 +964,19 @@ NNFW_STATUS Session::get_output(uint32_t index, nnfw_tensorinfo *ti, const void 
 {
   if (ti == nullptr)
   {
-    std::cerr << "Error during Session::get_output : tensor info is null" << std::endl;
+    setLastErrorMessage("Error during Session::get_output : tensorinfo is NULL");
     return NNFW_STATUS_UNEXPECTED_NULL;
   }
 
   if (out_buffer == nullptr)
   {
-    std::cerr << "Error during Session::get_output : output buffer is null" << std::endl;
+    setLastErrorMessage("Error during Session::get_output : output buffer is NULL");
     return NNFW_STATUS_UNEXPECTED_NULL;
   }
 
   if (!isStateFinishedRun())
   {
-    std::cerr << "Error during Session::get_output : invalid state" << std::endl;
+    setLastErrorMessage("Error during Session::get_output : Invalid state");
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -1000,18 +984,17 @@ NNFW_STATUS Session::get_output(uint32_t index, nnfw_tensorinfo *ti, const void 
   {
     if (index >= getOutputSize())
     {
-      std::cerr << "Error during Session::get_output, index " << index
-                << " is out of range. (output count: " << getOutputSize() << ")" << std::endl;
+      setLastErrorMessage("Error during Session::get_output : index is out of range : " +
+                          std::to_string(index) + " >= " + std::to_string(getOutputSize()));
       return NNFW_STATUS_ERROR;
     }
 
     if (!_coptions->internal_output_alloc)
     {
-      std::cerr << "Error during Session::get_output: "
-                << "internal output allocation is not enabled. "
-                << "Call nnfw_set_prepare_config(session, "
-                   "NNFW_PREPARE_CONFIG_ENABLE_INTERNAL_OUTPUT_ALLOC, \"true\") "
-                << "before nnfw_prepare()." << std::endl;
+      setLastErrorMessage(
+        "Error during Session::get_output : internal output allocation is not enabled : Call "
+        "nnfw_set_prepare_config(session, NNFW_PREPARE_CONFIG_ENABLE_INTERNAL_OUTPUT_ALLOC, "
+        "\"true\") before nnfw_prepare()");
       return NNFW_STATUS_ERROR;
     }
 
@@ -1025,7 +1008,7 @@ NNFW_STATUS Session::get_output(uint32_t index, nnfw_tensorinfo *ti, const void 
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during Session::get_output : " << e.what() << std::endl;
+    setLastErrorMessage("Error during Session::get_output : " + std::string(e.what()));
     return NNFW_STATUS_ERROR;
   }
 
@@ -1035,22 +1018,32 @@ NNFW_STATUS Session::get_output(uint32_t index, nnfw_tensorinfo *ti, const void 
 NNFW_STATUS Session::set_available_backends(const char *backends)
 {
   if (!isStateModelLoaded())
+  {
+    setLastErrorMessage("Error during Session::set_available_backends : Model is not loaded");
     return NNFW_STATUS_INVALID_STATE;
+  }
+
+  if (!backends)
+  {
+    setLastErrorMessage("Error during Session::set_available_backends : backends is NULL");
+    return NNFW_STATUS_UNEXPECTED_NULL;
+  }
+
+  if (null_terminating(backends, MAX_BACKEND_NAME_LENGTH) == false)
+  {
+    setLastErrorMessage("Error during Session::set_available_backends : backends is too long");
+    return NNFW_STATUS_ERROR;
+  }
 
   try
   {
-    if (!backends)
-      return NNFW_STATUS_UNEXPECTED_NULL;
-    if (null_terminating(backends, MAX_BACKEND_NAME_LENGTH) == false)
-      return NNFW_STATUS_ERROR;
-
     using namespace onert::util;
 
     _coptions->backend_list = nnfw::misc::split(std::string{backends}, ';');
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during Session::set_available_backends : " << e.what() << std::endl;
+    setLastErrorMessage("Error during Session::set_available_backends : " + std::string(e.what()));
     return NNFW_STATUS_ERROR;
   }
   return NNFW_STATUS_NO_ERROR;
@@ -1061,10 +1054,16 @@ NNFW_STATUS Session::set_workspace(const char *dir)
   // TODO Check dir read & write permission
 
   if (!dir)
+  {
+    setLastErrorMessage("Error during Session::set_workspace : dir is NULL");
     return NNFW_STATUS_UNEXPECTED_NULL;
+  }
 
   if (!isStateInitialized())
+  {
+    setLastErrorMessage("Error during Session::set_workspace : Invalid state");
     return NNFW_STATUS_INVALID_STATE;
+  }
 
   _coptions->workspace_dir = std::string(dir);
 
@@ -1074,11 +1073,14 @@ NNFW_STATUS Session::set_workspace(const char *dir)
 NNFW_STATUS Session::configure_signature(const char *signature)
 {
   if (!signature)
+  {
+    setLastErrorMessage("Error during Session::configure_signature : signature is NULL");
     return NNFW_STATUS_UNEXPECTED_NULL;
+  }
 
   if (!isStateModelLoaded())
   {
-    std::cerr << "Error during Session::configure_signature : invalid state" << std::endl;
+    setLastErrorMessage("Error during Session::configure_signature : Invalid state");
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -1092,19 +1094,22 @@ NNFW_STATUS Session::configure_signature(const char *signature)
     }
   }
 
-  std::cerr << "Error during Session::configure_signature : cannot find signature \"" << signature
-            << "\"" << std::endl;
+  setLastErrorMessage("Error during Session::configure_signature : Cannot find signature \"" +
+                      std::string(signature) + "\"");
   return NNFW_STATUS_ERROR;
 }
 
 NNFW_STATUS Session::set_signature_run(const char *signature)
 {
   if (!signature)
+  {
+    setLastErrorMessage("Error during Session::set_signature_run : signature is NULL");
     return NNFW_STATUS_UNEXPECTED_NULL;
+  }
 
   if (!isStatePreparedOrFinishedRun())
   {
-    std::cerr << "Error during Session::set_signature_run : invalid state" << std::endl;
+    setLastErrorMessage("Error during Session::set_signature_run : Invalid state");
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -1118,23 +1123,49 @@ NNFW_STATUS Session::set_signature_run(const char *signature)
     }
   }
 
-  std::cerr << "Error during Session::set_signature_run : cannot find signature" << std::endl;
+  setLastErrorMessage("Error during Session::set_signature_run : Cannot find signature \"" +
+                      std::string(signature) + "\"");
   return NNFW_STATUS_ERROR;
+}
+
+NNFW_STATUS Session::get_last_error_message(char *buffer, size_t length) const
+{
+  if (!buffer)
+  {
+    return NNFW_STATUS_UNEXPECTED_NULL;
+  }
+  if (length < _last_error_message.size() + 1)
+  {
+    return NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE;
+  }
+  strncpy(buffer, _last_error_message.c_str(), length);
+  return NNFW_STATUS_NO_ERROR;
 }
 
 NNFW_STATUS Session::deprecated(const char *msg)
 {
-  std::cerr << msg << std::endl;
+  setLastErrorMessage(msg);
   return NNFW_STATUS_DEPRECATED_API;
 }
 
 NNFW_STATUS Session::set_config(const char *key, const char *value)
 {
   if (!isStateModelLoaded())
+  {
+    setLastErrorMessage("Error during Session::set_config : Model is not loaded");
     return NNFW_STATUS_INVALID_STATE;
+  }
 
-  if (!key || !value)
+  if (!key)
+  {
+    setLastErrorMessage("Error during Session::set_config : key is NULL");
     return NNFW_STATUS_UNEXPECTED_NULL;
+  }
+  if (!value)
+  {
+    setLastErrorMessage("Error during Session::set_config : value is NULL");
+    return NNFW_STATUS_UNEXPECTED_NULL;
+  }
 
   using namespace onert::util;
 
@@ -1169,6 +1200,7 @@ NNFW_STATUS Session::set_config(const char *key, const char *value)
   }
   else
   {
+    setLastErrorMessage("Error during Session::set_config : Unknown config key");
     return NNFW_STATUS_ERROR;
   }
   return NNFW_STATUS_NO_ERROR;
@@ -1216,13 +1248,19 @@ uint32_t Session::getOutputSize()
 NNFW_STATUS Session::loadModelFile(const std::string &model_file_path,
                                    const std::string &model_type)
 {
-  auto model = loadModel(model_file_path, model_type);
-  if (model == nullptr)
+  try
+  {
+    auto model = loadModel(model_file_path, model_type);
+    _signature_map = model->signatureMap();
+    _nnpkg = std::make_unique<onert::ir::NNPkg>(std::move(model));
+  }
+  catch (const std::exception &e)
+  {
+    setLastErrorMessage("Failed to load model : " + std::string(e.what()));
     return NNFW_STATUS_ERROR;
+  }
 
-  _signature_map = model->signatureMap();
   _selected_signature = onert::ir::SubgraphIndex{};
-  _nnpkg = std::make_unique<onert::ir::NNPkg>(std::move(model));
   _model_path = std::filesystem::path(model_file_path);
   _compiler_artifact.reset();
   _execution.reset();
@@ -1232,20 +1270,37 @@ NNFW_STATUS Session::loadModelFile(const std::string &model_file_path,
   return NNFW_STATUS_NO_ERROR;
 }
 
+void Session::setLastErrorMessage(std::string message)
+{
+  // TODO: For now, this is kept for backward compatibility. Remove the std::cerr usage in the
+  //       library code when all API users are migrated to get_last_error_message().
+  std::cerr << message << std::endl;
+  _last_error_message = std::move(message);
+}
+
 NNFW_STATUS Session::get_config(const char *key, char *value, size_t value_size)
 {
   if (!isStateModelLoaded())
+  {
+    setLastErrorMessage("Error during Session::get_config : Model is not loaded");
     return NNFW_STATUS_INVALID_STATE;
+  }
 
-  if (!key || !value)
+  if (!key)
+  {
+    setLastErrorMessage("Error during Session::get_config : key is NULL");
     return NNFW_STATUS_UNEXPECTED_NULL;
+  }
+
+  if (!value)
+  {
+    setLastErrorMessage("Error during Session::get_config : value is NULL");
+    return NNFW_STATUS_UNEXPECTED_NULL;
+  }
 
   auto check_boundary = [](size_t dest_size, std::string &src) {
     if (dest_size < src.length() + 1 /* for '\0' */)
-    {
-      std::cerr << "buffer is small to copy config value." << std::endl;
       return false;
-    }
     return true;
   };
 
@@ -1260,19 +1315,28 @@ NNFW_STATUS Session::get_config(const char *key, char *value, size_t value_size)
       nnfw::misc::join(_coptions->backend_list.begin(), _coptions->backend_list.end(), ";");
 
     if (!check_boundary(value_size, str))
+    {
+      setLastErrorMessage(
+        "Error during Session::get_config : Buffer is too small to copy backends");
       return NNFW_STATUS_ERROR;
+    }
 
     strncpy(value, str.c_str(), value_size);
   }
   else if (skey == onert::util::config::EXECUTOR)
   {
     if (!check_boundary(value_size, _coptions->executor))
+    {
+      setLastErrorMessage(
+        "Error during Session::get_config : Buffer is too small to copy executor");
       return NNFW_STATUS_ERROR;
+    }
 
     strncpy(value, _coptions->executor.c_str(), _coptions->executor.length());
   }
   else
   {
+    setLastErrorMessage("Error during Session::get_config : Unknown config key");
     return NNFW_STATUS_ERROR;
   }
 
@@ -1348,6 +1412,38 @@ bool Session::isStateFinishedRun()
 
 bool Session::isStatePreparedOrFinishedRun() { return isStatePrepared() || isStateFinishedRun(); }
 
+NNFW_STATUS Session::getTensorIndexImpl(const onert::ir::IGraph &graph, const char *tensorname,
+                                        uint32_t *index, bool is_input)
+{
+  if (!tensorname)
+  {
+    setLastErrorMessage("Error during Session::getTensorIndexImpl : tensorname is NULL");
+    return NNFW_STATUS_UNEXPECTED_NULL;
+  }
+  if (!index)
+  {
+    setLastErrorMessage("Error during Session::getTensorIndexImpl : index is NULL");
+    return NNFW_STATUS_UNEXPECTED_NULL;
+  }
+
+  if (!null_terminating(tensorname, MAX_TENSOR_NAME_LENGTH))
+  {
+    setLastErrorMessage("Error during Session::getTensorIndexImpl : tensorname is too long");
+    return NNFW_STATUS_ERROR;
+  }
+
+  auto ind_found = is_input ? graph.getInputIndex(tensorname) : graph.getOutputIndex(tensorname);
+
+  if (ind_found.undefined())
+  {
+    setLastErrorMessage("Error during Session::getTensorIndexImpl : Tensor not found");
+    return NNFW_STATUS_ERROR;
+  }
+
+  *index = ind_found.value();
+  return NNFW_STATUS_NO_ERROR;
+}
+
 NNFW_STATUS Session::input_tensorindex(const char *tensorname, uint32_t *index)
 {
   return getTensorIndexImpl(*primary_subgraph(), tensorname, index, true);
@@ -1361,16 +1457,24 @@ NNFW_STATUS Session::output_tensorindex(const char *tensorname, uint32_t *index)
 NNFW_STATUS Session::set_backends_per_operation(const char *backend_settings)
 {
   if (backend_settings == NULL)
+  {
+    setLastErrorMessage(
+      "Error during Session::set_backends_per_operation : backend_settings is NULL");
     return NNFW_STATUS_ERROR;
+  }
 
   if (!isStateModelLoaded())
+  {
+    setLastErrorMessage("Error during Session::set_backends_per_operation : Model is not loaded");
     return NNFW_STATUS_INVALID_STATE;
+  }
 
   // Not supported multiple model
   // TODO Support this
   if (_nnpkg->model_count() > 1)
   {
-    std::cerr << "Not supported multiple model" << std::endl;
+    setLastErrorMessage(
+      "Error during Session::set_backends_per_operation : Multiple model is not supported");
     return NNFW_STATUS_ERROR;
   }
 
@@ -1382,7 +1486,8 @@ NNFW_STATUS Session::set_backends_per_operation(const char *backend_settings)
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during Session::set_backends_per_operation" << e.what() << std::endl;
+    setLastErrorMessage("Error during Session::set_backends_per_operation : " +
+                        std::string(e.what()));
     return NNFW_STATUS_ERROR;
   }
 
@@ -1394,13 +1499,13 @@ NNFW_STATUS Session::train_get_traininfo(nnfw_train_info *info)
   if (isStateInitialized())
   {
     // There is no _train_info in INITIALIZED, since _train_info is set when a model loaded
-    std::cerr << "Error during Session::train_get_traininfo : invalid state";
+    setLastErrorMessage("Error during Session::train_get_traininfo : Model is not loaded");
     return NNFW_STATUS_INVALID_STATE;
   }
 
   if (info == nullptr)
   {
-    std::cerr << "Error during Session::train_get_traininfo : info is nullptr" << std::endl;
+    setLastErrorMessage("Error during Session::train_get_traininfo : info is NULL");
     return NNFW_STATUS_UNEXPECTED_NULL;
   }
 
@@ -1487,8 +1592,8 @@ NNFW_STATUS Session::train_get_traininfo(nnfw_train_info *info)
       else
       {
         info->num_of_trainable_ops = NNFW_TRAIN_TRAINABLE_INCORRECT_STATE;
-        std::cerr << "conversion from set of trainable ops to num_of_trainable_ops is impossible"
-                  << std::endl;
+        setLastErrorMessage("Error during Session::train_get_traininfo : Conversion from set of "
+                            "trainable ops to num_of_trainable_ops is impossible");
         return NNFW_STATUS_INVALID_STATE;
       }
     }
@@ -1500,7 +1605,7 @@ NNFW_STATUS Session::train_get_traininfo(nnfw_train_info *info)
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during Session::train_get_traininfo" << e.what() << std::endl;
+    setLastErrorMessage("Error during Session::train_get_traininfo : " + std::string(e.what()));
     return NNFW_STATUS_ERROR;
   }
 
@@ -1509,15 +1614,15 @@ NNFW_STATUS Session::train_get_traininfo(nnfw_train_info *info)
 
 NNFW_STATUS Session::train_set_traininfo(const nnfw_train_info *info)
 {
-  if (not isStateModelLoaded())
+  if (!isStateModelLoaded())
   {
-    std::cerr << "Error during Session::train_set_traininfo : invalid state" << std::endl;
+    setLastErrorMessage("Error during Session::train_set_traininfo : Model is not loaded");
     return NNFW_STATUS_INVALID_STATE;
   }
 
   if (info == nullptr)
   {
-    std::cerr << "Session::train_set_traininfo : info is nullptr" << std::endl;
+    setLastErrorMessage("Error during Session::train_set_traininfo : info is NULL");
     return NNFW_STATUS_UNEXPECTED_NULL;
   }
 
@@ -1567,9 +1672,10 @@ NNFW_STATUS Session::train_set_traininfo(const nnfw_train_info *info)
 
     if (info->num_of_trainable_ops < -1)
     {
-      std::cerr << "Error during Session::train_set_traininfo: provided num_of_trainable_ops "
-                   "has incorrect value: "
-                << info->num_of_trainable_ops << std::endl;
+      setLastErrorMessage(
+        "Error during Session::train_set_traininfo : Provided num_of_trainable_ops "
+        "has incorrect value : " +
+        std::to_string(info->num_of_trainable_ops));
       return NNFW_STATUS_ERROR;
     }
 
@@ -1587,9 +1693,10 @@ NNFW_STATUS Session::train_set_traininfo(const nnfw_train_info *info)
     {
       if (static_cast<uint32_t>(info->num_of_trainable_ops) > ops_size)
       {
-        std::cerr << "Error during Session::train_set_traininfo: provided num_of_trainable_ops="
-                  << info->num_of_trainable_ops << " is out of operators range equals: " << ops_size
-                  << std::endl;
+        setLastErrorMessage(
+          "Error during Session::train_set_traininfo : Provided num_of_trainable_ops "
+          "is out of operators range : " +
+          std::to_string(info->num_of_trainable_ops) + " > " + std::to_string(ops_size));
         return NNFW_STATUS_ERROR;
       }
       for (uint32_t i = 1; i <= static_cast<uint32_t>(info->num_of_trainable_ops); ++i)
@@ -1602,7 +1709,7 @@ NNFW_STATUS Session::train_set_traininfo(const nnfw_train_info *info)
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during Session::train_set_traininfo : " << e.what() << std::endl;
+    setLastErrorMessage("Error during Session::train_set_traininfo : " + std::string(e.what()));
     return NNFW_STATUS_ERROR;
   }
 
@@ -1614,12 +1721,10 @@ NNFW_STATUS Session::train_prepare()
   // We may need different state to represent training model is loaded
   if (!isStateModelLoaded())
   {
-    std::cerr << "Error during model prepare training: ";
     if (_state == State::PREPARED_TRAINING)
-      std::cerr << "prepare should be run once";
+      setLastErrorMessage("Error during Session::train_prepare : Training is already prepared");
     else
-      std::cerr << "invalid state";
-    std::cerr << std::endl;
+      setLastErrorMessage("Error during Session::train_prepare : Invalid state");
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -1641,7 +1746,7 @@ NNFW_STATUS Session::train_prepare()
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during Session::train_prepare : " << e.what() << std::endl;
+    setLastErrorMessage("Error during Session::train_prepare : " + std::string(e.what()));
     return NNFW_STATUS_ERROR;
   }
 
@@ -1653,7 +1758,7 @@ NNFW_STATUS Session::train_input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
 {
   if (!isStatePreparedOrFinishedTraining())
   {
-    std::cerr << "Error during Session::train_input_tensorinfo : invalid state" << std::endl;
+    setLastErrorMessage("Error during Session::train_input_tensorinfo : Invalid state");
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -1662,6 +1767,7 @@ NNFW_STATUS Session::train_input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
   // NYI
   (void)index;
   (void)ti;
+  setLastErrorMessage("Error during Session::train_input_tensorinfo : Not implemented yet");
   return NNFW_STATUS_ERROR;
 }
 
@@ -1669,7 +1775,7 @@ NNFW_STATUS Session::train_expected_tensorinfo(uint32_t index, nnfw_tensorinfo *
 {
   if (!isStatePreparedOrFinishedTraining())
   {
-    std::cerr << "Error during Session::train_expected_tensorinfo : invalid state" << std::endl;
+    setLastErrorMessage("Error during Session::train_expected_tensorinfo : Invalid state");
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -1678,6 +1784,7 @@ NNFW_STATUS Session::train_expected_tensorinfo(uint32_t index, nnfw_tensorinfo *
   // NYI
   (void)index;
   (void)ti;
+  setLastErrorMessage("Error during Session::train_expected_tensorinfo : Not implemented yet");
   return NNFW_STATUS_ERROR;
 }
 
@@ -1686,19 +1793,19 @@ NNFW_STATUS Session::train_set_input(uint32_t index, const void *input,
 {
   if (input == nullptr)
   {
-    std::cerr << "Error during Session::train_set_input : input buffer is null" << std::endl;
+    setLastErrorMessage("Error during Session::train_set_input : input is NULL");
     return NNFW_STATUS_UNEXPECTED_NULL;
   }
 
   if (!isStatePreparedOrFinishedTraining())
   {
-    std::cerr << "Error during Session::train_set_input : invalid state" << std::endl;
+    setLastErrorMessage("Error during Session::train_set_input : Invalid state");
     return NNFW_STATUS_INVALID_STATE;
   }
 
   if (index >= getInputSize())
   {
-    std::cerr << "Error during Session::train_set_input : index is out of range" << std::endl;
+    setLastErrorMessage("Error during Session::train_set_input : index is out of range");
     return NNFW_STATUS_ERROR;
   }
 
@@ -1708,8 +1815,8 @@ NNFW_STATUS Session::train_set_input(uint32_t index, const void *input,
     auto size = _execution->inputInfo(ind).total_size();
     if (input_tensorinfo && getBufSize(input_tensorinfo) != size)
     {
-      std::cerr << "Error during Session::train_set_input : not supporeted to change tensorinfo"
-                << std::endl;
+      setLastErrorMessage(
+        "Error during Session::train_set_input : Changing tensorinfo is not supported");
       return NNFW_STATUS_ERROR;
     }
 
@@ -1717,7 +1824,7 @@ NNFW_STATUS Session::train_set_input(uint32_t index, const void *input,
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during Session::train_set_input : " << e.what() << std::endl;
+    setLastErrorMessage("Error during Session::train_set_input : " + std::string(e.what()));
     return NNFW_STATUS_ERROR;
   }
 
@@ -1729,19 +1836,19 @@ NNFW_STATUS Session::train_set_expected(uint32_t index, const void *expected,
 {
   if (expected == nullptr)
   {
-    std::cerr << "Error during Session::train_set_expected : expected buffer is null" << std::endl;
+    setLastErrorMessage("Error during Session::train_set_expected : expected is NULL");
     return NNFW_STATUS_UNEXPECTED_NULL;
   }
 
   if (!isStatePreparedOrFinishedTraining())
   {
-    std::cerr << "Error during Session::train_set_expected : invalid state" << std::endl;
+    setLastErrorMessage("Error during Session::train_set_expected : Invalid state");
     return NNFW_STATUS_INVALID_STATE;
   }
 
   if (index >= getOutputSize())
   {
-    std::cerr << "Error during Session::train_set_expected : index is out of range" << std::endl;
+    setLastErrorMessage("Error during Session::train_set_expected : index is out of range");
     return NNFW_STATUS_ERROR;
   }
 
@@ -1751,7 +1858,8 @@ NNFW_STATUS Session::train_set_expected(uint32_t index, const void *expected,
     auto size = _execution->outputInfo(ind).total_size();
     if (expected_tensorinfo && getBufSize(expected_tensorinfo) != size)
     {
-      std::cerr << "Error during Session::train_set_expected : invalid tensorinfo" << std::endl;
+      setLastErrorMessage(
+        "Error during Session::train_set_expected : Changing tensorinfo is not supported");
       return NNFW_STATUS_ERROR;
     }
 
@@ -1765,7 +1873,7 @@ NNFW_STATUS Session::train_set_expected(uint32_t index, const void *expected,
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during Session::train_set_expected : " << e.what() << std::endl;
+    setLastErrorMessage("Error during Session::train_set_expected : " + std::string(e.what()));
     return NNFW_STATUS_ERROR;
   }
 
@@ -1777,15 +1885,14 @@ NNFW_STATUS Session::train_set_output(uint32_t index, NNFW_TYPE /*type*/, void *
 {
   if (!isStatePreparedOrFinishedTraining())
   {
-    std::cerr << "Error during Session::train_set_output : invalid state" << std::endl;
+    setLastErrorMessage("Error during Session::train_set_output : Invalid state");
     return NNFW_STATUS_INVALID_STATE;
   }
 
   if (!buffer && length != 0)
   {
-    std::cerr << "Error during Session::train_set_output : given buffer is NULL but the "
-                 "length is not 0"
-              << std::endl;
+    setLastErrorMessage(
+      "Error during Session::train_set_output : buffer is NULL but the length is not 0");
     return NNFW_STATUS_ERROR;
   }
 
@@ -1795,7 +1902,7 @@ NNFW_STATUS Session::train_set_output(uint32_t index, NNFW_TYPE /*type*/, void *
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during Session::train_set_output : " << e.what() << std::endl;
+    setLastErrorMessage("Error during Session::train_set_output : " + std::string(e.what()));
     return NNFW_STATUS_ERROR;
   }
   return NNFW_STATUS_NO_ERROR;
@@ -1805,7 +1912,7 @@ NNFW_STATUS Session::train_run(bool update_weights)
 {
   if (!isStatePreparedOrFinishedTraining())
   {
-    std::cerr << "Error during Session::train_run : invalid state" << std::endl;
+    setLastErrorMessage("Error during Session::train_run : Invalid state");
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -1822,12 +1929,12 @@ NNFW_STATUS Session::train_run(bool update_weights)
   catch (const onert::InsufficientBufferSizeException &e)
   {
     // Currently insufficient buffer always means output buffer.
-    std::cerr << "Error during Session::train_run : " << e.what() << std::endl;
+    setLastErrorMessage("Error during Session::train_run : " + std::string(e.what()));
     return NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE;
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during Session::train_run : " << e.what() << std::endl;
+    setLastErrorMessage("Error during Session::train_run : " + std::string(e.what()));
     return NNFW_STATUS_ERROR;
   }
 
@@ -1839,19 +1946,19 @@ NNFW_STATUS Session::train_get_loss(uint32_t index, float *loss)
 {
   if (loss == nullptr)
   {
-    std::cerr << "Error during Session::train_get_loss : loss is null" << std::endl;
+    setLastErrorMessage("Error during Session::train_get_loss : loss is NULL");
     return NNFW_STATUS_UNEXPECTED_NULL;
   }
 
   if (!isStateFinishedTraining())
   {
-    std::cerr << "Error during Session::train_get_loss : invalid state" << std::endl;
+    setLastErrorMessage("Error during Session::train_get_loss : Invalid state");
     return NNFW_STATUS_INVALID_STATE;
   }
 
   if (index >= getOutputSize())
   {
-    std::cerr << "Error during Session::train_get_loss : index is out of range" << std::endl;
+    setLastErrorMessage("Error during Session::train_get_loss : index is out of range");
     return NNFW_STATUS_ERROR;
   }
 
@@ -1862,7 +1969,7 @@ NNFW_STATUS Session::train_get_loss(uint32_t index, float *loss)
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during Session::train_get_loss : " << e.what() << std::endl;
+    setLastErrorMessage("Error during Session::train_get_loss : " + std::string(e.what()));
     return NNFW_STATUS_ERROR;
   }
 
@@ -1873,14 +1980,14 @@ NNFW_STATUS Session::train_export_circle(const char *path)
 {
   if (path == nullptr)
   {
-    std::cerr << "Error during Session::train_export_circle : path is null" << std::endl;
+    setLastErrorMessage("Error during Session::train_export_circle : path is NULL");
     return NNFW_STATUS_UNEXPECTED_NULL;
   }
 
   // Check training mode is enabled
   if (!isStateFinishedTraining())
   {
-    std::cerr << "Error during Session::train_export_circle : invalid state" << std::endl;
+    setLastErrorMessage("Error during Session::train_export_circle : Invalid state");
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -1891,7 +1998,7 @@ NNFW_STATUS Session::train_export_circle(const char *path)
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during Session::train_export_circle : " << e.what() << std::endl;
+    setLastErrorMessage("Error during Session::train_export_circle : " + std::string(e.what()));
     return NNFW_STATUS_ERROR;
   }
 
@@ -1902,13 +2009,13 @@ NNFW_STATUS Session::train_export_circleplus(const char *path)
 {
   if (path == nullptr)
   {
-    std::cerr << "Error during Session::train_export_circleplus : path is null" << std::endl;
+    setLastErrorMessage("Error during Session::train_export_circleplus : path is NULL");
     return NNFW_STATUS_UNEXPECTED_NULL;
   }
 
   if (!isStatePreparedOrFinishedTraining())
   {
-    std::cerr << "Error during Session::train_export_circleplus : invalid state" << std::endl;
+    setLastErrorMessage("Error during Session::train_export_circleplus : Invalid state");
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -1920,7 +2027,7 @@ NNFW_STATUS Session::train_export_circleplus(const char *path)
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during Session::train_export_circleplus : " << e.what() << std::endl;
+    setLastErrorMessage("Error during Session::train_export_circleplus : " + std::string(e.what()));
     return NNFW_STATUS_ERROR;
   }
 
@@ -1931,13 +2038,13 @@ NNFW_STATUS Session::train_import_checkpoint(const char *path)
 {
   if (path == nullptr)
   {
-    std::cerr << "Error during Session::train_import_checkpoint : path is null" << std::endl;
+    setLastErrorMessage("Error during Session::train_import_checkpoint : path is NULL");
     return NNFW_STATUS_UNEXPECTED_NULL;
   }
 
   if (!isStatePreparedOrFinishedTraining())
   {
-    std::cerr << "Error during Session::train_import_checkpoint : invalid state" << std::endl;
+    setLastErrorMessage("Error during Session::train_import_checkpoint : Invalid state");
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -1947,7 +2054,7 @@ NNFW_STATUS Session::train_import_checkpoint(const char *path)
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during Session::train_import_checkpoint : " << e.what() << std::endl;
+    setLastErrorMessage("Error during Session::train_import_checkpoint : " + std::string(e.what()));
     return NNFW_STATUS_ERROR;
   }
 
@@ -1958,14 +2065,14 @@ NNFW_STATUS Session::train_export_checkpoint(const char *path)
 {
   if (path == nullptr)
   {
-    std::cerr << "Error during Session::train_export_checkpoint : path is null" << std::endl;
+    setLastErrorMessage("Error during Session::train_export_checkpoint : path is NULL");
     return NNFW_STATUS_UNEXPECTED_NULL;
   }
 
   // Check training mode is enabled
   if (!isStateFinishedTraining())
   {
-    std::cerr << "Error during Session::train_export_checkpoint : invalid state" << std::endl;
+    setLastErrorMessage("Error during Session::train_export_checkpoint : Invalid state");
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -1975,7 +2082,7 @@ NNFW_STATUS Session::train_export_checkpoint(const char *path)
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during Session::train_export_checkpoint : " << e.what() << std::endl;
+    setLastErrorMessage("Error during Session::train_export_checkpoint : " + std::string(e.what()));
     return NNFW_STATUS_ERROR;
   }
 
@@ -2018,7 +2125,7 @@ NNFW_STATUS Session::set_quantization_type(NNFW_QUANTIZE_TYPE qtype)
   {
     if (isStateInitialized() || isStateRunning())
     {
-      std::cerr << "invalid state" << std::endl;
+      setLastErrorMessage("Error during Session::set_quantization_type : Invalid state");
       return NNFW_STATUS_INVALID_STATE;
     }
 
@@ -2038,13 +2145,15 @@ NNFW_STATUS Session::set_quantization_type(NNFW_QUANTIZE_TYPE qtype)
         odc_qtype = onert::odc::ODC_QTYPE_WO_I16_SYM;
         break;
       default:
+        setLastErrorMessage(
+          "Error during Session::set_quantization_type : Invalid quantization type");
         return NNFW_STATUS_INVALID_STATE;
     }
     _quant_manager->quantizeType(odc_qtype);
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during Session::set_quantization_type : " << e.what() << std::endl;
+    setLastErrorMessage("Error during Session::set_quantization_type : " + std::string(e.what()));
     return NNFW_STATUS_ERROR;
   }
 
@@ -2057,7 +2166,7 @@ NNFW_STATUS Session::set_quantized_model_path(const char *path)
   {
     if (isStateInitialized() || isStateRunning())
     {
-      std::cerr << "invalid state" << std::endl;
+      setLastErrorMessage("Error during Session::set_quantized_model_path : Invalid state");
       return NNFW_STATUS_INVALID_STATE;
     }
 
@@ -2065,7 +2174,8 @@ NNFW_STATUS Session::set_quantized_model_path(const char *path)
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during Session::set_quantized_model_path : " << e.what() << std::endl;
+    setLastErrorMessage("Error during Session::set_quantized_model_path : " +
+                        std::string(e.what()));
     return NNFW_STATUS_ERROR;
   }
 
@@ -2078,13 +2188,16 @@ NNFW_STATUS Session::quantize()
   {
     if (isStateInitialized() || isStateRunning())
     {
-      std::cerr << "invalid state" << std::endl;
+      setLastErrorMessage("Error during Session::quantize : Invalid state");
       return NNFW_STATUS_INVALID_STATE;
     }
 
     auto result = _quant_manager->quantize(_model_path.string());
     if (!result)
+    {
+      setLastErrorMessage("Error during Session::quantize : Quantization failed");
       return NNFW_STATUS_INVALID_STATE;
+    }
 
     // Replace model
     // TODO Support buffer replace, not file reload
@@ -2092,7 +2205,7 @@ NNFW_STATUS Session::quantize()
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during Session::quantize : " << e.what() << std::endl;
+    setLastErrorMessage("Error during Session::quantize : " + std::string(e.what()));
     return NNFW_STATUS_ERROR;
   }
 }
@@ -2103,7 +2216,7 @@ NNFW_STATUS Session::set_codegen_model_path(const char *path)
   {
     if (isStateInitialized() || isStateRunning())
     {
-      std::cerr << "invalid state" << std::endl;
+      setLastErrorMessage("Error during Session::set_codegen_model_path : Invalid state");
       return NNFW_STATUS_INVALID_STATE;
     }
 
@@ -2112,7 +2225,7 @@ NNFW_STATUS Session::set_codegen_model_path(const char *path)
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during Session::set_codegen_model_path : " << e.what() << std::endl;
+    setLastErrorMessage("Error during Session::set_codegen_model_path : " + std::string(e.what()));
     return NNFW_STATUS_ERROR;
   }
 
@@ -2125,7 +2238,7 @@ NNFW_STATUS Session::codegen(const char *target, NNFW_CODEGEN_PREF pref)
   {
     if (isStateInitialized() || isStateRunning())
     {
-      std::cerr << "Error during Session::codegen : Invalid state" << std::endl;
+      setLastErrorMessage("Error during Session::codegen : Invalid state");
       return NNFW_STATUS_INVALID_STATE;
     }
 
@@ -2133,7 +2246,7 @@ NNFW_STATUS Session::codegen(const char *target, NNFW_CODEGEN_PREF pref)
     if (target_str.empty() || target_str.size() < 5 ||
         target_str.substr(target_str.size() - 4) != "-gen")
     {
-      std::cerr << "Error during Session::codegen : Invalid target" << std::endl;
+      setLastErrorMessage("Error during Session::codegen : Invalid target");
       return NNFW_STATUS_ERROR;
     }
 
@@ -2153,7 +2266,7 @@ NNFW_STATUS Session::codegen(const char *target, NNFW_CODEGEN_PREF pref)
         codegen_pref = onert::odc::CodegenPreference::CODEGEN_PREF_COMPILE_TIME_FIRST;
         break;
       default:
-        std::cerr << "Error during Session::codegen : Invalid preference" << std::endl;
+        setLastErrorMessage("Error during Session::codegen : Invalid preference");
         return NNFW_STATUS_ERROR;
     }
 
@@ -2178,7 +2291,7 @@ NNFW_STATUS Session::codegen(const char *target, NNFW_CODEGEN_PREF pref)
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during Session::compile : " << e.what() << std::endl;
+    setLastErrorMessage("Error during Session::codegen : " + std::string(e.what()));
     return NNFW_STATUS_ERROR;
   }
 }
@@ -2187,7 +2300,7 @@ NNFW_STATUS Session::set_prepare_config(const NNFW_PREPARE_CONFIG key, const cha
 {
   if (!isStateModelLoaded())
   {
-    std::cerr << "Error during Session::set_prepare_config : Invalid state" << std::endl;
+    setLastErrorMessage("Error during Session::set_prepare_config : Invalid state");
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -2200,6 +2313,7 @@ NNFW_STATUS Session::set_prepare_config(const NNFW_PREPARE_CONFIG key, const cha
       _coptions->internal_output_alloc = true;
       break;
     default:
+      setLastErrorMessage("Error during Session::set_prepare_config : Invalid config key");
       return NNFW_STATUS_ERROR;
   }
 
@@ -2210,7 +2324,7 @@ NNFW_STATUS Session::reset_prepare_config()
 {
   if (!isStateModelLoaded())
   {
-    std::cerr << "Error during Session::reset_prepare_config : Invalid state" << std::endl;
+    setLastErrorMessage("Error during Session::reset_prepare_config : Invalid state");
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -2223,7 +2337,7 @@ NNFW_STATUS Session::set_execute_config(const NNFW_RUN_CONFIG key, const char *)
 {
   if (!isStatePreparedOrFinishedRun())
   {
-    std::cerr << "Error during Session::set_execution_config : Invalid state" << std::endl;
+    setLastErrorMessage("Error during Session::set_execute_config : Invalid state");
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -2243,6 +2357,7 @@ NNFW_STATUS Session::set_execute_config(const NNFW_RUN_CONFIG key, const char *)
       _execution->executionOptions().profile = true;
       break;
     default:
+      setLastErrorMessage("Error during Session::set_execute_config : Invalid config key");
       return NNFW_STATUS_ERROR;
   }
 
@@ -2253,7 +2368,7 @@ NNFW_STATUS Session::reset_execute_config()
 {
   if (!isStatePreparedOrFinishedRun())
   {
-    std::cerr << "Error during Session::set_execution_config : Invalid state" << std::endl;
+    setLastErrorMessage("Error during Session::set_execution_config : Invalid state");
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -2268,28 +2383,31 @@ NNFW_STATUS Session::set_odc_param_minmax_records_count(int minmax_records_count
 {
   if (isStateInitialized() || isStateRunning())
   {
-    std::cerr << "invalid state" << std::endl;
+    setLastErrorMessage("Error during Session::set_odc_param_minmax_records_count : Invalid state");
     return NNFW_STATUS_INVALID_STATE;
   }
 
   if (_quant_manager->setMinMaxRecordsThreshold(minmax_records_count))
     return NNFW_STATUS_NO_ERROR;
-  else
-    return NNFW_STATUS_ERROR;
+
+  setLastErrorMessage(
+    "Error during Session::set_odc_param_minmax_records_count : Could not set value");
+  return NNFW_STATUS_ERROR;
 }
 
 NNFW_STATUS Session::delete_odc_minmax_file()
 {
   if (isStateRunning())
   {
-    std::cerr << "invalid state" << std::endl;
+    setLastErrorMessage("Error during Session::delete_odc_minmax_file : Invalid state");
     return NNFW_STATUS_INVALID_STATE;
   }
 
   if (_quant_manager->deleteMinMaxFile())
     return NNFW_STATUS_NO_ERROR;
-  else
-    return NNFW_STATUS_ERROR;
+
+  setLastErrorMessage("Error during Session::delete_odc_minmax_file : Could not delete file");
+  return NNFW_STATUS_ERROR;
 }
 
 // run with auto compilation
@@ -2298,8 +2416,8 @@ NNFW_STATUS Session::run_with_auto_compilation(const char *target, NNFW_CODEGEN_
 
   if (!isStatePreparedOrFinishedRun())
   {
-    std::cerr << "Error during Session::run_with_auto_compilation : "
-              << "run should be after preparation" << std::endl;
+    setLastErrorMessage("Error during Session::run_with_auto_compilation : Run should be after "
+                        "preparation");
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -2308,8 +2426,8 @@ NNFW_STATUS Session::run_with_auto_compilation(const char *target, NNFW_CODEGEN_
   if (_quant_manager->exportModelPath().empty() || _codegen_manager->exportModelPath().empty() ||
       target_str.empty() || target_str.substr(target_str.size() - 4) != "-gen")
   {
-    std::cerr << "Error during Session::run_with_auto_compilation : "
-              << "quantization and code generation parameters should be set" << std::endl;
+    setLastErrorMessage("Error during Session::run_with_auto_compilation : Quantization and "
+                        "code generation parameters should be set");
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -2334,12 +2452,14 @@ NNFW_STATUS Session::run_with_auto_compilation(const char *target, NNFW_CODEGEN_
       catch (const onert::InsufficientBufferSizeException &e)
       {
         // Currently insufficient buffer always means output buffer.
-        std::cerr << "Error during Session::run_with_auto_compilation : " << e.what() << std::endl;
+        setLastErrorMessage("Error during Session::run_with_auto_compilation : " +
+                            std::string(e.what()));
         return NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE;
       }
       catch (const std::exception &e)
       {
-        std::cerr << "Error during Session::run_with_auto_compilation : " << e.what() << std::endl;
+        setLastErrorMessage("Error during Session::run_with_auto_compilation : " +
+                            std::string(e.what()));
         return NNFW_STATUS_ERROR;
       }
 
@@ -2355,23 +2475,31 @@ NNFW_STATUS Session::run_with_auto_compilation(const char *target, NNFW_CODEGEN_
         {
           if (isStateInitialized() || isStateRunning())
           {
-            std::cerr << "invalid state" << std::endl;
+            setLastErrorMessage("Error during Session::run_with_auto_compilation : Invalid state");
             return NNFW_STATUS_INVALID_STATE;
           }
 
           auto result = _quant_manager->quantize(_model_path);
           if (!result)
+          {
+            setLastErrorMessage(
+              "Error during Session::run_with_auto_compilation : Quantization failed");
             return NNFW_STATUS_INVALID_STATE;
+          }
 
           // remove minmax file
           result = _quant_manager->deleteMinMaxFile();
           if (!result)
+          {
+            setLastErrorMessage(
+              "Error during Session::run_with_auto_compilation : Could not delete minmax file");
             return NNFW_STATUS_INVALID_STATE;
+          }
         }
         catch (const std::exception &e)
         {
-          std::cerr << "Error during Session::run_with_auto_compilation in quantize operation: "
-                    << e.what() << std::endl;
+          setLastErrorMessage("Error during Session::run_with_auto_compilation : " +
+                              std::string(e.what()));
           return NNFW_STATUS_ERROR;
         }
       }
@@ -2391,10 +2519,8 @@ NNFW_STATUS Session::run_with_auto_compilation(const char *target, NNFW_CODEGEN_
       auto dotidx = _codegen_manager->exportModelPath().rfind('.');
       if (dotidx == std::string::npos)
       {
-        std::cerr << "Error during Session::run_with_auto_compilation : Invalid compiled "
-                     "model path. Please use a "
-                     "path that includes the extension."
-                  << std::endl;
+        setLastErrorMessage("Error during Session::run_with_auto_compilation : Invalid compiled "
+                            "model path. Please use a path that includes the extension.");
         return NNFW_STATUS_ERROR;
       }
 
@@ -2404,10 +2530,8 @@ NNFW_STATUS Session::run_with_auto_compilation(const char *target, NNFW_CODEGEN_
       dotidx = _quant_manager->exportModelPath().rfind('.');
       if (dotidx == std::string::npos)
       {
-        std::cerr << "Error during Session::run_with_auto_compilation : Invalid quantized "
-                     "model path. Please use a "
-                     "path that includes the extension."
-                  << std::endl;
+        setLastErrorMessage("Error during Session::run_with_auto_compilation : Invalid quantized "
+                            "model path. Please use a path that includes the extension.");
         return NNFW_STATUS_ERROR;
       }
       std::string quantized_model_type =
@@ -2483,8 +2607,8 @@ NNFW_STATUS Session::run_with_auto_compilation(const char *target, NNFW_CODEGEN_
     // Run quantized model
     if (!isStatePreparedOrFinishedRun())
     {
-      std::cerr << "Error during Session::run_with_auto_compilation : "
-                << "run should be run after prepare" << std::endl;
+      setLastErrorMessage("Error during Session::run_with_auto_compilation : Run should be after "
+                          "preparation");
       return NNFW_STATUS_INVALID_STATE;
     }
 
@@ -2495,12 +2619,14 @@ NNFW_STATUS Session::run_with_auto_compilation(const char *target, NNFW_CODEGEN_
     catch (const onert::InsufficientBufferSizeException &e)
     {
       // Currently insufficient buffer always means output buffer.
-      std::cerr << "Error during Session::run_with_auto_compilation : " << e.what() << std::endl;
+      setLastErrorMessage("Error during Session::run_with_auto_compilation : " +
+                          std::string(e.what()));
       return NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE;
     }
     catch (const std::exception &e)
     {
-      std::cerr << "Error during Session::run_with_auto_compilation : " << e.what() << std::endl;
+      setLastErrorMessage("Error during Session::run_with_auto_compilation : " +
+                          std::string(e.what()));
       return NNFW_STATUS_ERROR;
     }
 
