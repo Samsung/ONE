@@ -184,7 +184,12 @@ void BulkPipelineModel::setNextModel(std::shared_ptr<BulkPipelineModel> next)
 void BulkPipelineModel::waitForBufferReady()
 {
   std::unique_lock<std::mutex> lock(_buffer_mutex);
-  _buffer_cv.wait(lock, [this] { return _buffer_ready.load(); });
+  _buffer_cv.wait(lock, [this] { return _buffer_ready.load() || _buffer_error.load(); });
+
+  if (_buffer_error.load())
+  {
+    throw std::runtime_error("Buffer fill failed");
+  }
 }
 
 void BulkPipelineModel::markBufferReady()
@@ -199,6 +204,7 @@ void BulkPipelineModel::markBufferReady()
 void BulkPipelineModel::startAsyncBufferFill()
 {
   _buffer_ready = false;
+  _buffer_error = false;
   _async_fill_future = std::async(std::launch::async, [this] {
     try
     {
@@ -207,6 +213,12 @@ void BulkPipelineModel::startAsyncBufferFill()
     }
     catch (const std::exception &e)
     {
+      {
+        std::lock_guard<std::mutex> lock(_buffer_mutex);
+        _buffer_ready = false;
+        _buffer_error = true;
+      }
+      _buffer_cv.notify_all();
       std::cerr << "Failed to fill buffers asynchronously: " << e.what() << std::endl;
     }
   });
