@@ -1,5 +1,6 @@
 var NAVTREEINDEX23 =
 {
+"_partition_p_modules_dump_8h.html#acb98ce6e840b9380686664442c64c90a":[43,0,0,59,6,1,19,0],
 "_partition_p_modules_dump_8h_source.html":[43,0,0,59,6,1,19],
 "_partition_read_8cpp.html":[43,0,0,21,0,5],
 "_partition_read_8cpp.html#ac731e22e31ab6fe0a4a6fbe4c2a7c0f5":[43,0,0,21,0,5,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX23 =
 "_quant_max_pool2_d_kernel_8h.html#ad87bb3d84e2a42f5d5e7d3341a929714":[43,0,2,5,0,6,42,2,2],
 "_quant_max_pool2_d_kernel_8h_source.html":[43,0,2,5,0,6,42,2],
 "_quant_mul_kernel_8h.html":[43,0,2,5,0,6,45,3],
-"_quant_mul_kernel_8h.html#a0ceb94d2d7541b4e526916a504451c4a":[43,0,2,5,0,6,45,3,1],
-"_quant_mul_kernel_8h.html#a1bf0598d1bbf559442157b8c3ed5e27f":[43,0,2,5,0,6,45,3,8]
+"_quant_mul_kernel_8h.html#a0ceb94d2d7541b4e526916a504451c4a":[43,0,2,5,0,6,45,3,1]
 };

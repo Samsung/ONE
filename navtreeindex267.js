@@ -1,5 +1,7 @@
 var NAVTREEINDEX267 =
 {
+"ruy_2ops_2_operation_utils_8cc.html":[43,0,3,4,1,6,0,4],
+"ruy_2ops_2_operation_utils_8cc.html#a9d353a58ddae5fd09bbc9209e63ff5f4":[43,0,3,4,1,6,0,4,0],
 "ruy_2ops_2_operation_utils_8cc_source.html":[43,0,3,4,1,6,0,4],
 "ruy_2ops_2_operation_utils_8h.html":[43,0,3,4,1,6,0,5],
 "ruy_2ops_2_operation_utils_8h.html#a69e192d0519410c78a90c964832374fe":[43,0,3,4,1,6,0,5,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX267 =
 "service_2src_2_nodes_2_circle_split_v_8cpp.html":[43,0,0,59,10,1,0,113],
 "service_2src_2_nodes_2_circle_split_v_8cpp_source.html":[43,0,0,59,10,1,0,113],
 "service_2src_2_nodes_2_circle_split_v_out_8cpp.html":[43,0,0,59,10,1,0,114],
-"service_2src_2_nodes_2_circle_split_v_out_8cpp_source.html":[43,0,0,59,10,1,0,114],
-"service_2src_2_nodes_2_circle_sqrt_8cpp.html":[43,0,0,59,10,1,0,115],
-"service_2src_2_nodes_2_circle_sqrt_8cpp_source.html":[43,0,0,59,10,1,0,115]
+"service_2src_2_nodes_2_circle_split_v_out_8cpp_source.html":[43,0,0,59,10,1,0,114]
 };

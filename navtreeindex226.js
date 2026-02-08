@@ -1,5 +1,6 @@
 var NAVTREEINDEX226 =
 {
+"namespaceloco.html#ae545cd9b930fd7cf984a5ac2e3eb8934":[41,0,83,171],
 "namespaceloco.html#ae87ad1e314ae33a5f9aebb8ddf07e5e6":[41,0,83,155],
 "namespaceloco.html#ae87ad1e314ae33a5f9aebb8ddf07e5e6a21021ea0e52be8e9c599f4dff41e5be0":[41,0,83,155,2],
 "namespaceloco.html#ae87ad1e314ae33a5f9aebb8ddf07e5e6a279334878b9bb59e62b2da657fc50cf4":[41,0,83,155,4],
@@ -248,6 +249,5 @@ var NAVTREEINDEX226 =
 "namespaceluci.html#aaeda113cbdf4de511ca37f41d4376430":[41,0,88,561],
 "namespaceluci.html#ab09a2d7183062a00b7446d9137c527a5":[41,0,88,595],
 "namespaceluci.html#ab1f69cc62d47cdc72b5a9bdd24a29042":[41,0,88,572],
-"namespaceluci.html#ab30706cacc1cda785d4e0e78e87710c7":[41,0,88,640],
-"namespaceluci.html#ab46996da8c5c407bc43ef70e0ae4e955":[41,0,88,682]
+"namespaceluci.html#ab30706cacc1cda785d4e0e78e87710c7":[41,0,88,640]
 };

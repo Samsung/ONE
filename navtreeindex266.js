@@ -1,5 +1,7 @@
 var NAVTREEINDEX266 =
 {
+"runtime_2onert_2core_2include_2ir_2train_2operation_2_reshape_8h_source.html":[43,0,3,4,2,0,4,1,0,10],
+"runtime_2onert_2core_2include_2ir_2train_2operation_2_softmax_8h.html":[43,0,3,4,2,0,4,1,0,11],
 "runtime_2onert_2core_2include_2ir_2train_2operation_2_softmax_8h_source.html":[43,0,3,4,2,0,4,1,0,11],
 "runtime_2onert_2core_2include_2util_2_index_8h.html":[43,0,3,4,2,0,7,3],
 "runtime_2onert_2core_2include_2util_2_index_8h_source.html":[43,0,3,4,2,0,7,3],
@@ -247,7 +249,5 @@ var NAVTREEINDEX266 =
 "ruy_2ops_2_fully_connected_layer_8cc.html":[43,0,3,4,1,6,0,2],
 "ruy_2ops_2_fully_connected_layer_8cc_source.html":[43,0,3,4,1,6,0,2],
 "ruy_2ops_2_fully_connected_layer_8h.html":[43,0,3,4,1,6,0,3],
-"ruy_2ops_2_fully_connected_layer_8h_source.html":[43,0,3,4,1,6,0,3],
-"ruy_2ops_2_operation_utils_8cc.html":[43,0,3,4,1,6,0,4],
-"ruy_2ops_2_operation_utils_8cc.html#a9d353a58ddae5fd09bbc9209e63ff5f4":[43,0,3,4,1,6,0,4,0]
+"ruy_2ops_2_fully_connected_layer_8h_source.html":[43,0,3,4,1,6,0,3]
 };

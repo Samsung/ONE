@@ -1,5 +1,7 @@
 var NAVTREEINDEX264 =
 {
+"runtime_2compute_2cker_2include_2cker_2operation_2_softmax_8h.html":[43,0,3,0,1,0,0,3,59],
+"runtime_2compute_2cker_2include_2cker_2operation_2_softmax_8h.html#a0eb3312b5647c8259af517c9e5cfc364":[43,0,3,0,1,0,0,3,59,2],
 "runtime_2compute_2cker_2include_2cker_2operation_2_softmax_8h.html#a6526c6e7188c6f2cf1bd1115d2fe33e7":[43,0,3,0,1,0,0,3,59,1],
 "runtime_2compute_2cker_2include_2cker_2operation_2_softmax_8h.html#ab55312a313b1a6280c4fc9bafc80b05c":[43,0,3,0,1,0,0,3,59,4],
 "runtime_2compute_2cker_2include_2cker_2operation_2_softmax_8h.html#add672fcc4e20b0e35c8698d17d5399e9":[43,0,3,0,1,0,0,3,59,5],
@@ -247,7 +249,5 @@ var NAVTREEINDEX264 =
 "runtime_2onert_2backend_2acl__neon_2_backend_8h.html":[43,0,3,4,1,2,3],
 "runtime_2onert_2backend_2acl__neon_2_backend_8h_source.html":[43,0,3,4,1,2,3],
 "runtime_2onert_2backend_2acl__neon_2_config_8h.html":[43,0,3,4,1,2,6],
-"runtime_2onert_2backend_2acl__neon_2_config_8h_source.html":[43,0,3,4,1,2,6],
-"runtime_2onert_2backend_2acl__neon_2_optimizer_8h.html":[43,0,3,4,1,2,12],
-"runtime_2onert_2backend_2acl__neon_2_optimizer_8h_source.html":[43,0,3,4,1,2,12]
+"runtime_2onert_2backend_2acl__neon_2_config_8h_source.html":[43,0,3,4,1,2,6]
 };

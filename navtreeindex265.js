@@ -1,5 +1,7 @@
 var NAVTREEINDEX265 =
 {
+"runtime_2onert_2backend_2acl__neon_2_optimizer_8h.html":[43,0,3,4,1,2,12],
+"runtime_2onert_2backend_2acl__neon_2_optimizer_8h_source.html":[43,0,3,4,1,2,12],
 "runtime_2onert_2backend_2cpu_2_backend_8h.html":[43,0,3,4,1,4,1],
 "runtime_2onert_2backend_2cpu_2_backend_8h_source.html":[43,0,3,4,1,4,1],
 "runtime_2onert_2backend_2cpu_2_config_8h.html":[43,0,3,4,1,4,5],
@@ -247,7 +249,5 @@ var NAVTREEINDEX265 =
 "runtime_2onert_2core_2include_2ir_2train_2operation_2_fully_connected_8h_source.html":[43,0,3,4,2,0,4,1,0,4],
 "runtime_2onert_2core_2include_2ir_2train_2operation_2_pad_8h.html":[43,0,3,4,2,0,4,1,0,6],
 "runtime_2onert_2core_2include_2ir_2train_2operation_2_pad_8h_source.html":[43,0,3,4,2,0,4,1,0,6],
-"runtime_2onert_2core_2include_2ir_2train_2operation_2_reshape_8h.html":[43,0,3,4,2,0,4,1,0,10],
-"runtime_2onert_2core_2include_2ir_2train_2operation_2_reshape_8h_source.html":[43,0,3,4,2,0,4,1,0,10],
-"runtime_2onert_2core_2include_2ir_2train_2operation_2_softmax_8h.html":[43,0,3,4,2,0,4,1,0,11]
+"runtime_2onert_2core_2include_2ir_2train_2operation_2_reshape_8h.html":[43,0,3,4,2,0,4,1,0,10]
 };

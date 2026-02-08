@@ -211,26 +211,26 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classlogo_1_1_pass.html#a3076e513d3bf84dafeb158a028725374">logo::Pass</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_forward_transpose_op_pass_8cpp_source.html#l00517">517</a> of file <a class="el" href="_forward_transpose_op_pass_8cpp_source.html">ForwardTransposeOpPass.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  518</span>{</div>
-<div class="line"><span class="lineno">  519</span>  <span class="keywordtype">bool</span> changed = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  520</span> </div>
-<div class="line"><span class="lineno">  521</span>  <span class="comment">// TODO Revisit pattern interface</span></div>
-<div class="line"><span class="lineno">  522</span>  EBOPattern <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">ebo</a>;</div>
-<div class="line"><span class="lineno">  523</span>  EBOWithConstPattern <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">eboc</a>;</div>
-<div class="line"><span class="lineno">  524</span>  EwUnaryPattern <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">ewu</a>;</div>
-<div class="line"><span class="lineno">  525</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">active_nodes</a>(<a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)))</div>
-<div class="line"><span class="lineno">  526</span>  {</div>
-<div class="line"><span class="lineno">  527</span>    <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">circle_node</a> = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleNode *&gt;</a>(node);</div>
-<div class="line"><span class="lineno">  528</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">circle_node</a>-&gt;accept(&amp;<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">eboc</a>))</div>
-<div class="line"><span class="lineno">  529</span>      changed = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  530</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">circle_node</a>-&gt;accept(&amp;<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">ewu</a>))</div>
-<div class="line"><span class="lineno">  531</span>      changed = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  532</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">circle_node</a>-&gt;accept(&amp;<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">ebo</a>))</div>
-<div class="line"><span class="lineno">  533</span>      changed = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  534</span>  }</div>
-<div class="line"><span class="lineno">  535</span>  <span class="keywordflow">return</span> changed;</div>
-<div class="line"><span class="lineno">  536</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_forward_transpose_op_pass_8cpp_source.html#l00562">562</a> of file <a class="el" href="_forward_transpose_op_pass_8cpp_source.html">ForwardTransposeOpPass.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  563</span>{</div>
+<div class="line"><span class="lineno">  564</span>  <span class="keywordtype">bool</span> changed = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  565</span> </div>
+<div class="line"><span class="lineno">  566</span>  <span class="comment">// TODO Revisit pattern interface</span></div>
+<div class="line"><span class="lineno">  567</span>  EBOPattern <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">ebo</a>;</div>
+<div class="line"><span class="lineno">  568</span>  EBOWithConstPattern <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">eboc</a>;</div>
+<div class="line"><span class="lineno">  569</span>  EwUnaryPattern <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">ewu</a>;</div>
+<div class="line"><span class="lineno">  570</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">active_nodes</a>(<a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)))</div>
+<div class="line"><span class="lineno">  571</span>  {</div>
+<div class="line"><span class="lineno">  572</span>    <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">circle_node</a> = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleNode *&gt;</a>(node);</div>
+<div class="line"><span class="lineno">  573</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">circle_node</a>-&gt;accept(&amp;<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">eboc</a>))</div>
+<div class="line"><span class="lineno">  574</span>      changed = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  575</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">circle_node</a>-&gt;accept(&amp;<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">ewu</a>))</div>
+<div class="line"><span class="lineno">  576</span>      changed = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  577</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">circle_node</a>-&gt;accept(&amp;<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">ebo</a>))</div>
+<div class="line"><span class="lineno">  578</span>      changed = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  579</span>  }</div>
+<div class="line"><span class="lineno">  580</span>  <span class="keywordflow">return</span> changed;</div>
+<div class="line"><span class="lineno">  581</span>}</div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a7210f017c15aa9fb47b012adefcf31dd"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">GenH5RandomInputs.g</a></div><div class="ttdeci">g</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00062">GenH5RandomInputs.py:62</a></div></div>
 <div class="ttc" id="anamespaceloco_html"><div class="ttname"><a href="namespaceloco.html">loco</a></div><div class="ttdef"><b>Definition</b> <a href="exo_2src_2_log_helper_8cpp_source.html#l00019">LogHelper.cpp:20</a></div></div>
 <div class="ttc" id="anamespaceloco_html_a91be999912c01878c820e684adc124da"><div class="ttname"><a href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a></div><div class="ttdeci">std::set&lt; loco::Node * &gt; active_nodes(const std::vector&lt; loco::Node * &gt; &amp;roots)</div><div class="ttdoc">Enumerate all the nodes required to compute &quot;roots&quot;.</div><div class="ttdef"><b>Definition</b> <a href="_algorithm_8cpp_source.html#l00112">Algorithm.cpp:112</a></div></div>

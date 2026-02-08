@@ -1,5 +1,6 @@
 var NAVTREEINDEX203 =
 {
+"functions_type_g.html":[42,3,3,6],
 "functions_type_h.html":[42,3,3,7],
 "functions_type_i.html":[42,3,3,8],
 "functions_type_k.html":[42,3,3,9],
@@ -248,6 +249,5 @@ var NAVTREEINDEX203 =
 "gemm__helpers_8h_source.html":[43,0,3,0,0,1,0,0,0,1],
 "gen__h5__explicit__inputs__all_8py.html":[43,0,0,106,1],
 "gen__h5__explicit__inputs__all_8py.html#a02f694458768a6e7a610c8c3ed719cca":[43,0,0,106,1,4],
-"gen__h5__explicit__inputs__all_8py.html#a051f45377d7faf91de63b7f6aeabc3a9":[43,0,0,106,1,21],
-"gen__h5__explicit__inputs__all_8py.html#a16463a18a337afa452ad5ea77ff25c71":[43,0,0,106,1,28]
+"gen__h5__explicit__inputs__all_8py.html#a051f45377d7faf91de63b7f6aeabc3a9":[43,0,0,106,1,21]
 };

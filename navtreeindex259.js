@@ -1,5 +1,7 @@
 var NAVTREEINDEX259 =
 {
+"onert-micro_2onert-micro_2src_2import_2kernels_2_gather_nd_8cpp.html":[43,0,2,5,1,3,1,26],
+"onert-micro_2onert-micro_2src_2import_2kernels_2_gather_nd_8cpp.html#a7181aaf7603eb242bcc373c36c9115cb":[43,0,2,5,1,3,1,26,0],
 "onert-micro_2onert-micro_2src_2import_2kernels_2_gather_nd_8cpp_source.html":[43,0,2,5,1,3,1,26],
 "onert-micro_2onert-micro_2src_2import_2kernels_2_greater_8cpp.html":[43,0,2,5,1,3,1,27],
 "onert-micro_2onert-micro_2src_2import_2kernels_2_greater_8cpp.html#a965bfb9f334b704debc2becb3db027bc":[43,0,2,5,1,3,1,27,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX259 =
 "onert_2backend_2ruy_2_config_8cc.html":[43,0,3,4,1,6,4],
 "onert_2backend_2ruy_2_config_8cc_source.html":[43,0,3,4,1,6,4],
 "onert_2backend_2train_2_config_8cc.html":[43,0,3,4,1,7,5],
-"onert_2backend_2train_2_config_8cc_source.html":[43,0,3,4,1,7,5],
-"onert_2backend_2trix_2_config_8cc.html":[43,0,3,4,1,8,6],
-"onert_2backend_2trix_2_config_8cc_source.html":[43,0,3,4,1,8,6]
+"onert_2backend_2train_2_config_8cc_source.html":[43,0,3,4,1,7,5]
 };

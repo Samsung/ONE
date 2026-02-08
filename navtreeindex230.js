@@ -1,5 +1,6 @@
 var NAVTREEINDEX230 =
 {
+"namespaceluci__interpreter_1_1test__kernel_1_1expand__dims__kernel.html#ab8faba8570fb4ebbf4d6a3ad8d943a1b":[41,0,91,2,32,0],
 "namespaceluci__interpreter_1_1test__kernel_1_1expand__dims__kernel.html#ac312e236520e31c61552e1006d6f3a31":[41,0,91,2,32,2],
 "namespaceluci__interpreter_1_1test__kernel_1_1fill__kernel.html":[41,0,91,2,33],
 "namespaceluci__interpreter_1_1test__kernel_1_1fill__kernel.html#a5f5f582079cc9b48189a6990cfaef9ed":[41,0,91,2,33,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX230 =
 "namespaceluci__interpreter_1_1test__kernel_1_1neg__fully__connected__wrong__weight__shape.html":[41,0,91,2,96],
 "namespaceluci__interpreter_1_1test__kernel_1_1neg__fully__connected__wrong__weight__shape.html#a70ca202b3f35cdf613d4743173a56b67":[41,0,91,2,96,0],
 "namespaceluci__interpreter_1_1test__kernel_1_1neg__fully__connected__wrong__weight__type.html":[41,0,91,2,97],
-"namespaceluci__interpreter_1_1test__kernel_1_1neg__fully__connected__wrong__weight__type.html#aeef7f66db99b4b6d55cefce9dcf05b75":[41,0,91,2,97,0],
-"namespaceluci__interpreter_1_1test__kernel_1_1neg__gather__mismatch__input__output__type.html":[41,0,91,2,98]
+"namespaceluci__interpreter_1_1test__kernel_1_1neg__fully__connected__wrong__weight__type.html#aeef7f66db99b4b6d55cefce9dcf05b75":[41,0,91,2,97,0]
 };

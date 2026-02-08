@@ -1,5 +1,6 @@
 var NAVTREEINDEX16 =
 {
+"_logical_or_options_8h.html#aaa5bb743dea8f4b5b101095691286d1b":[43,0,0,126,2,0,81,0],
 "_logical_or_options_8h_source.html":[43,0,0,126,2,0,81],
 "_loss_categorical_crossentropy_layer_8cc.html":[43,0,3,4,1,7,0,16],
 "_loss_categorical_crossentropy_layer_8cc_source.html":[43,0,3,4,1,7,0,16],
@@ -248,6 +249,5 @@ var NAVTREEINDEX16 =
 "_metric_printer_8h.html":[43,0,0,9,2,4],
 "_metric_printer_8h_source.html":[43,0,0,9,2,4],
 "_min_max_computer_8cpp.html":[43,0,0,110,2,3],
-"_min_max_computer_8cpp.html#a169a07dd0cb7d6294389f53a1586937f":[43,0,0,110,2,3,1],
-"_min_max_computer_8cpp.html#adaf28fc57dcc835c5d3955e9817ef0e9":[43,0,0,110,2,3,0]
+"_min_max_computer_8cpp.html#a169a07dd0cb7d6294389f53a1586937f":[43,0,0,110,2,3,1]
 };

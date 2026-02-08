@@ -1,5 +1,6 @@
 var NAVTREEINDEX225 =
 {
+"namespacehermes.html#a64cb017da2305881e308249646da4315":[41,0,74,22],
 "namespacehermes.html#a76af0d72b7747bddf51bde3209f7b8a4":[41,0,74,21],
 "namespacehermes.html#a85da671a29d66962f929e5fa525b172e":[41,0,74,19],
 "namespacehermes.html#ae313b95ee3f303ed1cce6dd873d209e5":[41,0,74,16],
@@ -248,6 +249,5 @@ var NAVTREEINDEX225 =
 "namespaceloco.html#adeb1a0d0952a6bd7c327f99931e35320aeec6c4bdbd339edf8cbea68becb85244":[41,0,83,159,0],
 "namespaceloco.html#ae0a31f59ca1afd5fbfbf71e5d93d06bf":[41,0,83,180],
 "namespaceloco.html#ae1b156b4465cdf93445213e4d767eb4e":[41,0,83,192],
-"namespaceloco.html#ae324cbd6e4fc48011dbe34e669d72788":[41,0,83,206],
-"namespaceloco.html#ae545cd9b930fd7cf984a5ac2e3eb8934":[41,0,83,171]
+"namespaceloco.html#ae324cbd6e4fc48011dbe34e669d72788":[41,0,83,206]
 };

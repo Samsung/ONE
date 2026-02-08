@@ -1,5 +1,7 @@
 var NAVTREEINDEX260 =
 {
+"onert_2backend_2trix_2_config_8cc.html":[43,0,3,4,1,8,6],
+"onert_2backend_2trix_2_config_8cc_source.html":[43,0,3,4,1,8,6],
 "onert_2core_2include_2ir_2operation_2_arg_min_max_8h.html":[43,0,3,4,2,0,4,0,1],
 "onert_2core_2include_2ir_2operation_2_arg_min_max_8h_source.html":[43,0,3,4,2,0,4,0,1],
 "onert_2core_2include_2ir_2operation_2_binary_arithmetic_8h.html":[43,0,3,4,2,0,4,0,8],
@@ -247,7 +249,5 @@ var NAVTREEINDEX260 =
 "partition_2src_2_nodes_2_circle_dequantize_8cpp.html":[43,0,0,59,6,1,0,23],
 "partition_2src_2_nodes_2_circle_dequantize_8cpp_source.html":[43,0,0,59,6,1,0,23],
 "partition_2src_2_nodes_2_circle_div_8cpp.html":[43,0,0,59,6,1,0,24],
-"partition_2src_2_nodes_2_circle_div_8cpp_source.html":[43,0,0,59,6,1,0,24],
-"partition_2src_2_nodes_2_circle_elu_8cpp.html":[43,0,0,59,6,1,0,25],
-"partition_2src_2_nodes_2_circle_elu_8cpp_source.html":[43,0,0,59,6,1,0,25]
+"partition_2src_2_nodes_2_circle_div_8cpp_source.html":[43,0,0,59,6,1,0,24]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"_batch_mat_mul_options_8h_source.html":[43,0,0,126,2,0,11],
 "_batch_mat_mul_params_8h.html":[43,0,3,0,1,0,0,3,0,0],
 "_batch_mat_mul_params_8h_source.html":[43,0,3,0,1,0,0,3,0,0],
 "_batch_mat_mul_v2_8cpp.html":[43,0,0,124,0,1,0,4],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "_c_l_pad_layer_kernel_ex_8h_source.html":[43,0,3,0,0,0,0,0,0,9],
 "_c_l_quantization_symmetric_kernel_8cpp.html":[43,0,3,0,0,1,0,0,1,7],
 "_c_l_quantization_symmetric_kernel_8cpp_source.html":[43,0,3,0,0,1,0,0,1,7],
-"_c_l_quantization_symmetric_kernel_8h.html":[43,0,3,0,0,0,0,0,0,10],
-"_c_l_quantization_symmetric_kernel_8h_source.html":[43,0,3,0,0,0,0,0,0,10]
+"_c_l_quantization_symmetric_kernel_8h.html":[43,0,3,0,0,0,0,0,0,10]
 };

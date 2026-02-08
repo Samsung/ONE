@@ -1,5 +1,6 @@
 var NAVTREEINDEX212 =
 {
+"luci-interpreter_2include_2luci__interpreter_2test__models_2expand__dims_2_expand_dims_kernel_8h.html":[43,0,2,4,0,0,1,20,0],
 "luci-interpreter_2include_2luci__interpreter_2test__models_2expand__dims_2_expand_dims_kernel_8h.html#a3e4ad4c3a986ccbca4bcf233daf86ea2":[43,0,2,4,0,0,1,20,0,3],
 "luci-interpreter_2include_2luci__interpreter_2test__models_2expand__dims_2_expand_dims_kernel_8h.html#ab8faba8570fb4ebbf4d6a3ad8d943a1b":[43,0,2,4,0,0,1,20,0,2],
 "luci-interpreter_2include_2luci__interpreter_2test__models_2expand__dims_2_expand_dims_kernel_8h.html#ac312e236520e31c61552e1006d6f3a31":[43,0,2,4,0,0,1,20,0,5],
@@ -248,6 +249,5 @@ var NAVTREEINDEX212 =
 "luci-interpreter_2include_2luci__interpreter_2test__models_2logical__not_2_neg_logical_not_kernel_8h.html#a9b86f384aff08c776eef93a6ac1f3acf":[43,0,2,4,0,0,1,39,1,2],
 "luci-interpreter_2include_2luci__interpreter_2test__models_2logical__not_2_neg_logical_not_kernel_8h_source.html":[43,0,2,4,0,0,1,39,1],
 "luci-interpreter_2include_2luci__interpreter_2test__models_2logical__not_2_test_data_logical_not_base_8h.html":[43,0,2,4,0,0,1,39,2],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2logical__not_2_test_data_logical_not_base_8h_source.html":[43,0,2,4,0,0,1,39,2],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2logical__or_2_bool_logical_or_kernel_8h.html":[43,0,2,4,0,0,1,40,0]
+"luci-interpreter_2include_2luci__interpreter_2test__models_2logical__not_2_test_data_logical_not_base_8h_source.html":[43,0,2,4,0,0,1,39,2]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX11 =
 {
+"_filter_codec_8h_source.html":[43,0,0,52,0,0,1,25],
 "_filter_encode_8cpp.html":[43,0,0,54,1,0,15],
 "_filter_encode_8cpp_source.html":[43,0,0,54,1,0,15],
 "_filter_index_8h.html":[43,0,0,52,0,0,1,26],
@@ -248,6 +249,5 @@ var NAVTREEINDEX11 =
 "_fuse_activation_function_pass_8cpp.html#a8b56761ca571d7a36d0c3fc94cfc1f59":[43,0,0,59,7,1,32,0],
 "_fuse_activation_function_pass_8cpp_source.html":[43,0,0,59,7,1,32],
 "_fuse_activation_function_pass_8h.html":[43,0,0,59,7,0,0,0,26],
-"_fuse_activation_function_pass_8h_source.html":[43,0,0,59,7,0,0,0,26],
-"_fuse_add_to_fully_connected_bias_pass_8cpp.html":[43,0,0,59,7,1,33]
+"_fuse_activation_function_pass_8h_source.html":[43,0,0,59,7,0,0,0,26]
 };

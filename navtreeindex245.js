@@ -1,5 +1,6 @@
 var NAVTREEINDEX245 =
 {
+"namespaceonert__micro_1_1test__model_1_1reduce__max__float__4d__axis__1__2.html#aa356c9ee5a903abb9229ca2d020b9205":[41,0,127,4,198,0],
 "namespaceonert__micro_1_1test__model_1_1reduce__prod__float.html":[41,0,127,4,199],
 "namespaceonert__micro_1_1test__model_1_1reduce__prod__float.html#a68e5339e507a3e3ceb87e851aff79273":[41,0,127,4,199,2],
 "namespaceonert__micro_1_1test__model_1_1reduce__prod__float.html#a951e30d22aa1e23626ba8e335ccbde59":[41,0,127,4,199,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX245 =
 "namespaceonert__micro_1_1test__model_1_1unpack__s8.html#aebd30b23c656fd54dcfaadf5b1051010":[41,0,127,4,259,2],
 "namespaceonert__micro_1_1test__model_1_1unsupported__type.html":[41,0,127,4,260],
 "namespaceonert__micro_1_1test__model_1_1unsupported__type.html#abbdeb8224146c15016a54650a6f9dd49":[41,0,127,4,260,0],
-"namespaceonert__micro_1_1test__model_1_1while__kernel.html":[41,0,127,4,261],
-"namespaceonert__micro_1_1test__model_1_1while__kernel.html#a241457a3266cbf7dfbc614e3ac1e8a92":[41,0,127,4,261,0]
+"namespaceonert__micro_1_1test__model_1_1while__kernel.html":[41,0,127,4,261]
 };
