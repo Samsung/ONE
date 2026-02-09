@@ -59,11 +59,6 @@ bool BulkPipelineManager::initialize()
 
 void BulkPipelineManager::shutdown()
 {
-  if (!_initialized.load())
-  {
-    return;
-  }
-
   _initialized = false;
 
   // Wait until all executions are finished
