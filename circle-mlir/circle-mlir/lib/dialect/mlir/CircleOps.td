@@ -1946,6 +1946,23 @@ def CIR_ShapeOp: CIR_Op<"shape", [
   let hasFolder = 1;
 }
 
+def CIR_SignOp: CIR_Op<"sign", [
+    Pure,
+    SameOperandsAndResultType]> {
+  let summary = "Sign operation";
+  let description = [{
+    Returns NaN if x is NaN, 0 if x is 0, -1 if x < 0 and 1 if x > 0.
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[F32, F64, I32]>:$x
+  );
+
+  let results = (outs
+    CIR_TensorOf<[F32, F64, I32]>:$output
+  );
+}
+
 def CIR_SinOp: CIR_Op<"sin", [
     Pure,
     /*TF_SameOperandsAndResultTypeResolveRef*/
