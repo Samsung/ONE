@@ -75,6 +75,7 @@
 #include "ops/ResizeOp.h"
 #include "ops/ShapeOp.h"
 #include "ops/SigmoidOp.h"
+#include "ops/SignOp.h"
 #include "ops/SinOp.h"
 #include "ops/SliceOp.h"
 #include "ops/SoftmaxOp.h"
@@ -263,6 +264,7 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvResizeV13>(typeConverter, context);
   patterns.insert<ConvShape>(typeConverter, context);
   patterns.insert<ConvSigmoid>(typeConverter, context);
+  patterns.insert<ConvSign>(typeConverter, context);
   patterns.insert<ConvSin>(typeConverter, context);
   patterns.insert<ConvSlice>(typeConverter, context);
   patterns.insert<ConvSoftmax>(typeConverter, context);
