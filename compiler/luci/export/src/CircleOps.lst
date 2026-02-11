@@ -109,6 +109,7 @@ CIRCLE_NODE(CircleSegmentSum, BuiltinOperator_SEGMENT_SUM, BuiltinOptions_Segmen
 CIRCLE_NODE(CircleSelect, BuiltinOperator_SELECT, BuiltinOptions_SelectOptions)
 CIRCLE_NODE(CircleSelectV2, BuiltinOperator_SELECT_V2, BuiltinOptions_SelectV2Options)
 CIRCLE_NODE(CircleShape, BuiltinOperator_SHAPE, BuiltinOptions_ShapeOptions)
+CIRCLE_NODE(CircleSign, BuiltinOperator_SIGN, BuiltinOptions_NONE)
 CIRCLE_NODE(CircleSin, BuiltinOperator_SIN, BuiltinOptions_NONE)
 CIRCLE_NODE(CircleSlice, BuiltinOperator_SLICE, BuiltinOptions_SliceOptions)
 CIRCLE_NODE(CircleSoftmax, BuiltinOperator_SOFTMAX, BuiltinOptions_SoftmaxOptions)
