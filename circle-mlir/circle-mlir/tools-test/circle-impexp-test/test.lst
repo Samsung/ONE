@@ -129,6 +129,9 @@ AddModel(Pow_F32_R2)
 AddModel(Pow_F32_R2_3)
 AddModel(Pow_F32_R4)
 AddModel(PReLU_F32_R4)
+# AddModel(Range_F32_R0_1) --> Does't support dynamic shape output
+# AddModel(Range_F32_R0_2) --> Does't support dynamic shape output
+# AddModel(Range_F32_R0_3) --> Does't support dynamic shape output
 AddModel(Reciprocal_F32_R4)
 AddModel(ReduceMax_F32_R2)
 AddModel(ReduceMax_F32_R2_d0)

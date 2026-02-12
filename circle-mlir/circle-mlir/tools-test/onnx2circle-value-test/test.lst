@@ -137,6 +137,9 @@ AddModel(PReLU_F32_R4)
 # AddModel(QuantizeLinear_F32_R3_ui8_fq)
 # AddModel(QuantizeLinear_F32_R4_i16_cw)
 # AddModel(QuantizeLinear_F32_R4_ui8_cw)
+# AddModel(Range_F32_R0_1) --> Does't support dynamic shape output
+# AddModel(Range_F32_R0_2) --> Does't support dynamic shape output
+# AddModel(Range_F32_R0_3) --> Does't support dynamic shape output
 AddModel(Reciprocal_F32_R4)
 AddModel(ReduceMax_F32_R2)
 AddModel(ReduceMax_F32_R2_d0)
