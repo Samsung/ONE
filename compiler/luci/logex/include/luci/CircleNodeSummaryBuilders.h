@@ -636,6 +636,10 @@ private:
   void build_attributes(const luci::CircleNode *node, locop::NodeSummary &s);
 };
 
+class CircleSignSummaryBuilder final : public CircleNodeWithXSummaryBuilder
+{
+};
+
 class CircleSinSummaryBuilder final : public CircleNodeWithXSummaryBuilder
 {
 };

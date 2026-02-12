@@ -133,6 +133,7 @@ public:
   // loco::DataType visit(const luci::CircleSelect *node) final;
   // loco::DataType visit(const luci::CircleSelectV2 *node) final;
   // loco::DataType visit(const luci::CircleShape *node) final;
+  // loco::DataType visit(const luci::CircleSign *node) final;
   // loco::DataType visit(const luci::CircleSin *node) final;
   // loco::DataType visit(const luci::CircleSlice *node) final;
   // loco::DataType visit(const luci::CircleSoftmax *node) final;

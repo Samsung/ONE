@@ -409,6 +409,7 @@ public:
     return circle::CreateShapeOptions(_builder, luci::to_circle_tensortype(node->out_type()))
       .Union();
   }
+  flatbuffers::Offset<void> visit(luci::CircleSign *) { return _no_option; }
   flatbuffers::Offset<void> visit(luci::CircleSin *) { return _no_option; }
   flatbuffers::Offset<void> visit(luci::CircleSlice *)
   {
