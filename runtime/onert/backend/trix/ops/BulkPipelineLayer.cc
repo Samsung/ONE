@@ -61,6 +61,7 @@ void BulkPipelineLayer::run()
   }
   catch (const std::exception &e)
   {
+    _pipeline_manager->shutdown();
     std::cerr << "BulkPipelineLayer execution failed: " << e.what() << std::endl;
     throw;
   }

@@ -79,11 +79,6 @@ bool BulkPipelineModel::prepare()
 
 void BulkPipelineModel::release()
 {
-  if (!_prepared.load())
-  {
-    return;
-  }
-
   // Cancel a asynchronous job
   if (_async_fill_future.valid())
   {
