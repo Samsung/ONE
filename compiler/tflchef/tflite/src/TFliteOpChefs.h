@@ -107,6 +107,7 @@
 #include "Op/include/Select.h"
 #include "Op/include/SelectV2.h"
 #include "Op/include/Shape.h"
+#include "Op/include/Sign.h"
 #include "Op/include/Sin.h"
 #include "Op/include/Slice.h"
 #include "Op/include/Softmax.h"
