@@ -16,4 +16,5 @@ class net_Range(torch.nn.Module):
 _model_ = net_Range()
 
 # produce float32 scalar with fixed number
-_inputs_ = (torch.tensor(0, dtype=torch.float32), torch.tensor(10, dtype=torch.float32), torch.tensor(1, dtype=torch.float32))
+_inputs_ = (torch.tensor(0, dtype=torch.float32), torch.tensor(10, dtype=torch.float32),
+            torch.tensor(1, dtype=torch.float32))
