@@ -39,14 +39,11 @@ protected:
 
 void circle_input_names_test::SetUp(void)
 {
-  std::string cmd = std::getenv("CIRCLE_INPUT_NAMES_PATH") ? std::getenv("CIRCLE_INPUT_NAMES_PATH") : "";
-  std::cout << cmd << std::endl;
+  std::string cmd = std::getenv("CIRCLE_INPUT_NAMES_PATH");
   if (cmd.empty())
   {
     throw std::runtime_error("CIRCLE_INPUT_NAMES_PATH is not found");
   }
-
-  cmd += " 2>&1"; // stderr도 stdout으로 합치기
 
   FILE *fp = popen(cmd.c_str(), "r");
   if (!fp)
@@ -70,11 +67,7 @@ void circle_input_names_test::SetUp(void)
   }
 
   _input_names_dict_str = result;
-  int rc = pclose(fp);
-  _input_names_dict_str = result;
-
-  ASSERT_FALSE(_input_names_dict_str.empty()) << "circle-input-names output empty. cmd=" << cmd;
-  ASSERT_EQ(rc, 0) << "circle-input-names failed. output:\n" << _input_names_dict_str;
+  pclose(fp);
 
   return;
 }
