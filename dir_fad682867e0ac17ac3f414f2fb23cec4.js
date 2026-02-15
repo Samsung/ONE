@@ -90,6 +90,7 @@ var dir_fad682867e0ac17ac3f414f2fb23cec4 =
     [ "Select.cpp", "tflchef_2tflite_2src_2_op_2_select_8cpp.html", null ],
     [ "SelectV2.cpp", "compiler_2tflchef_2tflite_2src_2_op_2_select_v2_8cpp.html", null ],
     [ "Shape.cpp", "compiler_2tflchef_2tflite_2src_2_op_2_shape_8cpp.html", null ],
+    [ "Sign.cpp", "tflite_2src_2_op_2_sign_8cpp.html", null ],
     [ "Sin.cpp", "compiler_2tflchef_2tflite_2src_2_op_2_sin_8cpp.html", null ],
     [ "Slice.cpp", "compiler_2tflchef_2tflite_2src_2_op_2_slice_8cpp.html", null ],
     [ "Softmax.cpp", "compiler_2tflchef_2tflite_2src_2_op_2_softmax_8cpp.html", null ],

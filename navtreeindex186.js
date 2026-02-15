@@ -1,5 +1,16 @@
 var NAVTREEINDEX186 =
 {
+"compiler_2luci-interpreter_2include_2luci__interpreter_2_simple_memory_manager_8h.html":[43,0,0,62,0,0,5],
+"compiler_2luci-interpreter_2include_2luci__interpreter_2_simple_memory_manager_8h_source.html":[43,0,0,62,0,0,5],
+"compiler_2luci-interpreter_2include_2luci__interpreter_2_static_memory_manager_8h.html":[43,0,0,62,0,0,6],
+"compiler_2luci-interpreter_2include_2luci__interpreter_2_static_memory_manager_8h_source.html":[43,0,0,62,0,0,6],
+"compiler_2luci-interpreter_2include_2luci__interpreter_2_test_memory_manager_8h.html":[43,0,0,62,0,0,7],
+"compiler_2luci-interpreter_2include_2luci__interpreter_2_test_memory_manager_8h_source.html":[43,0,0,62,0,0,7],
+"compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h.html":[43,0,0,62,0,0,0,0],
+"compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h.html#aa129d157edeab20d5916101a10cd9f32":[43,0,0,62,0,0,0,0,2],
+"compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h.html#aabbfe775c93e9ada62f74d376e55556b":[43,0,0,62,0,0,0,0,1],
+"compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h.html#af95d87442906a8c93aaabc70b9c4fed5":[43,0,0,62,0,0,0,0,0],
+"compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html":[43,0,0,62,0,0,0,0],
 "compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h.html":[43,0,0,62,0,0,0,1],
 "compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html":[43,0,0,62,0,0,0,1],
 "compiler_2luci-interpreter_2pal_2linux_2_p_a_l_arg_max_8h.html":[43,0,0,62,1,0,0],
@@ -238,16 +249,5 @@ var NAVTREEINDEX186 =
 "compiler_2luci-interpreter_2src_2kernels_2_mul_8cpp.html":[43,0,0,62,2,2,101],
 "compiler_2luci-interpreter_2src_2kernels_2_mul_8cpp_source.html":[43,0,0,62,2,2,101],
 "compiler_2luci-interpreter_2src_2kernels_2_neg_8cpp.html":[43,0,0,62,2,2,103],
-"compiler_2luci-interpreter_2src_2kernels_2_neg_8cpp_source.html":[43,0,0,62,2,2,103],
-"compiler_2luci-interpreter_2src_2kernels_2_not_equal_8cpp.html":[43,0,0,62,2,2,105],
-"compiler_2luci-interpreter_2src_2kernels_2_not_equal_8cpp_source.html":[43,0,0,62,2,2,105],
-"compiler_2luci-interpreter_2src_2kernels_2_one_hot_8cpp.html":[43,0,0,62,2,2,107],
-"compiler_2luci-interpreter_2src_2kernels_2_one_hot_8cpp_source.html":[43,0,0,62,2,2,107],
-"compiler_2luci-interpreter_2src_2kernels_2_one_hot_8h.html":[43,0,0,62,2,2,108],
-"compiler_2luci-interpreter_2src_2kernels_2_one_hot_8h_source.html":[43,0,0,62,2,2,108],
-"compiler_2luci-interpreter_2src_2kernels_2_p_relu_8cpp.html":[43,0,0,62,2,2,117],
-"compiler_2luci-interpreter_2src_2kernels_2_p_relu_8cpp_source.html":[43,0,0,62,2,2,117],
-"compiler_2luci-interpreter_2src_2kernels_2_p_relu_8h.html":[43,0,0,62,2,2,118],
-"compiler_2luci-interpreter_2src_2kernels_2_p_relu_8h_source.html":[43,0,0,62,2,2,118],
-"compiler_2luci-interpreter_2src_2kernels_2_pack_8cpp.html":[43,0,0,62,2,2,109]
+"compiler_2luci-interpreter_2src_2kernels_2_neg_8cpp_source.html":[43,0,0,62,2,2,103]
 };

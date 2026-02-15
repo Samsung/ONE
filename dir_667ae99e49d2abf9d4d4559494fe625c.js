@@ -89,6 +89,7 @@ var dir_667ae99e49d2abf9d4d4559494fe625c =
     [ "Select.h", "compiler_2tflchef_2tflite_2src_2_op_2include_2_select_8h.html", "compiler_2tflchef_2tflite_2src_2_op_2include_2_select_8h" ],
     [ "SelectV2.h", "tflchef_2tflite_2src_2_op_2include_2_select_v2_8h.html", "tflchef_2tflite_2src_2_op_2include_2_select_v2_8h" ],
     [ "Shape.h", "compiler_2tflchef_2tflite_2src_2_op_2include_2_shape_8h.html", "compiler_2tflchef_2tflite_2src_2_op_2include_2_shape_8h" ],
+    [ "Sign.h", "tflite_2src_2_op_2include_2_sign_8h.html", "tflite_2src_2_op_2include_2_sign_8h" ],
     [ "Sin.h", "tflchef_2tflite_2src_2_op_2include_2_sin_8h.html", "tflchef_2tflite_2src_2_op_2include_2_sin_8h" ],
     [ "Slice.h", "compiler_2tflchef_2tflite_2src_2_op_2include_2_slice_8h.html", "compiler_2tflchef_2tflite_2src_2_op_2include_2_slice_8h" ],
     [ "Softmax.h", "compiler_2tflchef_2tflite_2src_2_op_2include_2_softmax_8h.html", "compiler_2tflchef_2tflite_2src_2_op_2include_2_softmax_8h" ],

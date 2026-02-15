@@ -161,13 +161,13 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   37</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Cannot open directory. Please check \&quot;&quot;</span> + _dir_path +</div>
 <div class="line"><span class="lineno">   38</span>                             <span class="stringliteral">&quot;\&quot; is a directory.\n&quot;</span>);</div>
 <div class="line"><span class="lineno">   39</span> </div>
-<div class="line"><span class="lineno">   40</span>  dirent *<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">   41</span>  <span class="keywordflow">while</span> ((<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> = readdir(_dir)))</div>
+<div class="line"><span class="lineno">   40</span>  dirent *<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   41</span>  <span class="keywordflow">while</span> ((<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> = readdir(_dir)))</div>
 <div class="line"><span class="lineno">   42</span>  {</div>
-<div class="line"><span class="lineno">   43</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>-&gt;d_type != DT_REG)</div>
+<div class="line"><span class="lineno">   43</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>-&gt;d_type != DT_REG)</div>
 <div class="line"><span class="lineno">   44</span>      <span class="keywordflow">continue</span>;</div>
 <div class="line"><span class="lineno">   45</span> </div>
-<div class="line"><span class="lineno">   46</span>    _entries.emplace_back(<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>);</div>
+<div class="line"><span class="lineno">   46</span>    _entries.emplace_back(<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>);</div>
 <div class="line"><span class="lineno">   47</span>  }</div>
 <div class="line"><span class="lineno">   48</span> </div>
 <div class="line"><span class="lineno">   49</span>  <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">input_nodes</a> = <a class="code hl_function" href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">loco::input_nodes</a>(<a class="code hl_variable" href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">module</a>-&gt;graph());</div>
@@ -177,12 +177,12 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   53</span>    _input_nodes.emplace_back(cnode);</div>
 <div class="line"><span class="lineno">   54</span>  }</div>
 <div class="line"><span class="lineno">   55</span>}</div>
-<div class="ttc" id="acompiler_2circle-eval-diff_2driver_2_driver_8cpp_html_ad0f47bc81bc604e8bc1d169d370f2000"><div class="ttname"><a href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a></div><div class="ttdeci">int entry(const int argc, char **argv)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2circle-eval-diff_2driver_2_driver_8cpp_source.html#l00053">Driver.cpp:53</a></div></div>
+<div class="ttc" id="acompiler_2circle-eval-diff_2driver_2driver_8cpp_html_ad0f47bc81bc604e8bc1d169d370f2000"><div class="ttname"><a href="compiler_2circle-eval-diff_2driver_2driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a></div><div class="ttdeci">int entry(const int argc, char **argv)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2circle-eval-diff_2driver_2driver_8cpp_source.html#l00053">Driver.cpp:53</a></div></div>
 <div class="ttc" id="anamespaceloco_html_a8cce79e9630e01c2bc5d128df05b5372"><div class="ttname"><a href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">loco::input_nodes</a></div><div class="ttdeci">std::vector&lt; Node * &gt; input_nodes(const Graph *)</div><div class="ttdef"><b>Definition</b> <a href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00071">Graph.cpp:71</a></div></div>
 <div class="ttc" id="anamespaceloco_html_abd2600c38aee62d37bfcb077337262ad"><div class="ttname"><a href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast</a></div><div class="ttdeci">T must_cast(FeatureEncoder *node)</div><div class="ttdoc">A helper dynamic_cast that throws when failed.</div><div class="ttdef"><b>Definition</b> <a href="_feature_codec_8h_source.html#l00080">FeatureCodec.h:80</a></div></div>
 <div class="ttc" id="anamespaceq__implant__qparam__test_html_a3cf5671ec6dbd34a67d0ea30316e2dc9"><div class="ttname"><a href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">q_implant_qparam_test.module</a></div><div class="ttdeci">module</div><div class="ttdef"><b>Definition</b> <a href="q__implant__qparam__test_8py_source.html#l00039">q_implant_qparam_test.py:39</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp_source.html#l00053">entry()</a>, <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00071">loco::input_nodes()</a>, and <a class="el" href="_feature_codec_8h_source.html#l00080">loco::must_cast()</a>.</p>
+<p class="reference">References <a class="el" href="compiler_2circle-eval-diff_2driver_2driver_8cpp_source.html#l00053">entry()</a>, <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00071">loco::input_nodes()</a>, and <a class="el" href="_feature_codec_8h_source.html#l00080">loco::must_cast()</a>.</p>
 
 </div>
 </div>
@@ -297,8 +297,8 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_directory_iterator_8cpp_source.html#l00065">65</a> of file <a class="el" href="_directory_iterator_8cpp_source.html">DirectoryIterator.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   66</span>{</div>
-<div class="line"><span class="lineno">   67</span>  <span class="keyword">auto</span> <a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> = _entries.at(_curr_idx++);</div>
-<div class="line"><span class="lineno">   68</span>  assert(<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>); <span class="comment">// FIX_ME_UNLESS</span></div>
+<div class="line"><span class="lineno">   67</span>  <span class="keyword">auto</span> <a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> = _entries.at(_curr_idx++);</div>
+<div class="line"><span class="lineno">   68</span>  assert(<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>); <span class="comment">// FIX_ME_UNLESS</span></div>
 <div class="line"><span class="lineno">   69</span> </div>
 <div class="line"><span class="lineno">   70</span>  <span class="comment">// Get total input size</span></div>
 <div class="line"><span class="lineno">   71</span>  uint32_t total_input_size = 0;</div>
@@ -308,7 +308,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   75</span>    total_input_size += <a class="code hl_function" href="namespacerecord__minmax.html#a80ad66caa0ce59480f3b8d23b5bf6168">getTensorSize</a>(input_node);</div>
 <div class="line"><span class="lineno">   76</span>  }</div>
 <div class="line"><span class="lineno">   77</span> </div>
-<div class="line"><span class="lineno">   78</span>  <span class="keyword">const</span> std::string filename = <a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>-&gt;d_name;</div>
+<div class="line"><span class="lineno">   78</span>  <span class="keyword">const</span> std::string filename = <a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>-&gt;d_name;</div>
 <div class="line"><span class="lineno">   79</span> </div>
 <div class="line"><span class="lineno">   80</span>  <span class="comment">// Read data from file to buffer</span></div>
 <div class="line"><span class="lineno">   81</span>  <span class="comment">// Assumption: For a multi-input model, the binary file should have inputs concatenated in the</span></div>
@@ -343,7 +343,7 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="anamespacerecord__minmax_html_a841b3db57c40ab8574c6d014d36dcdfb"><div class="ttname"><a href="namespacerecord__minmax.html#a841b3db57c40ab8574c6d014d36dcdfb">record_minmax::readDataFromFile</a></div><div class="ttdeci">void readDataFromFile(const std::string &amp;filename, std::vector&lt; char &gt; &amp;data, size_t data_size)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2record-minmax_2src_2_utils_8cpp_source.html#l00065">Utils.cpp:65</a></div></div>
 <div class="ttc" id="aonert-micro_8cpp_html_afd118ff8901b13ed9cea10e7e489cde4"><div class="ttname"><a href="onert-micro_8cpp.html#afd118ff8901b13ed9cea10e7e489cde4">DataBuffer</a></div><div class="ttdeci">std::vector&lt; char &gt; DataBuffer</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8cpp_source.html#l00037">onert-micro.cpp:37</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp_source.html#l00053">entry()</a>, <a class="el" href="compiler_2record-minmax_2src_2_utils_8cpp_source.html#l00057">record_minmax::getTensorSize()</a>, <a class="el" href="_feature_codec_8h_source.html#l00080">loco::must_cast()</a>, <a class="el" href="helpers_8h_source.html#l00540">offset()</a>, and <a class="el" href="compiler_2record-minmax_2src_2_utils_8cpp_source.html#l00065">record_minmax::readDataFromFile()</a>.</p>
+<p class="reference">References <a class="el" href="compiler_2circle-eval-diff_2driver_2driver_8cpp_source.html#l00053">entry()</a>, <a class="el" href="compiler_2record-minmax_2src_2_utils_8cpp_source.html#l00057">record_minmax::getTensorSize()</a>, <a class="el" href="_feature_codec_8h_source.html#l00080">loco::must_cast()</a>, <a class="el" href="helpers_8h_source.html#l00540">offset()</a>, and <a class="el" href="compiler_2record-minmax_2src_2_utils_8cpp_source.html#l00065">record_minmax::readDataFromFile()</a>.</p>
 
 </div>
 </div>

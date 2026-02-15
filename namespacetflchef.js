@@ -97,6 +97,7 @@ var namespacetflchef =
     [ "TFliteOpSelect", "classtflchef_1_1_t_flite_op_select.html", "classtflchef_1_1_t_flite_op_select" ],
     [ "TFliteOpSelectV2", "classtflchef_1_1_t_flite_op_select_v2.html", "classtflchef_1_1_t_flite_op_select_v2" ],
     [ "TFliteOpShape", "classtflchef_1_1_t_flite_op_shape.html", "classtflchef_1_1_t_flite_op_shape" ],
+    [ "TFliteOpSign", "classtflchef_1_1_t_flite_op_sign.html", "classtflchef_1_1_t_flite_op_sign" ],
     [ "TFliteOpSin", "classtflchef_1_1_t_flite_op_sin.html", "classtflchef_1_1_t_flite_op_sin" ],
     [ "TFliteOpSlice", "classtflchef_1_1_t_flite_op_slice.html", "classtflchef_1_1_t_flite_op_slice" ],
     [ "TFliteOpSoftmax", "classtflchef_1_1_t_flite_op_softmax.html", "classtflchef_1_1_t_flite_op_softmax" ],

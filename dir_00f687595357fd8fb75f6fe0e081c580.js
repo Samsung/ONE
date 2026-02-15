@@ -182,6 +182,8 @@ var dir_00f687595357fd8fb75f6fe0e081c580 =
     [ "SelectV2.h", "tflchef_2core_2src_2_op_2_select_v2_8h.html", "tflchef_2core_2src_2_op_2_select_v2_8h" ],
     [ "Shape.cpp", "compiler_2tflchef_2core_2src_2_op_2_shape_8cpp.html", null ],
     [ "Shape.h", "compiler_2tflchef_2core_2src_2_op_2_shape_8h.html", "compiler_2tflchef_2core_2src_2_op_2_shape_8h" ],
+    [ "Sign.cpp", "core_2src_2_op_2_sign_8cpp.html", null ],
+    [ "Sign.h", "core_2src_2_op_2_sign_8h.html", "core_2src_2_op_2_sign_8h" ],
     [ "Sin.cpp", "compiler_2tflchef_2core_2src_2_op_2_sin_8cpp.html", null ],
     [ "Sin.h", "tflchef_2core_2src_2_op_2_sin_8h.html", "tflchef_2core_2src_2_op_2_sin_8h" ],
     [ "Slice.cpp", "compiler_2tflchef_2core_2src_2_op_2_slice_8cpp.html", null ],
