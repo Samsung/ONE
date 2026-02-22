@@ -1,5 +1,13 @@
 var NAVTREEINDEX267 =
 {
+"ruy_2include_2ruy_2_neon_tensor_utils_8h.html":[43,0,3,0,2,0,0,2],
+"ruy_2include_2ruy_2_neon_tensor_utils_8h_source.html":[43,0,3,0,2,0,0,2],
+"ruy_2include_2ruy_2_portable_tensor_utils_8h.html":[43,0,3,0,2,0,0,3],
+"ruy_2include_2ruy_2_portable_tensor_utils_8h.html#a69cdbcdf96334211470a6cd5ef55ee88":[43,0,3,0,2,0,0,3,0],
+"ruy_2include_2ruy_2_portable_tensor_utils_8h_source.html":[43,0,3,0,2,0,0,3],
+"ruy_2include_2ruy_2_ruy_support_8h.html":[43,0,3,0,2,0,0,4],
+"ruy_2include_2ruy_2_ruy_support_8h.html#a5aba06dc577ca808adfe66a67359fb1f":[43,0,3,0,2,0,0,4,1],
+"ruy_2include_2ruy_2_ruy_support_8h.html#a65255623e53ed1a030b45e22e9879363":[43,0,3,0,2,0,0,4,2],
 "ruy_2include_2ruy_2_ruy_support_8h.html#a8bf08bc338f092f4d2dfbfb874b3dbbe":[43,0,3,0,2,0,0,4,0],
 "ruy_2include_2ruy_2_ruy_support_8h.html#ad55bed4e411dee74972255e58257b1ba":[43,0,3,0,2,0,0,4,4],
 "ruy_2include_2ruy_2_ruy_support_8h.html#afb55cf5e5f50f04bd64c3adc7604a429":[43,0,3,0,2,0,0,4,3],
@@ -241,13 +249,5 @@ var NAVTREEINDEX267 =
 "service_2src_2_nodes_2_circle_segment_sum_8cpp_source.html":[43,0,0,59,10,1,0,101],
 "service_2src_2_nodes_2_circle_select_8cpp.html":[43,0,0,59,10,1,0,102],
 "service_2src_2_nodes_2_circle_select_8cpp_source.html":[43,0,0,59,10,1,0,102],
-"service_2src_2_nodes_2_circle_select_v2_8cpp.html":[43,0,0,59,10,1,0,103],
-"service_2src_2_nodes_2_circle_select_v2_8cpp_source.html":[43,0,0,59,10,1,0,103],
-"service_2src_2_nodes_2_circle_shape_8cpp.html":[43,0,0,59,10,1,0,104],
-"service_2src_2_nodes_2_circle_shape_8cpp_source.html":[43,0,0,59,10,1,0,104],
-"service_2src_2_nodes_2_circle_sin_8cpp.html":[43,0,0,59,10,1,0,105],
-"service_2src_2_nodes_2_circle_sin_8cpp_source.html":[43,0,0,59,10,1,0,105],
-"service_2src_2_nodes_2_circle_slice_8cpp.html":[43,0,0,59,10,1,0,106],
-"service_2src_2_nodes_2_circle_slice_8cpp_source.html":[43,0,0,59,10,1,0,106],
-"service_2src_2_nodes_2_circle_softmax_8cpp.html":[43,0,0,59,10,1,0,107]
+"service_2src_2_nodes_2_circle_select_v2_8cpp.html":[43,0,0,59,10,1,0,103]
 };

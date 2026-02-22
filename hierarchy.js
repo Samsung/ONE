@@ -866,6 +866,11 @@ var hierarchy =
               [ "luci::CircleShape", "classluci_1_1_circle_shape.html", null ]
             ] ]
           ] ],
+          [ "luci::CircleNodeImpl< CircleOpcode::SIGN >", "structluci_1_1_circle_node_impl.html", [
+            [ "luci::FixedArityNode< 1, CircleNodeImpl< CircleOpcode::SIGN > >", "classluci_1_1_fixed_arity_node.html", [
+              [ "luci::CircleSign", "classluci_1_1_circle_sign.html", null ]
+            ] ]
+          ] ],
           [ "luci::CircleNodeImpl< CircleOpcode::SIN >", "structluci_1_1_circle_node_impl.html", [
             [ "luci::FixedArityNode< 1, CircleNodeImpl< CircleOpcode::SIN > >", "classluci_1_1_fixed_arity_node.html", [
               [ "luci::CircleSin", "classluci_1_1_circle_sin.html", null ]

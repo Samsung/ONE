@@ -1,5 +1,13 @@
 var NAVTREEINDEX192 =
 {
+"compiler_2tflchef_2core_2src_2_op_2_log_softmax_8h.html":[43,0,0,124,0,1,1,99],
+"compiler_2tflchef_2core_2src_2_op_2_log_softmax_8h_source.html":[43,0,0,124,0,1,1,99],
+"compiler_2tflchef_2core_2src_2_op_2_logical_and_8cpp.html":[43,0,0,124,0,1,1,90],
+"compiler_2tflchef_2core_2src_2_op_2_logical_and_8cpp_source.html":[43,0,0,124,0,1,1,90],
+"compiler_2tflchef_2core_2src_2_op_2_logical_and_8h.html":[43,0,0,124,0,1,1,91],
+"compiler_2tflchef_2core_2src_2_op_2_logical_and_8h_source.html":[43,0,0,124,0,1,1,91],
+"compiler_2tflchef_2core_2src_2_op_2_logical_not_8cpp.html":[43,0,0,124,0,1,1,92],
+"compiler_2tflchef_2core_2src_2_op_2_logical_not_8cpp_source.html":[43,0,0,124,0,1,1,92],
 "compiler_2tflchef_2core_2src_2_op_2_logical_not_8h.html":[43,0,0,124,0,1,1,93],
 "compiler_2tflchef_2core_2src_2_op_2_logical_not_8h_source.html":[43,0,0,124,0,1,1,93],
 "compiler_2tflchef_2core_2src_2_op_2_logical_or_8cpp.html":[43,0,0,124,0,1,1,94],
@@ -241,13 +249,5 @@ var NAVTREEINDEX192 =
 "compiler_2tflchef_2tflite_2src_2_op_2_floor_mod_8cpp.html":[43,0,0,124,2,1,0,29],
 "compiler_2tflchef_2tflite_2src_2_op_2_floor_mod_8cpp_source.html":[43,0,0,124,2,1,0,29],
 "compiler_2tflchef_2tflite_2src_2_op_2_fully_connected_8cpp.html":[43,0,0,124,2,1,0,30],
-"compiler_2tflchef_2tflite_2src_2_op_2_fully_connected_8cpp_source.html":[43,0,0,124,2,1,0,30],
-"compiler_2tflchef_2tflite_2src_2_op_2_gather_8cpp.html":[43,0,0,124,2,1,0,31],
-"compiler_2tflchef_2tflite_2src_2_op_2_gather_8cpp_source.html":[43,0,0,124,2,1,0,31],
-"compiler_2tflchef_2tflite_2src_2_op_2_gather_nd_8cpp.html":[43,0,0,124,2,1,0,32],
-"compiler_2tflchef_2tflite_2src_2_op_2_gather_nd_8cpp_source.html":[43,0,0,124,2,1,0,32],
-"compiler_2tflchef_2tflite_2src_2_op_2_greater_8cpp.html":[43,0,0,124,2,1,0,34],
-"compiler_2tflchef_2tflite_2src_2_op_2_greater_8cpp_source.html":[43,0,0,124,2,1,0,34],
-"compiler_2tflchef_2tflite_2src_2_op_2_greater_equal_8cpp.html":[43,0,0,124,2,1,0,35],
-"compiler_2tflchef_2tflite_2src_2_op_2_greater_equal_8cpp_source.html":[43,0,0,124,2,1,0,35]
+"compiler_2tflchef_2tflite_2src_2_op_2_fully_connected_8cpp_source.html":[43,0,0,124,2,1,0,30]
 };

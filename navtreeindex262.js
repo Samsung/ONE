@@ -1,5 +1,13 @@
 var NAVTREEINDEX262 =
 {
+"passes_2optimizations_2_combine_transposes_8cpp.html#a25e75d12c0f1ae55c0382a733ccae4ed":[43,0,0,81,4,1,0,0],
+"passes_2optimizations_2_combine_transposes_8cpp_source.html":[43,0,0,81,4,1,0],
+"passes_2optimizations_2_dead_code_elimination_8cpp.html":[43,0,0,81,4,1,2],
+"passes_2optimizations_2_dead_code_elimination_8cpp_source.html":[43,0,0,81,4,1,2],
+"passes_2optimizations_2_fuse_arithmetic_ops_8cpp.html":[43,0,0,81,4,1,3],
+"passes_2optimizations_2_fuse_arithmetic_ops_8cpp_source.html":[43,0,0,81,4,1,3],
+"pch_8h.html":[43,0,2,2,0,0,1],
+"pch_8h_source.html":[43,0,2,2,0,0,1],
 "pepper-assert_2include_2pepper_2assert_8h.html":[43,0,0,100,0,0,0],
 "pepper-assert_2include_2pepper_2assert_8h.html#afa9c913328b470c7d1a0d71266961da1":[43,0,0,100,0,0,0,0],
 "pepper-assert_2include_2pepper_2assert_8h_source.html":[43,0,0,100,0,0,0],
@@ -241,13 +249,5 @@ var NAVTREEINDEX262 =
 "runtime_2compute_2cker_2include_2cker_2_tensor_utils_8h.html#af82fa9f0cdbd15fed59567999835cebf":[43,0,3,0,1,0,0,11,2],
 "runtime_2compute_2cker_2include_2cker_2_tensor_utils_8h.html#afb7760d00eca9875e4974b51e4874de5":[43,0,3,0,1,0,0,11,12],
 "runtime_2compute_2cker_2include_2cker_2_tensor_utils_8h_source.html":[43,0,3,0,1,0,0,11],
-"runtime_2compute_2cker_2include_2cker_2_types_8h.html":[43,0,3,0,1,0,0,12],
-"runtime_2compute_2cker_2include_2cker_2_types_8h.html#a04e74b636ed65b7eb628f5a76798b5d6":[43,0,3,0,1,0,0,12,34],
-"runtime_2compute_2cker_2include_2cker_2_types_8h.html#a04e74b636ed65b7eb628f5a76798b5d6a19bb0af2c3c530538cb41aff7f235b96":[43,0,3,0,1,0,0,12,34,1],
-"runtime_2compute_2cker_2include_2cker_2_types_8h.html#a04e74b636ed65b7eb628f5a76798b5d6a1cfdf0e8d0c87a228c1f40d9bee7888b":[43,0,3,0,1,0,0,12,34,4],
-"runtime_2compute_2cker_2include_2cker_2_types_8h.html#a04e74b636ed65b7eb628f5a76798b5d6a758b05d899def79c9eb864ad4f96be1f":[43,0,3,0,1,0,0,12,34,3],
-"runtime_2compute_2cker_2include_2cker_2_types_8h.html#a04e74b636ed65b7eb628f5a76798b5d6a8768a6821cd735aea4f5b0df88c1fc6a":[43,0,3,0,1,0,0,12,34,2],
-"runtime_2compute_2cker_2include_2cker_2_types_8h.html#a04e74b636ed65b7eb628f5a76798b5d6ad3e6fdac55bb7b0edd7834c968ba1f38":[43,0,3,0,1,0,0,12,34,5],
-"runtime_2compute_2cker_2include_2cker_2_types_8h.html#a04e74b636ed65b7eb628f5a76798b5d6af5f286e73bda105e538310b3190f75c5":[43,0,3,0,1,0,0,12,34,0],
-"runtime_2compute_2cker_2include_2cker_2_types_8h.html#a098b43a9a087b975a86725a93009c82e":[43,0,3,0,1,0,0,12,32]
+"runtime_2compute_2cker_2include_2cker_2_types_8h.html":[43,0,3,0,1,0,0,12]
 };

@@ -1,5 +1,7 @@
 var NAVTREEINDEX26 =
 {
+"_reorder_decode_pass_8h.html":[43,0,0,56,0,0,5],
+"_reorder_decode_pass_8h_source.html":[43,0,0,56,0,0,5],
 "_replace_mul_add_with_depthwise_conv_pass_8cpp.html":[43,0,0,59,7,1,110],
 "_replace_mul_add_with_depthwise_conv_pass_8cpp_source.html":[43,0,0,59,7,1,110],
 "_replace_mul_add_with_depthwise_conv_pass_8h.html":[43,0,0,59,7,0,0,0,78],
@@ -247,7 +249,5 @@ var NAVTREEINDEX26 =
 "_scratchpad_helper_m_c_u_8h.html":[43,0,0,10,0,3],
 "_scratchpad_helper_m_c_u_8h_source.html":[43,0,0,10,0,3],
 "_segment_sum_options_8cpp.html":[43,0,0,126,2,0,132],
-"_segment_sum_options_8cpp.html#affe17044db9a748e31d08acef4ac74ee":[43,0,0,126,2,0,132,0],
-"_segment_sum_options_8cpp_source.html":[43,0,0,126,2,0,132],
-"_segment_sum_options_8h.html":[43,0,0,126,2,0,133]
+"_segment_sum_options_8cpp.html#affe17044db9a748e31d08acef4ac74ee":[43,0,0,126,2,0,132,0]
 };

@@ -106,6 +106,7 @@ var dir_b0096229f2e1f9f9902cd83132a75c1c =
     [ "CircleSelect.h", "lang_2include_2luci_2_i_r_2_nodes_2_circle_select_8h.html", "lang_2include_2luci_2_i_r_2_nodes_2_circle_select_8h" ],
     [ "CircleSelectV2.h", "lang_2include_2luci_2_i_r_2_nodes_2_circle_select_v2_8h.html", "lang_2include_2luci_2_i_r_2_nodes_2_circle_select_v2_8h" ],
     [ "CircleShape.h", "lang_2include_2luci_2_i_r_2_nodes_2_circle_shape_8h.html", "lang_2include_2luci_2_i_r_2_nodes_2_circle_shape_8h" ],
+    [ "CircleSign.h", "_circle_sign_8h.html", "_circle_sign_8h" ],
     [ "CircleSin.h", "lang_2include_2luci_2_i_r_2_nodes_2_circle_sin_8h.html", "lang_2include_2luci_2_i_r_2_nodes_2_circle_sin_8h" ],
     [ "CircleSlice.h", "lang_2include_2luci_2_i_r_2_nodes_2_circle_slice_8h.html", "lang_2include_2luci_2_i_r_2_nodes_2_circle_slice_8h" ],
     [ "CircleSoftmax.h", "lang_2include_2luci_2_i_r_2_nodes_2_circle_softmax_8h.html", "lang_2include_2luci_2_i_r_2_nodes_2_circle_softmax_8h" ],

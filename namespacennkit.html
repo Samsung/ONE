@@ -147,7 +147,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   57</span>  }</div>
 <div class="line"><span class="lineno">   58</span> </div>
 <div class="line"><span class="lineno">   59</span>  <span class="keywordtype">void</span> *handle;</div>
-<div class="line"><span class="lineno">   60</span>  BackendPlugin::Entry <a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>;</div>
+<div class="line"><span class="lineno">   60</span>  BackendPlugin::Entry <a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>;</div>
 <div class="line"><span class="lineno">   61</span> </div>
 <div class="line"><span class="lineno">   62</span>  <span class="comment">// NOTE Some backend (such as tflite) needs multithreading support (std::thread).</span></div>
 <div class="line"><span class="lineno">   63</span>  <span class="comment">//</span></div>
@@ -164,7 +164,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   74</span>  }</div>
 <div class="line"><span class="lineno">   75</span> </div>
 <div class="line"><span class="lineno">   76</span>  <span class="keywordtype">char</span> *<a class="code hl_function" href="namespacehermes.html#a19175e20ab4f2e8c15810424b0611b46">error</a>;</div>
-<div class="line"><span class="lineno">   77</span>  <a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> = <span class="keyword">reinterpret_cast&lt;</span>BackendPlugin::Entry<span class="keyword">&gt;</span>(dlsym(handle, <span class="stringliteral">&quot;make_backend&quot;</span>));</div>
+<div class="line"><span class="lineno">   77</span>  <a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> = <span class="keyword">reinterpret_cast&lt;</span>BackendPlugin::Entry<span class="keyword">&gt;</span>(dlsym(handle, <span class="stringliteral">&quot;make_backend&quot;</span>));</div>
 <div class="line"><span class="lineno">   78</span>  <span class="keywordflow">if</span> ((error = dlerror()) != <span class="keyword">nullptr</span>)</div>
 <div class="line"><span class="lineno">   79</span>  {</div>
 <div class="line"><span class="lineno">   80</span>    dlclose(handle);</div>
@@ -172,12 +172,12 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   82</span>    exit(1);</div>
 <div class="line"><span class="lineno">   83</span>  }</div>
 <div class="line"><span class="lineno">   84</span> </div>
-<div class="line"><span class="lineno">   85</span>  <span class="keywordflow">return</span> std::make_unique&lt;BackendPlugin&gt;(handle, <a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>);</div>
+<div class="line"><span class="lineno">   85</span>  <span class="keywordflow">return</span> std::make_unique&lt;BackendPlugin&gt;(handle, <a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>);</div>
 <div class="line"><span class="lineno">   86</span>}</div>
-<div class="ttc" id="acompiler_2circle-eval-diff_2driver_2driver_8cpp_html_ad0f47bc81bc604e8bc1d169d370f2000"><div class="ttname"><a href="compiler_2circle-eval-diff_2driver_2driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a></div><div class="ttdeci">int entry(const int argc, char **argv)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2circle-eval-diff_2driver_2driver_8cpp_source.html#l00053">Driver.cpp:53</a></div></div>
+<div class="ttc" id="acompiler_2circle-eval-diff_2driver_2_driver_8cpp_html_ad0f47bc81bc604e8bc1d169d370f2000"><div class="ttname"><a href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a></div><div class="ttdeci">int entry(const int argc, char **argv)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2circle-eval-diff_2driver_2_driver_8cpp_source.html#l00053">Driver.cpp:53</a></div></div>
 <div class="ttc" id="anamespacehermes_html_a19175e20ab4f2e8c15810424b0611b46"><div class="ttname"><a href="namespacehermes.html#a19175e20ab4f2e8c15810424b0611b46">hermes::error</a></div><div class="ttdeci">Severity error(void)</div><div class="ttdef"><b>Definition</b> <a href="_severity_8h_source.html#l00076">Severity.h:76</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compiler_2circle-eval-diff_2driver_2driver_8cpp_source.html#l00053">entry()</a>.</p>
+<p class="reference">References <a class="el" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp_source.html#l00053">entry()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_benchmark_8cpp_source.html#l00102">main()</a>.</p>
 

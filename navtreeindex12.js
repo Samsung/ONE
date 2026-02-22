@@ -1,5 +1,7 @@
 var NAVTREEINDEX12 =
 {
+"_fuse_activation_function_pass_8h.html":[43,0,0,59,7,0,0,0,26],
+"_fuse_activation_function_pass_8h_source.html":[43,0,0,59,7,0,0,0,26],
 "_fuse_add_to_fully_connected_bias_pass_8cpp.html":[43,0,0,59,7,1,33],
 "_fuse_add_to_fully_connected_bias_pass_8cpp.html#afb821ee62cded6ec74a36455b3cfcf51":[43,0,0,59,7,1,33,0],
 "_fuse_add_to_fully_connected_bias_pass_8cpp_source.html":[43,0,0,59,7,1,33],
@@ -247,7 +249,5 @@ var NAVTREEINDEX12 =
 "_generate_kernels_list_helper_8cpp.html#a3b45f71347f9da730e585edad717d140":[43,0,2,3,0,3],
 "_generate_kernels_list_helper_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627":[43,0,2,3,0,2],
 "_generate_kernels_list_helper_8cpp.html#ad110cc8bba450b4a94243e8cedaf2835":[43,0,2,3,0,1],
-"_generate_kernels_list_helper_8cpp.html#ada486273ded7ff92ae6fcdc1aede1148":[43,0,2,3,0,0],
-"_generate_kernels_list_helper_8cpp_source.html":[43,0,2,3,0],
-"_generator_8cpp.html":[43,0,0,81,6,3,2]
+"_generate_kernels_list_helper_8cpp.html#ada486273ded7ff92ae6fcdc1aede1148":[43,0,2,3,0,0]
 };

@@ -1,5 +1,13 @@
 var NAVTREEINDEX186 =
 {
+"compiler_2luci-compute_2src_2_fully_connected_8cpp.html":[43,0,0,60,1,5],
+"compiler_2luci-compute_2src_2_fully_connected_8cpp_source.html":[43,0,0,60,1,5],
+"compiler_2luci-interpreter_2include_2luci__interpreter_2_buddy_memory_manager_8h.html":[43,0,0,62,0,0,1],
+"compiler_2luci-interpreter_2include_2luci__interpreter_2_buddy_memory_manager_8h_source.html":[43,0,0,62,0,0,1],
+"compiler_2luci-interpreter_2include_2luci__interpreter_2_interpreter_8h.html":[43,0,0,62,0,0,3],
+"compiler_2luci-interpreter_2include_2luci__interpreter_2_interpreter_8h_source.html":[43,0,0,62,0,0,3],
+"compiler_2luci-interpreter_2include_2luci__interpreter_2_memory_manager_8h.html":[43,0,0,62,0,0,4],
+"compiler_2luci-interpreter_2include_2luci__interpreter_2_memory_manager_8h_source.html":[43,0,0,62,0,0,4],
 "compiler_2luci-interpreter_2include_2luci__interpreter_2_simple_memory_manager_8h.html":[43,0,0,62,0,0,5],
 "compiler_2luci-interpreter_2include_2luci__interpreter_2_simple_memory_manager_8h_source.html":[43,0,0,62,0,0,5],
 "compiler_2luci-interpreter_2include_2luci__interpreter_2_static_memory_manager_8h.html":[43,0,0,62,0,0,6],
@@ -241,13 +249,5 @@ var NAVTREEINDEX186 =
 "compiler_2luci-interpreter_2src_2kernels_2_maximum_8cpp.html":[43,0,0,62,2,2,91],
 "compiler_2luci-interpreter_2src_2kernels_2_maximum_8cpp_source.html":[43,0,0,62,2,2,91],
 "compiler_2luci-interpreter_2src_2kernels_2_mean_8cpp.html":[43,0,0,62,2,2,95],
-"compiler_2luci-interpreter_2src_2kernels_2_mean_8cpp_source.html":[43,0,0,62,2,2,95],
-"compiler_2luci-interpreter_2src_2kernels_2_minimum_8cpp.html":[43,0,0,62,2,2,97],
-"compiler_2luci-interpreter_2src_2kernels_2_minimum_8cpp_source.html":[43,0,0,62,2,2,97],
-"compiler_2luci-interpreter_2src_2kernels_2_mirror_pad_8cpp.html":[43,0,0,62,2,2,99],
-"compiler_2luci-interpreter_2src_2kernels_2_mirror_pad_8cpp_source.html":[43,0,0,62,2,2,99],
-"compiler_2luci-interpreter_2src_2kernels_2_mul_8cpp.html":[43,0,0,62,2,2,101],
-"compiler_2luci-interpreter_2src_2kernels_2_mul_8cpp_source.html":[43,0,0,62,2,2,101],
-"compiler_2luci-interpreter_2src_2kernels_2_neg_8cpp.html":[43,0,0,62,2,2,103],
-"compiler_2luci-interpreter_2src_2kernels_2_neg_8cpp_source.html":[43,0,0,62,2,2,103]
+"compiler_2luci-interpreter_2src_2kernels_2_mean_8cpp_source.html":[43,0,0,62,2,2,95]
 };

@@ -1,5 +1,13 @@
 var NAVTREEINDEX266 =
 {
+"runtime_2onert_2core_2include_2ir_2operation_2_transpose_8h.html":[43,0,3,4,2,0,4,0,70],
+"runtime_2onert_2core_2include_2ir_2operation_2_transpose_8h_source.html":[43,0,3,4,2,0,4,0,70],
+"runtime_2onert_2core_2include_2ir_2operation_2_transpose_conv_8h.html":[43,0,3,4,2,0,4,0,71],
+"runtime_2onert_2core_2include_2ir_2operation_2_transpose_conv_8h_source.html":[43,0,3,4,2,0,4,0,71],
+"runtime_2onert_2core_2include_2ir_2operation_2_unpack_8h.html":[43,0,3,4,2,0,4,0,72],
+"runtime_2onert_2core_2include_2ir_2operation_2_unpack_8h_source.html":[43,0,3,4,2,0,4,0,72],
+"runtime_2onert_2core_2include_2ir_2operation_2_while_8h.html":[43,0,3,4,2,0,4,0,73],
+"runtime_2onert_2core_2include_2ir_2operation_2_while_8h_source.html":[43,0,3,4,2,0,4,0,73],
 "runtime_2onert_2core_2include_2ir_2train_2_index_8h.html":[43,0,3,4,2,0,4,1,2],
 "runtime_2onert_2core_2include_2ir_2train_2_index_8h.html#a01421faf4f0a8b648c3d044198288467":[43,0,3,4,2,0,4,1,2,2],
 "runtime_2onert_2core_2include_2ir_2train_2_index_8h.html#a0f1ff669f9f00f930d6c605291730e9f":[43,0,3,4,2,0,4,1,2,5],
@@ -241,13 +249,5 @@ var NAVTREEINDEX266 =
 "runtime_2tools_2kbenchmark_2operations_2_transpose_conv_8h_source.html":[43,0,3,5,0,1,1],
 "ruy_2_validator_8h.html":[43,0,3,4,1,6,13],
 "ruy_2_validator_8h.html#a483f3fdd345d5f6e4a4062a15104a44a":[43,0,3,4,1,6,13,1],
-"ruy_2_validator_8h_source.html":[43,0,3,4,1,6,13],
-"ruy_2include_2ruy_2_neon_tensor_utils_8h.html":[43,0,3,0,2,0,0,2],
-"ruy_2include_2ruy_2_neon_tensor_utils_8h_source.html":[43,0,3,0,2,0,0,2],
-"ruy_2include_2ruy_2_portable_tensor_utils_8h.html":[43,0,3,0,2,0,0,3],
-"ruy_2include_2ruy_2_portable_tensor_utils_8h.html#a69cdbcdf96334211470a6cd5ef55ee88":[43,0,3,0,2,0,0,3,0],
-"ruy_2include_2ruy_2_portable_tensor_utils_8h_source.html":[43,0,3,0,2,0,0,3],
-"ruy_2include_2ruy_2_ruy_support_8h.html":[43,0,3,0,2,0,0,4],
-"ruy_2include_2ruy_2_ruy_support_8h.html#a5aba06dc577ca808adfe66a67359fb1f":[43,0,3,0,2,0,0,4,1],
-"ruy_2include_2ruy_2_ruy_support_8h.html#a65255623e53ed1a030b45e22e9879363":[43,0,3,0,2,0,0,4,2]
+"ruy_2_validator_8h_source.html":[43,0,3,4,1,6,13]
 };

@@ -1,5 +1,7 @@
 var NAVTREEINDEX15 =
 {
+"_int_strided_slice_kernel_8h_source.html":[43,0,2,5,0,6,70,1],
+"_interfaces_8cpp.html":[43,0,0,55,1,5],
 "_interfaces_8cpp.html#a2f70c54306121d563190ff7c88d682c7":[43,0,0,55,1,5,0],
 "_interfaces_8cpp_source.html":[43,0,0,55,1,5],
 "_interfaces_8h.html":[43,0,0,55,0,0,4],
@@ -247,7 +249,5 @@ var NAVTREEINDEX15 =
 "_logical_not_options_8h.html#a4167255c59a0eb5b7a7b9b4ac57d5f6c":[43,0,0,126,2,0,79,0],
 "_logical_not_options_8h_source.html":[43,0,0,126,2,0,79],
 "_logical_or_options_8cpp.html":[43,0,0,126,2,0,80],
-"_logical_or_options_8cpp.html#aaa5bb743dea8f4b5b101095691286d1b":[43,0,0,126,2,0,80,0],
-"_logical_or_options_8cpp_source.html":[43,0,0,126,2,0,80],
-"_logical_or_options_8h.html":[43,0,0,126,2,0,81]
+"_logical_or_options_8cpp.html#aaa5bb743dea8f4b5b101095691286d1b":[43,0,0,126,2,0,80,0]
 };

@@ -1,5 +1,13 @@
 var NAVTREEINDEX261 =
 {
+"partition_2src_2_nodes_2_circle_concatenation_8cpp_source.html":[43,0,0,59,6,1,0,13],
+"partition_2src_2_nodes_2_circle_const_8cpp.html":[43,0,0,59,6,1,0,14],
+"partition_2src_2_nodes_2_circle_const_8cpp_source.html":[43,0,0,59,6,1,0,14],
+"partition_2src_2_nodes_2_circle_conv2_d_8cpp.html":[43,0,0,59,6,1,0,15],
+"partition_2src_2_nodes_2_circle_conv2_d_8cpp_source.html":[43,0,0,59,6,1,0,15],
+"partition_2src_2_nodes_2_circle_cos_8cpp.html":[43,0,0,59,6,1,0,16],
+"partition_2src_2_nodes_2_circle_cos_8cpp_source.html":[43,0,0,59,6,1,0,16],
+"partition_2src_2_nodes_2_circle_cum_sum_8cpp.html":[43,0,0,59,6,1,0,17],
 "partition_2src_2_nodes_2_circle_cum_sum_8cpp_source.html":[43,0,0,59,6,1,0,17],
 "partition_2src_2_nodes_2_circle_custom_8cpp.html":[43,0,0,59,6,1,0,18],
 "partition_2src_2_nodes_2_circle_custom_8cpp_source.html":[43,0,0,59,6,1,0,18],
@@ -241,13 +249,5 @@ var NAVTREEINDEX261 =
 "partition_2src_2_nodes_2_circle_while_out_8cpp_source.html":[43,0,0,59,6,1,0,136],
 "partition_2src_2_nodes_2_circle_zeros_like_8cpp.html":[43,0,0,59,6,1,0,137],
 "partition_2src_2_nodes_2_circle_zeros_like_8cpp_source.html":[43,0,0,59,6,1,0,137],
-"passes_2optimizations_2_combine_transposes_8cpp.html":[43,0,0,81,4,1,0],
-"passes_2optimizations_2_combine_transposes_8cpp.html#a25e75d12c0f1ae55c0382a733ccae4ed":[43,0,0,81,4,1,0,0],
-"passes_2optimizations_2_combine_transposes_8cpp_source.html":[43,0,0,81,4,1,0],
-"passes_2optimizations_2_dead_code_elimination_8cpp.html":[43,0,0,81,4,1,2],
-"passes_2optimizations_2_dead_code_elimination_8cpp_source.html":[43,0,0,81,4,1,2],
-"passes_2optimizations_2_fuse_arithmetic_ops_8cpp.html":[43,0,0,81,4,1,3],
-"passes_2optimizations_2_fuse_arithmetic_ops_8cpp_source.html":[43,0,0,81,4,1,3],
-"pch_8h.html":[43,0,2,2,0,0,1],
-"pch_8h_source.html":[43,0,2,2,0,0,1]
+"passes_2optimizations_2_combine_transposes_8cpp.html":[43,0,0,81,4,1,0]
 };

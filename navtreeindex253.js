@@ -1,5 +1,13 @@
 var NAVTREEINDEX253 =
 {
+"onert-micro_2include_2test__models_2log__softmax_2_float_log_softmax_kernel_8h.html":[43,0,2,5,0,6,36,0],
+"onert-micro_2include_2test__models_2log__softmax_2_float_log_softmax_kernel_8h.html#a2abc70f3ddf7d3babc824feb78ad28d8":[43,0,2,5,0,6,36,0,2],
+"onert-micro_2include_2test__models_2log__softmax_2_float_log_softmax_kernel_8h.html#ab6b443565540d6585926f738d2d2ef21":[43,0,2,5,0,6,36,0,1],
+"onert-micro_2include_2test__models_2log__softmax_2_float_log_softmax_kernel_8h.html#ac213cd25f328129fafec94c6b561b32c":[43,0,2,5,0,6,36,0,3],
+"onert-micro_2include_2test__models_2log__softmax_2_float_log_softmax_kernel_8h_source.html":[43,0,2,5,0,6,36,0],
+"onert-micro_2include_2test__models_2log__softmax_2_neg_log_softmax_kernel_8h.html":[43,0,2,5,0,6,36,1],
+"onert-micro_2include_2test__models_2log__softmax_2_neg_log_softmax_kernel_8h.html#af47a0c582a9cbb8008f04532cc54c8e2":[43,0,2,5,0,6,36,1,1],
+"onert-micro_2include_2test__models_2log__softmax_2_neg_log_softmax_kernel_8h_source.html":[43,0,2,5,0,6,36,1],
 "onert-micro_2include_2test__models_2log__softmax_2_test_data_log_softmax_base_8h.html":[43,0,2,5,0,6,36,2],
 "onert-micro_2include_2test__models_2log__softmax_2_test_data_log_softmax_base_8h_source.html":[43,0,2,5,0,6,36,2],
 "onert-micro_2include_2test__models_2logical__and_2_bool_logical_and_kernel_8h.html":[43,0,2,5,0,6,37,0],
@@ -241,13 +249,5 @@ var NAVTREEINDEX253 =
 "onert-micro_2include_2test__models_2reshape_2_reshape_kernel_8h.html#a3e7b26663ecace7ab428537efff27837":[43,0,2,5,0,6,55,0,7],
 "onert-micro_2include_2test__models_2reshape_2_reshape_kernel_8h.html#a409f29cbc6d0846f8c7ddbb139ee08da":[43,0,2,5,0,6,55,0,11],
 "onert-micro_2include_2test__models_2reshape_2_reshape_kernel_8h.html#a4769d8128475b4e19e008ebfbc59203d":[43,0,2,5,0,6,55,0,12],
-"onert-micro_2include_2test__models_2reshape_2_reshape_kernel_8h.html#a4daef57c6cd5768b9aee1af3d8a9836b":[43,0,2,5,0,6,55,0,10],
-"onert-micro_2include_2test__models_2reshape_2_reshape_kernel_8h.html#a59a11647598d355672db3fe5ec8c9ac6":[43,0,2,5,0,6,55,0,13],
-"onert-micro_2include_2test__models_2reshape_2_reshape_kernel_8h.html#aa67cfceaa200c6d88ec9a70433dd7247":[43,0,2,5,0,6,55,0,9],
-"onert-micro_2include_2test__models_2reshape_2_reshape_kernel_8h.html#ab0c8c634edbfb43cd3badca05ff9f1a7":[43,0,2,5,0,6,55,0,2],
-"onert-micro_2include_2test__models_2reshape_2_reshape_kernel_8h.html#ab6c87ecbb6555e6d4f0fea27b84d691a":[43,0,2,5,0,6,55,0,4],
-"onert-micro_2include_2test__models_2reshape_2_reshape_kernel_8h.html#abb578bc3cf9caf19b41596d0010d98c8":[43,0,2,5,0,6,55,0,8],
-"onert-micro_2include_2test__models_2reshape_2_reshape_kernel_8h.html#ad53e948c73c939c5a426d9ebbbb2b8e0":[43,0,2,5,0,6,55,0,3],
-"onert-micro_2include_2test__models_2reshape_2_reshape_kernel_8h_source.html":[43,0,2,5,0,6,55,0],
-"onert-micro_2include_2test__models_2round_2_float_round_kernel_8h.html":[43,0,2,5,0,6,56,0]
+"onert-micro_2include_2test__models_2reshape_2_reshape_kernel_8h.html#a4daef57c6cd5768b9aee1af3d8a9836b":[43,0,2,5,0,6,55,0,10]
 };

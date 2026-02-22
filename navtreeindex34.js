@@ -1,5 +1,7 @@
 var NAVTREEINDEX34 =
 {
+"ann-ref_2src_2ops_2internal_2_dims_8h.html#a2ccd14d28816909b57318239dcf93f7c":[43,0,0,3,0,0,0,2,4],
+"ann-ref_2src_2ops_2internal_2_dims_8h.html#a6c69bfc674e843b5901df4889635b629":[43,0,0,3,0,0,0,2,3],
 "ann-ref_2src_2ops_2internal_2_dims_8h.html#a6f3e4d749e7ceabb310742d5ebdd8390":[43,0,0,3,0,0,0,2,7],
 "ann-ref_2src_2ops_2internal_2_dims_8h.html#a7d31d5861ee29211ad7b0ba31527c58a":[43,0,0,3,0,0,0,2,8],
 "ann-ref_2src_2ops_2internal_2_dims_8h.html#a93604338a7a3801ed30692282ff124ce":[43,0,0,3,0,0,0,2,5],
@@ -247,7 +249,5 @@ var NAVTREEINDEX34 =
 "backend_2ggml_2_tensor_builder_8h_source.html":[43,0,3,4,1,5,13],
 "backend_2ruy_2_backend_context_8cc.html":[43,0,3,4,1,6,2],
 "backend_2ruy_2_backend_context_8cc_source.html":[43,0,3,4,1,6,2],
-"backend_2ruy_2_backend_context_8h.html":[43,0,3,4,1,6,3],
-"backend_2ruy_2_backend_context_8h_source.html":[43,0,3,4,1,6,3],
-"backend_2ruy_2_external_context_8h.html":[43,0,3,4,1,6,6]
+"backend_2ruy_2_backend_context_8h.html":[43,0,3,4,1,6,3]
 };

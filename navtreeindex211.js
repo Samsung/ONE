@@ -1,5 +1,13 @@
 var NAVTREEINDEX211 =
 {
+"losses__functions_2_cross_entropy_8cpp.html":[43,0,2,5,1,5,1,0],
+"losses__functions_2_cross_entropy_8cpp_source.html":[43,0,2,5,1,5,1,0],
+"losses__functions_2_cross_entropy_8h.html":[43,0,2,5,0,7,0,0],
+"losses__functions_2_cross_entropy_8h_source.html":[43,0,2,5,0,7,0,0],
+"losses__functions_2_m_s_e_8cpp.html":[43,0,2,5,1,5,1,1],
+"losses__functions_2_m_s_e_8cpp_source.html":[43,0,2,5,1,5,1,1],
+"losses__functions_2_m_s_e_8h.html":[43,0,2,5,0,7,0,1],
+"losses__functions_2_m_s_e_8h_source.html":[43,0,2,5,0,7,0,1],
 "luci-interpreter_2include_2luci__interpreter_2_graph_builder_registry_8h.html":[43,0,0,62,0,0,2],
 "luci-interpreter_2include_2luci__interpreter_2_graph_builder_registry_8h.html#a3d393d8d996c4d6dca80805ea0a20654":[43,0,0,62,0,0,2,0],
 "luci-interpreter_2include_2luci__interpreter_2_graph_builder_registry_8h_source.html":[43,0,0,62,0,0,2],
@@ -241,13 +249,5 @@ var NAVTREEINDEX211 =
 "luci-interpreter_2include_2luci__interpreter_2test__models_2equal_2_int_equal_kernel_8h.html#a225c79dd1078427936513bb9c3a7fc2f":[43,0,2,4,0,0,1,18,1,2],
 "luci-interpreter_2include_2luci__interpreter_2test__models_2equal_2_int_equal_kernel_8h.html#a3207549beac470b29aafe30748727c18":[43,0,2,4,0,0,1,18,1,10],
 "luci-interpreter_2include_2luci__interpreter_2test__models_2equal_2_int_equal_kernel_8h.html#a400911252f736fc2eae9957bd99e4ac5":[43,0,2,4,0,0,1,18,1,12],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2equal_2_int_equal_kernel_8h.html#a47a99a2aa2eb8ade5d70fa6611c3831c":[43,0,2,4,0,0,1,18,1,11],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2equal_2_int_equal_kernel_8h.html#a585cd757553bfd12f879f7fe8c7d263d":[43,0,2,4,0,0,1,18,1,14],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2equal_2_int_equal_kernel_8h.html#a5e3e36ad19bf8992be8cd179b60d9a70":[43,0,2,4,0,0,1,18,1,16],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2equal_2_int_equal_kernel_8h.html#a65122a07c37f32b8e6cc4ecb45dbabff":[43,0,2,4,0,0,1,18,1,6],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2equal_2_int_equal_kernel_8h.html#a80eb6ac7ae90ff1ccfe8942a4605aa90":[43,0,2,4,0,0,1,18,1,7],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2equal_2_int_equal_kernel_8h.html#a89242eebc46385768d5671bdcf142bbd":[43,0,2,4,0,0,1,18,1,3],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2equal_2_int_equal_kernel_8h.html#a8db666343906d8c8037d1bedfde94623":[43,0,2,4,0,0,1,18,1,1],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2equal_2_int_equal_kernel_8h.html#a8f51e065422fc39c2eacfbd2002278e4":[43,0,2,4,0,0,1,18,1,8],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2equal_2_int_equal_kernel_8h.html#aa437f991c6d703562b475b7412a66156":[43,0,2,4,0,0,1,18,1,13]
+"luci-interpreter_2include_2luci__interpreter_2test__models_2equal_2_int_equal_kernel_8h.html#a47a99a2aa2eb8ade5d70fa6611c3831c":[43,0,2,4,0,0,1,18,1,11]
 };

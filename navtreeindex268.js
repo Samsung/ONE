@@ -1,5 +1,13 @@
 var NAVTREEINDEX268 =
 {
+"service_2src_2_nodes_2_circle_select_v2_8cpp_source.html":[43,0,0,59,10,1,0,103],
+"service_2src_2_nodes_2_circle_shape_8cpp.html":[43,0,0,59,10,1,0,104],
+"service_2src_2_nodes_2_circle_shape_8cpp_source.html":[43,0,0,59,10,1,0,104],
+"service_2src_2_nodes_2_circle_sin_8cpp.html":[43,0,0,59,10,1,0,105],
+"service_2src_2_nodes_2_circle_sin_8cpp_source.html":[43,0,0,59,10,1,0,105],
+"service_2src_2_nodes_2_circle_slice_8cpp.html":[43,0,0,59,10,1,0,106],
+"service_2src_2_nodes_2_circle_slice_8cpp_source.html":[43,0,0,59,10,1,0,106],
+"service_2src_2_nodes_2_circle_softmax_8cpp.html":[43,0,0,59,10,1,0,107],
 "service_2src_2_nodes_2_circle_softmax_8cpp_source.html":[43,0,0,59,10,1,0,107],
 "service_2src_2_nodes_2_circle_space_to_batch_n_d_8cpp.html":[43,0,0,59,10,1,0,108],
 "service_2src_2_nodes_2_circle_space_to_batch_n_d_8cpp_source.html":[43,0,0,59,10,1,0,108],
@@ -241,13 +249,5 @@ var NAVTREEINDEX268 =
 "struct_cum_sum_chef_factory.html":[42,0,193],
 "struct_cum_sum_chef_factory.html#aa294b63088989536631ad7382fb87294":[42,0,193,0],
 "struct_data_location.html":[42,0,195],
-"struct_data_location.html#a0fb97cedbbcea9fe5928134d3a6a8a49":[42,0,195,2],
-"struct_data_location.html#a9c52c4ca35b6e8e0d0651858ff9e6452":[42,0,195,0],
-"struct_data_location.html#aab24df4a953c281e6027502fbadb22a5":[42,0,195,1],
-"struct_decode_command.html":[42,0,196],
-"struct_decode_command.html#ab17e22f70cb50da10ec8c589deb561d1":[42,0,196,1],
-"struct_decode_command.html#ab17e22f70cb50da10ec8c589deb561d1":[42,0,196,0],
-"struct_densify_chef_factory.html":[42,0,198],
-"struct_densify_chef_factory.html#a18f4f7fefef175d431527cf6a5348500":[42,0,198,0],
-"struct_depth_to_space_chef_factory.html":[42,0,200]
+"struct_data_location.html#a0fb97cedbbcea9fe5928134d3a6a8a49":[42,0,195,2]
 };
