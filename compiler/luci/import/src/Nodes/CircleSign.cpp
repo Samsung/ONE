@@ -53,7 +53,7 @@ CircleNode *CircleSignGraphBuilder::build_node(const circle::OperatorT &,
   auto *node = graph->nodes()->create<CircleSign>();
   node->x(inputs.at(0));
 
-  // No options for Sin
+  // No options for Sign
 
   return node;
 }
