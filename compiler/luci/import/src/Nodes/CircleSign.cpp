@@ -35,11 +35,10 @@ bool CircleSignGraphBuilder::validate(const ValidateArgs &args) const
   assert(tensor != nullptr);
   switch (tensor->type())
   {
-    case circle::TensorType_FLOAT16:
+    case circle::TensorType_INT32:
     case circle::TensorType_FLOAT32:
     case circle::TensorType_FLOAT64:
       break;
-    // TODO support TensorType_COMPLEX64, complex128, bfloat16
     default:
       return false;
   }
