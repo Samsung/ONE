@@ -125,6 +125,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(SELECT, CircleSelectGraphBuilder);                                           // 64
   CIRCLE_NODE(SELECT_V2, CircleSelectV2GraphBuilder);                                      // 123
   CIRCLE_NODE(SHAPE, CircleShapeGraphBuilder);                                             // 77
+  CIRCLE_NODE(SIGN, CircleSignGraphBuilder);                                               // 158
   CIRCLE_NODE(SIN, CircleSinGraphBuilder);                                                 // 66
   CIRCLE_NODE(SLICE, CircleSliceGraphBuilder);                                             // 65
   CIRCLE_NODE(SOFTMAX, CircleSoftmaxGraphBuilder);                                         // 25
