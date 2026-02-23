@@ -35,6 +35,7 @@ enum OMStatus
   FailReadWOFFile,
   FailReadCheckpointFile,
   CmsisNNError,
+  IndexError,
 };
 
 } // namespace onert_micro

@@ -72,6 +72,13 @@ inline OMStatus GatherND(core::OMRuntimeShape params_shape, const ParamsT *param
     {
       int offset = i * indices_nd + j;
       IndicesT index = index_data[offset];
+
+      // Bounds check: index must be non-negative and within dimension size
+      if (index < 0 || index >= params_shape.dims(j))
+      {
+        return IndexError;
+      }
+
       from_pos += index * dims_to_count[j];
     }
     if (from_pos < 0 || from_pos + slice_size > params_flat_size)

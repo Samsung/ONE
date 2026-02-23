@@ -42,6 +42,18 @@ OMStatus Slice(const core::SliceParams &op_params, const core::OMRuntimeShape &i
     stop[i] = (size_count < padded_i || op_params.size[size_count - padded_i] == -1)
                 ? ext_shape.dims(i)
                 : start[i] + op_params.size[size_count - padded_i];
+
+    // Bounds check: start must be non-negative and within dimension size
+    if (start[i] < 0 || start[i] > ext_shape.dims(i))
+    {
+      return IndexError;
+    }
+
+    // Bounds check: stop must be within dimension size and >= start
+    if (stop[i] < start[i] || stop[i] > ext_shape.dims(i))
+    {
+      return IndexError;
+    }
   }
 
   for (int i0 = start[0]; i0 < stop[0]; ++i0)
