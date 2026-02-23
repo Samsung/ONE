@@ -61,6 +61,7 @@ protected:
   void TearDown() override {}
 
   std::unique_ptr<BulkPipelineManager> manager;
+  const int nr_models = 1;
 };
 
 TEST_F(BulkPipelineManagerTest, test_initilize)
@@ -71,9 +72,17 @@ TEST_F(BulkPipelineManagerTest, test_initilize)
 
 TEST_F(BulkPipelineManagerTest, test_shutdown)
 {
+  int nr_fclose_calls = 0;
   EXPECT_TRUE(manager->initialize());
+  // This hook will checking the number of fclose() calls
+  MockSyscallsManager::getInstance().setFcloseHook([&nr_fclose_calls](FILE *) -> int {
+    nr_fclose_calls++;
+    return 0;
+  });
   manager->shutdown();
   EXPECT_FALSE(manager->isInitialized());
+  // fclose() should be called as the same number of models
+  EXPECT_EQ(nr_fclose_calls, nr_models);
 }
 
 TEST_F(BulkPipelineManagerTest, test_execute)
