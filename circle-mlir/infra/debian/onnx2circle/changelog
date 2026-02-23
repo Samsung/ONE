@@ -1,3 +1,9 @@
+onnx2circle (0.4.2~202602230830~jammy) jammy; urgency=medium
+
+  * Introduce ReduceSumSquare and Range operations
+
+ -- On-device AI developers <nnfw@samsung.com>  Mon, 23 Feb 2026 08:40:46 +0000
+
 onnx2circle (0.4.1~jammy) jammy; urgency=medium
 
   * Fix GatherOp to accept both int32/int64 types
