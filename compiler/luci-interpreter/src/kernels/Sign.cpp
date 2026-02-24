@@ -53,8 +53,9 @@ Sign::Sign(const Tensor *input, Tensor *output) : Kernel({input}, {output}) {}
 
 void Sign::configure()
 {
-  LUCI_INTERPRETER_CHECK(input()->element_type() == DataType::FLOAT32);
-  LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
+  auto et = input()->element_type();
+  LUCI_INTERPRETER_CHECK(et == DataType::FLOAT32 || et == DataType::FLOAT64 || et == DataType::S32);
+  LUCI_INTERPRETER_CHECK(et == output()->element_type());
   output()->resize(input()->shape());
 }
 
@@ -62,19 +63,29 @@ void Sign::execute() const
 {
   switch (input()->element_type())
   {
+    case DataType::S32:
+      evalS32();
+      break;
     case DataType::FLOAT32:
-      evalFloat();
+      evalFloat32();
+      break;
+    case DataType::FLOAT64:
+      evalFloat64();
       break;
     default:
       throw std::runtime_error("luci-intp Sign Unsupported type.");
   }
 }
 
-void Sign::evalFloat() const
+template <typename T> void Sign::eval() const
 {
   const int size = tflite::MatchingFlatSize(getTensorShape(input()), getTensorShape(output()));
-  CalcSign(getTensorData<float>(input()), size, getTensorData<float>(output()));
+  CalcSign(getTensorData<T>(input()), static_cast<size_t>(size), getTensorData<T>(output()));
 }
+
+void Sign::evalS32() const { eval<int32_t>(); }
+void Sign::evalFloat32() const { eval<float>(); }
+void Sign::evalFloat64() const { eval<double>(); }
 
 } // namespace kernels
 } // namespace luci_interpreter
