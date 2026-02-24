@@ -42,6 +42,12 @@ struct ConcatenationParams
   uint32_t axis;
 };
 
+struct CumSumParams
+{
+  bool exclusive;
+  bool reverse;
+};
+
 struct SoftmaxParams
 {
   float beta;
