@@ -37,7 +37,11 @@ public:
   void execute() const override;
 
 private:
-  void evalFloat() const;
+  template <typename T> void eval() const;
+
+  void evalS32() const;
+  void evalFloat32() const;
+  void evalFloat64() const;
 };
 
 } // namespace kernels

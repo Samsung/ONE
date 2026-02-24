@@ -22,7 +22,7 @@ namespace luci_interpreter
 {
 
 std::unique_ptr<Kernel> build_kernel_CircleSign(const luci::CircleNode *circle_node,
-                                                KernelBuilderHelper &helper)
+                                               KernelBuilderHelper &helper)
 {
   const auto *node = loco::must_cast<const luci::CircleSign *>(circle_node);
   assert(node->arity() == 1);
