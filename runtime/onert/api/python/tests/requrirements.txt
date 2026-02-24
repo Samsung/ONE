@@ -1,0 +1,6 @@
+# requirements.txt for running tests
+
+onert
+numpy
+pytest
+psutil
