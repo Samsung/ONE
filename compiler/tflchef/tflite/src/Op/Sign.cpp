@@ -22,7 +22,7 @@ namespace tflchef
 {
 
 void TFliteOpSign::filler(const tflite::Operator *op, TFliteImport *import,
-                         tflchef::ModelRecipe *model_recipe) const
+                          tflchef::ModelRecipe *model_recipe) const
 {
   // Nothing to do with filler
 }
