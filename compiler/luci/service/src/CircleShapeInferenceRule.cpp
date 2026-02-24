@@ -2084,6 +2084,8 @@ public:
 
   loco::NodeShape visit(const luci::CircleShape *node) final { return infer_shape(node); }
 
+  loco::NodeShape visit(const luci::CircleSign *node) final { return use_x(node); }
+
   loco::NodeShape visit(const luci::CircleSin *node) final { return use_x(node); }
 
   loco::NodeShape visit(const luci::CircleSlice *node) final { return infer_slice(node); }
