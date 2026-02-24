@@ -94,7 +94,10 @@ public:
     // for op.pads != [0,0,0,0]
     std::vector<int32_t> padsValue;
     if (GetPads(op.getPads(), padsValue))
+    {
       inputPreTr = insertPad(rewriter, op_name, input, outtype, padsValue);
+      intype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(inputPreTr.getType());
+    }
 
     int32_t stride_h = 1;
     int32_t stride_w = 1;
