@@ -170,6 +170,10 @@ std::vector<float> dequantizeTensorData(const Tensor &tensor);
 ::testing::Matcher<std::vector<float>> FloatArrayNear(const std::vector<float> &values,
                                                       float max_abs_error = 1.0e-5f);
 
+// Array version of `::testing::DoubleNear` matcher.
+::testing::Matcher<std::vector<double>> DoubleArrayNear(const std::vector<double> &values,
+                                                        double max_abs_error = 1.0e-12);
+
 template <typename T>
 std::vector<T> quantize(const float *data, size_t num_elements, float scale, int32_t zero_point)
 {
