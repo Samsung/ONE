@@ -97,6 +97,7 @@ public:
     {
       inputPreTr = insertPad(rewriter, op_name, input, outtype, padsValue);
       intype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(inputPreTr.getType());
+      LLVM_DEBUG({ llvm::dbgs() << "ConvConv intype after padding: " << intype << "\n"; });
     }
 
     int32_t stride_h = 1;
