@@ -74,7 +74,7 @@ protected:
   void TearDown() override {}
 
   std::unique_ptr<BulkPipelineManager> manager;
-  const int nr_models = 1;
+  const int nr_models = 2;
 };
 
 TEST_F(BulkPipelineManagerTest, test_initilize)
