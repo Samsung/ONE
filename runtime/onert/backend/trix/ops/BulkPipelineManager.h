@@ -38,6 +38,8 @@ public:
     std::vector<std::string> model_paths;
     int device_id{0};
     int n_owner_models{2}; // number of models that share the buffers
+    uint32_t n_inputs{1};
+    uint32_t n_outputs{1};
   };
 
 public:
@@ -59,6 +61,7 @@ private:
   void createModels();
   void linkModels();
   void prepareModels();
+  void verifyModels();
 
 private:
   PipelineConfig _config;

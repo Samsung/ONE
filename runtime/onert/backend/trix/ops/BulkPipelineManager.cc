@@ -43,6 +43,7 @@ bool BulkPipelineManager::initialize()
   try
   {
     createModels();
+    verifyModels();
     prepareModels();
     linkModels();
 
@@ -203,6 +204,19 @@ void BulkPipelineManager::linkModels()
     {
       size_t owner_index = i % _config.n_owner_models;
       _models[i]->shareBuffersFrom(*_models[owner_index]);
+    }
+  }
+}
+
+void BulkPipelineManager::verifyModels()
+{
+  for (auto &model : _models)
+  {
+    if ((static_cast<uint32_t>(model->metadata()->input_seg_num) != _config.n_inputs) ||
+        (static_cast<uint32_t>(model->metadata()->output_seg_num) != _config.n_outputs))
+    {
+      throw std::runtime_error("Model " + model->modelPath() +
+                               " has different number of inputs/outputs");
     }
   }
 }
