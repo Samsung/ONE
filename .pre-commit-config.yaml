@@ -65,4 +65,14 @@ repos:
         id: copyright-check
         entry: 'nnas copyright-check' # Use trick to use nnas command
         language: script
-        pass_filenames: false
+        pass_filenames: true
+        types: [file]
+        files: \.(c[cl]?|cpp|h(pp)?)$
+        # Ignore 3rd-party code
+        exclude:
+          (?x)^(
+            compiler/ann-api/.*|
+            onert-micro/externals/.*|
+            runtime/3rdparty/.*|
+            runtime/tests/nnapi/.*
+          )
