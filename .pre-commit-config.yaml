@@ -63,7 +63,7 @@ repos:
     hooks:
       - name: 'Check copyright headers'
         id: copyright-check
-        entry: 'nnas copyright-check' # Use trick to use nnas command
+        entry: infra/git-hooks/copyright-check.sh
         language: script
         pass_filenames: true
         types: [file]

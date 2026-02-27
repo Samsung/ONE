@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 CORRECT_COPYRIGHT="Copyright \(c\) [0-9\-]+ Samsung Electronics Co\., Ltd\. All Rights Reserved"
 
