@@ -18,6 +18,23 @@
 
 #include <gtest/gtest.h>
 
+#include <chrono>
+
+namespace
+{
+
+int get_current_year(void)
+{
+  auto now = std::chrono::system_clock::now();
+  std::time_t current_time = std::chrono::system_clock::to_time_t(now);
+  std::tm *timeinfo = std::localtime(&current_time);
+
+  int year = timeinfo->tm_year + 1900;
+  return year;
+}
+
+} // namespace
+
 TEST(vconone, version_number)
 {
   auto v = vconone::get_number();
@@ -44,6 +61,16 @@ TEST(vconone, version_string4)
 TEST(vconone, copyright)
 {
   auto str = vconone::get_copyright();
+
+  int year = 2024;
+
+  if (year < get_current_year())
+  {
+    std::cout << "!!!!!!!!!!!!!!!!!! WARNING !!!!!!!!!!!!!!!!!!\r\n";
+    std::cout << "\tPlease update vconone year.\r\n";
+    std::cout << "\tIt seems it's a new year and vconcone is not updated.\r\n";
+    std::cout << "\tHappy new year!\r\n";
+  }
 
   ASSERT_NE("", str);
 }
