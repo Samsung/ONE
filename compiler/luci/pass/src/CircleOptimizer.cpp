@@ -53,6 +53,7 @@
 #include "luci/Pass/FusePreActivationBatchNormPass.h"
 #include "luci/Pass/FusePReluPass.h"
 #include "luci/Pass/FuseGeluPass.h"
+#include "luci/Pass/FuseGRUPass.h"
 #include "luci/Pass/FuseRsqrtPass.h"
 #include "luci/Pass/FuseSliceWithTConvPass.h"
 #include "luci/Pass/FuseHorizontalFullyConnectedPass.h"
@@ -107,6 +108,7 @@
 
 #include "luci/Pass/CircleShapeInferencePass.h"
 #include "luci/Pass/CircleTypeInferencePass.h"
+#include "luci/Pass/EliminateDeadSubgraphPass.h"
 
 // logo passes
 #include <logo/RemoveDeadNodeWithQueryPass.h>
@@ -252,6 +254,11 @@ void CircleOptimizer::optimize(luci::Module *m) const
     phase.emplace_back(std::make_unique<FuseBCQPass>());
   }
 
+  if (_options->query(Options::Algorithm::EliminateDeadSubgraph))
+  {
+    phase.emplace_back(std::make_unique<luci::EliminateDeadSubgraphPass>());
+  }
+
   ModuleProgressReporter prog(m, logo::PhaseStrategy::Restart);
   PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{m};
   phase_runner.attach(&prog);
@@ -351,6 +358,7 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   option_to_pass[Options::Algorithm::FuseMulToFullyConnectedWeights] = &createPassInstance<luci::FuseMulToFullyConnectedWeightsPass>;
   option_to_pass[Options::Algorithm::FusePRelu] = &createPassInstance<luci::FusePReluPass>;
   option_to_pass[Options::Algorithm::FuseGelu] = &createPassInstance<luci::FuseGeluPass>;
+  option_to_pass[Options::Algorithm::FuseGRU] = &createPassInstance<luci::FuseGRUPass>;
   option_to_pass[Options::Algorithm::FuseRsqrt] = &createPassInstance<luci::FuseRsqrtPass>;
   option_to_pass[Options::Algorithm::FuseHorizontalFullyConnected] = &createPassInstance<luci::FuseHorizontalFullyConnectedPass>;
   option_to_pass[Options::Algorithm::FuseTransposeWithMean] = &createPassInstance<luci::FuseTransposeWithMeanPass>;
