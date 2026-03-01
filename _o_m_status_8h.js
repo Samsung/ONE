@@ -13,6 +13,7 @@ var _o_m_status_8h =
       [ "UnsupportedDynamicShapeCase", "_o_m_status_8h.html#ac5cb1f87e294d806ce8b550b56b239cbaf187db894aea637bc3264fedaa15d2a3", null ],
       [ "FailReadWOFFile", "_o_m_status_8h.html#ac5cb1f87e294d806ce8b550b56b239cba9155f6c53f8e3fc5520309e1ee33836b", null ],
       [ "FailReadCheckpointFile", "_o_m_status_8h.html#ac5cb1f87e294d806ce8b550b56b239cbad452e7f2b570d9c0428cdec9eb5e7069", null ],
-      [ "CmsisNNError", "_o_m_status_8h.html#ac5cb1f87e294d806ce8b550b56b239cba64d346fcdb26d1aa73b8d305682fbbe6", null ]
+      [ "CmsisNNError", "_o_m_status_8h.html#ac5cb1f87e294d806ce8b550b56b239cba64d346fcdb26d1aa73b8d305682fbbe6", null ],
+      [ "IndexError", "_o_m_status_8h.html#ac5cb1f87e294d806ce8b550b56b239cbaa52e196a2a16083d9262b5ccc9a67e28", null ]
     ] ]
 ];

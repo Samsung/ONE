@@ -2,6 +2,7 @@ var compiler_2luci_interpreter_2src_2kernels_2_test_utils_8h =
 [
     [ "dequantize", "compiler_2luci-interpreter_2src_2kernels_2_test_utils_8h.html#a32e8179051bd6678c34d223d8409f291", null ],
     [ "dequantizeTensorData", "compiler_2luci-interpreter_2src_2kernels_2_test_utils_8h.html#aa505b999fae732879ed6ded5b051c18f", null ],
+    [ "DoubleArrayNear", "compiler_2luci-interpreter_2src_2kernels_2_test_utils_8h.html#a5e0df10104c09e3c4b000638555aec8d", null ],
     [ "extractTensorData", "compiler_2luci-interpreter_2src_2kernels_2_test_utils_8h.html#ae88e67a5dde67ab27be5af8643ca48cb", null ],
     [ "extractTensorShape", "compiler_2luci-interpreter_2src_2kernels_2_test_utils_8h.html#a4ad55ad70627d4540bb62faa2e89ddc1", null ],
     [ "FloatArrayNear", "compiler_2luci-interpreter_2src_2kernels_2_test_utils_8h.html#aa650ac8cd35c630b0a8592285d4f2657", null ],

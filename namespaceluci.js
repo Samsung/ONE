@@ -248,6 +248,7 @@ var namespaceluci =
     [ "CircleShapeInferencePass", "classluci_1_1_circle_shape_inference_pass.html", "classluci_1_1_circle_shape_inference_pass" ],
     [ "CircleShapeInferenceRule", "structluci_1_1_circle_shape_inference_rule.html", "structluci_1_1_circle_shape_inference_rule" ],
     [ "CircleSign", "classluci_1_1_circle_sign.html", "classluci_1_1_circle_sign" ],
+    [ "CircleSignGraphBuilder", "classluci_1_1_circle_sign_graph_builder.html", "classluci_1_1_circle_sign_graph_builder" ],
     [ "CircleSin", "classluci_1_1_circle_sin.html", "classluci_1_1_circle_sin" ],
     [ "CircleSinGraphBuilder", "classluci_1_1_circle_sin_graph_builder.html", "classluci_1_1_circle_sin_graph_builder" ],
     [ "CircleSlice", "classluci_1_1_circle_slice.html", "classluci_1_1_circle_slice" ],

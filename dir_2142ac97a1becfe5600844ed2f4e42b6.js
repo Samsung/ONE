@@ -105,6 +105,7 @@ var dir_2142ac97a1becfe5600844ed2f4e42b6 =
     [ "CircleSelect.cpp", "service_2src_2_nodes_2_circle_select_8cpp.html", null ],
     [ "CircleSelectV2.cpp", "service_2src_2_nodes_2_circle_select_v2_8cpp.html", null ],
     [ "CircleShape.cpp", "service_2src_2_nodes_2_circle_shape_8cpp.html", null ],
+    [ "CircleSign.cpp", "service_2src_2_nodes_2_circle_sign_8cpp.html", null ],
     [ "CircleSin.cpp", "service_2src_2_nodes_2_circle_sin_8cpp.html", null ],
     [ "CircleSlice.cpp", "service_2src_2_nodes_2_circle_slice_8cpp.html", null ],
     [ "CircleSoftmax.cpp", "service_2src_2_nodes_2_circle_softmax_8cpp.html", null ],

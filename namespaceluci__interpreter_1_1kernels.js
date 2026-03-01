@@ -6,6 +6,7 @@ var namespaceluci__interpreter_1_1kernels =
     [ "testing", "namespaceluci__interpreter_1_1kernels_1_1testing.html", [
       [ "dequantize", "namespaceluci__interpreter_1_1kernels_1_1testing.html#a32e8179051bd6678c34d223d8409f291", null ],
       [ "dequantizeTensorData", "namespaceluci__interpreter_1_1kernels_1_1testing.html#aa505b999fae732879ed6ded5b051c18f", null ],
+      [ "DoubleArrayNear", "namespaceluci__interpreter_1_1kernels_1_1testing.html#a5e0df10104c09e3c4b000638555aec8d", null ],
       [ "extractTensorData", "namespaceluci__interpreter_1_1kernels_1_1testing.html#ae88e67a5dde67ab27be5af8643ca48cb", null ],
       [ "extractTensorShape", "namespaceluci__interpreter_1_1kernels_1_1testing.html#a4ad55ad70627d4540bb62faa2e89ddc1", null ],
       [ "FloatArrayNear", "namespaceluci__interpreter_1_1kernels_1_1testing.html#aa650ac8cd35c630b0a8592285d4f2657", null ],
@@ -99,6 +100,7 @@ var namespaceluci__interpreter_1_1kernels =
     [ "Select", "classluci__interpreter_1_1kernels_1_1_select.html", "classluci__interpreter_1_1kernels_1_1_select" ],
     [ "SelectV2", "classluci__interpreter_1_1kernels_1_1_select_v2.html", "classluci__interpreter_1_1kernels_1_1_select_v2" ],
     [ "ShapeKernel", "classluci__interpreter_1_1kernels_1_1_shape_kernel.html", "classluci__interpreter_1_1kernels_1_1_shape_kernel" ],
+    [ "Sign", "classluci__interpreter_1_1kernels_1_1_sign.html", "classluci__interpreter_1_1kernels_1_1_sign" ],
     [ "Sin", "classluci__interpreter_1_1kernels_1_1_sin.html", "classluci__interpreter_1_1kernels_1_1_sin" ],
     [ "SISOKernel", "classluci__interpreter_1_1kernels_1_1_s_i_s_o_kernel.html", "classluci__interpreter_1_1kernels_1_1_s_i_s_o_kernel" ],
     [ "Slice", "classluci__interpreter_1_1kernels_1_1_slice.html", "classluci__interpreter_1_1kernels_1_1_slice" ],

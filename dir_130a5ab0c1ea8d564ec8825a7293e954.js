@@ -99,6 +99,7 @@ var dir_130a5ab0c1ea8d564ec8825a7293e954 =
     [ "CircleSelect.h", "import_2include_2luci_2_import_2_nodes_2_circle_select_8h.html", "import_2include_2luci_2_import_2_nodes_2_circle_select_8h" ],
     [ "CircleSelectV2.h", "import_2include_2luci_2_import_2_nodes_2_circle_select_v2_8h.html", "import_2include_2luci_2_import_2_nodes_2_circle_select_v2_8h" ],
     [ "CircleShape.h", "import_2include_2luci_2_import_2_nodes_2_circle_shape_8h.html", "import_2include_2luci_2_import_2_nodes_2_circle_shape_8h" ],
+    [ "CircleSign.h", "import_2include_2luci_2_import_2_nodes_2_circle_sign_8h.html", "import_2include_2luci_2_import_2_nodes_2_circle_sign_8h" ],
     [ "CircleSin.h", "import_2include_2luci_2_import_2_nodes_2_circle_sin_8h.html", "import_2include_2luci_2_import_2_nodes_2_circle_sin_8h" ],
     [ "CircleSlice.h", "import_2include_2luci_2_import_2_nodes_2_circle_slice_8h.html", "import_2include_2luci_2_import_2_nodes_2_circle_slice_8h" ],
     [ "CircleSoftmax.h", "import_2include_2luci_2_import_2_nodes_2_circle_softmax_8h.html", "import_2include_2luci_2_import_2_nodes_2_circle_softmax_8h" ],

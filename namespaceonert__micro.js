@@ -38,7 +38,8 @@ var namespaceonert__micro =
       [ "UnsupportedDynamicShapeCase", "namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cbaf187db894aea637bc3264fedaa15d2a3", null ],
       [ "FailReadWOFFile", "namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba9155f6c53f8e3fc5520309e1ee33836b", null ],
       [ "FailReadCheckpointFile", "namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cbad452e7f2b570d9c0428cdec9eb5e7069", null ],
-      [ "CmsisNNError", "namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba64d346fcdb26d1aa73b8d305682fbbe6", null ]
+      [ "CmsisNNError", "namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba64d346fcdb26d1aa73b8d305682fbbe6", null ],
+      [ "IndexError", "namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cbaa52e196a2a16083d9262b5ccc9a67e28", null ]
     ] ],
     [ "OMTrainOptimizer", "namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685c", [
       [ "SGD", "namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685cad43ebb08843a45a032ab5be21fc635b9", null ],

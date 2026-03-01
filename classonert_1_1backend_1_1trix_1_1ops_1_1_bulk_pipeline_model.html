@@ -310,7 +310,7 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_bulk_pipeline_model_8h_source.html#l00074">74</a> of file <a class="el" href="_bulk_pipeline_model_8h_source.html">BulkPipelineModel.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   74</span>{ <span class="keywordflow">return</span> _dev; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_bulk_pipeline_model_8cc_source.html#l00158">shareBuffersFrom()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_bulk_pipeline_model_8cc_source.html#l00153">shareBuffersFrom()</a>.</p>
 
 </div>
 </div>
@@ -401,7 +401,7 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_bulk_pipeline_model_8h_source.html#l00056">56</a> of file <a class="el" href="_bulk_pipeline_model_8h_source.html">BulkPipelineModel.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   56</span>{ <span class="keywordflow">return</span> _prepared; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_bulk_pipeline_model_8cc_source.html#l00158">shareBuffersFrom()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_bulk_pipeline_model_8cc_source.html#l00153">shareBuffersFrom()</a>.</p>
 
 </div>
 </div>
@@ -420,16 +420,16 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bulk_pipeline_model_8cc_source.html#l00195">195</a> of file <a class="el" href="_bulk_pipeline_model_8cc_source.html">BulkPipelineModel.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  196</span>{</div>
-<div class="line"><span class="lineno">  197</span>  {</div>
-<div class="line"><span class="lineno">  198</span>    std::lock_guard&lt;std::mutex&gt; lock(_buffer_mutex);</div>
-<div class="line"><span class="lineno">  199</span>    _buffer_ready = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  200</span>  }</div>
-<div class="line"><span class="lineno">  201</span>  _buffer_cv.notify_all();</div>
-<div class="line"><span class="lineno">  202</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_bulk_pipeline_model_8cc_source.html#l00190">190</a> of file <a class="el" href="_bulk_pipeline_model_8cc_source.html">BulkPipelineModel.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  191</span>{</div>
+<div class="line"><span class="lineno">  192</span>  {</div>
+<div class="line"><span class="lineno">  193</span>    std::lock_guard&lt;std::mutex&gt; lock(_buffer_mutex);</div>
+<div class="line"><span class="lineno">  194</span>    _buffer_ready = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  195</span>  }</div>
+<div class="line"><span class="lineno">  196</span>  _buffer_cv.notify_all();</div>
+<div class="line"><span class="lineno">  197</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_bulk_pipeline_model_8cc_source.html#l00051">prepare()</a>, and <a class="el" href="_bulk_pipeline_model_8cc_source.html#l00204">startAsyncBufferFill()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_bulk_pipeline_model_8cc_source.html#l00051">prepare()</a>, and <a class="el" href="_bulk_pipeline_model_8cc_source.html#l00199">startAsyncBufferFill()</a>.</p>
 
 </div>
 </div>
@@ -487,7 +487,7 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_bulk_pipeline_model_8h_source.html#l00073">73</a> of file <a class="el" href="_bulk_pipeline_model_8h_source.html">BulkPipelineModel.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   73</span>{ <span class="keywordflow">return</span> _model_id; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_bulk_pipeline_model_8cc_source.html#l00158">shareBuffersFrom()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_bulk_pipeline_model_8cc_source.html#l00153">shareBuffersFrom()</a>.</p>
 
 </div>
 </div>
@@ -517,7 +517,7 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_bulk_pipeline_model_8h_source.html#l00075">75</a> of file <a class="el" href="_bulk_pipeline_model_8h_source.html">BulkPipelineModel.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   75</span>{ <span class="keywordflow">return</span> _model_path; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_bulk_pipeline_model_8cc_source.html#l00158">shareBuffersFrom()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_bulk_pipeline_model_8cc_source.html#l00153">shareBuffersFrom()</a>.</p>
 
 </div>
 </div>
@@ -620,9 +620,9 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   76</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">   77</span>  }</div>
 <div class="line"><span class="lineno">   78</span>}</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_model_html_a23c6f7786a06dc5fc5c52eef2d1ad7a2"><div class="ttname"><a href="classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_model.html#a23c6f7786a06dc5fc5c52eef2d1ad7a2">onert::backend::trix::ops::BulkPipelineModel::markBufferReady</a></div><div class="ttdeci">void markBufferReady()</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_model_8cc_source.html#l00195">BulkPipelineModel.cc:195</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_model_html_a23c6f7786a06dc5fc5c52eef2d1ad7a2"><div class="ttname"><a href="classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_model.html#a23c6f7786a06dc5fc5c52eef2d1ad7a2">onert::backend::trix::ops::BulkPipelineModel::markBufferReady</a></div><div class="ttdeci">void markBufferReady()</div><div class="ttdef"><b>Definition</b> <a href="_bulk_pipeline_model_8cc_source.html#l00190">BulkPipelineModel.cc:190</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_bulk_pipeline_model_8cc_source.html#l00195">markBufferReady()</a>, <a class="el" href="classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_model.html#aa1b761f0c373ee2b7c030ba8f3c065e0ade06d20060c639c59c42737ddf002535">OWNER</a>, and <a class="el" href="_bulk_pipeline_model_8cc_source.html#l00080">release()</a>.</p>
+<p class="reference">References <a class="el" href="_bulk_pipeline_model_8cc_source.html#l00190">markBufferReady()</a>, <a class="el" href="classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_model.html#aa1b761f0c373ee2b7c030ba8f3c065e0ade06d20060c639c59c42737ddf002535">OWNER</a>, and <a class="el" href="_bulk_pipeline_model_8cc_source.html#l00080">release()</a>.</p>
 
 </div>
 </div>
@@ -671,37 +671,32 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_bulk_pipeline_model_8cc_source.html#l00080">80</a> of file <a class="el" href="_bulk_pipeline_model_8cc_source.html">BulkPipelineModel.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   81</span>{</div>
-<div class="line"><span class="lineno">   82</span>  <span class="keywordflow">if</span> (!_prepared.load())</div>
-<div class="line"><span class="lineno">   83</span>  {</div>
-<div class="line"><span class="lineno">   84</span>    <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">   85</span>  }</div>
-<div class="line"><span class="lineno">   86</span> </div>
-<div class="line"><span class="lineno">   87</span>  <span class="comment">// Cancel a asynchronous job</span></div>
-<div class="line"><span class="lineno">   88</span>  <span class="keywordflow">if</span> (_async_fill_future.valid())</div>
+<div class="line"><span class="lineno">   82</span>  <span class="comment">// Cancel a asynchronous job</span></div>
+<div class="line"><span class="lineno">   83</span>  <span class="keywordflow">if</span> (_async_fill_future.valid())</div>
+<div class="line"><span class="lineno">   84</span>  {</div>
+<div class="line"><span class="lineno">   85</span>    _async_fill_future.wait();</div>
+<div class="line"><span class="lineno">   86</span>  }</div>
+<div class="line"><span class="lineno">   87</span> </div>
+<div class="line"><span class="lineno">   88</span>  <span class="keywordflow">if</span> (_ownership == <a class="code hl_enumvalue" href="classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_model.html#aa1b761f0c373ee2b7c030ba8f3c065e0ade06d20060c639c59c42737ddf002535">BufferOwnership::OWNER</a>)</div>
 <div class="line"><span class="lineno">   89</span>  {</div>
-<div class="line"><span class="lineno">   90</span>    _async_fill_future.wait();</div>
-<div class="line"><span class="lineno">   91</span>  }</div>
-<div class="line"><span class="lineno">   92</span> </div>
-<div class="line"><span class="lineno">   93</span>  <span class="keywordflow">if</span> (_ownership == <a class="code hl_enumvalue" href="classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_model.html#aa1b761f0c373ee2b7c030ba8f3c065e0ade06d20060c639c59c42737ddf002535">BufferOwnership::OWNER</a>)</div>
-<div class="line"><span class="lineno">   94</span>  {</div>
-<div class="line"><span class="lineno">   95</span>    unregisterModel();</div>
-<div class="line"><span class="lineno">   96</span>    closeDevice();</div>
-<div class="line"><span class="lineno">   97</span>  }</div>
-<div class="line"><span class="lineno">   98</span> </div>
-<div class="line"><span class="lineno">   99</span>  <span class="keywordflow">if</span> (_fp)</div>
-<div class="line"><span class="lineno">  100</span>  {</div>
-<div class="line"><span class="lineno">  101</span>    fclose(_fp);</div>
-<div class="line"><span class="lineno">  102</span>    _fp = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  103</span>  }</div>
-<div class="line"><span class="lineno">  104</span> </div>
-<div class="line"><span class="lineno">  105</span>  _program_buffer.reset();</div>
-<div class="line"><span class="lineno">  106</span>  _weight_buffer.reset();</div>
-<div class="line"><span class="lineno">  107</span>  _meta.reset();</div>
-<div class="line"><span class="lineno">  108</span>  _meta_size = 0;</div>
-<div class="line"><span class="lineno">  109</span>  _model_id = 0;</div>
-<div class="line"><span class="lineno">  110</span> </div>
-<div class="line"><span class="lineno">  111</span>  _prepared = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  112</span>}</div>
+<div class="line"><span class="lineno">   90</span>    unregisterModel();</div>
+<div class="line"><span class="lineno">   91</span>    closeDevice();</div>
+<div class="line"><span class="lineno">   92</span>  }</div>
+<div class="line"><span class="lineno">   93</span> </div>
+<div class="line"><span class="lineno">   94</span>  <span class="keywordflow">if</span> (_fp)</div>
+<div class="line"><span class="lineno">   95</span>  {</div>
+<div class="line"><span class="lineno">   96</span>    fclose(_fp);</div>
+<div class="line"><span class="lineno">   97</span>    _fp = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   98</span>  }</div>
+<div class="line"><span class="lineno">   99</span> </div>
+<div class="line"><span class="lineno">  100</span>  _program_buffer.reset();</div>
+<div class="line"><span class="lineno">  101</span>  _weight_buffer.reset();</div>
+<div class="line"><span class="lineno">  102</span>  _meta.reset();</div>
+<div class="line"><span class="lineno">  103</span>  _meta_size = 0;</div>
+<div class="line"><span class="lineno">  104</span>  _model_id = 0;</div>
+<div class="line"><span class="lineno">  105</span> </div>
+<div class="line"><span class="lineno">  106</span>  _prepared = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  107</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_model.html#aa1b761f0c373ee2b7c030ba8f3c065e0ade06d20060c639c59c42737ddf002535">OWNER</a>.</p>
 
@@ -735,48 +730,48 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bulk_pipeline_model_8cc_source.html#l00114">114</a> of file <a class="el" href="_bulk_pipeline_model_8cc_source.html">BulkPipelineModel.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  116</span>{</div>
-<div class="line"><span class="lineno">  117</span>  <span class="keywordflow">if</span> (!_prepared.load())</div>
+<p class="definition">Definition at line <a class="el" href="_bulk_pipeline_model_8cc_source.html#l00109">109</a> of file <a class="el" href="_bulk_pipeline_model_8cc_source.html">BulkPipelineModel.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  111</span>{</div>
+<div class="line"><span class="lineno">  112</span>  <span class="keywordflow">if</span> (!_prepared.load())</div>
+<div class="line"><span class="lineno">  113</span>  {</div>
+<div class="line"><span class="lineno">  114</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Model is not prepared: &quot;</span> + _model_path);</div>
+<div class="line"><span class="lineno">  115</span>  }</div>
+<div class="line"><span class="lineno">  116</span> </div>
+<div class="line"><span class="lineno">  117</span>  <span class="keywordflow">if</span> (!_meta)</div>
 <div class="line"><span class="lineno">  118</span>  {</div>
-<div class="line"><span class="lineno">  119</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Model is not prepared: &quot;</span> + _model_path);</div>
+<div class="line"><span class="lineno">  119</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Model metadata is not loaded: &quot;</span> + _model_path);</div>
 <div class="line"><span class="lineno">  120</span>  }</div>
 <div class="line"><span class="lineno">  121</span> </div>
-<div class="line"><span class="lineno">  122</span>  <span class="keywordflow">if</span> (!_meta)</div>
-<div class="line"><span class="lineno">  123</span>  {</div>
-<div class="line"><span class="lineno">  124</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Model metadata is not loaded: &quot;</span> + _model_path);</div>
-<div class="line"><span class="lineno">  125</span>  }</div>
-<div class="line"><span class="lineno">  126</span> </div>
-<div class="line"><span class="lineno">  127</span>  <span class="comment">// Prepare input buffers</span></div>
-<div class="line"><span class="lineno">  128</span>  input_buffers <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
-<div class="line"><span class="lineno">  129</span>  <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.num_buffers = _meta-&gt;input_seg_num;</div>
-<div class="line"><span class="lineno">  130</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.num_buffers; i++)</div>
-<div class="line"><span class="lineno">  131</span>  {</div>
-<div class="line"><span class="lineno">  132</span>    uint32_t idx = _meta-&gt;input_seg_idx[i];</div>
-<div class="line"><span class="lineno">  133</span>    <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.bufs[i].addr = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>[i]-&gt;buffer();</div>
-<div class="line"><span class="lineno">  134</span>    <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.bufs[i].type = BUFFER_MAPPED;</div>
-<div class="line"><span class="lineno">  135</span>    <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.bufs[i].size = _meta-&gt;segment_size[idx];</div>
-<div class="line"><span class="lineno">  136</span>  }</div>
-<div class="line"><span class="lineno">  137</span> </div>
-<div class="line"><span class="lineno">  138</span>  <span class="comment">// Prepare output buffers</span></div>
-<div class="line"><span class="lineno">  139</span>  output_buffers <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
-<div class="line"><span class="lineno">  140</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>.num_buffers = _meta-&gt;output_seg_num;</div>
-<div class="line"><span class="lineno">  141</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>.num_buffers; i++)</div>
-<div class="line"><span class="lineno">  142</span>  {</div>
-<div class="line"><span class="lineno">  143</span>    uint32_t idx = _meta-&gt;output_seg_idx[i];</div>
-<div class="line"><span class="lineno">  144</span>    <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>.bufs[i].addr = outputs[i]-&gt;buffer();</div>
-<div class="line"><span class="lineno">  145</span>    <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>.bufs[i].type = BUFFER_MAPPED;</div>
-<div class="line"><span class="lineno">  146</span>    <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>.bufs[i].size = _meta-&gt;segment_size[idx];</div>
-<div class="line"><span class="lineno">  147</span>  }</div>
-<div class="line"><span class="lineno">  148</span> </div>
-<div class="line"><span class="lineno">  149</span>  <span class="comment">// Execute the model</span></div>
-<div class="line"><span class="lineno">  150</span>  <span class="keywordtype">int</span> ret = runNPU_model(_dev, _model_id, NPU_INFER_BLOCKING, &amp;input, &amp;output, <span class="keyword">nullptr</span>, <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  151</span>  <span class="keywordflow">if</span> (ret &lt; 0)</div>
-<div class="line"><span class="lineno">  152</span>  {</div>
-<div class="line"><span class="lineno">  153</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;runNPU_model() failed for &quot;</span> + _model_path +</div>
-<div class="line"><span class="lineno">  154</span>                             <span class="stringliteral">&quot;, ret: &quot;</span> + std::to_string(ret));</div>
-<div class="line"><span class="lineno">  155</span>  }</div>
-<div class="line"><span class="lineno">  156</span>}</div>
+<div class="line"><span class="lineno">  122</span>  <span class="comment">// Prepare input buffers</span></div>
+<div class="line"><span class="lineno">  123</span>  input_buffers <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
+<div class="line"><span class="lineno">  124</span>  <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.num_buffers = _meta-&gt;input_seg_num;</div>
+<div class="line"><span class="lineno">  125</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.num_buffers; i++)</div>
+<div class="line"><span class="lineno">  126</span>  {</div>
+<div class="line"><span class="lineno">  127</span>    uint32_t idx = _meta-&gt;input_seg_idx[i];</div>
+<div class="line"><span class="lineno">  128</span>    <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.bufs[i].addr = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>[i]-&gt;buffer();</div>
+<div class="line"><span class="lineno">  129</span>    <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.bufs[i].type = BUFFER_MAPPED;</div>
+<div class="line"><span class="lineno">  130</span>    <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.bufs[i].size = _meta-&gt;segment_size[idx];</div>
+<div class="line"><span class="lineno">  131</span>  }</div>
+<div class="line"><span class="lineno">  132</span> </div>
+<div class="line"><span class="lineno">  133</span>  <span class="comment">// Prepare output buffers</span></div>
+<div class="line"><span class="lineno">  134</span>  output_buffers <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
+<div class="line"><span class="lineno">  135</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>.num_buffers = _meta-&gt;output_seg_num;</div>
+<div class="line"><span class="lineno">  136</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>.num_buffers; i++)</div>
+<div class="line"><span class="lineno">  137</span>  {</div>
+<div class="line"><span class="lineno">  138</span>    uint32_t idx = _meta-&gt;output_seg_idx[i];</div>
+<div class="line"><span class="lineno">  139</span>    <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>.bufs[i].addr = outputs[i]-&gt;buffer();</div>
+<div class="line"><span class="lineno">  140</span>    <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>.bufs[i].type = BUFFER_MAPPED;</div>
+<div class="line"><span class="lineno">  141</span>    <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>.bufs[i].size = _meta-&gt;segment_size[idx];</div>
+<div class="line"><span class="lineno">  142</span>  }</div>
+<div class="line"><span class="lineno">  143</span> </div>
+<div class="line"><span class="lineno">  144</span>  <span class="comment">// Execute the model</span></div>
+<div class="line"><span class="lineno">  145</span>  <span class="keywordtype">int</span> ret = runNPU_model(_dev, _model_id, NPU_INFER_BLOCKING, &amp;input, &amp;output, <span class="keyword">nullptr</span>, <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  146</span>  <span class="keywordflow">if</span> (ret &lt; 0)</div>
+<div class="line"><span class="lineno">  147</span>  {</div>
+<div class="line"><span class="lineno">  148</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;runNPU_model() failed for &quot;</span> + _model_path +</div>
+<div class="line"><span class="lineno">  149</span>                             <span class="stringliteral">&quot;, ret: &quot;</span> + std::to_string(ret));</div>
+<div class="line"><span class="lineno">  150</span>  }</div>
+<div class="line"><span class="lineno">  151</span>}</div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_abcab13752e1826b70991e56f8e9a834d"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">GenH5RandomInputs.inputs</a></div><div class="ttdeci">inputs</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00049">GenH5RandomInputs.py:49</a></div></div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00096">gen_h5_explicit_inputs_all.py:96</a></div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
@@ -830,10 +825,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bulk_pipeline_model_8cc_source.html#l00179">179</a> of file <a class="el" href="_bulk_pipeline_model_8cc_source.html">BulkPipelineModel.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  180</span>{</div>
-<div class="line"><span class="lineno">  181</span>  _next_model = next;</div>
-<div class="line"><span class="lineno">  182</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_bulk_pipeline_model_8cc_source.html#l00174">174</a> of file <a class="el" href="_bulk_pipeline_model_8cc_source.html">BulkPipelineModel.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  175</span>{</div>
+<div class="line"><span class="lineno">  176</span>  _next_model = next;</div>
+<div class="line"><span class="lineno">  177</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -853,26 +848,26 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bulk_pipeline_model_8cc_source.html#l00158">158</a> of file <a class="el" href="_bulk_pipeline_model_8cc_source.html">BulkPipelineModel.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  159</span>{</div>
-<div class="line"><span class="lineno">  160</span>  <span class="keywordflow">if</span> (_ownership == <a class="code hl_enumvalue" href="classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_model.html#aa1b761f0c373ee2b7c030ba8f3c065e0ade06d20060c639c59c42737ddf002535">BufferOwnership::OWNER</a>)</div>
+<p class="definition">Definition at line <a class="el" href="_bulk_pipeline_model_8cc_source.html#l00153">153</a> of file <a class="el" href="_bulk_pipeline_model_8cc_source.html">BulkPipelineModel.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  154</span>{</div>
+<div class="line"><span class="lineno">  155</span>  <span class="keywordflow">if</span> (_ownership == <a class="code hl_enumvalue" href="classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_model.html#aa1b761f0c373ee2b7c030ba8f3c065e0ade06d20060c639c59c42737ddf002535">BufferOwnership::OWNER</a>)</div>
+<div class="line"><span class="lineno">  156</span>  {</div>
+<div class="line"><span class="lineno">  157</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Cannot share buffers with owner model: &quot;</span> + _model_path);</div>
+<div class="line"><span class="lineno">  158</span>  }</div>
+<div class="line"><span class="lineno">  159</span> </div>
+<div class="line"><span class="lineno">  160</span>  <span class="keywordflow">if</span> (!owner.isPrepared())</div>
 <div class="line"><span class="lineno">  161</span>  {</div>
-<div class="line"><span class="lineno">  162</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Cannot share buffers with owner model: &quot;</span> + _model_path);</div>
+<div class="line"><span class="lineno">  162</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Owner model is not prepared: &quot;</span> + owner.modelPath());</div>
 <div class="line"><span class="lineno">  163</span>  }</div>
 <div class="line"><span class="lineno">  164</span> </div>
-<div class="line"><span class="lineno">  165</span>  <span class="keywordflow">if</span> (!owner.isPrepared())</div>
-<div class="line"><span class="lineno">  166</span>  {</div>
-<div class="line"><span class="lineno">  167</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Owner model is not prepared: &quot;</span> + owner.modelPath());</div>
-<div class="line"><span class="lineno">  168</span>  }</div>
-<div class="line"><span class="lineno">  169</span> </div>
-<div class="line"><span class="lineno">  170</span>  <span class="comment">// Sharing the buffers</span></div>
-<div class="line"><span class="lineno">  171</span>  _program_buffer = owner._program_buffer;</div>
-<div class="line"><span class="lineno">  172</span>  _weight_buffer = owner._weight_buffer;</div>
-<div class="line"><span class="lineno">  173</span> </div>
-<div class="line"><span class="lineno">  174</span>  <span class="comment">// Sharing the device and model id</span></div>
-<div class="line"><span class="lineno">  175</span>  _dev = owner.device();</div>
-<div class="line"><span class="lineno">  176</span>  _model_id = owner.modelId();</div>
-<div class="line"><span class="lineno">  177</span>}</div>
+<div class="line"><span class="lineno">  165</span>  <span class="comment">// Sharing the buffers</span></div>
+<div class="line"><span class="lineno">  166</span>  _program_buffer = owner._program_buffer;</div>
+<div class="line"><span class="lineno">  167</span>  _weight_buffer = owner._weight_buffer;</div>
+<div class="line"><span class="lineno">  168</span> </div>
+<div class="line"><span class="lineno">  169</span>  <span class="comment">// Sharing the device and model id</span></div>
+<div class="line"><span class="lineno">  170</span>  _dev = owner.device();</div>
+<div class="line"><span class="lineno">  171</span>  _model_id = owner.modelId();</div>
+<div class="line"><span class="lineno">  172</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_bulk_pipeline_model_8h_source.html#l00074">device()</a>, <a class="el" href="_bulk_pipeline_model_8h_source.html#l00056">isPrepared()</a>, <a class="el" href="_bulk_pipeline_model_8h_source.html#l00073">modelId()</a>, <a class="el" href="_bulk_pipeline_model_8h_source.html#l00075">modelPath()</a>, and <a class="el" href="classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_model.html#aa1b761f0c373ee2b7c030ba8f3c065e0ade06d20060c639c59c42737ddf002535">OWNER</a>.</p>
 
@@ -893,30 +888,30 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bulk_pipeline_model_8cc_source.html#l00204">204</a> of file <a class="el" href="_bulk_pipeline_model_8cc_source.html">BulkPipelineModel.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  205</span>{</div>
-<div class="line"><span class="lineno">  206</span>  _buffer_ready = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  207</span>  _buffer_error = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  208</span>  _async_fill_future = std::async(std::launch::async, [<span class="keyword">this</span>] {</div>
-<div class="line"><span class="lineno">  209</span>    <span class="keywordflow">try</span></div>
+<p class="definition">Definition at line <a class="el" href="_bulk_pipeline_model_8cc_source.html#l00199">199</a> of file <a class="el" href="_bulk_pipeline_model_8cc_source.html">BulkPipelineModel.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  200</span>{</div>
+<div class="line"><span class="lineno">  201</span>  _buffer_ready = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  202</span>  _buffer_error = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  203</span>  _async_fill_future = std::async(std::launch::async, [<span class="keyword">this</span>] {</div>
+<div class="line"><span class="lineno">  204</span>    <span class="keywordflow">try</span></div>
+<div class="line"><span class="lineno">  205</span>    {</div>
+<div class="line"><span class="lineno">  206</span>      fillBuffers();</div>
+<div class="line"><span class="lineno">  207</span>      <a class="code hl_function" href="classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_model.html#a23c6f7786a06dc5fc5c52eef2d1ad7a2">markBufferReady</a>();</div>
+<div class="line"><span class="lineno">  208</span>    }</div>
+<div class="line"><span class="lineno">  209</span>    <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e)</div>
 <div class="line"><span class="lineno">  210</span>    {</div>
-<div class="line"><span class="lineno">  211</span>      fillBuffers();</div>
-<div class="line"><span class="lineno">  212</span>      <a class="code hl_function" href="classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_model.html#a23c6f7786a06dc5fc5c52eef2d1ad7a2">markBufferReady</a>();</div>
-<div class="line"><span class="lineno">  213</span>    }</div>
-<div class="line"><span class="lineno">  214</span>    <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e)</div>
-<div class="line"><span class="lineno">  215</span>    {</div>
-<div class="line"><span class="lineno">  216</span>      {</div>
-<div class="line"><span class="lineno">  217</span>        std::lock_guard&lt;std::mutex&gt; lock(_buffer_mutex);</div>
-<div class="line"><span class="lineno">  218</span>        _buffer_ready = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  219</span>        _buffer_error = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  220</span>      }</div>
-<div class="line"><span class="lineno">  221</span>      _buffer_cv.notify_all();</div>
-<div class="line"><span class="lineno">  222</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;Failed to fill buffers asynchronously: &quot;</span> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  223</span>    }</div>
-<div class="line"><span class="lineno">  224</span>  });</div>
-<div class="line"><span class="lineno">  225</span>}</div>
+<div class="line"><span class="lineno">  211</span>      {</div>
+<div class="line"><span class="lineno">  212</span>        std::lock_guard&lt;std::mutex&gt; lock(_buffer_mutex);</div>
+<div class="line"><span class="lineno">  213</span>        _buffer_ready = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  214</span>        _buffer_error = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  215</span>      }</div>
+<div class="line"><span class="lineno">  216</span>      _buffer_cv.notify_all();</div>
+<div class="line"><span class="lineno">  217</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;Failed to fill buffers asynchronously: &quot;</span> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  218</span>    }</div>
+<div class="line"><span class="lineno">  219</span>  });</div>
+<div class="line"><span class="lineno">  220</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_bulk_pipeline_model_8cc_source.html#l00195">markBufferReady()</a>.</p>
+<p class="reference">References <a class="el" href="_bulk_pipeline_model_8cc_source.html#l00190">markBufferReady()</a>.</p>
 
 </div>
 </div>
@@ -935,16 +930,16 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bulk_pipeline_model_8cc_source.html#l00184">184</a> of file <a class="el" href="_bulk_pipeline_model_8cc_source.html">BulkPipelineModel.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  185</span>{</div>
-<div class="line"><span class="lineno">  186</span>  std::unique_lock&lt;std::mutex&gt; lock(_buffer_mutex);</div>
-<div class="line"><span class="lineno">  187</span>  _buffer_cv.wait(lock, [<span class="keyword">this</span>] { <span class="keywordflow">return</span> _buffer_ready.load() || _buffer_error.load(); });</div>
-<div class="line"><span class="lineno">  188</span> </div>
-<div class="line"><span class="lineno">  189</span>  <span class="keywordflow">if</span> (_buffer_error.load())</div>
-<div class="line"><span class="lineno">  190</span>  {</div>
-<div class="line"><span class="lineno">  191</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Buffer fill failed&quot;</span>);</div>
-<div class="line"><span class="lineno">  192</span>  }</div>
-<div class="line"><span class="lineno">  193</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_bulk_pipeline_model_8cc_source.html#l00179">179</a> of file <a class="el" href="_bulk_pipeline_model_8cc_source.html">BulkPipelineModel.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  180</span>{</div>
+<div class="line"><span class="lineno">  181</span>  std::unique_lock&lt;std::mutex&gt; lock(_buffer_mutex);</div>
+<div class="line"><span class="lineno">  182</span>  _buffer_cv.wait(lock, [<span class="keyword">this</span>] { <span class="keywordflow">return</span> _buffer_ready.load() || _buffer_error.load(); });</div>
+<div class="line"><span class="lineno">  183</span> </div>
+<div class="line"><span class="lineno">  184</span>  <span class="keywordflow">if</span> (_buffer_error.load())</div>
+<div class="line"><span class="lineno">  185</span>  {</div>
+<div class="line"><span class="lineno">  186</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Buffer fill failed&quot;</span>);</div>
+<div class="line"><span class="lineno">  187</span>  }</div>
+<div class="line"><span class="lineno">  188</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
