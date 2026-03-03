@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # Environment variables to override
-#   COVERAGE_RPATH : folder where coverage report is generatged,
+#   COVERAGE_RPATH : folder where coverage report is generated,
 #                    default is 'coverage'
 #   COVERAGE_PATH  : path where coverage report is generated,
 #                    default is ${PROJECT_PATH}/${COVERAGE_RPATH}
 
-PROJECT_PATH="$(cd $(dirname ${BASH_SOURCE[0]})/../.. && pwd)"
+PROJECT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." >/dev/null && pwd)"
 
 # Set BUILD_WORKSPACE_RPATH with default 'build/coverage' if not set
 BUILD_WORKSPACE_RPATH="${BUILD_WORKSPACE_RPATH:-build/coverage}"
