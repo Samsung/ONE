@@ -10,10 +10,15 @@ repos:
         exclude: \.(svg)$
       - name: 'Check trailing whitespace'
         id: trailing-whitespace
-      # TODO add shebang to all excutable python/shell scripts
       - name: 'Check executable files'
         id: check-executables-have-shebangs
-        exclude: \.(py|sh)$
+        exclude:
+          (?x)^(
+            .*/__init__.py$|
+            compiler/nnc/utils/.*\.py$|
+            runtime/tests/scripts/models/.*/config\.sh$|
+            res/TensorFlowTests/.*\.py$
+          )
 
   - repo: https://github.com/rhysd/actionlint
     rev: 'v1.7.9'
@@ -58,3 +63,21 @@ repos:
       id: clang-format
       types_or: [file]  # override default type check to cl files
       files: ((\.c[cl]?)|(\.cpp)|(\.h(pp)?))$
+
+  - repo: local
+    hooks:
+      - name: 'Check copyright headers'
+        id: copyright-check
+        entry: infra/git-hooks/copyright-check.sh
+        language: script
+        pass_filenames: true
+        types: [file]
+        files: \.(c[cl]?|cpp|h(pp)?)$
+        # Ignore 3rd-party code
+        exclude:
+          (?x)^(
+            compiler/ann-api/.*|
+            onert-micro/externals/.*|
+            runtime/3rdparty/.*|
+            runtime/tests/nnapi/.*
+          )

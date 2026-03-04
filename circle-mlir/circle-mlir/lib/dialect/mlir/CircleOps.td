@@ -1619,6 +1619,32 @@ def CIR_PReluOp : CIR_Op<"prelu", [
   */
 }
 
+def CIR_RangeOp : CIR_Op<"range", [
+    Pure,
+    CIR_OperandHasRank<0, 0>,
+    CIR_OperandHasRank<1, 0>,
+    CIR_OperandHasRank<2, 0>,
+    PredOpTrait<"operands and output must have same element type",
+      And<[TCresVTEtIsSameAsOp<0, 0>, TCresVTEtIsSameAsOp<0, 1>,
+           TCresVTEtIsSameAsOp<0, 2>]>>]> {
+  let summary = "Range operator";
+
+  let description = [{
+    Returns a 1D tensor defined by a sequence from `start` to `limit` with
+    a given `delta`.
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[I32, F32, I64]>:$start,
+    CIR_TensorOf<[I32, F32, I64]>:$limit,
+    CIR_TensorOf<[I32, F32, I64]>:$delta
+  );
+
+  let results = (outs CIR_TensorOf<[I32, F32, I64]>:$result);
+
+  let hasOptions = 1;
+}
+
 def CIR_ReduceMaxOp: CIR_Op<"reduce_max", [
     PredOpTrait<"input and output must have same element type",
       CIR_TCresVTEtIsSameAsOp<0, 0>>,

@@ -201,6 +201,7 @@ public:
   luci::CircleNode *visit(const luci::CircleSelect *) final;
   luci::CircleNode *visit(const luci::CircleSelectV2 *) final;
   luci::CircleNode *visit(const luci::CircleShape *) final;
+  luci::CircleNode *visit(const luci::CircleSign *) final;
   luci::CircleNode *visit(const luci::CircleSin *) final;
   luci::CircleNode *visit(const luci::CircleSlice *) final;
   luci::CircleNode *visit(const luci::CircleSoftmax *) final;

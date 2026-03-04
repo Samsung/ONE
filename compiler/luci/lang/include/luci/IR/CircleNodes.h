@@ -109,6 +109,7 @@
 #include "Nodes/CircleSelect.h"
 #include "Nodes/CircleSelectV2.h"
 #include "Nodes/CircleShape.h"
+#include "Nodes/CircleSign.h"
 #include "Nodes/CircleSin.h"
 #include "Nodes/CircleSlice.h"
 #include "Nodes/CircleSoftmax.h"

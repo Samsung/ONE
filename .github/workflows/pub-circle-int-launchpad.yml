@@ -104,7 +104,7 @@ jobs:
         run: |
           CIR_INTP_ITEMS="angkor;cwrap;pepper-str;pepper-strcast;pepper-csv2vec;pp"
           CIR_INTP_ITEMS="${CIR_INTP_ITEMS};oops;loco;logo-core;logo;locop"
-          CIR_INTP_ITEMS="${CIR_INTP_ITEMS};hermes;hermes-std;safemain;mio-circle08"
+          CIR_INTP_ITEMS="${CIR_INTP_ITEMS};hermes;hermes-std;safemain;mio-circle"
           CIR_INTP_ITEMS="${CIR_INTP_ITEMS};luci-compute;luci;luci-interpreter"
           CIR_INTP_ITEMS="${CIR_INTP_ITEMS};foder;arser;vconone;circle-interpreter"
           echo ${CIR_INTP_ITEMS}

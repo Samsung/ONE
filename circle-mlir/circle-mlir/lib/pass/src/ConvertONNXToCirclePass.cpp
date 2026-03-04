@@ -64,11 +64,13 @@
 #include "ops/PowOp.h"
 #include "ops/PReluOp.h"
 #include "ops/QuantizeLinearOp.h"
+#include "ops/RangeOp.h"
 #include "ops/ReciprocalOp.h"
 #include "ops/ReduceMaxOp.h"
 #include "ops/ReduceMeanOp.h"
 #include "ops/ReduceProdOp.h"
 #include "ops/ReduceSumOp.h"
+#include "ops/ReduceSumSquareOp.h"
 #include "ops/ReluOp.h"
 #include "ops/ReshapeOp.h"
 #include "ops/ResizeOp.h"
@@ -246,6 +248,7 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvPow>(typeConverter, context);
   patterns.insert<ConvPRelu>(typeConverter, context);
   patterns.insert<ConvQuantizeLinear>(typeConverter, context);
+  patterns.insert<ConvRange>(typeConverter, context);
   patterns.insert<ConvReciprocal>(typeConverter, context);
   patterns.insert<ConvReduceMax>(typeConverter, context);
   patterns.insert<ConvReduceMaxV13>(typeConverter, context);
@@ -255,6 +258,7 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvReduceProdV13>(typeConverter, context);
   patterns.insert<ConvReduceSum>(typeConverter, context);
   patterns.insert<ConvReduceSumV11>(typeConverter, context);
+  patterns.insert<ConvReduceSumSquareV13>(typeConverter, context);
   patterns.insert<ConvRelu>(typeConverter, context);
   patterns.insert<ConvReshape>(typeConverter, context);
   patterns.insert<ConvResize>(typeConverter, context);

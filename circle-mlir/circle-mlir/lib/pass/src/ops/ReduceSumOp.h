@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __CIRCLE_MLIR_PASS_OPS_SUM_OP_H__
-#define __CIRCLE_MLIR_PASS_OPS_SUM_OP_H__
+#ifndef __CIRCLE_MLIR_PASS_OPS_REDUCE_SUM_OP_H__
+#define __CIRCLE_MLIR_PASS_OPS_REDUCE_SUM_OP_H__
 
 #include <circle-mlir/dialect/CircleDialect.h>
 
@@ -179,4 +179,4 @@ private:
 } // namespace Circle
 } // namespace mlir
 
-#endif // __CIRCLE_MLIR_PASS_OPS_SUM_OP_H__
+#endif // __CIRCLE_MLIR_PASS_OPS_REDUCE_SUM_OP_H__

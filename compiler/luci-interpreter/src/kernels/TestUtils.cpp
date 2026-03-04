@@ -27,6 +27,7 @@ namespace testing
 {
 
 using ::testing::FloatNear;
+using ::testing::DoubleNear;
 using ::testing::Matcher;
 
 Tensor makeOutputTensor(DataType element_type) { return Tensor(element_type, {}, {}, ""); }
@@ -108,6 +109,18 @@ Matcher<std::vector<float>> FloatArrayNear(const std::vector<float> &values, flo
   for (const float v : values)
   {
     matchers.emplace_back(FloatNear(v, max_abs_error));
+  }
+  return ElementsAreArray(matchers);
+}
+
+Matcher<std::vector<double>> DoubleArrayNear(const std::vector<double> &values,
+                                             double max_abs_error)
+{
+  std::vector<Matcher<double>> matchers;
+  matchers.reserve(values.size());
+  for (const double v : values)
+  {
+    matchers.emplace_back(DoubleNear(v, max_abs_error));
   }
   return ElementsAreArray(matchers);
 }

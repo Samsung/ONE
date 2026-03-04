@@ -134,6 +134,7 @@ public:
   // loco::TensorShape visit(const luci::CircleSelect *node) final;
   // loco::TensorShape visit(const luci::CircleSelectV2 *node) final;
   // loco::TensorShape visit(const luci::CircleShape *node) final;
+  // loco::TensorShape visit(const luci::CircleSign *node) final;
   // loco::TensorShape visit(const luci::CircleSin *node) final;
   // loco::TensorShape visit(const luci::CircleSlice *node) final;
   loco::TensorShape visit(const luci::CircleSoftmax *node) final;

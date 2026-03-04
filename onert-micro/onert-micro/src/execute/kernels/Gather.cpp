@@ -36,9 +36,9 @@ constexpr uint32_t positionsTensorIdx = 1;
 constexpr uint32_t outputTensorIdx = 0;
 
 template <typename InputT, typename CoordsT = int32_t>
-void gather(const InputT *input_data, const CoordsT *coords_data, InputT *output_data,
-            int32_t axis_size, int32_t batch_size, int32_t outer_size, int32_t inner_size,
-            int32_t coord_size)
+OMStatus gather(const InputT *input_data, const CoordsT *coords_data, InputT *output_data,
+                int32_t axis_size, int32_t batch_size, int32_t outer_size, int32_t inner_size,
+                int32_t coord_size)
 {
 
   for (int batch = 0; batch < batch_size; ++batch)
@@ -47,7 +47,14 @@ void gather(const InputT *input_data, const CoordsT *coords_data, InputT *output
     {
       for (int coord = 0; coord < coord_size; ++coord)
       {
-        auto x = coords_data[coord];
+        auto x = coords_data[batch * coord_size + coord];
+
+        // Bounds check: index must be in range [0, axis_size)
+        if (x < 0 || x >= axis_size)
+        {
+          return IndexError;
+        }
+
         std::memcpy(
           output_data + (((batch * outer_size) + outer) * coord_size + coord) * inner_size,
           input_data +
@@ -57,6 +64,8 @@ void gather(const InputT *input_data, const CoordsT *coords_data, InputT *output
       }
     }
   }
+
+  return Ok;
 }
 
 } // namespace
@@ -159,29 +168,29 @@ OMStatus execute_kernel_CircleGather(const OMExecuteArgs &execute_args)
 #ifndef DIS_FLOAT
     case circle::TensorType_FLOAT32:
     {
-      gather<float, int32_t>(utils::castInputData<float>(input_data),
-                             utils::castInputData<int32_t>(position_data),
-                             utils::castOutputData<float>(output_data), axis_size, batch_size,
-                             outer_size, inner_size, coord_size);
+      status = gather<float, int32_t>(utils::castInputData<float>(input_data),
+                                      utils::castInputData<int32_t>(position_data),
+                                      utils::castOutputData<float>(output_data), axis_size,
+                                      batch_size, outer_size, inner_size, coord_size);
     }
     break;
 #endif // DIS_FLOAT
 #ifndef DIS_QUANT
     case circle::TensorType_INT8:
     {
-      gather<int8_t, int32_t>(utils::castInputData<int8_t>(input_data),
-                              utils::castInputData<int32_t>(position_data),
-                              utils::castOutputData<int8_t>(output_data), axis_size, batch_size,
-                              outer_size, inner_size, coord_size);
+      status = gather<int8_t, int32_t>(utils::castInputData<int8_t>(input_data),
+                                       utils::castInputData<int32_t>(position_data),
+                                       utils::castOutputData<int8_t>(output_data), axis_size,
+                                       batch_size, outer_size, inner_size, coord_size);
     }
     break;
 #endif // DIS_QUANT
     case circle::TensorType_INT32:
     {
-      gather<int32_t, int32_t>(utils::castInputData<int32_t>(input_data),
-                               utils::castInputData<int32_t>(position_data),
-                               utils::castOutputData<int32_t>(output_data), axis_size, batch_size,
-                               outer_size, inner_size, coord_size);
+      status = gather<int32_t, int32_t>(utils::castInputData<int32_t>(input_data),
+                                        utils::castInputData<int32_t>(position_data),
+                                        utils::castOutputData<int32_t>(output_data), axis_size,
+                                        batch_size, outer_size, inner_size, coord_size);
     }
     break;
     default:

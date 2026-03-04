@@ -123,9 +123,13 @@ public:
     if (_size == 0)
       return 0;
 
-    auto it = _dims.cbegin();
-
-    return std::accumulate(it, it + _size, 1u, std::multiplies<size_t>());
+    size_t result = 1;
+    for (size_t i = 0; i < _size; ++i)
+    {
+      if (__builtin_mul_overflow(result, static_cast<size_t>(_dims[i]), &result))
+        return 0;
+    }
+    return result;
   }
 
   // clang-format off

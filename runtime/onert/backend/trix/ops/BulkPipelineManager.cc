@@ -43,7 +43,9 @@ bool BulkPipelineManager::initialize()
   try
   {
     createModels();
+    verifyModels();
     prepareModels();
+    linkModels();
 
     _initialized = true;
     return true;
@@ -58,11 +60,6 @@ bool BulkPipelineManager::initialize()
 
 void BulkPipelineManager::shutdown()
 {
-  if (!_initialized.load())
-  {
-    return;
-  }
-
   _initialized = false;
 
   // Wait until all executions are finished
@@ -125,6 +122,15 @@ void BulkPipelineManager::execute(const std::vector<const IPortableTensor *> &in
           current_inputs.push_back(const_cast<IPortableTensor *>(output));
         }
       }
+
+      // Prepare next shared neighbor model
+      if (_use_buffer_sharing)
+      {
+        if (auto next = model->getNextModel())
+        {
+          next->startAsyncBufferFill();
+        }
+      }
     }
   }
   catch (...)
@@ -149,6 +155,69 @@ void BulkPipelineManager::createModels()
       throw std::runtime_error("Failed to initialize model: " + model->modelPath());
     }
     _models.push_back(model);
+  }
+
+  auto first_values =
+    std::pair<size_t, size_t>{_models.front()->programSize(), _models.front()->weightSize()};
+  _use_buffer_sharing =
+    std::all_of(_models.begin(), _models.end(), [first_values](const auto &model) {
+      return model->programSize() == first_values.first &&
+             model->weightSize() == first_values.second;
+    });
+
+  if (_use_buffer_sharing)
+  {
+    int model_idx = 0;
+    for (auto model : _models)
+    {
+      if (model_idx++ < _config.n_owner_models)
+      {
+        // First n_shared_owner_models models are OWNERS
+        continue;
+      }
+
+      // Other models are SHARED
+      model->setBufferOwnership(BulkPipelineModel::BufferOwnership::SHARED);
+    }
+  }
+}
+
+void BulkPipelineManager::linkModels()
+{
+  // If models are not shared, no need to link them
+  if (!_use_buffer_sharing)
+    return;
+
+  for (size_t i = 0; i < _models.size(); ++i)
+  {
+    if (i + _config.n_owner_models < _models.size())
+    {
+      _models[i]->setNextModel(_models[i + _config.n_owner_models]);
+    }
+    else
+    {
+      _models[i]->setNextModel(nullptr);
+    }
+
+    // Shared models share buffers from owners in buffer pool
+    if (_models[i]->ownership() == BulkPipelineModel::BufferOwnership::SHARED)
+    {
+      size_t owner_index = i % _config.n_owner_models;
+      _models[i]->shareBuffersFrom(*_models[owner_index]);
+    }
+  }
+}
+
+void BulkPipelineManager::verifyModels()
+{
+  for (auto &model : _models)
+  {
+    if ((static_cast<uint32_t>(model->metadata()->input_seg_num) != _config.n_inputs) ||
+        (static_cast<uint32_t>(model->metadata()->output_seg_num) != _config.n_outputs))
+    {
+      throw std::runtime_error("Model " + model->modelPath() +
+                               " has different number of inputs/outputs");
+    }
   }
 }
 

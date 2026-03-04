@@ -15,5 +15,5 @@ class net_Unsqueeze(torch.nn.Module):
 
 _model_ = net_Unsqueeze()
 
-# produuce float32 scalar
+# produce float32 scalar
 _inputs_ = torch.randn(1)[0]

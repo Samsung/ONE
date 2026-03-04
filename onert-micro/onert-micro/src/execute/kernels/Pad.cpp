@@ -113,6 +113,12 @@ OMStatus execute_kernel_CirclePad(const OMExecuteArgs &execute_args)
   {
     pad_params.left_padding[idx] = paddings_data[idx * 2];
     pad_params.right_padding[idx] = paddings_data[idx * 2 + 1];
+
+    // Bounds check: padding values must be non-negative
+    if (pad_params.left_padding[idx] < 0 || pad_params.right_padding[idx] < 0)
+    {
+      return IndexError;
+    }
   }
 
   switch (input1->type())

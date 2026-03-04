@@ -114,3 +114,26 @@ TEST_F(BulkPipelineModelTest, test_model_release)
   EXPECT_EQ(model->modelId(), 0);
   EXPECT_EQ(model->metadata(), nullptr);
 }
+
+TEST_F(BulkPipelineModelTest, test_async_fill)
+{
+  model->initialize();
+  model->prepare();
+
+  std::shared_ptr<BulkPipelineModel> next_model;
+  next_model = std::make_shared<BulkPipelineModel>("next_model_path", 0);
+  next_model->initialize();
+  next_model->prepare();
+  next_model->setBufferOwnership(BulkPipelineModel::BufferOwnership::SHARED);
+
+  model->setNextModel(next_model);
+
+  EXPECT_NO_THROW(next_model->startAsyncBufferFill());
+  EXPECT_NO_THROW(next_model->waitForBufferReady());
+
+  // Release model for negative test
+  next_model->release();
+  // Exception will be thrown to different thread
+  next_model->startAsyncBufferFill();
+  EXPECT_ANY_THROW(next_model->waitForBufferReady());
+}
