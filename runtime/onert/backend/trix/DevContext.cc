@@ -246,58 +246,13 @@ void DevContext::runOneBatch(uint32_t dev_num, ModelID model_id, input_buffers *
   }
 
   const auto &dev_handle = _dev_handles.at(dev_num);
-  int req_id;
 
-  if (auto error_code = createNPU_request(dev_handle, model_id_at_device, &req_id))
+  auto ret = runNPU_model(dev_handle, model_id_at_device, NPU_INFER_BLOCKING, input_bufs,
+                          output_bufs, NULL, NULL);
+  if (ret < 0)
   {
-    throw std::runtime_error("Unable to create NPU request with model id (" +
-                             std::to_string(model_id_at_device) + ")" +
-                             " error code : " + std::to_string(error_code));
-  }
-
-  if (auto error_code =
-        setNPU_requestData(dev_handle, req_id, input_bufs, in_info, output_bufs, out_info))
-  {
-    removeNPU_request(dev_handle, req_id);
-    throw std::runtime_error("Unable to create NPU request for model id (" +
-                             std::to_string(model_id_at_device) + ")" +
-                             " error code : " + std::to_string(error_code));
-  }
-
-  // NOTE submitNPU_request is not thread-safe(?). It is rarely hanging(unresponsive).
-  //      Ultimately, to solve this problem, we have to either use other thread-safe API or
-  //      change submitNPU_request to be thread-safe, but both works take time.
-  //      As a workaround, let's allow hanging thread.
-  // TODO Change submitNPU_request to be thread-safe or replaced with other thread-safe API
-  std::packaged_task<int(npudev_h, int)> task(submitNPU_request);
-  auto f = task.get_future();
-  std::thread thread_submit_request(std::move(task), dev_handle, req_id);
-  auto status = f.wait_until(std::chrono::system_clock::now() + std::chrono::seconds(TIMEOUT_SEC));
-  if (status == std::future_status::timeout)
-  {
-    // There is no way to terminate hanging submitNPU_request from the outside.
-    // If a hanging thread is detached, it will remain as a hanging thread. Even so, it's better
-    // than having the main thread hanging.
-    thread_submit_request.detach();
-
-    // TODO Enable removeNPU_request after resolving hanging.
-    // removeNPU_request(dev_handle, req_id);
-    throw std::runtime_error("The npu API \"submitNPU_request\" timeout");
-  }
-
-  auto error_code = f.get();
-  thread_submit_request.join();
-  if (error_code != 0)
-  {
-    removeNPU_request(dev_handle, req_id);
-    throw std::runtime_error("Unable to submit NPU request with req id (" + std::to_string(req_id) +
-                             ")" + " error code : " + std::to_string(error_code));
-  }
-
-  if (auto error_code = removeNPU_request(dev_handle, req_id))
-  {
-    throw std::runtime_error("Unable to remove NPU request with req id (" + std::to_string(req_id) +
-                             ")" + " error code : " + std::to_string(error_code));
+    throw std::runtime_error("Unable to run NPU model with model id (" +
+                             std::to_string(model_id_at_device) + ")");
   }
 }
 
