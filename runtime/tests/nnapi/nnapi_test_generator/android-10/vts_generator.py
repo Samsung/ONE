@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 #
 # Copyright 2017, The Android Open Source Project
+# Copyright 2026, Samsung Electronics Co., Ltd. All Rights Reserved
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -271,15 +272,17 @@ def generate_vts_test(example, test_file):
     testTemplate = """\
 TEST_F({test_case_name}, {test_name}) {{
   generated_tests::Execute(device,
-                           {namespace}::{create_model_name},
-                           {namespace}::{is_ignored_name},
-                           {namespace}::get_{examples_name}(){test_dynamic_output_shape});\n}}
+                           vts_gen_{namespace}::{create_model_name},
+                           vts_gen_{namespace}::{is_ignored_name},
+                           vts_gen_{namespace}::get_{examples_name}(){test_dynamic_output_shape});
+}}
 
 TEST_F(ValidationTest, {test_name}) {{
-  const Model model = {namespace}::{create_model_name}();
-  const std::vector<Request> requests = createRequests({namespace}::get_{examples_name}());
+  const Model model = vts_gen_{namespace}::{create_model_name}();
+  const std::vector<Request> requests = createRequests(vts_gen_{namespace}::get_{examples_name}());
   validateEverything(model, requests);
-}}\n
+}}
+
 """
     if example.model.hasDynamicOutputShape:
         print("#ifdef NN_TEST_DYNAMIC_OUTPUT_SHAPE", file=test_fd)
@@ -300,12 +303,12 @@ def InitializeFiles(model_fd, example_fd, test_fd):
     fileHeader = "// clang-format off\n// Generated file (from: {spec_file}). Do not edit"
     testFileHeader = """\
 // Generated from: {spec_file}.
-namespace {spec_name} {{
+namespace vts_gen_{spec_name} {{
 // Generated {spec_name} test
 #include "{example_file}"
 // Generated model constructor
 #include "{model_file}"
-}} // namespace {spec_name}\n"""
+}} // namespace vts_gen_{spec_name}\n"""
     # This regex is to remove prefix and get relative path for #include
     pathRegex = r".*frameworks/ml/nn/(runtime/test/generated/)?"
     specFileBase = os.path.basename(tg.FileNames.specFile)
