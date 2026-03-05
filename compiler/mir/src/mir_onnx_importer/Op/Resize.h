@@ -23,6 +23,7 @@ namespace mir_onnx
 {
 
 void convertResizeV10(const onnx::NodeProto &onnx_node, ConverterContext *context);
+void convertResizeV11(const onnx::NodeProto &onnx_node, ConverterContext *context);
 
 } // namespace mir_onnx
 

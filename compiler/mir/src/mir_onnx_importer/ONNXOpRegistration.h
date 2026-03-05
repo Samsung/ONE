@@ -206,7 +206,7 @@ inline void registerSupportedOps()
   UNSUPPORTED(Reshape, firstUnknownOpset);
 
   REG(Resize, 10);
-  UNSUPPORTED(Resize, 11);
+  REG(Resize, 11);
   UNSUPPORTED(Resize, firstUnknownOpset);
 
   REG(Shape, 1);
