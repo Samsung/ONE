@@ -1,3 +1,9 @@
+onnx2circle (0.4.2~202603040257~jammy) jammy; urgency=medium
+
+  * Fix Conv2D shape with padding
+
+ -- On-device AI developers <nnfw@samsung.com>  Wed, 04 Mar 2026 03:08:07 +0000
+
 onnx2circle (0.4.2~202602230830~jammy) jammy; urgency=medium
 
   * Introduce ReduceSumSquare and Range operations
