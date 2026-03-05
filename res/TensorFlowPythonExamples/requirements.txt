@@ -5,7 +5,7 @@ grpcio==1.27.2
 h5py==2.10.0
 Keras-Applications==1.0.8
 Keras-Preprocessing==1.1.0
-Markdown==3.2.1
+Markdown==3.8.1
 mock==4.0.2
 numpy==1.18.2
 pkg-resources==0.0.0
