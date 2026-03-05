@@ -21,10 +21,12 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 namespace mir_onnx
 {
 
+std::vector<std::string> getSupportedOperators();
 std::unique_ptr<mir::Graph> importModelFromBinaryFile(const std::string &filename);
 std::unique_ptr<mir::Graph> importModelFromTextFile(const std::string &filename);
 // TODO Remove after changing all uses.

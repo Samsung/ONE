@@ -17,6 +17,7 @@
 #include "ONNXImporterImpl.h"
 #include "ONNXHelpers.h"
 #include "ONNXOpRegistration.h"
+#include "ONNXNodeConverterRegistry.h"
 #include "onnx/onnx.pb.h"
 
 #include "mir/Shape.h"
@@ -32,7 +33,9 @@
 #include <functional>
 #include <iostream>
 #include <memory>
+#include <string>
 #include <utility>
+#include <vector>
 
 namespace mir_onnx
 {
@@ -45,6 +48,7 @@ class ONNXImporterImpl final
 public:
   ONNXImporterImpl();
   ~ONNXImporterImpl();
+  std::vector<std::string> getSupportedOps() const;
   /// @brief Load the model and convert it into a MIR Graph.
   std::unique_ptr<mir::Graph> importModelFromBinaryFile(const std::string &filename);
   std::unique_ptr<mir::Graph> importModelFromTextFile(const std::string &filename);
@@ -104,6 +108,16 @@ void loadModelFromTextFile(const std::string &filename, onnx::ModelProto *model)
     throw std::runtime_error("Couldn't parse file \"" + filename + "\".");
 }
 
+std::vector<std::string> ONNXImporterImpl::getSupportedOps() const
+{
+  std::vector<std::string> ops;
+  for (const auto &op : NodeConverterRegistry::getInstance().getSupportedOperators())
+  {
+    ops.push_back(op.first + "-" + std::to_string(op.second));
+  }
+  return ops;
+}
+
 std::unique_ptr<mir::Graph> ONNXImporterImpl::importModelFromBinaryFile(const std::string &filename)
 {
   _model = std::make_unique<onnx::ModelProto>();
@@ -124,7 +138,7 @@ std::unique_ptr<mir::Graph> ONNXImporterImpl::importModelFromTextFile(const std:
 
 void ONNXImporterImpl::collectUnsupportedOps()
 {
-  std::set<std::pair<std::string, int64_t>> problems_op_set;
+  std::set<NodeConverterRegistry::Operator> unsupported_ops;
 
   for (int i = 0; i < _model->graph().node_size(); i++)
   {
@@ -134,16 +148,16 @@ void ONNXImporterImpl::collectUnsupportedOps()
     auto opset = _modelCtx->getDomainOpsetVersion(onnx_node.domain());
 
     NodeConverterRegistry::ConverterFunc converter =
-      NodeConverterRegistry::getInstance().lookup(op_type, opset);
+      NodeConverterRegistry::getInstance().lookup({op_type, opset});
 
     if (converter == nullptr)
-      problems_op_set.emplace(op_type, opset);
+      unsupported_ops.emplace(op_type, opset);
   }
-  if (!problems_op_set.empty())
+  if (!unsupported_ops.empty())
   {
     std::cerr << "The following operators are not supported:\n";
-    for (const auto &op : problems_op_set)
-      std::cerr << op.first << " opset " << op.second << std::endl;
+    for (const auto &op : unsupported_ops)
+      std::cerr << op.first << "-" << op.second << std::endl;
     throw std::runtime_error("Unsupported operators found");
   }
 }
@@ -199,7 +213,7 @@ std::unique_ptr<mir::Graph> ONNXImporterImpl::createIR()
     auto opset = _modelCtx->getDomainOpsetVersion(onnx_node.domain());
     // Get converter
     NodeConverterRegistry::ConverterFunc converter =
-      NodeConverterRegistry::getInstance().lookup(op_type, opset);
+      NodeConverterRegistry::getInstance().lookup({op_type, opset});
     assert(converter != nullptr);
     converter(onnx_node, _converterCtx.get());
   }
@@ -219,6 +233,12 @@ std::unique_ptr<mir::Graph> ONNXImporterImpl::createIR()
 }
 
 } // namespace
+
+std::vector<std::string> getSupportedOperators()
+{
+  ONNXImporterImpl importer;
+  return importer.getSupportedOps();
+}
 
 std::unique_ptr<mir::Graph> importModelFromBinaryFile(const std::string &filename)
 {

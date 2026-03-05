@@ -30,10 +30,10 @@ class NodeConverterRegsitryTest : public ::testing::Test
 protected:
   void SetUp() override
   {
-    registry.registerConverter("dummy", 1, converterV1);
-    registry.registerConverter("dummy", 3, converterV3);
-    registry.registerConverter("dummy", 7, converterV7);
-    registry.registerConverter("dummy", firstUnknownOpset, nullptr);
+    registry.registerConverter({"dummy", 1}, converterV1);
+    registry.registerConverter({"dummy", 3}, converterV3);
+    registry.registerConverter({"dummy", 7}, converterV7);
+    registry.registerConverter({"dummy", firstUnknownOpset}, nullptr);
   }
 
   NodeConverterRegistry registry;
@@ -41,24 +41,31 @@ protected:
 
 TEST_F(NodeConverterRegsitryTest, existing_lookup_works)
 {
-  auto res = registry.lookup("dummy", 1);
+  auto res = registry.lookup({"dummy", 1});
   ASSERT_EQ(res, &converterV1);
 }
 
 TEST_F(NodeConverterRegsitryTest, skipped_lookup_works)
 {
-  auto res = registry.lookup("dummy", 2);
+  auto res = registry.lookup({"dummy", 2});
   ASSERT_EQ(res, &converterV1);
 }
 
 TEST_F(NodeConverterRegsitryTest, first_unknown_version_works)
 {
-  auto res = registry.lookup("dummy", 14);
+  auto res = registry.lookup({"dummy", 14});
   ASSERT_EQ(res, nullptr);
 }
 
 TEST_F(NodeConverterRegsitryTest, lower_than_first_version)
 {
-  auto res = registry.lookup("dummy", 0);
+  auto res = registry.lookup({"dummy", 0});
   ASSERT_EQ(res, nullptr);
+}
+
+TEST_F(NodeConverterRegsitryTest, registered_ops)
+{
+  auto res = registry.getSupportedOperators();
+  ASSERT_EQ(
+    res, std::vector<NodeConverterRegistry::Operator>({{"dummy", 1}, {"dummy", 3}, {"dummy", 7}}));
 }
