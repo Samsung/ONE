@@ -65,6 +65,7 @@ struct LoggingContext
 void print_help()
 {
   std::cerr << "Usage: onnx2circle <path/to/onnx> <path/to/circle/model> " << std::endl;
+  std::cerr << "       onnx2circle --list-operators" << std::endl;
 }
 
 } // namespace
@@ -82,6 +83,13 @@ int main(int argc, char **argv)
   exo::LoggingContext::get()->config(std::make_unique<EnvConfig>("ONNX2CIRCLE_Log_Backend"));
 
   LOGGER(l);
+
+  if (argc == 2 && std::string(argv[1]) == "--list-operators")
+  {
+    for (const auto &op : mir_onnx::getSupportedOperators())
+      std::cout << op << std::endl;
+    return 0;
+  }
 
   // TODO We need better args parsing in future
   if (!(argc == 3))

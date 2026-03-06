@@ -105,10 +105,10 @@ void ConverterContext::setNodeOutputs(const onnx::NodeProto &onnx_node,
 
 // NodeConverterRegistry
 
-NodeConverterRegistry::ConverterFunc NodeConverterRegistry::lookup(const std::string &optype,
-                                                                   int64_t opset) const
+NodeConverterRegistry::ConverterFunc
+NodeConverterRegistry::lookup(const NodeConverterRegistry::Operator &op) const
 {
-  auto it = _converter_map.find(optype);
+  auto it = _converter_map.find(op.first);
   if (it == _converter_map.end())
   {
     return nullptr;
@@ -117,8 +117,8 @@ NodeConverterRegistry::ConverterFunc NodeConverterRegistry::lookup(const std::st
   const VersionMap &conv_map = it->second;
 
   auto res = std::lower_bound(
-    conv_map.crbegin(), conv_map.crend(), opset,
-    [](const VersionMap::value_type &pair, int64_t opset) { return pair.first > opset; });
+    conv_map.crbegin(), conv_map.crend(), op.second,
+    [](const VersionMap::value_type &pair, unsigned int opset) { return pair.first > opset; });
 
   if (res == conv_map.crend())
   {
@@ -133,10 +133,34 @@ NodeConverterRegistry &NodeConverterRegistry::getInstance()
   return instance;
 }
 
-void NodeConverterRegistry::registerConverter(const std::string &op_type, int64_t opset,
+void NodeConverterRegistry::registerConverter(const NodeConverterRegistry::Operator &op,
                                               NodeConverterRegistry::ConverterFunc conv)
 {
-  _converter_map[op_type].emplace(opset, conv);
+  _converter_map[op.first].emplace(op.second, conv);
+}
+
+std::vector<NodeConverterRegistry::Operator> NodeConverterRegistry::getSupportedOperators() const
+{
+  std::vector<Operator> ops;
+
+  for (const auto &op : _converter_map)
+  {
+    for (const auto &version : op.second)
+    {
+      // Get only supported operators
+      if (version.second != nullptr)
+      {
+        ops.push_back({op.first, version.first});
+      }
+    }
+  }
+
+  // Sort operators alphabetically for consistent output
+  std::sort(ops.begin(), ops.end(), [](const auto &op1, const auto &op2) {
+    return (op1.first == op2.first) ? (op1.second < op2.second) : (op1.first < op2.first);
+  });
+
+  return ops;
 }
 
 } // namespace mir_onnx

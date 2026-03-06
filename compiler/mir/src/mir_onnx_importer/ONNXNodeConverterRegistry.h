@@ -60,17 +60,20 @@ private:
 class NodeConverterRegistry
 {
 public:
+  // @brief ONNX operator defined by its name and opset number.
+  using Operator = std::pair<std::string, unsigned int>;
   using ConverterFunc = void (*)(const onnx::NodeProto &onnx_node, ConverterContext *context);
 
   NodeConverterRegistry() = default;
 
-  ConverterFunc lookup(const std::string &optype, int64_t opset) const;
-  void registerConverter(const std::string &op_type, int64_t opset, ConverterFunc conv);
+  ConverterFunc lookup(const Operator &op) const;
+  void registerConverter(const Operator &op, ConverterFunc conv);
+  std::vector<Operator> getSupportedOperators() const;
 
   static NodeConverterRegistry &getInstance();
 
 private:
-  using VersionMap = std::map<int64_t, ConverterFunc>;
+  using VersionMap = std::map<unsigned int, ConverterFunc>;
 
   std::unordered_map<std::string, VersionMap> _converter_map;
 };

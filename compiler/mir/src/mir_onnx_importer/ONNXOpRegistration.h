@@ -65,7 +65,7 @@ inline void registerSupportedOps()
 {
   auto &registry = NodeConverterRegistry::getInstance();
 
-#define REG_CONVERTER(name, version, function) registry.registerConverter(name, version, function)
+#define REG_CONVERTER(name, version, function) registry.registerConverter({name, version}, function)
 #define REG(name, version) REG_CONVERTER(#name, version, convert##name##V##version)
 #define UNSUPPORTED(name, version) REG_CONVERTER(#name, version, nullptr)
 
