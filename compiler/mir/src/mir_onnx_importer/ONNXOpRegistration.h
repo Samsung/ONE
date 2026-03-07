@@ -47,6 +47,7 @@
 #include "Op/ReduceMean.h"
 #include "Op/Relu.h"
 #include "Op/Reshape.h"
+#include "Op/Resize.h"
 #include "Op/Shape.h"
 #include "Op/Sigmoid.h"
 #include "Op/Softmax.h"
@@ -203,6 +204,10 @@ inline void registerSupportedOps()
   REG(Reshape, 1);
   REG(Reshape, 5);
   UNSUPPORTED(Reshape, firstUnknownOpset);
+
+  REG(Resize, 10);
+  REG(Resize, 11);
+  UNSUPPORTED(Resize, firstUnknownOpset);
 
   REG(Shape, 1);
   UNSUPPORTED(Shape, firstUnknownOpset);

@@ -91,6 +91,8 @@ set(MIR_ONNX_IMPORTER_SOURCES
         Op/Relu.h
         Op/Reshape.cpp
         Op/Reshape.h
+        Op/Resize.cpp
+        Op/Resize.h
         Op/Shape.cpp
         Op/Shape.h
         Op/Sigmoid.cpp
