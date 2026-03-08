@@ -135,68 +135,68 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="resolve__includes_8py_source.html#l00044">44</a> of file <a class="el" href="resolve__includes_8py_source.html">resolve_includes.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   44</span><span class="keyword">def </span><a class="code hl_namespace" href="namespaceresolve__includes.html">resolve_includes</a>(target, source):</div>
-<div class="line"><span class="lineno">   45</span>    <span class="comment"># File collection</span></div>
-<div class="line"><span class="lineno">   46</span>    FileEntry = collections.namedtuple(<span class="stringliteral">&#39;FileEntry&#39;</span>, <span class="stringliteral">&#39;target_name file_contents&#39;</span>)</div>
-<div class="line"><span class="lineno">   47</span> </div>
-<div class="line"><span class="lineno">   48</span>    <span class="comment"># Include pattern</span></div>
-<div class="line"><span class="lineno">   49</span>    pattern = re.compile(<span class="stringliteral">&quot;#include \&quot;(.*)\&quot;&quot;</span>)</div>
-<div class="line"><span class="lineno">   50</span> </div>
-<div class="line"><span class="lineno">   51</span>    <span class="comment"># Get file contents</span></div>
-<div class="line"><span class="lineno">   52</span>    files = []</div>
-<div class="line"><span class="lineno">   53</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(len(source)):</div>
-<div class="line"><span class="lineno">   54</span>        src = source[i]</div>
-<div class="line"><span class="lineno">   55</span>        dst = target[i]</div>
-<div class="line"><span class="lineno">   56</span>        f = open(src)</div>
-<div class="line"><span class="lineno">   57</span>        cts = f.read()</div>
-<div class="line"><span class="lineno">   58</span>        f.close()</div>
-<div class="line"><span class="lineno">   59</span>        contents = cts.splitlines()</div>
-<div class="line"><span class="lineno">   60</span>        entry = FileEntry(target_name=dst, file_contents=contents)</div>
-<div class="line"><span class="lineno">   61</span>        files.append((os.path.basename(src), entry))</div>
-<div class="line"><span class="lineno">   62</span> </div>
-<div class="line"><span class="lineno">   63</span>    <span class="comment"># Create dictionary of tupled list</span></div>
-<div class="line"><span class="lineno">   64</span>    files_dict = dict(files)</div>
-<div class="line"><span class="lineno">   65</span> </div>
-<div class="line"><span class="lineno">   66</span>    <span class="comment"># Check for includes (can only be files in the same folder)</span></div>
-<div class="line"><span class="lineno">   67</span>    final_files = []</div>
-<div class="line"><span class="lineno">   68</span>    <span class="keywordflow">for</span> file <span class="keywordflow">in</span> files:</div>
-<div class="line"><span class="lineno">   69</span>        done = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">   70</span>        tmp_file = file[1].file_contents</div>
-<div class="line"><span class="lineno">   71</span>        print(file[1].target_name)</div>
-<div class="line"><span class="lineno">   72</span>        <span class="keywordflow">while</span> <span class="keywordflow">not</span> done:</div>
-<div class="line"><span class="lineno">   73</span>            file_count = 0</div>
-<div class="line"><span class="lineno">   74</span>            updated_file = []</div>
-<div class="line"><span class="lineno">   75</span>            <span class="keywordflow">for</span> line <span class="keywordflow">in</span> tmp_file:</div>
-<div class="line"><span class="lineno">   76</span>                found = pattern.search(line)</div>
-<div class="line"><span class="lineno">   77</span>                <span class="keywordflow">if</span> found:</div>
-<div class="line"><span class="lineno">   78</span>                    include_file = found.group(1)</div>
-<div class="line"><span class="lineno">   79</span>                    data = files_dict[include_file].file_contents</div>
-<div class="line"><span class="lineno">   80</span>                    updated_file.extend(data)</div>
-<div class="line"><span class="lineno">   81</span>                <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   82</span>                    updated_file.append(line)</div>
-<div class="line"><span class="lineno">   83</span>                    file_count += 1</div>
-<div class="line"><span class="lineno">   84</span> </div>
-<div class="line"><span class="lineno">   85</span>            <span class="comment"># Check if all include are replaced.</span></div>
-<div class="line"><span class="lineno">   86</span>            <span class="keywordflow">if</span> file_count == len(tmp_file):</div>
-<div class="line"><span class="lineno">   87</span>                done = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">   88</span> </div>
-<div class="line"><span class="lineno">   89</span>            <span class="comment"># Update temp file</span></div>
-<div class="line"><span class="lineno">   90</span>            tmp_file = updated_file</div>
-<div class="line"><span class="lineno">   91</span> </div>
-<div class="line"><span class="lineno">   92</span>        <span class="comment"># Append and prepend string literal identifiers and add expanded file to final list</span></div>
-<div class="line"><span class="lineno">   93</span>        tmp_file.insert(0, <span class="stringliteral">&quot;R\&quot;(\n&quot;</span>)</div>
-<div class="line"><span class="lineno">   94</span>        tmp_file.append(<span class="stringliteral">&quot;\n)\&quot;&quot;</span>)</div>
-<div class="line"><span class="lineno">   95</span>        entry = FileEntry(target_name=file[1].target_name, file_contents=tmp_file)</div>
-<div class="line"><span class="lineno">   96</span>        final_files.append((file[0], entry))</div>
-<div class="line"><span class="lineno">   97</span> </div>
-<div class="line"><span class="lineno">   98</span>    <span class="comment"># Write output files</span></div>
-<div class="line"><span class="lineno">   99</span>    <span class="keywordflow">for</span> file <span class="keywordflow">in</span> final_files:</div>
-<div class="line"><span class="lineno">  100</span>        <span class="keyword">with</span> open(file[1].target_name, <span class="stringliteral">&#39;w+&#39;</span>) <span class="keyword">as</span> out_file:</div>
-<div class="line"><span class="lineno">  101</span>            out_file.write(<span class="stringliteral">&quot;\n&quot;</span>.join(file[1].file_contents))</div>
-<div class="line"><span class="lineno">  102</span> </div>
-<div class="line"><span class="lineno">  103</span> </div>
-<div class="line"><span class="lineno">  104</span><span class="comment"># Generate embed files</span></div>
+<p class="definition">Definition at line <a class="el" href="resolve__includes_8py_source.html#l00046">46</a> of file <a class="el" href="resolve__includes_8py_source.html">resolve_includes.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   46</span><span class="keyword">def </span><a class="code hl_namespace" href="namespaceresolve__includes.html">resolve_includes</a>(target, source):</div>
+<div class="line"><span class="lineno">   47</span>    <span class="comment"># File collection</span></div>
+<div class="line"><span class="lineno">   48</span>    FileEntry = collections.namedtuple(<span class="stringliteral">&#39;FileEntry&#39;</span>, <span class="stringliteral">&#39;target_name file_contents&#39;</span>)</div>
+<div class="line"><span class="lineno">   49</span> </div>
+<div class="line"><span class="lineno">   50</span>    <span class="comment"># Include pattern</span></div>
+<div class="line"><span class="lineno">   51</span>    pattern = re.compile(<span class="stringliteral">&quot;#include \&quot;(.*)\&quot;&quot;</span>)</div>
+<div class="line"><span class="lineno">   52</span> </div>
+<div class="line"><span class="lineno">   53</span>    <span class="comment"># Get file contents</span></div>
+<div class="line"><span class="lineno">   54</span>    files = []</div>
+<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(len(source)):</div>
+<div class="line"><span class="lineno">   56</span>        src = source[i]</div>
+<div class="line"><span class="lineno">   57</span>        dst = target[i]</div>
+<div class="line"><span class="lineno">   58</span>        f = open(src)</div>
+<div class="line"><span class="lineno">   59</span>        cts = f.read()</div>
+<div class="line"><span class="lineno">   60</span>        f.close()</div>
+<div class="line"><span class="lineno">   61</span>        contents = cts.splitlines()</div>
+<div class="line"><span class="lineno">   62</span>        entry = FileEntry(target_name=dst, file_contents=contents)</div>
+<div class="line"><span class="lineno">   63</span>        files.append((os.path.basename(src), entry))</div>
+<div class="line"><span class="lineno">   64</span> </div>
+<div class="line"><span class="lineno">   65</span>    <span class="comment"># Create dictionary of tupled list</span></div>
+<div class="line"><span class="lineno">   66</span>    files_dict = dict(files)</div>
+<div class="line"><span class="lineno">   67</span> </div>
+<div class="line"><span class="lineno">   68</span>    <span class="comment"># Check for includes (can only be files in the same folder)</span></div>
+<div class="line"><span class="lineno">   69</span>    final_files = []</div>
+<div class="line"><span class="lineno">   70</span>    <span class="keywordflow">for</span> file <span class="keywordflow">in</span> files:</div>
+<div class="line"><span class="lineno">   71</span>        done = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">   72</span>        tmp_file = file[1].file_contents</div>
+<div class="line"><span class="lineno">   73</span>        print(file[1].target_name)</div>
+<div class="line"><span class="lineno">   74</span>        <span class="keywordflow">while</span> <span class="keywordflow">not</span> done:</div>
+<div class="line"><span class="lineno">   75</span>            file_count = 0</div>
+<div class="line"><span class="lineno">   76</span>            updated_file = []</div>
+<div class="line"><span class="lineno">   77</span>            <span class="keywordflow">for</span> line <span class="keywordflow">in</span> tmp_file:</div>
+<div class="line"><span class="lineno">   78</span>                found = pattern.search(line)</div>
+<div class="line"><span class="lineno">   79</span>                <span class="keywordflow">if</span> found:</div>
+<div class="line"><span class="lineno">   80</span>                    include_file = found.group(1)</div>
+<div class="line"><span class="lineno">   81</span>                    data = files_dict[include_file].file_contents</div>
+<div class="line"><span class="lineno">   82</span>                    updated_file.extend(data)</div>
+<div class="line"><span class="lineno">   83</span>                <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   84</span>                    updated_file.append(line)</div>
+<div class="line"><span class="lineno">   85</span>                    file_count += 1</div>
+<div class="line"><span class="lineno">   86</span> </div>
+<div class="line"><span class="lineno">   87</span>            <span class="comment"># Check if all include are replaced.</span></div>
+<div class="line"><span class="lineno">   88</span>            <span class="keywordflow">if</span> file_count == len(tmp_file):</div>
+<div class="line"><span class="lineno">   89</span>                done = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">   90</span> </div>
+<div class="line"><span class="lineno">   91</span>            <span class="comment"># Update temp file</span></div>
+<div class="line"><span class="lineno">   92</span>            tmp_file = updated_file</div>
+<div class="line"><span class="lineno">   93</span> </div>
+<div class="line"><span class="lineno">   94</span>        <span class="comment"># Append and prepend string literal identifiers and add expanded file to final list</span></div>
+<div class="line"><span class="lineno">   95</span>        tmp_file.insert(0, <span class="stringliteral">&quot;R\&quot;(\n&quot;</span>)</div>
+<div class="line"><span class="lineno">   96</span>        tmp_file.append(<span class="stringliteral">&quot;\n)\&quot;&quot;</span>)</div>
+<div class="line"><span class="lineno">   97</span>        entry = FileEntry(target_name=file[1].target_name, file_contents=tmp_file)</div>
+<div class="line"><span class="lineno">   98</span>        final_files.append((file[0], entry))</div>
+<div class="line"><span class="lineno">   99</span> </div>
+<div class="line"><span class="lineno">  100</span>    <span class="comment"># Write output files</span></div>
+<div class="line"><span class="lineno">  101</span>    <span class="keywordflow">for</span> file <span class="keywordflow">in</span> final_files:</div>
+<div class="line"><span class="lineno">  102</span>        <span class="keyword">with</span> open(file[1].target_name, <span class="stringliteral">&#39;w+&#39;</span>) <span class="keyword">as</span> out_file:</div>
+<div class="line"><span class="lineno">  103</span>            out_file.write(<span class="stringliteral">&quot;\n&quot;</span>.join(file[1].file_contents))</div>
+<div class="line"><span class="lineno">  104</span> </div>
+<div class="line"><span class="lineno">  105</span> </div>
+<div class="line"><span class="lineno">  106</span><span class="comment"># Generate embed files</span></div>
 <div class="ttc" id="anamespaceresolve__includes_html"><div class="ttname"><a href="namespaceresolve__includes.html">resolve_includes</a></div><div class="ttdef"><b>Definition</b> <a href="resolve__includes_8py_source.html#l00001">resolve_includes.py:1</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -214,7 +214,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="resolve__includes_8py_source.html#l00105">105</a> of file <a class="el" href="resolve__includes_8py_source.html">resolve_includes.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="resolve__includes_8py_source.html#l00107">107</a> of file <a class="el" href="resolve__includes_8py_source.html">resolve_includes.py</a>.</p>
 
 </div>
 </div>
@@ -230,7 +230,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="resolve__includes_8py_source.html#l00112">112</a> of file <a class="el" href="resolve__includes_8py_source.html">resolve_includes.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="resolve__includes_8py_source.html#l00114">114</a> of file <a class="el" href="resolve__includes_8py_source.html">resolve_includes.py</a>.</p>
 
 </div>
 </div>
