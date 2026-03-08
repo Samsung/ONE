@@ -1,3 +1,9 @@
+onnx2circle (0.4.2~202603080547~jammy) jammy; urgency=medium
+
+  * Introduce Sign operation.
+
+ -- On-device AI developers <nnfw@samsung.com>  Sun, 08 Mar 2026 05:58:04 +0000
+
 onnx2circle (0.4.2~202603040257~jammy) jammy; urgency=medium
 
   * Fix Conv2D shape with padding
