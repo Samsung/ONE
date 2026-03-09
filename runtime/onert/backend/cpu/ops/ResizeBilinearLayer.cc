@@ -155,10 +155,8 @@ void ResizeBilinearLayer::run()
     case OperandType::INT32:
     case OperandType::INT64:
     case OperandType::QUANT_INT8_SYMM:
-      std::runtime_error("ResizeBilinear NYI");
-      break;
     default:
-      std::runtime_error("ResizeBilinear unsupported data type");
+      throw std::runtime_error("ResizeBilinear unsupported data type");
   }
 }
 
