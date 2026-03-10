@@ -77,7 +77,7 @@ public:
         break;
       }
       default:
-        std::runtime_error("Invalid SparseIndexVectorType");
+        throw std::runtime_error("Invalid SparseIndexVectorType");
     }
   }
 
@@ -109,7 +109,7 @@ public:
         break;
       }
       default:
-        std::runtime_error("Invalid SparseIndexVectorType");
+        throw std::runtime_error("Invalid SparseIndexVectorType");
     }
   }
 
