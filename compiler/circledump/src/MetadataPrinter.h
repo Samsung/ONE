@@ -17,6 +17,7 @@
 #ifndef __CIRCLEDUMP_METADATA_PRINTER_H__
 #define __CIRCLEDUMP_METADATA_PRINTER_H__
 
+#include <cstdint>
 #include <ostream>
 #include <string>
 #include <map>
