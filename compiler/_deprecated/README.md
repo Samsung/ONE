@@ -1,0 +1,53 @@
+# Deprecated Compiler Projects
+
+This directory contains compiler projects that are no longer actively maintained or used in production. These projects have been moved here from the main `compiler/` directory to preserve historical context while keeping the active codebase clean and maintainable.
+
+### Purpose
+
+The `_DEPRECATED` directory serves as a repository for projects that:
+- Have been superseded by newer implementations or alternatives
+- Are no longer supported by the maintenance team
+- Have been archived for historical reference
+- Contain functionality that is no longer required by the project
+
+### Moving Projects to This Directory
+
+A project should be moved to this directory when:
+
+1. **No Active Development**: The project has not received active development or maintenance for an extended period.
+2. **No Active Users**: There are no known users or workflows relying on the project.
+3. **Better Alternatives Exist**: The project's functionality has been replaced by a more suitable alternative in the active codebase.
+
+### Maintenance Policy
+
+Projects in this directory are **not actively maintained**. This means:
+
+- Bug fixes will not be applied
+- New features will not be added
+- Compatibility updates will not be made
+- Documentation will not be updated
+- Security patches will not be provided
+
+### Removal Policy
+
+Projects in this directory may be **permanently removed** from the repository after **one year** from their deprecation date. Note that the code will remain accessible through Git history for reference purposes.
+
+### Accessing Deprecated Projects
+
+Projects in this directory remain in the repository for:
+- Historical reference and audit purposes
+- Potential reactivation if business requirements change
+- Understanding the evolution of the codebase
+
+If you need to use a deprecated project:
+1. **Evaluate Alternatives**: Check if there is a maintained alternative that fulfills your requirements.
+2. **Contact Maintainers**: Discuss with the project maintainers before depending on deprecated code.
+3. **Accept Risks**: Be aware that deprecated projects may have security vulnerabilities, compatibility issues, or lack of support.
+
+### List of Deprecated Projects
+
+This section will be updated as projects are moved to this directory.
+
+| Project | Deprecation Date | Reason |
+|---------|------------------|--------|
+| - | - | - |
