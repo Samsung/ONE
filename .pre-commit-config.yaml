@@ -50,8 +50,10 @@ repos:
       # Exclude files in .yapfignore - yapf's pre-commit issue
       exclude:
         (?x)^(
+          compiler/_deprecated/.*|
           compiler/one-cmds/one-prepare-venv|
           runtime/3rdparty/.*|
+          runtime/contrib/.*|
           runtime/tests/nnapi/nnapi_test_generator/.*|
           runtime/tests/nnapi/specs/.*
         )$
@@ -63,6 +65,11 @@ repos:
       id: clang-format
       types_or: [file]  # override default type check to cl files
       files: ((\.c[cl]?)|(\.cpp)|(\.h(pp)?))$
+      exclude:
+        (?x)^(
+          compiler/_deprecated/.*|
+          runtime/contrib/.*
+        )
 
   - repo: local
     hooks:
