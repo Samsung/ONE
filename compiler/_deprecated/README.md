@@ -50,4 +50,4 @@ This section will be updated as projects are moved to this directory.
 
 | Project | Deprecation Date | Reason |
 |---------|------------------|--------|
-| - | - | - |
+| caffe2circle | 2026-03-13 | Caffe models are no longer supported |
