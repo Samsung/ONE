@@ -1,5 +1,6 @@
 var NAVTREEINDEX296 =
 {
+"structonert_1_1api_1_1_session.html#ae13a7aad6339aa05859766f0ea9eca7a":[41,0,126,0,5,45],
 "structonert_1_1api_1_1_session.html#ae13a7aad6339aa05859766f0ea9eca7a":[42,0,90,0,5,45],
 "structonert_1_1api_1_1_session.html#ae14ba7c5ce30a9095a134440466e2262":[41,0,126,0,5,18],
 "structonert_1_1api_1_1_session.html#ae14ba7c5ce30a9095a134440466e2262":[42,0,90,0,5,18],
@@ -248,6 +249,5 @@ var NAVTREEINDEX296 =
 "structonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_manager_1_1_pipeline_config.html#ad957e2eada54a3ae2cae2a3ed985ab73":[42,0,90,1,11,0,3,0,3],
 "structonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_manager_1_1_pipeline_config.html#ad957e2eada54a3ae2cae2a3ed985ab73":[41,0,126,1,11,0,3,0,3],
 "structonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_manager_1_1_pipeline_config.html#afecb97d2ebc76181094a0d3bac671325":[41,0,126,1,11,0,3,0,2],
-"structonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_manager_1_1_pipeline_config.html#afecb97d2ebc76181094a0d3bac671325":[42,0,90,1,11,0,3,0,2],
-"structonert_1_1backend_1_1trix_1_1ops_1_1trix__ioctl__hwmem.html":[41,0,126,1,11,0,5]
+"structonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_manager_1_1_pipeline_config.html#afecb97d2ebc76181094a0d3bac671325":[42,0,90,1,11,0,3,0,2]
 };

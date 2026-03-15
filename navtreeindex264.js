@@ -1,5 +1,6 @@
 var NAVTREEINDEX264 =
 {
+"runtime_2compute_2cker_2include_2cker_2operation_2_quantize_8h.html":[43,0,3,0,1,0,0,3,46],
 "runtime_2compute_2cker_2include_2cker_2operation_2_quantize_8h.html#a07192b9c7a5bf8333c11d2fa76b39306":[43,0,3,0,1,0,0,3,46,3],
 "runtime_2compute_2cker_2include_2cker_2operation_2_quantize_8h.html#a1675b8f52ae8ca56d53a6d259f7c6718":[43,0,3,0,1,0,0,3,46,2],
 "runtime_2compute_2cker_2include_2cker_2operation_2_quantize_8h.html#a27f1f4bb2578320a7bad562e464ae8b4":[43,0,3,0,1,0,0,3,46,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX264 =
 "runtime_2libs_2misc_2include_2misc_2tensor_2_shape_8h.html":[43,0,3,3,0,0,0,0,9],
 "runtime_2libs_2misc_2include_2misc_2tensor_2_shape_8h.html#a3154e72e888638c01d673df36961d5d8":[43,0,3,3,0,0,0,0,9,1],
 "runtime_2libs_2misc_2include_2misc_2tensor_2_shape_8h.html#a65514e600555c5b1d3bff65b6271d9d4":[43,0,3,3,0,0,0,0,9,2],
-"runtime_2libs_2misc_2include_2misc_2tensor_2_shape_8h_source.html":[43,0,3,3,0,0,0,0,9],
-"runtime_2libs_2misc_2src_2tensor_2_shape_8cpp.html":[43,0,3,3,0,1,0,3]
+"runtime_2libs_2misc_2include_2misc_2tensor_2_shape_8h_source.html":[43,0,3,3,0,0,0,0,9]
 };

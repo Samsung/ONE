@@ -1,5 +1,6 @@
 var NAVTREEINDEX281 =
 {
+"structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeabc1d12e31b952f8b30b78ce01a2474ee":[42,0,62,178,0,0,77],
 "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeabc1d12e31b952f8b30b78ce01a2474ee":[41,0,88,178,0,0,77],
 "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeabdf92e9063280587624db6c121c1a689":[41,0,88,178,0,0,36],
 "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeabdf92e9063280587624db6c121c1a689":[42,0,62,178,0,0,36],
@@ -248,6 +249,5 @@ var NAVTREEINDEX281 =
 "structluci_1_1_fold_densify_pass.html#a353c36aae2372f85c97c5932f31bc76a":[41,0,88,342,1],
 "structluci_1_1_fold_densify_pass.html#a353c36aae2372f85c97c5932f31bc76a":[42,0,62,342,1],
 "structluci_1_1_fold_densify_pass.html#a64b1f41447abba3a94acbe322599ceb7":[41,0,88,342,0],
-"structluci_1_1_fold_densify_pass.html#a64b1f41447abba3a94acbe322599ceb7":[42,0,62,342,0],
-"structluci_1_1_fold_depthwise_conv2_d_pass.html":[42,0,62,343]
+"structluci_1_1_fold_densify_pass.html#a64b1f41447abba3a94acbe322599ceb7":[42,0,62,342,0]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX282 =
 {
+"structluci_1_1_fold_depthwise_conv2_d_pass.html":[42,0,62,343],
 "structluci_1_1_fold_depthwise_conv2_d_pass.html":[41,0,88,343],
 "structluci_1_1_fold_depthwise_conv2_d_pass.html#a4b096cd6a34d41fb562b9669b03b4ad8":[42,0,62,343,0],
 "structluci_1_1_fold_depthwise_conv2_d_pass.html#a4b096cd6a34d41fb562b9669b03b4ad8":[41,0,88,343,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX282 =
 "structluci_1_1_graph_builder_multi_output_1_1_build_node_args.html#a885fb92e9680f2ff39ac54c79d8dc54a":[41,0,88,383,0,0],
 "structluci_1_1_graph_builder_multi_output_1_1_build_node_args.html#a885fb92e9680f2ff39ac54c79d8dc54a":[42,0,62,383,0,0],
 "structluci_1_1_graph_builder_multi_output_1_1_build_node_args.html#aa808b9cadb588478e0328dc78e89fe2d":[41,0,88,383,0,2],
-"structluci_1_1_graph_builder_multi_output_1_1_build_node_args.html#aa808b9cadb588478e0328dc78e89fe2d":[42,0,62,383,0,2],
-"structluci_1_1_graph_builder_multi_output_1_1_build_out_args.html":[42,0,62,383,1]
+"structluci_1_1_graph_builder_multi_output_1_1_build_node_args.html#aa808b9cadb588478e0328dc78e89fe2d":[42,0,62,383,0,2]
 };

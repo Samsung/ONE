@@ -1,5 +1,6 @@
 var NAVTREEINDEX258 =
 {
+"onert-micro_2onert-micro_2src_2execute_2kernels_2_average_pool2_d_8cpp.html#acdb1af4cb5b565f6c4fa0235ae1b632f":[43,0,2,5,1,2,0,6,0],
 "onert-micro_2onert-micro_2src_2execute_2kernels_2_average_pool2_d_8cpp_source.html":[43,0,2,5,1,2,0,6],
 "onert-micro_2onert-micro_2src_2execute_2kernels_2_batch_mat_mul_8cpp.html":[43,0,2,5,1,2,0,7],
 "onert-micro_2onert-micro_2src_2execute_2kernels_2_batch_mat_mul_8cpp.html#a4f58417ab1dcaace74aa73f09753a1b7":[43,0,2,5,1,2,0,7,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX258 =
 "onert-micro_2onert-micro_2src_2import_2kernels_2_batch_mat_mul_8cpp.html":[43,0,2,5,1,3,1,6],
 "onert-micro_2onert-micro_2src_2import_2kernels_2_batch_mat_mul_8cpp.html#a860278a1953ef60251c95de3fd75c07f":[43,0,2,5,1,3,1,6,0],
 "onert-micro_2onert-micro_2src_2import_2kernels_2_batch_mat_mul_8cpp_source.html":[43,0,2,5,1,3,1,6],
-"onert-micro_2onert-micro_2src_2import_2kernels_2_batch_to_space_n_d_8cpp.html":[43,0,2,5,1,3,1,7],
-"onert-micro_2onert-micro_2src_2import_2kernels_2_batch_to_space_n_d_8cpp.html#a920cb3e8d071a2b320862fa4d378c1c7":[43,0,2,5,1,3,1,7,0]
+"onert-micro_2onert-micro_2src_2import_2kernels_2_batch_to_space_n_d_8cpp.html":[43,0,2,5,1,3,1,7]
 };

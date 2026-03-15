@@ -1,5 +1,6 @@
 var NAVTREEINDEX284 =
 {
+"structluci_1_1_quantize_with_predecessor_pass.html#aebad389be012a3510ec4bc32f35edd75":[41,0,88,432,0],
 "structluci_1_1_quantize_with_predecessor_pass.html#aebad389be012a3510ec4bc32f35edd75":[42,0,62,432,0],
 "structluci_1_1_quantized_model_verifier.html":[41,0,88,422],
 "structluci_1_1_quantized_model_verifier.html":[42,0,62,422],
@@ -248,6 +249,5 @@ var NAVTREEINDEX284 =
 "structluci_1_1_shuffle_weight_to16x1_float32_pass.html#ae8491e2195e656d52923af1fdb3ab4a8":[41,0,88,466,1],
 "structluci_1_1_shuffle_weight_to16x1_float32_pass.html#ae8491e2195e656d52923af1fdb3ab4a8":[42,0,62,466,1],
 "structluci_1_1_sparsify_tensor_pass.html":[41,0,88,469],
-"structluci_1_1_sparsify_tensor_pass.html":[42,0,62,469],
-"structluci_1_1_sparsify_tensor_pass.html#a2bccb1269795beaa53c8c59999f76545":[42,0,62,469,3]
+"structluci_1_1_sparsify_tensor_pass.html":[42,0,62,469]
 };

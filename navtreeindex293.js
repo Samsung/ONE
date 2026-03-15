@@ -1,5 +1,6 @@
 var NAVTREEINDEX293 =
 {
+"structnnfw_1_1cker_1_1_slice_params.html#aefb593481ce0602d60ec017bb6a88f6c":[41,0,122,0,60,3],
 "structnnfw_1_1cker_1_1_slice_params.html#aefb593481ce0602d60ec017bb6a88f6c":[42,0,86,0,54,3],
 "structnnfw_1_1cker_1_1_softmax_params.html":[41,0,122,0,61],
 "structnnfw_1_1cker_1_1_softmax_params.html":[42,0,86,0,55],
@@ -248,6 +249,5 @@ var NAVTREEINDEX293 =
 "structnnfw_1_1cker_1_1eigen__support_1_1_eigen_context.html#afd04713ab94fa1ac230f0acbe22e12ff":[42,0,86,0,3,0,1],
 "structnnfw_1_1cker_1_1eigen__support_1_1_eigen_context.html#afd04713ab94fa1ac230f0acbe22e12ff":[41,0,122,0,4,0,1],
 "structnnfw_1_1cker_1_1eigen__support_1_1_mat_mul_conv_functor.html":[41,0,122,0,4,2],
-"structnnfw_1_1cker_1_1eigen__support_1_1_mat_mul_conv_functor.html":[42,0,86,0,3,2],
-"structnnfw_1_1cker_1_1eigen__support_1_1_mat_mul_conv_functor.html#af4ede613ecec30c38019f93a50d35cd0":[41,0,122,0,4,2,0]
+"structnnfw_1_1cker_1_1eigen__support_1_1_mat_mul_conv_functor.html":[42,0,86,0,3,2]
 };

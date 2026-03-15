@@ -1,5 +1,6 @@
 var NAVTREEINDEX292 =
 {
+"structnnfw_1_1cker_1_1_conv_params.html#ad47b94004b5b1718979775edaa9eee70":[41,0,122,0,28,0],
 "structnnfw_1_1cker_1_1_conv_params.html#ad47b94004b5b1718979775edaa9eee70":[42,0,86,0,22,0],
 "structnnfw_1_1cker_1_1_conv_params.html#ad4f74d8bfaa34bd1f44a690e7b77fc5f":[42,0,86,0,22,12],
 "structnnfw_1_1cker_1_1_conv_params.html#ad4f74d8bfaa34bd1f44a690e7b77fc5f":[41,0,122,0,28,12],
@@ -248,6 +249,5 @@ var NAVTREEINDEX292 =
 "structnnfw_1_1cker_1_1_slice_params.html#a904f862db2b7bdf83f59b6b8427f5cda":[42,0,86,0,54,0],
 "structnnfw_1_1cker_1_1_slice_params.html#a904f862db2b7bdf83f59b6b8427f5cda":[41,0,122,0,60,0],
 "structnnfw_1_1cker_1_1_slice_params.html#ada2f13242e91f9c235053cb3f71df63a":[42,0,86,0,54,1],
-"structnnfw_1_1cker_1_1_slice_params.html#ada2f13242e91f9c235053cb3f71df63a":[41,0,122,0,60,1],
-"structnnfw_1_1cker_1_1_slice_params.html#aefb593481ce0602d60ec017bb6a88f6c":[41,0,122,0,60,3]
+"structnnfw_1_1cker_1_1_slice_params.html#ada2f13242e91f9c235053cb3f71df63a":[41,0,122,0,60,1]
 };

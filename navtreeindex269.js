@@ -1,5 +1,6 @@
 var NAVTREEINDEX269 =
 {
+"struct_average_pool2_d_chef_factory.html#a65e6d52f4a14046ac3e4a65bafe71dda":[42,0,157,0],
 "struct_b_c_q_fully_connected_chef_factory.html":[42,0,166],
 "struct_b_c_q_fully_connected_chef_factory.html#a4bb8b986413b37da1e6ac6669b1d3bff":[42,0,166,0],
 "struct_b_c_q_gather_chef_factory.html":[42,0,168],
@@ -248,6 +249,5 @@ var NAVTREEINDEX269 =
 "struct_model.html#af5f0e9c8373034c972e5a8e16fcb12c2":[42,0,352,5],
 "struct_model_argument_info.html":[42,0,353],
 "struct_model_argument_info.html#a22551a6af4b28b437f887ccf41fdef4f":[42,0,353,0],
-"struct_model_argument_info.html#a3de4a8f8dce9161db3f6dd20b85942b8":[42,0,353,2],
-"struct_model_argument_info.html#a4e9c06d5a2fd07c0360321bd2b9ae727":[42,0,353,6]
+"struct_model_argument_info.html#a3de4a8f8dce9161db3f6dd20b85942b8":[42,0,353,2]
 };

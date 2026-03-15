@@ -1,5 +1,6 @@
 var NAVTREEINDEX210 =
 {
+"lang_2include_2luci_2_i_r_2_nodes_2_circle_maximum_8h.html":[43,0,0,59,3,0,0,0,0,62],
 "lang_2include_2luci_2_i_r_2_nodes_2_circle_maximum_8h_source.html":[43,0,0,59,3,0,0,0,0,62],
 "lang_2include_2luci_2_i_r_2_nodes_2_circle_mean_8h.html":[43,0,0,59,3,0,0,0,0,64],
 "lang_2include_2luci_2_i_r_2_nodes_2_circle_mean_8h_source.html":[43,0,0,59,3,0,0,0,0,64],
@@ -248,6 +249,5 @@ var NAVTREEINDEX210 =
 "locomotiv_2src_2_validation_8h.html":[43,0,0,54,1,13],
 "locomotiv_2src_2_validation_8h.html#a3423be06dbb7bfdfb346080db7ffb40e":[43,0,0,54,1,13,0],
 "locomotiv_2src_2_validation_8h_source.html":[43,0,0,54,1,13],
-"locop_2include_2locop_2_formatted_graph_8h.html":[43,0,0,55,0,0,1],
-"locop_2include_2locop_2_formatted_graph_8h.html#a14c177771b31e4468a311393564f8a08":[43,0,0,55,0,0,1,4]
+"locop_2include_2locop_2_formatted_graph_8h.html":[43,0,0,55,0,0,1]
 };

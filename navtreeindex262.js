@@ -1,5 +1,6 @@
 var NAVTREEINDEX262 =
 {
+"partition_2src_2_nodes_2_circle_strided_slice_8cpp_source.html":[43,0,0,59,6,1,0,119],
 "partition_2src_2_nodes_2_circle_sub_8cpp.html":[43,0,0,59,6,1,0,120],
 "partition_2src_2_nodes_2_circle_sub_8cpp_source.html":[43,0,0,59,6,1,0,120],
 "partition_2src_2_nodes_2_circle_sum_8cpp.html":[43,0,0,59,6,1,0,121],
@@ -248,6 +249,5 @@ var NAVTREEINDEX262 =
 "res2bin_8py.html#a133d5b5550eb87dda5c6c5417a87990e":[43,0,0,81,7,2,1,1],
 "res2bin_8py.html#a97aeaceb22726ae54f21e5b6080abad6":[43,0,0,81,7,2,1,0],
 "res2bin_8py_source.html":[43,0,0,81,7,2,1],
-"resolve__includes_8py.html":[43,0,3,0,0,2],
-"resolve__includes_8py.html#a3380eed9d3c2bd1cbadb1ca6c74dcbf0":[43,0,3,0,0,2,2]
+"resolve__includes_8py.html":[43,0,3,0,0,2]
 };

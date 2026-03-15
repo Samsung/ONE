@@ -351,12 +351,10 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  155</span>    <span class="keywordflow">case</span> OperandType::INT32:</div>
 <div class="line"><span class="lineno">  156</span>    <span class="keywordflow">case</span> OperandType::INT64:</div>
 <div class="line"><span class="lineno">  157</span>    <span class="keywordflow">case</span> OperandType::QUANT_INT8_SYMM:</div>
-<div class="line"><span class="lineno">  158</span>      std::runtime_error(<span class="stringliteral">&quot;ResizeBilinear NYI&quot;</span>);</div>
-<div class="line"><span class="lineno">  159</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  160</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  161</span>      std::runtime_error(<span class="stringliteral">&quot;ResizeBilinear unsupported data type&quot;</span>);</div>
-<div class="line"><span class="lineno">  162</span>  }</div>
-<div class="line"><span class="lineno">  163</span>}</div>
+<div class="line"><span class="lineno">  158</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  159</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;ResizeBilinear unsupported data type&quot;</span>);</div>
+<div class="line"><span class="lineno">  160</span>  }</div>
+<div class="line"><span class="lineno">  161</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aae73f75c41fa15f5ae2c391918fa09c5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor::data_type</a></div><div class="ttdeci">ir::DataType data_type() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00054">IPortableTensor.h:54</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_a577637576392218c2d08117e3ad00ab7"><div class="ttname"><a href="namespacennfw_1_1cker.html#a577637576392218c2d08117e3ad00ab7">nnfw::cker::ResizeBilinear</a></div><div class="ttdeci">void ResizeBilinear(ResizeBilinearParams &amp;params, const Shape &amp;input_shape, const float *input_data, const Shape &amp;output_shape, float *output_data)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2operation_2_resize_bilinear_8h_source.html#l00213">ResizeBilinear.h:213</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a1cfb53087f7fc161b9162d65aa5520d9"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">onert::backend::cpu::ops::getShape</a></div><div class="ttdeci">nnfw::cker::Shape getShape(const IPortableTensor *tensor)</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_operation_utils_8h_source.html#l00089">OperationUtils.h:89</a></div></div>

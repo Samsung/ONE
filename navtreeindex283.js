@@ -1,5 +1,6 @@
 var NAVTREEINDEX283 =
 {
+"structluci_1_1_graph_builder_multi_output_1_1_build_out_args.html":[42,0,62,383,1],
 "structluci_1_1_graph_builder_multi_output_1_1_build_out_args.html":[41,0,88,383,1],
 "structluci_1_1_graph_builder_multi_output_1_1_build_out_args.html#a45dffe7df4ab6417dd7821b09b5b4b41":[41,0,88,383,1,1],
 "structluci_1_1_graph_builder_multi_output_1_1_build_out_args.html#a45dffe7df4ab6417dd7821b09b5b4b41":[42,0,62,383,1,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX283 =
 "structluci_1_1_quantize_with_predecessor_pass.html":[41,0,88,432],
 "structluci_1_1_quantize_with_predecessor_pass.html":[42,0,62,432],
 "structluci_1_1_quantize_with_predecessor_pass.html#a4b49e668e9db9c54bdd08ba835b77c84":[41,0,88,432,1],
-"structluci_1_1_quantize_with_predecessor_pass.html#a4b49e668e9db9c54bdd08ba835b77c84":[42,0,62,432,1],
-"structluci_1_1_quantize_with_predecessor_pass.html#aebad389be012a3510ec4bc32f35edd75":[41,0,88,432,0]
+"structluci_1_1_quantize_with_predecessor_pass.html#a4b49e668e9db9c54bdd08ba835b77c84":[42,0,62,432,1]
 };

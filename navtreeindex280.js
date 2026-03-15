@@ -1,5 +1,6 @@
 var NAVTREEINDEX280 =
 {
+"structlogo_1_1_reorder_decode_pass_3_01loco_1_1_tensor_bias_add_01_4.html#a3fcc48c96cab4384bcf01db666ed831c":[41,0,87,19,1],
 "structlogo_1_1_reorder_decode_pass_3_01loco_1_1_tensor_bias_add_01_4.html#a3fcc48c96cab4384bcf01db666ed831c":[42,0,61,18,1],
 "structlogo_1_1_reorder_decode_pass_3_01loco_1_1_tensor_bias_add_01_4.html#a5392a0facf9989d3b490ef63575e0c1f":[41,0,87,19,0],
 "structlogo_1_1_reorder_decode_pass_3_01loco_1_1_tensor_bias_add_01_4.html#a5392a0facf9989d3b490ef63575e0c1f":[42,0,61,18,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX280 =
 "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeab9d1e96b0d84baea84aa364ecb66e657":[42,0,62,178,0,0,40],
 "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeab9d1e96b0d84baea84aa364ecb66e657":[41,0,88,178,0,0,40],
 "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeabba5346a5fc7ba1725308742b0ff0851":[41,0,88,178,0,0,66],
-"structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeabba5346a5fc7ba1725308742b0ff0851":[42,0,62,178,0,0,66],
-"structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeabc1d12e31b952f8b30b78ce01a2474ee":[42,0,62,178,0,0,77]
+"structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeabba5346a5fc7ba1725308742b0ff0851":[42,0,62,178,0,0,66]
 };

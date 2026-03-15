@@ -1,5 +1,6 @@
 var NAVTREEINDEX268 =
 {
+"service_2src_2_nodes_2_circle_reduce_min_8cpp_source.html":[43,0,0,59,10,1,0,85],
 "service_2src_2_nodes_2_circle_reduce_prod_8cpp.html":[43,0,0,59,10,1,0,86],
 "service_2src_2_nodes_2_circle_reduce_prod_8cpp_source.html":[43,0,0,59,10,1,0,86],
 "service_2src_2_nodes_2_circle_relu0_to1_8cpp.html":[43,0,0,59,10,1,0,88],
@@ -248,6 +249,5 @@ var NAVTREEINDEX268 =
 "struct_arguments.html#a7c3c2ad9fb52ee2cde0ca201c8f4db00":[42,0,154,0],
 "struct_arguments.html#aa5515e9b25ef4e82a823a5ae3338a4fa":[42,0,154,1],
 "struct_arguments.html#abe319fd8cdc9ab00a70361c33087a7f6":[42,0,154,2],
-"struct_average_pool2_d_chef_factory.html":[42,0,157],
-"struct_average_pool2_d_chef_factory.html#a65e6d52f4a14046ac3e4a65bafe71dda":[42,0,157,0]
+"struct_average_pool2_d_chef_factory.html":[42,0,157]
 };

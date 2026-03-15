@@ -1,5 +1,6 @@
 var NAVTREEINDEX263 =
 {
+"resolve__includes_8py.html#a3380eed9d3c2bd1cbadb1ca6c74dcbf0":[43,0,3,0,0,2,2],
 "resolve__includes_8py.html#a8f7a7c413a3a8d3d72c547ba1d0b980f":[43,0,3,0,0,2,0],
 "resolve__includes_8py.html#ac0718ed4c36d2c8b5d61017256cdaf8d":[43,0,3,0,0,2,1],
 "resolve__includes_8py_source.html":[43,0,3,0,0,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX263 =
 "runtime_2compute_2cker_2include_2cker_2operation_2_pad_8h_source.html":[43,0,3,0,1,0,0,3,44],
 "runtime_2compute_2cker_2include_2cker_2operation_2_pow_8h.html":[43,0,3,0,1,0,0,3,45],
 "runtime_2compute_2cker_2include_2cker_2operation_2_pow_8h.html#a8741f6b2ba404c870bbc0a4b732e8993":[43,0,3,0,1,0,0,3,45,0],
-"runtime_2compute_2cker_2include_2cker_2operation_2_pow_8h_source.html":[43,0,3,0,1,0,0,3,45],
-"runtime_2compute_2cker_2include_2cker_2operation_2_quantize_8h.html":[43,0,3,0,1,0,0,3,46]
+"runtime_2compute_2cker_2include_2cker_2operation_2_pow_8h_source.html":[43,0,3,0,1,0,0,3,45]
 };

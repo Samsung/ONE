@@ -1,5 +1,6 @@
 var NAVTREEINDEX202 =
 {
+"exo_2src_2_pass_2_type_inference_pass_8cpp.html":[43,0,0,41,1,3,18],
 "exo_2src_2_pass_2_type_inference_pass_8cpp_source.html":[43,0,0,41,1,3,18],
 "exo_2src_2_pass_2_type_inference_pass_8h.html":[43,0,0,41,1,3,19],
 "exo_2src_2_pass_2_type_inference_pass_8h_source.html":[43,0,0,41,1,3,19],
@@ -34,13 +35,13 @@ var NAVTREEINDEX202 =
 "expr_2_forward_8h_source.html":[43,0,0,79,0,1,0,0,2],
 "expr_2_macro_8cpp.html":[43,0,0,79,0,2,0,0],
 "expr_2_macro_8cpp_source.html":[43,0,0,79,0,2,0,0],
-"feature_2_accessor_8h.html":[43,0,0,1,0,1,0,0,0,0],
-"feature_2_accessor_8h_source.html":[43,0,0,1,0,1,0,0,0,0],
-"feature_2_layout_8cpp.html":[43,0,0,1,1,0,0,3],
-"feature_2_layout_8cpp_source.html":[43,0,0,1,1,0,0,3],
-"feature_2_overlay_8h.html":[43,0,0,1,0,1,0,0,0,5],
-"feature_2_overlay_8h.html#a91bd5f9924064bd3d3c4a35ad737cad4":[43,0,0,1,0,1,0,0,0,5,1],
-"feature_2_overlay_8h_source.html":[43,0,0,1,0,1,0,0,0,5],
+"feature_2_accessor_8h.html":[43,0,0,2,0,1,0,0,0,0],
+"feature_2_accessor_8h_source.html":[43,0,0,2,0,1,0,0,0,0],
+"feature_2_layout_8cpp.html":[43,0,0,2,1,0,0,3],
+"feature_2_layout_8cpp_source.html":[43,0,0,2,1,0,0,3],
+"feature_2_overlay_8h.html":[43,0,0,2,0,1,0,0,0,5],
+"feature_2_overlay_8h.html#a91bd5f9924064bd3d3c4a35ad737cad4":[43,0,0,2,0,1,0,0,0,5,1],
+"feature_2_overlay_8h_source.html":[43,0,0,2,0,1,0,0,0,5],
 "file__manager_8h.html":[43,0,2,2,0,10],
 "file__manager_8h_source.html":[43,0,2,2,0,10],
 "files.html":[43,0],
@@ -241,13 +242,12 @@ var NAVTREEINDEX202 =
 "functions_eval_x.html":[42,3,5,22],
 "functions_eval_y.html":[42,3,5,23],
 "functions_f.html":[42,3,0,6],
-"functions_func.html":[42,3,1],
 "functions_func.html":[42,3,1,0],
+"functions_func.html":[42,3,1],
 "functions_func_a.html":[42,3,1,1],
 "functions_func_b.html":[42,3,1,2],
 "functions_func_c.html":[42,3,1,3],
 "functions_func_d.html":[42,3,1,4],
 "functions_func_e.html":[42,3,1,5],
-"functions_func_f.html":[42,3,1,6],
-"functions_func_g.html":[42,3,1,7]
+"functions_func_f.html":[42,3,1,6]
 };

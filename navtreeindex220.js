@@ -1,5 +1,6 @@
 var NAVTREEINDEX220 =
 {
+"mir-interpreter_2src_2ops_2_sub_8h_source.html":[43,0,0,73,1,0,63],
 "mir2loco_8cpp.html":[43,0,0,74,1,0],
 "mir2loco_8cpp_source.html":[43,0,0,74,1,0],
 "mir2loco_8h.html":[43,0,0,74,0,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX220 =
 "moco_2lang_2include_2moco_2_i_r_2_variadic_arity_node_8h_source.html":[43,0,0,75,1,0,0,0,11],
 "moco_2pass_2include_2moco_2_pass_2_passes_8h.html":[43,0,0,75,2,0,0,0,1],
 "moco_2pass_2include_2moco_2_pass_2_passes_8h_source.html":[43,0,0,75,2,0,0,0,1],
-"moco_2pass_2src_2_test_helper_8h.html":[43,0,0,75,2,1,7],
-"moco_2pass_2src_2_test_helper_8h.html#a492065d5efc5b9c7ad32a22a14cc1032":[43,0,0,75,2,1,7,0]
+"moco_2pass_2src_2_test_helper_8h.html":[43,0,0,75,2,1,7]
 };

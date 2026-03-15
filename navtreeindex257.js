@@ -1,5 +1,6 @@
 var NAVTREEINDEX257 =
 {
+"onert-micro_2luci-interpreter_2src_2kernels_2_strided_slice_8cpp_source.html":[43,0,2,4,2,1,104],
 "onert-micro_2luci-interpreter_2src_2kernels_2_sub_8cpp.html":[43,0,2,4,2,1,105],
 "onert-micro_2luci-interpreter_2src_2kernels_2_sub_8cpp.html#a6838b50a203db74c6657683eefa7cbbd":[43,0,2,4,2,1,105,1],
 "onert-micro_2luci-interpreter_2src_2kernels_2_sub_8cpp.html#aa6411b3813ed52f8f99108a2227bd9b8":[43,0,2,4,2,1,105,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX257 =
 "onert-micro_2onert-micro_2src_2execute_2kernels_2_arg_min_8cpp.html":[43,0,2,5,1,2,0,5],
 "onert-micro_2onert-micro_2src_2execute_2kernels_2_arg_min_8cpp.html#a431cb1c613fad1c4f1f2aead938a4052":[43,0,2,5,1,2,0,5,0],
 "onert-micro_2onert-micro_2src_2execute_2kernels_2_arg_min_8cpp_source.html":[43,0,2,5,1,2,0,5],
-"onert-micro_2onert-micro_2src_2execute_2kernels_2_average_pool2_d_8cpp.html":[43,0,2,5,1,2,0,6],
-"onert-micro_2onert-micro_2src_2execute_2kernels_2_average_pool2_d_8cpp.html#acdb1af4cb5b565f6c4fa0235ae1b632f":[43,0,2,5,1,2,0,6,0]
+"onert-micro_2onert-micro_2src_2execute_2kernels_2_average_pool2_d_8cpp.html":[43,0,2,5,1,2,0,6]
 };

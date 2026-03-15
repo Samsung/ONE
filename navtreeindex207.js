@@ -1,5 +1,6 @@
 var NAVTREEINDEX207 =
 {
+"import_2include_2luci_2_import_2_nodes_2_circle_cast_8h.html":[43,0,0,59,2,0,0,0,0,12],
 "import_2include_2luci_2_import_2_nodes_2_circle_cast_8h_source.html":[43,0,0,59,2,0,0,0,0,12],
 "import_2include_2luci_2_import_2_nodes_2_circle_ceil_8h.html":[43,0,0,59,2,0,0,0,0,13],
 "import_2include_2luci_2_import_2_nodes_2_circle_ceil_8h_source.html":[43,0,0,59,2,0,0,0,0,13],
@@ -248,6 +249,5 @@ var NAVTREEINDEX207 =
 "import_2src_2_nodes_2_circle_b_c_q_fully_connected_8cpp_source.html":[43,0,0,59,2,1,0,8],
 "import_2src_2_nodes_2_circle_b_c_q_gather_8cpp.html":[43,0,0,59,2,1,0,9],
 "import_2src_2_nodes_2_circle_b_c_q_gather_8cpp_source.html":[43,0,0,59,2,1,0,9],
-"import_2src_2_nodes_2_circle_batch_mat_mul_8cpp.html":[43,0,0,59,2,1,0,6],
-"import_2src_2_nodes_2_circle_batch_mat_mul_8cpp_source.html":[43,0,0,59,2,1,0,6]
+"import_2src_2_nodes_2_circle_batch_mat_mul_8cpp.html":[43,0,0,59,2,1,0,6]
 };

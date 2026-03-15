@@ -1,5 +1,6 @@
 var NAVTREEINDEX249 =
 {
+"nnfw__api__wrapper_8h.html#a3aa65b5a8c62b4ca02ff79c91d26a4cb":[43,0,3,4,0,1,0,0,6],
 "nnfw__api__wrapper_8h.html#a504089b19ce87b6b825e9fad01ce28de":[43,0,3,4,0,1,0,0,2],
 "nnfw__api__wrapper_8h.html#a77c4f2240bba9a94e4a0ad0e164dd297":[43,0,3,4,0,1,0,0,4],
 "nnfw__api__wrapper_8h.html#a7e5f4e4ca00b56433a9dffe6a0a0757a":[43,0,3,4,0,1,0,0,7],
@@ -248,6 +249,5 @@ var NAVTREEINDEX249 =
 "onert-micro_2externals_2flatbuffers_2_array_8h.html#ae596fee57ccff735d36598bf6545eaf2":[43,0,2,2,0,2,3],
 "onert-micro_2externals_2flatbuffers_2_array_8h_source.html":[43,0,2,2,0,2],
 "onert-micro_2externals_2flatbuffers_2_buffer_8h.html":[43,0,2,2,0,4],
-"onert-micro_2externals_2flatbuffers_2_buffer_8h_source.html":[43,0,2,2,0,4],
-"onert-micro_2externals_2flatbuffers_2_registry_8h.html":[43,0,2,2,0,21]
+"onert-micro_2externals_2flatbuffers_2_buffer_8h_source.html":[43,0,2,2,0,4]
 };

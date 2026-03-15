@@ -1,5 +1,6 @@
 var NAVTREEINDEX259 =
 {
+"onert-micro_2onert-micro_2src_2import_2kernels_2_batch_to_space_n_d_8cpp.html#a920cb3e8d071a2b320862fa4d378c1c7":[43,0,2,5,1,3,1,7,0],
 "onert-micro_2onert-micro_2src_2import_2kernels_2_batch_to_space_n_d_8cpp_source.html":[43,0,2,5,1,3,1,7],
 "onert-micro_2onert-micro_2src_2import_2kernels_2_cast_8cpp.html":[43,0,2,5,1,3,1,8],
 "onert-micro_2onert-micro_2src_2import_2kernels_2_cast_8cpp.html#a860205e0755d2511585cffbc488fa4a5":[43,0,2,5,1,3,1,8,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX259 =
 "onert-micro_8cpp.html#abfbe814504a1985f6861c1da19d77c77":[43,0,2,5,1,0,0,13],
 "onert-micro_8cpp.html#ac4532bafa5aef43492fac0ae927f3ec6":[43,0,2,5,1,0,0,9],
 "onert-micro_8cpp.html#aca4cac4c6f9f0dc5aa1b006a8754d70e":[43,0,2,5,1,0,0,11],
-"onert-micro_8cpp.html#af34150291cf5ff5d0d441ef73e623400":[43,0,2,5,1,0,0,7],
-"onert-micro_8cpp.html#afd118ff8901b13ed9cea10e7e489cde4":[43,0,2,5,1,0,0,2]
+"onert-micro_8cpp.html#af34150291cf5ff5d0d441ef73e623400":[43,0,2,5,1,0,0,7]
 };

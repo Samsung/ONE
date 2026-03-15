@@ -1,5 +1,6 @@
 var NAVTREEINDEX286 =
 {
+"structluci_1_1sinf_1_1_strided_slice_context.html#aa70f1e788ece592f9f4fbf1fea1810e0":[41,0,88,2,2,1],
 "structluci_1_1sinf_1_1_strided_slice_context.html#aa70f1e788ece592f9f4fbf1fea1810e0":[42,0,62,2,2,1],
 "structluci_1_1sinf_1_1_strided_slice_context.html#ab0f85f132a6a9a0d686d49deb23befa1":[41,0,88,2,2,4],
 "structluci_1_1sinf_1_1_strided_slice_context.html#ab0f85f132a6a9a0d686d49deb23befa1":[42,0,62,2,2,4],
@@ -248,6 +249,5 @@ var NAVTREEINDEX286 =
 "structluci__interpreter_1_1_resize_bilinear_params.html#a9c7f3430df691ffd4fd48f25ed123350":[41,0,91,56,1],
 "structluci__interpreter_1_1_resize_bilinear_params.html#a9c7f3430df691ffd4fd48f25ed123350":[42,0,63,56,1],
 "structluci__interpreter_1_1_resize_bilinear_params.html#ad16d9e6b4307ee9cf57cf7513223c818":[41,0,91,56,0],
-"structluci__interpreter_1_1_resize_bilinear_params.html#ad16d9e6b4307ee9cf57cf7513223c818":[42,0,63,56,0],
-"structluci__interpreter_1_1_resize_nearest_neighbor_params.html":[42,0,63,57]
+"structluci__interpreter_1_1_resize_bilinear_params.html#ad16d9e6b4307ee9cf57cf7513223c818":[42,0,63,56,0]
 };
