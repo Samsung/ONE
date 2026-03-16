@@ -50,13 +50,13 @@ jobs:
         arch: [ x86_64, aarch64 ]
         include:
           - arch: x86_64
-            runner: one-x64-linux
+            runner: ubuntu-24.04
           - arch: aarch64
-            runner: one-arm-linux
+            runner: ubuntu-24.04-arm
     runs-on: ${{ matrix.runner }}
     container:
       # Use test image: default image is not supporting arm64 yet
-      image: samsungonedev.azurecr.io/nnfw/one-devtools:${{ matrix.ubuntu_code }}
+      image: nnfw/one-devtools:${{ matrix.ubuntu_code }}
       options: --user root
     env:
       TARGET_ARCH: ${{ matrix.arch }}

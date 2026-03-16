@@ -51,9 +51,9 @@ jobs:
         include:
           - arch: armv7l
             platform: arm
-    runs-on: one-x64-linux
+    runs-on: ubuntu-24.04
     container:
-      image: samsungonedev.azurecr.io/nnfw/one-devtools:${{ matrix.ubuntu_code }}
+      image: nnfw/one-devtools:${{ matrix.ubuntu_code }}
       options: --user root
     env:
       TARGET_ARCH: ${{ matrix.arch }}
