@@ -17,8 +17,8 @@ RUN apt-get update \
 RUN apt-get update \
  && apt-get -qqy install tree tmux sudo
 
-# add ppa:deadsnakes to install python3.10
-RUN add-apt-repository ppa:deadsnakes/ppa -y
+# add ppa:circletools to install python3.10
+RUN add-apt-repository ppa:circletools/onepython-focal -y
 # add ppa:circletools to install circle-interpreter
 RUN add-apt-repository ppa:circletools/nightly -y
 
