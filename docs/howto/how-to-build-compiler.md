@@ -48,18 +48,29 @@ $ pip install numpy flatbuffers
 ```
 
 Supported platforms:
-- Ubuntu 22.04
+- Ubuntu 20.04
+- Ubuntu 22.04 (recommended)
 - Ubuntu 24.04 (experimental)
 
 Supported Python versions:
-- Python 3.10 for Ubuntu 22.04
+- Python 3.10 for Ubuntu 20.04 and Ubuntu 22.04
 - Python 3.12 for Ubuntu 24.04
 
 > [!NOTE]
-> Ubuntu 20.04 support is unavailable as ppa:deadsnake has ended providing
-> Python3.10 as Ubuntu 20.04 is now end-of-life.
-> We are seeking alternate solution for this issue and when available,
-> this document will be updated with the information.
+> Python 3.10 needs to be installed manually on Ubuntu 20.04,
+> as it is not available in the default repositories.
+>
+> The `ppa:circletools/onepython-focal` repository is a temporary channel
+> provided only for building this compiler.
+
+The following steps are required only for Ubuntu 20.04:
+
+```
+sudo apt-get install software-properties-common
+sudo -E add-apt-repository ppa:circletools/onepython-focal -y
+sudo apt-get -y install python3.10 python3.10-venv python3.10-dev
+python3.10 -m ensurepip
+```
 
 ## Build for Ubuntu
 
