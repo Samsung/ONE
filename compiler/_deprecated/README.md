@@ -51,6 +51,9 @@ This section will be updated as projects are moved to this directory.
 | Project | Deprecation Date | Reason |
 |---------|------------------|--------|
 | caffe2circle | 2026-03-13 | Caffe models are no longer supported |
+| enco | 2026-03-16 | We don't longer maintain Android NN API backend any more |
+| enco-intf | 2026-03-16 | We don't maintain `enco` any more |
+| encodump | 2026-03-16 | We don't maintain `enco` any more |
 | onnx2circle | 2026-03-16 | Use circle-mlir's onnx2circle tool |
 | onnx2tflite | 2026-03-16 | onnx2tflite + tflite2circle is replaced as circle-mlir's onnx2circle tool |
 | onnx2tflite-integration-test | 2026-03-16 | onnx2tflite is no longer used |
