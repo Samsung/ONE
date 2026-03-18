@@ -62,3 +62,10 @@ This section will be updated as projects are moved to this directory.
 | tf2tflite-dredd-pbtxt-test | 2026-03-18 | `tf2tflite` is deprecated |
 | tf2tflite-value-pb-test | 2026-03-18 | `tf2tflite` is deprecated |
 | tf2tflite-value-pbtxt-test | 2026-03-18 | `tf2tflite` is deprecated |
+| tf2circle | 2026-03-18 | Replaced to use official TFLite converter then use tflite2circle |
+| tf2circle-conversion-test | 2026-03-18 | `tf2circle` is deprecated |
+| tf2circle-dredd-pb-test | 2026-03-18 | `tf2circle` is deprecated |
+| tf2circle-dredd-pbtxt-test | 2026-03-18 | `tf2circle` is deprecated |
+| tf2circle-model-test | 2026-03-18 | `tf2circle` is deprecated |
+| tf2circle-ui-check | 2026-03-18 | `tf2circle` is deprecated |
+| tf2circle-value-pbtxt-remoe-test | 2026-03-18 | `tf2circle` is deprecated |
