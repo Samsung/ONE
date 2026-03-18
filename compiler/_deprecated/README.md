@@ -57,3 +57,8 @@ This section will be updated as projects are moved to this directory.
 | onnx2circle | 2026-03-16 | Use circle-mlir's onnx2circle tool |
 | onnx2tflite | 2026-03-16 | onnx2tflite + tflite2circle is replaced as circle-mlir's onnx2circle tool |
 | onnx2tflite-integration-test | 2026-03-16 | onnx2tflite is no longer used |
+| tf2tflite | 2026-03-18 | Use TF's official tool |
+| tf2tflite-dredd-pb-test | 2026-03-18 | `tf2tflite` is deprecated |
+| tf2tflite-dredd-pbtxt-test | 2026-03-18 | `tf2tflite` is deprecated |
+| tf2tflite-value-pb-test | 2026-03-18 | `tf2tflite` is deprecated |
+| tf2tflite-value-pbtxt-test | 2026-03-18 | `tf2tflite` is deprecated |
