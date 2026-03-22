@@ -117,6 +117,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ac6230d495fc909bb61195c45f703d492" id="r_ac6230d495fc909bb61195c45f703d492"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="compiler_2circle-opselector_2driver_2driver_8cpp.html#ac6230d495fc909bb61195c45f703d492">print_version</a> (void)</td></tr>
 <tr class="separator:ac6230d495fc909bb61195c45f703d492"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0bd2da0b208d77121c01ef3a7e7ae198" id="r_a0bd2da0b208d77121c01ef3a7e7ae198"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="compiler_2circle-opselector_2driver_2driver_8cpp.html#a0bd2da0b208d77121c01ef3a7e7ae198">entry</a> (int argc, char **argv)</td></tr>
+<tr class="memdesc:a0bd2da0b208d77121c01ef3a7e7ae198"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dump IR for given arguments.  <br /></td></tr>
 <tr class="separator:a0bd2da0b208d77121c01ef3a7e7ae198"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
@@ -145,6 +146,9 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Dump IR for given arguments. </p>
+<p>Call example: $ ./build/compiler/encodump/encodump \ &ndash;frontend build/compiler/enco/frontend/caffe/libenco_caffe_frontend.so \ &ndash;frontend-arg build/compiler/enco/test/caffe/Convolution_003.prototxt \ &ndash;frontend-arg build/compiler/enco/test/caffe/Convolution_003.caffemodel </p>
 
 <p class="definition">Definition at line <a class="el" href="compiler_2circle-opselector_2driver_2driver_8cpp_source.html#l00042">42</a> of file <a class="el" href="compiler_2circle-opselector_2driver_2driver_8cpp_source.html">Driver.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   43</span>{</div>
@@ -230,7 +234,7 @@ Functions</h2></td></tr>
 <div class="ttc" id="anamespaceopselector_html_a6d94db6d0cc5886d326f921781701c51"><div class="ttname"><a href="namespaceopselector.html#a6d94db6d0cc5886d326f921781701c51">opselector::exportModule</a></div><div class="ttdeci">bool exportModule(luci::Module *module, std::string &amp;output_path)</div><div class="ttdef"><b>Definition</b> <a href="_module_i_o_8cpp_source.html#l00029">ModuleIO.cpp:29</a></div></div>
 <div class="ttc" id="anamespaceq__implant__qparam__test_html_a3cf5671ec6dbd34a67d0ea30316e2dc9"><div class="ttname"><a href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">q_implant_qparam_test.module</a></div><div class="ttdeci">module</div><div class="ttdef"><b>Definition</b> <a href="q__implant__qparam__test_8py_source.html#l00039">q_implant_qparam_test.py:39</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compiler_2arser_2include_2arser_2arser_8h_source.html#l00757">arser::Helper::add_version()</a>, <a class="el" href="_module_i_o_8cpp_source.html#l00029">opselector::exportModule()</a>, <a class="el" href="namespaceopselector.html#a156e509cd8c9530ba732aa90110ccf46ab718adec73e04ce3ec720dd11a06a308">opselector::ID</a>, <a class="el" href="namespaceopselector.html#a156e509cd8c9530ba732aa90110ccf46aad32e604e17467fc435538334fbddf3e">opselector::NAME</a>, and <a class="el" href="compiler_2circle-opselector_2driver_2driver_8cpp_source.html#l00036">print_version()</a>.</p>
+<p class="reference">References <a class="el" href="compiler_2arser_2include_2arser_2arser_8h_source.html#l00757">arser::Helper::add_version()</a>, <a class="el" href="compiler_2__deprecated_2encodump_2src_2driver_8cpp_source.html#l00155">entry()</a>, <a class="el" href="_module_i_o_8cpp_source.html#l00029">opselector::exportModule()</a>, <a class="el" href="namespaceopselector.html#a156e509cd8c9530ba732aa90110ccf46ab718adec73e04ce3ec720dd11a06a308">opselector::ID</a>, <a class="el" href="namespaceopselector.html#a156e509cd8c9530ba732aa90110ccf46aad32e604e17467fc435538334fbddf3e">opselector::NAME</a>, and <a class="el" href="compiler_2circle-opselector_2driver_2driver_8cpp_source.html#l00036">print_version()</a>.</p>
 
 </div>
 </div>

@@ -125,17 +125,24 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-build-compiler.
 <div class="line">curl</div>
 <div class="line">$ pip install numpy flatbuffers</div>
 </div><!-- fragment --><p>Supported platforms:</p><ul>
-<li>Ubuntu 22.04</li>
+<li>Ubuntu 20.04</li>
+<li>Ubuntu 22.04 (recommended)</li>
 <li>Ubuntu 24.04 (experimental)</li>
 </ul>
 <p>Supported Python versions:</p><ul>
-<li>Python 3.10 for Ubuntu 22.04</li>
+<li>Python 3.10 for Ubuntu 20.04 and Ubuntu 22.04</li>
 <li>Python 3.12 for Ubuntu 24.04</li>
 </ul>
 <blockquote class="doxtable">
-<p>&zwj;[!NOTE] Ubuntu 20.04 support is unavailable as ppa:deadsnake has ended providing Python3.10 as Ubuntu 20.04 is now end-of-life. We are seeking alternate solution for this issue and when available, this document will be updated with the information. </p>
+<p>&zwj;[!NOTE] Python 3.10 needs to be installed manually on Ubuntu 20.04, as it is not available in the default repositories.</p>
+<p>The <code>ppa:circletools/onepython-focal</code> repository is a temporary channel provided only for building this compiler. </p>
 </blockquote>
-<h1>Build for Ubuntu</h1>
+<p>The following steps are required only for Ubuntu 20.04:</p>
+<div class="fragment"><div class="line">sudo apt-get install software-properties-common</div>
+<div class="line">sudo -E add-apt-repository ppa:circletools/onepython-focal -y</div>
+<div class="line">sudo apt-get -y install python3.10 python3.10-venv python3.10-dev</div>
+<div class="line">python3.10 -m ensurepip</div>
+</div><!-- fragment --><h1>Build for Ubuntu</h1>
 <p>In a typical linux development environment, including Ubuntu, you can build the compiler with a simple command like this:</p>
 <div class="fragment"><div class="line">$ git clone https://github.com/Samsung/ONE.git one</div>
 <div class="line">$ cd one</div>

@@ -422,23 +422,23 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_partition_read_8cpp_source.html#l00132">132</a> of file <a class="el" href="_partition_read_8cpp_source.html">PartitionRead.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  133</span>{</div>
-<div class="line"><span class="lineno">  134</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
+<div class="line"><span class="lineno">  134</span>  <a class="code hl_define" href="onnx2circle_8cpp.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
 <div class="line"><span class="lineno">  135</span> </div>
-<div class="line"><span class="lineno">  136</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;PartitionConfig: &quot;</span> &lt;&lt; path &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  136</span>  <a class="code hl_define" href="onnx2circle_8cpp.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;PartitionConfig: &quot;</span> &lt;&lt; path &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">  137</span> </div>
 <div class="line"><span class="lineno">  138</span>  <span class="keyword">auto</span> partition_config = <a class="code hl_function" href="namespacecrew.html#a7b443196dad0a3527f4e12bccad775db">crew::read_ini</a>(path);</div>
 <div class="line"><span class="lineno">  139</span> </div>
-<div class="line"><span class="lineno">  140</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; partition_config &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  140</span>  <a class="code hl_define" href="onnx2circle_8cpp.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; partition_config &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">  141</span> </div>
 <div class="line"><span class="lineno">  142</span>  <span class="keyword">auto</span> partition_table = parse_table(partition_config);</div>
 <div class="line"><span class="lineno">  143</span> </div>
 <div class="line"><span class="lineno">  144</span>  <span class="keywordflow">return</span> partition_table;</div>
 <div class="line"><span class="lineno">  145</span>}</div>
-<div class="ttc" id="acirclechef_2log_2include_2_log_8h_html_a5495ed6c3fae204a397f0edad87f820e"><div class="ttname"><a href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a></div><div class="ttdeci">#define LOGGER(name)</div><div class="ttdef"><b>Definition</b> <a href="circlechef_2log_2include_2_log_8h_source.html#l00065">Log.h:65</a></div></div>
-<div class="ttc" id="acirclechef_2log_2include_2_log_8h_html_a7af9b9d1a859db99acb5e3447167b029"><div class="ttname"><a href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a></div><div class="ttdeci">#define INFO(name)</div><div class="ttdef"><b>Definition</b> <a href="circlechef_2log_2include_2_log_8h_source.html#l00068">Log.h:68</a></div></div>
 <div class="ttc" id="anamespacecrew_html_a7b443196dad0a3527f4e12bccad775db"><div class="ttname"><a href="namespacecrew.html#a7b443196dad0a3527f4e12bccad775db">crew::read_ini</a></div><div class="ttdeci">bool read_ini(const std::string &amp;path, PConfig &amp;config)</div><div class="ttdoc">Read config as ini file, return false if failed.</div><div class="ttdef"><b>Definition</b> <a href="_p_config_8cpp_source.html#l00121">PConfig.cpp:121</a></div></div>
+<div class="ttc" id="aonnx2circle_8cpp_html_a5495ed6c3fae204a397f0edad87f820e"><div class="ttname"><a href="onnx2circle_8cpp.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a></div><div class="ttdeci">#define LOGGER(name)</div><div class="ttdef"><b>Definition</b> <a href="onnx2circle_8cpp_source.html#l00072">onnx2circle.cpp:72</a></div></div>
+<div class="ttc" id="aonnx2circle_8cpp_html_a7af9b9d1a859db99acb5e3447167b029"><div class="ttname"><a href="onnx2circle_8cpp.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a></div><div class="ttdeci">#define INFO(name)</div><div class="ttdef"><b>Definition</b> <a href="onnx2circle_8cpp_source.html#l00075">onnx2circle.cpp:75</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00068">INFO</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00065">LOGGER</a>, and <a class="el" href="_p_config_8cpp_source.html#l00121">crew::read_ini()</a>.</p>
+<p class="reference">References <a class="el" href="onnx2circle_8cpp_source.html#l00075">INFO</a>, <a class="el" href="onnx2circle_8cpp_source.html#l00072">LOGGER</a>, and <a class="el" href="_p_config_8cpp_source.html#l00121">crew::read_ini()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_circle_partitioner_8cpp_source.html#l00077">entry()</a>.</p>
 

@@ -2911,34 +2911,34 @@ template&lt;<a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b358
 <div class="fragment"><div class="line"><span class="lineno">   37</span>{</div>
 <div class="line"><span class="lineno">   38</span>  assert(source != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   39</span> </div>
-<div class="line"><span class="lineno">   40</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
+<div class="line"><span class="lineno">   40</span>  <a class="code hl_define" href="onnx2circle_8cpp.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
 <div class="line"><span class="lineno">   41</span> </div>
 <div class="line"><span class="lineno">   42</span>  <span class="keyword">auto</span> pgroups = <a class="code hl_function" href="namespaceluci.html#a04a20c6f763e0fdc6b551bfb94bfe14c">produce_pgroups</a>(source, partition);</div>
-<div class="line"><span class="lineno">   43</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;--- Partition Graph (1)------------------------&quot;</span>;</div>
-<div class="line"><span class="lineno">   44</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; pgroups.get();</div>
+<div class="line"><span class="lineno">   43</span>  <a class="code hl_define" href="onnx2circle_8cpp.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;--- Partition Graph (1)------------------------&quot;</span>;</div>
+<div class="line"><span class="lineno">   44</span>  <a class="code hl_define" href="onnx2circle_8cpp.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; pgroups.get();</div>
 <div class="line"><span class="lineno">   45</span> </div>
 <div class="line"><span class="lineno">   46</span>  <span class="keyword">auto</span> mpgroups = <a class="code hl_function" href="namespaceluci.html#ae14bdac669e06f75890edf52bc4ff526">merge_pgroups</a>(pgroups.get());</div>
-<div class="line"><span class="lineno">   47</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;--- Partition Graph (2)------------------------&quot;</span>;</div>
-<div class="line"><span class="lineno">   48</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; mpgroups.get();</div>
+<div class="line"><span class="lineno">   47</span>  <a class="code hl_define" href="onnx2circle_8cpp.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;--- Partition Graph (2)------------------------&quot;</span>;</div>
+<div class="line"><span class="lineno">   48</span>  <a class="code hl_define" href="onnx2circle_8cpp.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; mpgroups.get();</div>
 <div class="line"><span class="lineno">   49</span> </div>
 <div class="line"><span class="lineno">   50</span>  <a class="code hl_function" href="namespaceluci.html#af1613207e15a4f77b06f7ffd77d1cb7e">remove_unused_inputoutputs</a>(mpgroups.get(), source);</div>
-<div class="line"><span class="lineno">   51</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;--- Partition Graph (3)------------------------&quot;</span>;</div>
-<div class="line"><span class="lineno">   52</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; mpgroups.get();</div>
+<div class="line"><span class="lineno">   51</span>  <a class="code hl_define" href="onnx2circle_8cpp.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;--- Partition Graph (3)------------------------&quot;</span>;</div>
+<div class="line"><span class="lineno">   52</span>  <a class="code hl_define" href="onnx2circle_8cpp.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; mpgroups.get();</div>
 <div class="line"><span class="lineno">   53</span> </div>
 <div class="line"><span class="lineno">   54</span>  <span class="keyword">auto</span> pmodules = <a class="code hl_function" href="namespaceluci.html#a3c67826afab8064969a787d23c4f856c">produce_pmodules</a>(mpgroups.get());</div>
-<div class="line"><span class="lineno">   55</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;--- Modules -----------------------------------&quot;</span>;</div>
-<div class="line"><span class="lineno">   56</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; &amp;pmodules;</div>
+<div class="line"><span class="lineno">   55</span>  <a class="code hl_define" href="onnx2circle_8cpp.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;--- Modules -----------------------------------&quot;</span>;</div>
+<div class="line"><span class="lineno">   56</span>  <a class="code hl_define" href="onnx2circle_8cpp.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; &amp;pmodules;</div>
 <div class="line"><span class="lineno">   57</span> </div>
 <div class="line"><span class="lineno">   58</span>  <span class="keywordflow">return</span> pmodules;</div>
 <div class="line"><span class="lineno">   59</span>}</div>
-<div class="ttc" id="acirclechef_2log_2include_2_log_8h_html_a5495ed6c3fae204a397f0edad87f820e"><div class="ttname"><a href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a></div><div class="ttdeci">#define LOGGER(name)</div><div class="ttdef"><b>Definition</b> <a href="circlechef_2log_2include_2_log_8h_source.html#l00065">Log.h:65</a></div></div>
-<div class="ttc" id="acirclechef_2log_2include_2_log_8h_html_a7af9b9d1a859db99acb5e3447167b029"><div class="ttname"><a href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a></div><div class="ttdeci">#define INFO(name)</div><div class="ttdef"><b>Definition</b> <a href="circlechef_2log_2include_2_log_8h_source.html#l00068">Log.h:68</a></div></div>
 <div class="ttc" id="anamespaceluci_html_a04a20c6f763e0fdc6b551bfb94bfe14c"><div class="ttname"><a href="namespaceluci.html#a04a20c6f763e0fdc6b551bfb94bfe14c">luci::produce_pgroups</a></div><div class="ttdeci">std::unique_ptr&lt; luci::PGroups &gt; produce_pgroups(const luci::Module *source, const luci::PartitionTable &amp;partition)</div><div class="ttdoc">This will produce a PGroups from Module and PartitionTable.</div><div class="ttdef"><b>Definition</b> <a href="_partition_p_groups_8cpp_source.html#l00225">PartitionPGroups.cpp:225</a></div></div>
 <div class="ttc" id="anamespaceluci_html_a3c67826afab8064969a787d23c4f856c"><div class="ttname"><a href="namespaceluci.html#a3c67826afab8064969a787d23c4f856c">luci::produce_pmodules</a></div><div class="ttdeci">luci::PartedModules produce_pmodules(const luci::PGroups *pgroups)</div><div class="ttdoc">This will produce list of luci::Module as PartedModules from pgroups.</div><div class="ttdef"><b>Definition</b> <a href="_partition_p_modules_8cpp_source.html#l00376">PartitionPModules.cpp:376</a></div></div>
 <div class="ttc" id="anamespaceluci_html_ae14bdac669e06f75890edf52bc4ff526"><div class="ttname"><a href="namespaceluci.html#ae14bdac669e06f75890edf52bc4ff526">luci::merge_pgroups</a></div><div class="ttdeci">std::unique_ptr&lt; luci::PGroups &gt; merge_pgroups(const luci::PGroups *s_pgroups)</div><div class="ttdoc">This will merge pgroups with same group values in topological order.</div><div class="ttdef"><b>Definition</b> <a href="_partition_merge_8cpp_source.html#l00200">PartitionMerge.cpp:200</a></div></div>
 <div class="ttc" id="anamespaceluci_html_af1613207e15a4f77b06f7ffd77d1cb7e"><div class="ttname"><a href="namespaceluci.html#af1613207e15a4f77b06f7ffd77d1cb7e">luci::remove_unused_inputoutputs</a></div><div class="ttdeci">void remove_unused_inputoutputs(luci::PGroups *pgroups, const luci::Module *source)</div><div class="ttdoc">This will remove unused inputs/outputs in each pgroup of pgroups.</div><div class="ttdef"><b>Definition</b> <a href="_partition_cleanup_8cpp_source.html#l00067">PartitionCleanup.cpp:67</a></div></div>
+<div class="ttc" id="aonnx2circle_8cpp_html_a5495ed6c3fae204a397f0edad87f820e"><div class="ttname"><a href="onnx2circle_8cpp.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a></div><div class="ttdeci">#define LOGGER(name)</div><div class="ttdef"><b>Definition</b> <a href="onnx2circle_8cpp_source.html#l00072">onnx2circle.cpp:72</a></div></div>
+<div class="ttc" id="aonnx2circle_8cpp_html_a7af9b9d1a859db99acb5e3447167b029"><div class="ttname"><a href="onnx2circle_8cpp.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a></div><div class="ttdeci">#define INFO(name)</div><div class="ttdef"><b>Definition</b> <a href="onnx2circle_8cpp_source.html#l00075">onnx2circle.cpp:75</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00068">INFO</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00065">LOGGER</a>, <a class="el" href="_partition_merge_8cpp_source.html#l00200">merge_pgroups()</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">must_cast()</a>, <a class="el" href="_partition_p_groups_8cpp_source.html#l00225">produce_pgroups()</a>, <a class="el" href="_partition_p_modules_8cpp_source.html#l00376">produce_pmodules()</a>, and <a class="el" href="_partition_cleanup_8cpp_source.html#l00067">remove_unused_inputoutputs()</a>.</p>
+<p class="reference">References <a class="el" href="onnx2circle_8cpp_source.html#l00075">INFO</a>, <a class="el" href="onnx2circle_8cpp_source.html#l00072">LOGGER</a>, <a class="el" href="_partition_merge_8cpp_source.html#l00200">merge_pgroups()</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">must_cast()</a>, <a class="el" href="_partition_p_groups_8cpp_source.html#l00225">produce_pgroups()</a>, <a class="el" href="_partition_p_modules_8cpp_source.html#l00376">produce_pmodules()</a>, and <a class="el" href="_partition_cleanup_8cpp_source.html#l00067">remove_unused_inputoutputs()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_circle_partitioner_8cpp_source.html#l00077">entry()</a>.</p>
 
@@ -3947,7 +3947,7 @@ Each visit implementation must copy node specific attributes. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="_quantization_utils_8cpp_source.html#l00150">150</a> of file <a class="el" href="_quantization_utils_8cpp_source.html">QuantizationUtils.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  152</span>{</div>
-<div class="line"><span class="lineno">  153</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
+<div class="line"><span class="lineno">  153</span>  <a class="code hl_define" href="onnx2circle_8cpp.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
 <div class="line"><span class="lineno">  154</span> </div>
 <div class="line"><span class="lineno">  155</span>  assert(min &lt;= max);</div>
 <div class="line"><span class="lineno">  156</span>  <span class="keyword">const</span> int32_t kMinScale = 0;</div>
@@ -4008,7 +4008,7 @@ Each visit implementation must copy node specific attributes. </dd></dl>
 <div class="ttc" id="anamespaceluci_html_a2250a670bdd1f2f8db677a4080758347"><div class="ttname"><a href="namespaceluci.html#a2250a670bdd1f2f8db677a4080758347">luci::fp32_to_uint8_cast</a></div><div class="ttdeci">uint8_t fp32_to_uint8_cast(float f)</div><div class="ttdef"><b>Definition</b> <a href="_quantization_utils_8cpp_source.html#l00039">QuantizationUtils.cpp:39</a></div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">mir_caffe::CaffeOpType::scale</a></div><div class="ttdeci">@ scale</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_quantization_utils_8cpp_source.html#l00039">fp32_to_uint8_cast()</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00065">LOGGER</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">must_cast()</a>, and <a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html#l00070">WARN</a>.</p>
+<p class="reference">References <a class="el" href="_quantization_utils_8cpp_source.html#l00039">fp32_to_uint8_cast()</a>, <a class="el" href="onnx2circle_8cpp_source.html#l00072">LOGGER</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">must_cast()</a>, and <a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html#l00070">WARN</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_quantization_utils_8cpp_source.html#l00046">asymmetric_wquant_with_minmax_per_layer()</a>, and <a class="el" href="_quantize_activation_8cpp_source.html#l00042">luci::QuantizeActivation::visit()</a>.</p>
 
@@ -4350,7 +4350,7 @@ Each visit implementation must copy node specific attributes. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="import_2src_2_nodes_2_circle_variable_8cpp_source.html#l00048">48</a> of file <a class="el" href="import_2src_2_nodes_2_circle_variable_8cpp_source.html">CircleVariable.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   49</span>{</div>
-<div class="line"><span class="lineno">   50</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
+<div class="line"><span class="lineno">   50</span>  <a class="code hl_define" href="onnx2circle_8cpp.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
 <div class="line"><span class="lineno">   51</span> </div>
 <div class="line"><span class="lineno">   52</span>  <span class="keyword">auto</span> graph = context-&gt;<a class="code hl_function" href="classluci_1_1_graph_builder_context.html#ac83dabdf2807d6feb50fd0332e6486a0">graph</a>();</div>
 <div class="line"><span class="lineno">   53</span>  <span class="keyword">auto</span> reader = context-&gt;<a class="code hl_function" href="classluci_1_1_graph_builder_context.html#ad52e04ea00a9df66c846b9cb4834b043">reader</a>();</div>
@@ -4374,7 +4374,7 @@ Each visit implementation must copy node specific attributes. </dd></dl>
 <div class="line"><span class="lineno">   71</span>  <a class="code hl_function" href="namespaceluci.html#a485965fe8e6f85fb6670047ef915ce8a">copy_tensor_attributes</a>(variable_tensor, variable_node);</div>
 <div class="line"><span class="lineno">   72</span>  variable_node-&gt;shape_status(<a class="code hl_enumvalue" href="namespaceluci.html#afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea">luci::ShapeStatus::VALID</a>);</div>
 <div class="line"><span class="lineno">   73</span> </div>
-<div class="line"><span class="lineno">   74</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;[luci] NodeFinder variable node(&quot;</span> &lt;&lt; tensor_index &lt;&lt; <span class="stringliteral">&quot;) -&gt; &quot;</span> &lt;&lt; variable_node &lt;&lt; <span class="stringliteral">&quot; &quot;</span></div>
+<div class="line"><span class="lineno">   74</span>  <a class="code hl_define" href="onnx2circle_8cpp.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;[luci] NodeFinder variable node(&quot;</span> &lt;&lt; tensor_index &lt;&lt; <span class="stringliteral">&quot;) -&gt; &quot;</span> &lt;&lt; variable_node &lt;&lt; <span class="stringliteral">&quot; &quot;</span></div>
 <div class="line"><span class="lineno">   75</span>          &lt;&lt; <a class="code hl_function" href="namespacefipe.html#a2d411b255edac8aaffb3dc8794f36338">wrap</a>(variable_tensor-&gt;shape()) &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">   76</span> </div>
 <div class="line"><span class="lineno">   77</span>  <span class="keywordflow">return</span> variable_node;</div>
@@ -4386,7 +4386,7 @@ Each visit implementation must copy node specific attributes. </dd></dl>
 <div class="ttc" id="anamespaceluci_html_a485965fe8e6f85fb6670047ef915ce8a"><div class="ttname"><a href="namespaceluci.html#a485965fe8e6f85fb6670047ef915ce8a">luci::copy_tensor_attributes</a></div><div class="ttdeci">void copy_tensor_attributes(const circle::Tensor *tensor, CircleNode *node)</div><div class="ttdoc">Copy common tensor attributes such as name, type, etc. to node.</div><div class="ttdef"><b>Definition</b> <a href="_circle_reader_8cpp_source.html#l00292">CircleReader.cpp:292</a></div></div>
 <div class="ttc" id="anamespaceluci_html_afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea"><div class="ttname"><a href="namespaceluci.html#afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea">luci::ShapeStatus::VALID</a></div><div class="ttdeci">@ VALID</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_circle_reader_8cpp_source.html#l00292">copy_tensor_attributes()</a>, <a class="el" href="luci_2import_2include_2luci_2_import_2_graph_builder_context_8h_source.html#l00084">luci::GraphBuilderContext::graph()</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00068">INFO</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00065">LOGGER</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">must_cast()</a>, <a class="el" href="luci_2import_2include_2luci_2_import_2_graph_builder_context_8h_source.html#l00085">luci::GraphBuilderContext::reader()</a>, <a class="el" href="_circle_reader_8h_source.html#l00107">luci::CircleReader::tensors()</a>, <a class="el" href="namespaceluci.html#afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea">VALID</a>, and <a class="el" href="_circle_reader_8h_source.html#l00084">wrap()</a>.</p>
+<p class="reference">References <a class="el" href="_circle_reader_8cpp_source.html#l00292">copy_tensor_attributes()</a>, <a class="el" href="luci_2import_2include_2luci_2_import_2_graph_builder_context_8h_source.html#l00084">luci::GraphBuilderContext::graph()</a>, <a class="el" href="onnx2circle_8cpp_source.html#l00075">INFO</a>, <a class="el" href="onnx2circle_8cpp_source.html#l00072">LOGGER</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">must_cast()</a>, <a class="el" href="luci_2import_2include_2luci_2_import_2_graph_builder_context_8h_source.html#l00085">luci::GraphBuilderContext::reader()</a>, <a class="el" href="_circle_reader_8h_source.html#l00107">luci::CircleReader::tensors()</a>, <a class="el" href="namespaceluci.html#afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea">VALID</a>, and <a class="el" href="_circle_reader_8h_source.html#l00084">wrap()</a>.</p>
 
 </div>
 </div>
@@ -4707,11 +4707,11 @@ template&lt;<a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b358
 <div class="fragment"><div class="line"><span class="lineno">   33</span>{</div>
 <div class="line"><span class="lineno">   34</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;pmodule : pmodules-&gt;pmodules)</div>
 <div class="line"><span class="lineno">   35</span>  {</div>
-<div class="line"><span class="lineno">   36</span>    <a class="code hl_function" href="encodump_2src_2_dump_8cpp.html#ababc56b5610dfeb0ef1955f8eee00c11">dump</a>(os, &amp;pmodule);</div>
+<div class="line"><span class="lineno">   36</span>    <a class="code hl_function" href="__deprecated_2encodump_2src_2_dump_8cpp.html#ababc56b5610dfeb0ef1955f8eee00c11">dump</a>(os, &amp;pmodule);</div>
 <div class="line"><span class="lineno">   37</span>  }</div>
 <div class="line"><span class="lineno">   38</span>  os &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">   39</span>}</div>
-<div class="ttc" id="aencodump_2src_2_dump_8cpp_html_ababc56b5610dfeb0ef1955f8eee00c11"><div class="ttname"><a href="encodump_2src_2_dump_8cpp.html#ababc56b5610dfeb0ef1955f8eee00c11">dump</a></div><div class="ttdeci">void dump(const coco::Op *op, int indent)</div><div class="ttdef"><b>Definition</b> <a href="encodump_2src_2_dump_8cpp_source.html#l00177">Dump.cpp:177</a></div></div>
+<div class="ttc" id="a__deprecated_2encodump_2src_2_dump_8cpp_html_ababc56b5610dfeb0ef1955f8eee00c11"><div class="ttname"><a href="__deprecated_2encodump_2src_2_dump_8cpp.html#ababc56b5610dfeb0ef1955f8eee00c11">dump</a></div><div class="ttdeci">void dump(const coco::Op *op, int indent)</div><div class="ttdef"><b>Definition</b> <a href="__deprecated_2encodump_2src_2_dump_8cpp_source.html#l00177">Dump.cpp:177</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_partition_i_r_dump_8cpp_source.html#l00026">dump()</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">must_cast()</a>, and <a class="el" href="_partition_8h_source.html#l00068">luci::PartedModules::pmodules</a>.</p>
 
@@ -4752,7 +4752,7 @@ template&lt;<a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b358
 <div class="line"><span class="lineno">   38</span>  os &lt;&lt; <span class="stringliteral">&quot;]&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">   39</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;pnode : pgroup-&gt;pnodes)</div>
 <div class="line"><span class="lineno">   40</span>  {</div>
-<div class="line"><span class="lineno">   41</span>    <a class="code hl_function" href="encodump_2src_2_dump_8cpp.html#ababc56b5610dfeb0ef1955f8eee00c11">dump</a>(os, pnode.get());</div>
+<div class="line"><span class="lineno">   41</span>    <a class="code hl_function" href="__deprecated_2encodump_2src_2_dump_8cpp.html#ababc56b5610dfeb0ef1955f8eee00c11">dump</a>(os, pnode.get());</div>
 <div class="line"><span class="lineno">   42</span>  }</div>
 <div class="line"><span class="lineno">   43</span>  os &lt;&lt; <span class="stringliteral">&quot;Output(s): [ &quot;</span>;</div>
 <div class="line"><span class="lineno">   44</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;node_out : pgroup-&gt;outputs)</div>
@@ -4795,7 +4795,7 @@ template&lt;<a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b358
 <div class="fragment"><div class="line"><span class="lineno">   50</span>{</div>
 <div class="line"><span class="lineno">   51</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;pgroup : pgroups-&gt;pgroups)</div>
 <div class="line"><span class="lineno">   52</span>  {</div>
-<div class="line"><span class="lineno">   53</span>    <a class="code hl_function" href="encodump_2src_2_dump_8cpp.html#ababc56b5610dfeb0ef1955f8eee00c11">dump</a>(os, pgroup.get());</div>
+<div class="line"><span class="lineno">   53</span>    <a class="code hl_function" href="__deprecated_2encodump_2src_2_dump_8cpp.html#ababc56b5610dfeb0ef1955f8eee00c11">dump</a>(os, pgroup.get());</div>
 <div class="line"><span class="lineno">   54</span>  }</div>
 <div class="line"><span class="lineno">   55</span>  os &lt;&lt; <span class="stringliteral">&quot;--- Node2Group items: &quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">   56</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> it = pgroups-&gt;<a class="code hl_variable" href="structluci_1_1_p_groups.html#aadfa660a4d7fc7f86ae957ddc1d22d34">node2group</a>.begin(); it != pgroups-&gt;<a class="code hl_variable" href="structluci_1_1_p_groups.html#aadfa660a4d7fc7f86ae957ddc1d22d34">node2group</a>.end(); ++it)</div>
@@ -8301,7 +8301,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  229</span>  <span class="comment">// NOTE Only main graph (subgraph index 0) will be partitioned.</span></div>
 <div class="line"><span class="lineno">  230</span>  <span class="comment">// Other subgraphs will follow the owner (IF/WHILE/...) group</span></div>
 <div class="line"><span class="lineno">  231</span> </div>
-<div class="line"><span class="lineno">  232</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
+<div class="line"><span class="lineno">  232</span>  <a class="code hl_define" href="onnx2circle_8cpp.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
 <div class="line"><span class="lineno">  233</span> </div>
 <div class="line"><span class="lineno">  234</span>  <span class="keyword">auto</span> pgroups = std::make_unique&lt;luci::PGroups&gt;();</div>
 <div class="line"><span class="lineno">  235</span> </div>
@@ -8323,7 +8323,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  251</span>    }</div>
 <div class="line"><span class="lineno">  252</span>    <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno">  253</span>    {</div>
-<div class="line"><span class="lineno">  254</span>      <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;Skip Op: &quot;</span> &lt;&lt; node-&gt;name() &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  254</span>      <a class="code hl_define" href="onnx2circle_8cpp.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;Skip Op: &quot;</span> &lt;&lt; node-&gt;name() &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">  255</span>      <span class="comment">// record as default group</span></div>
 <div class="line"><span class="lineno">  256</span>      pgroups-&gt;node2group[node] = partition.<a class="code hl_variable" href="structluci_1_1_partition_table.html#ad5e0e36f6fbb67636f1329adac05e070">default_group</a>;</div>
 <div class="line"><span class="lineno">  257</span>    }</div>
@@ -8334,7 +8334,7 @@ template&lt;typename T &gt; </div>
 <div class="ttc" id="aclassluci_1_1_module_html_a89e77805ad90f36bde620a13403a0b1d"><div class="ttname"><a href="classluci_1_1_module.html#a89e77805ad90f36bde620a13403a0b1d">luci::Module::graph</a></div><div class="ttdeci">loco::Graph * graph(void) const</div><div class="ttdoc">provide main graph</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2src_2_module_8cpp_source.html#l00032">Module.cpp:32</a></div></div>
 <div class="ttc" id="astructluci_1_1_partition_table_html_ad5e0e36f6fbb67636f1329adac05e070"><div class="ttname"><a href="structluci_1_1_partition_table.html#ad5e0e36f6fbb67636f1329adac05e070">luci::PartitionTable::default_group</a></div><div class="ttdeci">std::string default_group</div><div class="ttdef"><b>Definition</b> <a href="_partition_8h_source.html#l00043">Partition.h:43</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_partition_i_r_8h_source.html#l00072">luci::PGroups::default_group</a>, <a class="el" href="luci_2lang_2src_2_module_8cpp_source.html#l00032">luci::Module::graph()</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00068">INFO</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00065">LOGGER</a>, <a class="el" href="_feature_codec_8h_source.html#l00080">loco::must_cast()</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">must_cast()</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00051">luci::CircleNode::name()</a>, and <a class="el" href="_partition_i_r_8h_source.html#l00066">luci::PGroups::node2group</a>.</p>
+<p class="reference">References <a class="el" href="_partition_i_r_8h_source.html#l00072">luci::PGroups::default_group</a>, <a class="el" href="luci_2lang_2src_2_module_8cpp_source.html#l00032">luci::Module::graph()</a>, <a class="el" href="onnx2circle_8cpp_source.html#l00075">INFO</a>, <a class="el" href="onnx2circle_8cpp_source.html#l00072">LOGGER</a>, <a class="el" href="_feature_codec_8h_source.html#l00080">loco::must_cast()</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">must_cast()</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00051">luci::CircleNode::name()</a>, and <a class="el" href="_partition_i_r_8h_source.html#l00066">luci::PGroups::node2group</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_partition_8cpp_source.html#l00036">apply()</a>.</p>
 
@@ -8360,7 +8360,7 @@ template&lt;typename T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="_partition_p_modules_8cpp_source.html#l00376">376</a> of file <a class="el" href="_partition_p_modules_8cpp_source.html">PartitionPModules.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  377</span>{</div>
-<div class="line"><span class="lineno">  378</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
+<div class="line"><span class="lineno">  378</span>  <a class="code hl_define" href="onnx2circle_8cpp.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
 <div class="line"><span class="lineno">  379</span> </div>
 <div class="line"><span class="lineno">  380</span>  <a class="code hl_struct" href="structluci_1_1_parted_modules.html">luci::PartedModules</a> pms;</div>
 <div class="line"><span class="lineno">  381</span> </div>
@@ -8380,8 +8380,8 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  395</span>    <span class="comment">// Add main graph so that other subgraphs can be added inside build_graph</span></div>
 <div class="line"><span class="lineno">  396</span>    pm.module-&gt;add(std::move(graph));</div>
 <div class="line"><span class="lineno">  397</span> </div>
-<div class="line"><span class="lineno">  398</span>    <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;--- Partition Graph build----------------------&quot;</span>;</div>
-<div class="line"><span class="lineno">  399</span>    <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;--- name: &quot;</span> &lt;&lt; graph_name;</div>
+<div class="line"><span class="lineno">  398</span>    <a class="code hl_define" href="onnx2circle_8cpp.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;--- Partition Graph build----------------------&quot;</span>;</div>
+<div class="line"><span class="lineno">  399</span>    <a class="code hl_define" href="onnx2circle_8cpp.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;--- name: &quot;</span> &lt;&lt; graph_name;</div>
 <div class="line"><span class="lineno">  400</span>    build_graph(pm, graph_ptr, pgroup.get());</div>
 <div class="line"><span class="lineno">  401</span> </div>
 <div class="line"><span class="lineno">  402</span>    pms.<a class="code hl_variable" href="structluci_1_1_parted_modules.html#ad07c5239bd8c48937c0e4f481d7c9298">pmodules</a>.emplace_back(std::move(pm));</div>
@@ -8394,7 +8394,7 @@ template&lt;typename T &gt; </div>
 <div class="ttc" id="astructluci_1_1_parted_modules_html"><div class="ttname"><a href="structluci_1_1_parted_modules.html">luci::PartedModules</a></div><div class="ttdef"><b>Definition</b> <a href="_partition_8h_source.html#l00066">Partition.h:67</a></div></div>
 <div class="ttc" id="astructluci_1_1_parted_modules_html_ad07c5239bd8c48937c0e4f481d7c9298"><div class="ttname"><a href="structluci_1_1_parted_modules.html#ad07c5239bd8c48937c0e4f481d7c9298">luci::PartedModules::pmodules</a></div><div class="ttdeci">std::vector&lt; PartedModule &gt; pmodules</div><div class="ttdef"><b>Definition</b> <a href="_partition_8h_source.html#l00068">Partition.h:68</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_partition_i_r_8h_source.html#l00053">luci::PGroup::group</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00068">INFO</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00065">LOGGER</a>, <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00131">loco::make_graph()</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">must_cast()</a>, and <a class="el" href="_partition_i_r_8h_source.html#l00063">luci::PGroups::pgroups</a>.</p>
+<p class="reference">References <a class="el" href="_partition_i_r_8h_source.html#l00053">luci::PGroup::group</a>, <a class="el" href="onnx2circle_8cpp_source.html#l00075">INFO</a>, <a class="el" href="onnx2circle_8cpp_source.html#l00072">LOGGER</a>, <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00131">loco::make_graph()</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">must_cast()</a>, and <a class="el" href="_partition_i_r_8h_source.html#l00063">luci::PGroups::pgroups</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_partition_8cpp_source.html#l00036">apply()</a>.</p>
 
@@ -8475,7 +8475,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  339</span>    }</div>
 <div class="line"><span class="lineno">  340</span>  }</div>
 <div class="line"><span class="lineno">  341</span>}</div>
-<div class="ttc" id="anamespaceenco_html_a04382074922db95f73a7e97c25023937"><div class="ttname"><a href="namespaceenco.html#a04382074922db95f73a7e97c25023937">enco::concat</a></div><div class="ttdeci">void concat(std::ostream &amp;os, const std::string &amp;sep, It beg, It end)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2enco_2core_2src_2_string_8h_source.html#l00031">String.h:31</a></div></div>
+<div class="ttc" id="anamespaceenco_html_a04382074922db95f73a7e97c25023937"><div class="ttname"><a href="namespaceenco.html#a04382074922db95f73a7e97c25023937">enco::concat</a></div><div class="ttdeci">void concat(std::ostream &amp;os, const std::string &amp;sep, It beg, It end)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2__deprecated_2enco_2core_2src_2_string_8h_source.html#l00031">String.h:31</a></div></div>
 <div class="ttc" id="anamespaceluci_html_a45fe577e9e1a457fe33918624cd4a9a5"><div class="ttname"><a href="namespaceluci.html#a45fe577e9e1a457fe33918624cd4a9a5">luci::quant_const</a></div><div class="ttdeci">void quant_const(luci::CircleConst *node, loco::DataType quant_type)</div><div class="ttdef"><b>Definition</b> <a href="_quantization_utils_8cpp_source.html#l00418">QuantizationUtils.cpp:418</a></div></div>
 <div class="ttc" id="anamespaceluci_html_a8984ba83d6f0e6d0dc99b25ee3b5d04b"><div class="ttname"><a href="namespaceluci.html#a8984ba83d6f0e6d0dc99b25ee3b5d04b">luci::clone</a></div><div class="ttdeci">luci::CircleConst * clone(luci::CircleConst *node)</div><div class="ttdoc">Return cloned object of CircleConst node.</div><div class="ttdef"><b>Definition</b> <a href="service_2src_2_nodes_2_circle_const_8cpp_source.html#l00106">CircleConst.cpp:106</a></div></div>
 <div class="ttc" id="anamespacemoco_html_aaa67793b4bf04bb01d7862cfddb898e0"><div class="ttname"><a href="namespacemoco.html#aaa67793b4bf04bb01d7862cfddb898e0">moco::new_const</a></div><div class="ttdeci">TFConst * new_const(loco::Graph *graph, loco::TensorShape &amp;tensor_shape, const loco::DataType &amp;dtype)</div><div class="ttdef"><b>Definition</b> <a href="_constant_fold_helper_8cpp_source.html#l00045">ConstantFoldHelper.cpp:45</a></div></div>
@@ -8852,9 +8852,9 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   69</span>  assert(source != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   70</span>  assert(pgroups != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   71</span> </div>
-<div class="line"><span class="lineno">   72</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
+<div class="line"><span class="lineno">   72</span>  <a class="code hl_define" href="onnx2circle_8cpp.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
 <div class="line"><span class="lineno">   73</span> </div>
-<div class="line"><span class="lineno">   74</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;--- Cleanup unused inputs/outputs&quot;</span>;</div>
+<div class="line"><span class="lineno">   74</span>  <a class="code hl_define" href="onnx2circle_8cpp.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;--- Cleanup unused inputs/outputs&quot;</span>;</div>
 <div class="line"><span class="lineno">   75</span> </div>
 <div class="line"><span class="lineno">   76</span>  <span class="comment">// remove input within same pgroup</span></div>
 <div class="line"><span class="lineno">   77</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;pgroup : pgroups-&gt;pgroups)</div>
@@ -8868,7 +8868,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   85</span>        <span class="keyword">auto</span> input = *it;</div>
 <div class="line"><span class="lineno">   86</span>        <span class="keywordflow">if</span> (pgroups-&gt;<a class="code hl_function" href="structluci_1_1_p_groups.html#ac6d2ae1d9d6acb7185d98a153417fc80">pgroup_of</a>(input) == pgroup.get())</div>
 <div class="line"><span class="lineno">   87</span>        {</div>
-<div class="line"><span class="lineno">   88</span>          <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;  Cleanup input &quot;</span> &lt;&lt; input-&gt;name() &lt;&lt; <span class="stringliteral">&quot; from group &quot;</span> &lt;&lt; pgroup-&gt;group;</div>
+<div class="line"><span class="lineno">   88</span>          <a class="code hl_define" href="onnx2circle_8cpp.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;  Cleanup input &quot;</span> &lt;&lt; input-&gt;name() &lt;&lt; <span class="stringliteral">&quot; from group &quot;</span> &lt;&lt; pgroup-&gt;group;</div>
 <div class="line"><span class="lineno">   89</span>          pgroup-&gt;inputs.erase(it);</div>
 <div class="line"><span class="lineno">   90</span>          changed = <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">   91</span>          <span class="keywordflow">break</span>;</div>
@@ -8878,7 +8878,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   95</span>        <span class="comment">//      Remove if this input is CircleConst</span></div>
 <div class="line"><span class="lineno">   96</span>        <span class="keywordflow">if</span> (<span class="keyword">dynamic_cast&lt;</span>CircleConst *<span class="keyword">&gt;</span>(input) != <span class="keyword">nullptr</span>)</div>
 <div class="line"><span class="lineno">   97</span>        {</div>
-<div class="line"><span class="lineno">   98</span>          <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;  Cleanup CircleConst &quot;</span> &lt;&lt; input-&gt;name() &lt;&lt; <span class="stringliteral">&quot; from group &quot;</span> &lt;&lt; pgroup-&gt;group;</div>
+<div class="line"><span class="lineno">   98</span>          <a class="code hl_define" href="onnx2circle_8cpp.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;  Cleanup CircleConst &quot;</span> &lt;&lt; input-&gt;name() &lt;&lt; <span class="stringliteral">&quot; from group &quot;</span> &lt;&lt; pgroup-&gt;group;</div>
 <div class="line"><span class="lineno">   99</span>          pgroup-&gt;inputs.erase(it);</div>
 <div class="line"><span class="lineno">  100</span>          changed = <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">  101</span>          <span class="keywordflow">break</span>;</div>
@@ -8906,7 +8906,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  123</span>        <span class="keyword">auto</span> oit = std::find(used_outputs.begin(), used_outputs.end(), output);</div>
 <div class="line"><span class="lineno">  124</span>        <span class="keywordflow">if</span> (oit == used_outputs.end())</div>
 <div class="line"><span class="lineno">  125</span>        {</div>
-<div class="line"><span class="lineno">  126</span>          <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;  Cleanup output &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;name() &lt;&lt; <span class="stringliteral">&quot; from group &quot;</span> &lt;&lt; pgroup-&gt;group;</div>
+<div class="line"><span class="lineno">  126</span>          <a class="code hl_define" href="onnx2circle_8cpp.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;  Cleanup output &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;name() &lt;&lt; <span class="stringliteral">&quot; from group &quot;</span> &lt;&lt; pgroup-&gt;group;</div>
 <div class="line"><span class="lineno">  127</span>          pgroup-&gt;outputs.erase(it);</div>
 <div class="line"><span class="lineno">  128</span>          changed = <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">  129</span>          <span class="keywordflow">break</span>;</div>
@@ -8917,7 +8917,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  134</span>}</div>
 <div class="ttc" id="astructluci_1_1_p_groups_html_ac6d2ae1d9d6acb7185d98a153417fc80"><div class="ttname"><a href="structluci_1_1_p_groups.html#ac6d2ae1d9d6acb7185d98a153417fc80">luci::PGroups::pgroup_of</a></div><div class="ttdeci">const PGroup * pgroup_of(luci::CircleNode *node) const</div><div class="ttdoc">return holding pgroup of node, nullptr if not found</div><div class="ttdef"><b>Definition</b> <a href="_partition_i_r_8cpp_source.html#l00085">PartitionIR.cpp:85</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00068">INFO</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00065">LOGGER</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">must_cast()</a>, <a class="el" href="_partition_i_r_8cpp_source.html#l00085">luci::PGroups::pgroup_of()</a>, and <a class="el" href="_partition_i_r_8h_source.html#l00063">luci::PGroups::pgroups</a>.</p>
+<p class="reference">References <a class="el" href="onnx2circle_8cpp_source.html#l00075">INFO</a>, <a class="el" href="onnx2circle_8cpp_source.html#l00072">LOGGER</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">must_cast()</a>, <a class="el" href="_partition_i_r_8cpp_source.html#l00085">luci::PGroups::pgroup_of()</a>, and <a class="el" href="_partition_i_r_8h_source.html#l00063">luci::PGroups::pgroups</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_partition_8cpp_source.html#l00036">apply()</a>.</p>
 
@@ -10421,15 +10421,15 @@ template&lt;typename T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="_validate_8cpp_source.html#l00398">398</a> of file <a class="el" href="_validate_8cpp_source.html">Validate.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  399</span>{</div>
-<div class="line"><span class="lineno">  400</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
+<div class="line"><span class="lineno">  400</span>  <a class="code hl_define" href="onnx2circle_8cpp.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
 <div class="line"><span class="lineno">  401</span> </div>
-<div class="line"><span class="lineno">  402</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;--- validate Module -----------------------------------&quot;</span>;</div>
+<div class="line"><span class="lineno">  402</span>  <a class="code hl_define" href="onnx2circle_8cpp.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;--- validate Module -----------------------------------&quot;</span>;</div>
 <div class="line"><span class="lineno">  403</span> </div>
 <div class="line"><span class="lineno">  404</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> g = 0; g &lt; <span class="keyword">module</span>-&gt;size(); ++g)</div>
 <div class="line"><span class="lineno">  405</span>  {</div>
 <div class="line"><span class="lineno">  406</span>    <span class="keyword">auto</span> graph = <span class="keyword">module</span>-&gt;graph(g);</div>
 <div class="line"><span class="lineno">  407</span> </div>
-<div class="line"><span class="lineno">  408</span>    <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <a class="code hl_function" href="namespaceluci.html#a42144531b4909fbeadf0467b02cc15c7">luci::fmt</a>(graph) &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  408</span>    <a class="code hl_define" href="onnx2circle_8cpp.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <a class="code hl_function" href="namespaceluci.html#a42144531b4909fbeadf0467b02cc15c7">luci::fmt</a>(graph) &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">  409</span> </div>
 <div class="line"><span class="lineno">  410</span>    <span class="keywordflow">if</span> (!validate(graph))</div>
 <div class="line"><span class="lineno">  411</span>    {</div>
@@ -10453,7 +10453,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  429</span>}</div>
 <div class="ttc" id="anamespaceluci_html_a0dfa493926dca491859638f43f5ddb10"><div class="ttname"><a href="namespaceluci.html#a0dfa493926dca491859638f43f5ddb10">luci::validate_unique_name</a></div><div class="ttdeci">bool validate_unique_name(luci::Module *)</div><div class="ttdoc">Return true if all names in the Module are unique.</div><div class="ttdef"><b>Definition</b> <a href="_validate_8cpp_source.html#l00357">Validate.cpp:357</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci_2logex_2src_2_log_helper_8cpp_source.html#l00023">fmt()</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00068">INFO</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00065">LOGGER</a>, <a class="el" href="_validate_8cpp_source.html#l00338">validate_name()</a>, and <a class="el" href="_validate_8cpp_source.html#l00357">validate_unique_name()</a>.</p>
+<p class="reference">References <a class="el" href="luci_2logex_2src_2_log_helper_8cpp_source.html#l00023">fmt()</a>, <a class="el" href="onnx2circle_8cpp_source.html#l00075">INFO</a>, <a class="el" href="onnx2circle_8cpp_source.html#l00072">LOGGER</a>, <a class="el" href="_validate_8cpp_source.html#l00338">validate_name()</a>, and <a class="el" href="_validate_8cpp_source.html#l00357">validate_unique_name()</a>.</p>
 
 </div>
 </div>
@@ -10783,15 +10783,15 @@ template&lt;typename T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="_validate_8cpp_source.html#l00431">431</a> of file <a class="el" href="_validate_8cpp_source.html">Validate.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  432</span>{</div>
-<div class="line"><span class="lineno">  433</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
+<div class="line"><span class="lineno">  433</span>  <a class="code hl_define" href="onnx2circle_8cpp.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
 <div class="line"><span class="lineno">  434</span> </div>
-<div class="line"><span class="lineno">  435</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;--- validate shape of Module -----------------------------------&quot;</span>;</div>
+<div class="line"><span class="lineno">  435</span>  <a class="code hl_define" href="onnx2circle_8cpp.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;--- validate shape of Module -----------------------------------&quot;</span>;</div>
 <div class="line"><span class="lineno">  436</span> </div>
 <div class="line"><span class="lineno">  437</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> g = 0; g &lt; <span class="keyword">module</span>-&gt;size(); ++g)</div>
 <div class="line"><span class="lineno">  438</span>  {</div>
 <div class="line"><span class="lineno">  439</span>    <span class="keyword">auto</span> graph = <span class="keyword">module</span>-&gt;graph(g);</div>
 <div class="line"><span class="lineno">  440</span> </div>
-<div class="line"><span class="lineno">  441</span>    <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <a class="code hl_function" href="namespaceluci.html#a42144531b4909fbeadf0467b02cc15c7">luci::fmt</a>(graph) &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  441</span>    <a class="code hl_define" href="onnx2circle_8cpp.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <a class="code hl_function" href="namespaceluci.html#a42144531b4909fbeadf0467b02cc15c7">luci::fmt</a>(graph) &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">  442</span> </div>
 <div class="line"><span class="lineno">  443</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#a56c20d7f76cbf6abd72988192565fc32">validate_shape</a>(graph))</div>
 <div class="line"><span class="lineno">  444</span>    {</div>
@@ -10804,7 +10804,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  451</span>}</div>
 <div class="ttc" id="anamespaceluci_html_a56c20d7f76cbf6abd72988192565fc32"><div class="ttname"><a href="namespaceluci.html#a56c20d7f76cbf6abd72988192565fc32">luci::validate_shape</a></div><div class="ttdeci">bool validate_shape(loco::Graph *)</div><div class="ttdef"><b>Definition</b> <a href="_validate_8cpp_source.html#l00311">Validate.cpp:311</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci_2logex_2src_2_log_helper_8cpp_source.html#l00023">fmt()</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00068">INFO</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00065">LOGGER</a>, and <a class="el" href="_validate_8cpp_source.html#l00311">validate_shape()</a>.</p>
+<p class="reference">References <a class="el" href="luci_2logex_2src_2_log_helper_8cpp_source.html#l00023">fmt()</a>, <a class="el" href="onnx2circle_8cpp_source.html#l00075">INFO</a>, <a class="el" href="onnx2circle_8cpp_source.html#l00072">LOGGER</a>, and <a class="el" href="_validate_8cpp_source.html#l00311">validate_shape()</a>.</p>
 
 </div>
 </div>
@@ -10829,7 +10829,7 @@ template&lt;typename T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="_validate_8cpp_source.html#l00357">357</a> of file <a class="el" href="_validate_8cpp_source.html">Validate.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  358</span>{</div>
-<div class="line"><span class="lineno">  359</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
+<div class="line"><span class="lineno">  359</span>  <a class="code hl_define" href="onnx2circle_8cpp.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
 <div class="line"><span class="lineno">  360</span> </div>
 <div class="line"><span class="lineno">  361</span>  std::unordered_map&lt;std::string, bool&gt; names_col;</div>
 <div class="line"><span class="lineno">  362</span> </div>
@@ -10850,11 +10850,11 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  377</span>        <span class="keywordflow">continue</span>;</div>
 <div class="line"><span class="lineno">  378</span> </div>
 <div class="line"><span class="lineno">  379</span>      <span class="keyword">auto</span> name = node-&gt;name();</div>
-<div class="line"><span class="lineno">  380</span>      <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;Node: &quot;</span> &lt;&lt; name &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; (uint32_t)(node-&gt;opcode()) &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  380</span>      <a class="code hl_define" href="onnx2circle_8cpp.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;Node: &quot;</span> &lt;&lt; name &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; (uint32_t)(node-&gt;opcode()) &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">  381</span>      <span class="keyword">auto</span> it = names_col.find(name);</div>
 <div class="line"><span class="lineno">  382</span>      <span class="keywordflow">if</span> (it != names_col.end())</div>
 <div class="line"><span class="lineno">  383</span>      {</div>
-<div class="line"><span class="lineno">  384</span>        <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;validate_unique_name: found duplicate &quot;</span> &lt;&lt; name &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; graph-&gt;name()</div>
+<div class="line"><span class="lineno">  384</span>        <a class="code hl_define" href="onnx2circle_8cpp.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;validate_unique_name: found duplicate &quot;</span> &lt;&lt; name &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; graph-&gt;name()</div>
 <div class="line"><span class="lineno">  385</span>                &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">  386</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  387</span>      }</div>
@@ -10868,7 +10868,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  395</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">  396</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_impl_8h_source.html#l00029">luci::CircleNode::accept()</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00068">INFO</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00065">LOGGER</a>, <a class="el" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_source.html#l00135">m</a>, <a class="el" href="_feature_codec_8h_source.html#l00080">loco::must_cast()</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">must_cast()</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00051">luci::CircleNode::name()</a>, and <a class="el" href="structluci_1_1_circle_node.html#a963f9812635ceac6d5a207594b5028af">luci::CircleNode::opcode()</a>.</p>
+<p class="reference">References <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_impl_8h_source.html#l00029">luci::CircleNode::accept()</a>, <a class="el" href="onnx2circle_8cpp_source.html#l00075">INFO</a>, <a class="el" href="onnx2circle_8cpp_source.html#l00072">LOGGER</a>, <a class="el" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_source.html#l00135">m</a>, <a class="el" href="_feature_codec_8h_source.html#l00080">loco::must_cast()</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">must_cast()</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00051">luci::CircleNode::name()</a>, and <a class="el" href="structluci_1_1_circle_node.html#a963f9812635ceac6d5a207594b5028af">luci::CircleNode::opcode()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_validate_8cpp_source.html#l00398">validate()</a>.</p>
 
@@ -10892,7 +10892,7 @@ template&lt;typename T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="_quantization_utils_8cpp_source.html#l00520">520</a> of file <a class="el" href="_quantization_utils_8cpp_source.html">QuantizationUtils.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  521</span>{</div>
-<div class="line"><span class="lineno">  522</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
+<div class="line"><span class="lineno">  522</span>  <a class="code hl_define" href="onnx2circle_8cpp.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
 <div class="line"><span class="lineno">  523</span>  <span class="keyword">auto</span> qp = n-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a0a3c6486c3eb1a728d5dc2b1b57f3b8b">quantparam</a>();</div>
 <div class="line"><span class="lineno">  524</span>  <span class="keyword">auto</span> k = qp-&gt;<a class="code hl_variable" href="structluci_1_1_circle_quant_param.html#adfd73367574e4ad12da0b59a7915ec09">zerop</a>.size();</div>
 <div class="line"><span class="lineno">  525</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; k; i++)</div>
@@ -10905,7 +10905,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  532</span>}</div>
 <div class="ttc" id="astructluci_1_1_circle_quant_param_html_adfd73367574e4ad12da0b59a7915ec09"><div class="ttname"><a href="structluci_1_1_circle_quant_param.html#adfd73367574e4ad12da0b59a7915ec09">luci::CircleQuantParam::zerop</a></div><div class="ttdeci">std::vector&lt; int64_t &gt; zerop</div><div class="ttdef"><b>Definition</b> <a href="_circle_quant_param_8h_source.html#l00031">CircleQuantParam.h:31</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00065">LOGGER</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">must_cast()</a>, and <a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html#l00070">WARN</a>.</p>
+<p class="reference">References <a class="el" href="onnx2circle_8cpp_source.html#l00072">LOGGER</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">must_cast()</a>, and <a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html#l00070">WARN</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_quantize_with_min_max_pass_8cpp_source.html#l00561">luci::QuantizeWithMinMaxPass::run()</a>.</p>
 

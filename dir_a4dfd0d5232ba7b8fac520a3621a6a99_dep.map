@@ -1,0 +1,14 @@
+<map id="compiler/_deprecated/onnx2tflite" name="compiler/_deprecated/onnx2tflite">
+<area shape="rect" id="node2" href="dir_cec727cae5617ffc72440d6540a411c4.html" title="src" alt="" coords="84,63,123,89"/>
+<area shape="rect" id="node3" href="dir_143d397798fb0c5faf010954922292f2.html" title="mir" alt="" coords="5,137,45,162"/>
+<area shape="poly" id="edge1" href="dir_000888_000583.html" alt="" coords="92,91,51,128,48,124,89,87"/>
+<area shape="rect" id="edge1-headlabel" href="dir_000888_000583.html" title="1" alt="" coords="54,123,61,138"/>
+<area shape="rect" id="node4" href="dir_4c2e292b2d05bba4b93c70da4993efe8.html" title="mir2loco" alt="" coords="69,137,139,162"/>
+<area shape="poly" id="edge3" href="dir_000888_000586.html" alt="" coords="106,89,106,121,101,121,101,89"/>
+<area shape="rect" id="edge3-headlabel" href="dir_000888_000586.html" title="1" alt="" coords="109,111,116,126"/>
+<area shape="rect" id="node5" href="dir_205295ba47b450f70e294ecc88452849.html" title="exo" alt="" coords="163,137,204,162"/>
+<area shape="poly" id="edge2" href="dir_000888_000250.html" alt="" coords="116,87,137,108,158,125,154,129,134,112,113,91"/>
+<area shape="rect" id="edge2-headlabel" href="dir_000888_000250.html" title="1" alt="" coords="155,111,162,126"/>
+<area shape="rect" id="clust2" href="dir_a4dfd0d5232ba7b8fac520a3621a6a99.html" alt="" coords="73,52,238,99"/>
+<area shape="rect" id="clust1" href="dir_d45624ffc5eee5107ee20c42fd9bb74b.html" title="_deprecated" alt="" coords="62,16,249,110"/>
+</map>

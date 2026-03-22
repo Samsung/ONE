@@ -177,11 +177,11 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   94</span>}</div>
 <div class="ttc" id="a_padding_utils_8cpp_html_abdd2136a79306f9abcfb2bda4784c480"><div class="ttname"><a href="_padding_utils_8cpp.html#abdd2136a79306f9abcfb2bda4784c480">build_spatial_padding</a></div><div class="ttdeci">SpatialPaddingBuilder build_spatial_padding(uint32_t spatial_rank)</div><div class="ttdef"><b>Definition</b> <a href="_padding_utils_8cpp_source.html#l00128">PaddingUtils.cpp:128</a></div></div>
 <div class="ttc" id="a_padding_utils_8cpp_html_aeb2d91673872bb7821ee7b9113ece3a7"><div class="ttname"><a href="_padding_utils_8cpp.html#aeb2d91673872bb7821ee7b9113ece3a7">build_raw_padding</a></div><div class="ttdeci">RawPaddingBuilder build_raw_padding(void)</div><div class="ttdef"><b>Definition</b> <a href="_padding_utils_8cpp_source.html#l00086">PaddingUtils.cpp:86</a></div></div>
-<div class="ttc" id="aclass_padding_base_html_a5deb0c67cdcaa94232c55ecb17fa2f0c"><div class="ttname"><a href="class_padding_base.html#a5deb0c67cdcaa94232c55ecb17fa2f0c">PaddingBase::value</a></div><div class="ttdeci">uint32_t &amp; value(uint32_t n)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2enco_2frontend_2caffe_2src_2_padding_8h_source.html#l00039">Padding.h:39</a></div></div>
+<div class="ttc" id="aclass_padding_base_html_a5deb0c67cdcaa94232c55ecb17fa2f0c"><div class="ttname"><a href="class_padding_base.html#a5deb0c67cdcaa94232c55ecb17fa2f0c">PaddingBase::value</a></div><div class="ttdeci">uint32_t &amp; value(uint32_t n)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2__deprecated_2enco_2frontend_2caffe_2src_2_padding_8h_source.html#l00039">Padding.h:39</a></div></div>
 <div class="ttc" id="aclass_raw_padding_builder_html_a995dc0967abae4b836472ead6758c69d"><div class="ttname"><a href="class_raw_padding_builder.html#a995dc0967abae4b836472ead6758c69d">RawPaddingBuilder::with</a></div><div class="ttdeci">RawPadding with(const ::caffe::ConvolutionParameter &amp;) const</div><div class="ttdef"><b>Definition</b> <a href="_padding_utils_8cpp_source.html#l00024">PaddingUtils.cpp:24</a></div></div>
 <div class="ttc" id="aclass_spatial_padding_builder_html_a704e98cab345a37f1c842e181794046c"><div class="ttname"><a href="class_spatial_padding_builder.html#a704e98cab345a37f1c842e181794046c">SpatialPaddingBuilder::with</a></div><div class="ttdeci">SpatialPadding with(const RawPadding &amp;raw) const</div><div class="ttdef"><b>Definition</b> <a href="_padding_utils_8cpp_source.html#l00091">PaddingUtils.cpp:91</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_padding_utils_8cpp_source.html#l00086">build_raw_padding()</a>, <a class="el" href="_padding_utils_8cpp_source.html#l00128">build_spatial_padding()</a>, <a class="el" href="compiler_2enco_2frontend_2caffe_2src_2_padding_8h_source.html#l00039">PaddingBase&lt; Derived &gt;::value()</a>, <a class="el" href="_padding_utils_8cpp_source.html#l00024">RawPaddingBuilder::with()</a>, and <a class="el" href="_padding_utils_8cpp_source.html#l00091">SpatialPaddingBuilder::with()</a>.</p>
+<p class="reference">References <a class="el" href="_padding_utils_8cpp_source.html#l00086">build_raw_padding()</a>, <a class="el" href="_padding_utils_8cpp_source.html#l00128">build_spatial_padding()</a>, <a class="el" href="compiler_2__deprecated_2enco_2frontend_2caffe_2src_2_padding_8h_source.html#l00039">PaddingBase&lt; Derived &gt;::value()</a>, <a class="el" href="_padding_utils_8cpp_source.html#l00024">RawPaddingBuilder::with()</a>, and <a class="el" href="_padding_utils_8cpp_source.html#l00091">SpatialPaddingBuilder::with()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_pooling_spec_8cpp_source.html#l00126">ofm_shape()</a>.</p>
 
@@ -278,7 +278,7 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_pooling_spec_8h_source.html#l00036">36</a> of file <a class="el" href="_pooling_spec_8h_source.html">PoolingSpec.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   36</span>{ <span class="keywordflow">return</span> _ifm_shape; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="enco_2frontend_2caffe_2src_2_layer_2_pooling_8cpp_source.html#l00034">caffeimport::PoolingBuilder::build()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="__deprecated_2enco_2frontend_2caffe_2src_2_layer_2_pooling_8cpp_source.html#l00034">caffeimport::PoolingBuilder::build()</a>.</p>
 
 </div>
 </div>
@@ -403,7 +403,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   84</span>  <span class="keywordflow">return</span> spatial_padding.<a class="code hl_function" href="class_padding_base.html#a5deb0c67cdcaa94232c55ecb17fa2f0c">value</a>(0 <span class="comment">/* H */</span>);</div>
 <div class="line"><span class="lineno">   85</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_padding_utils_8cpp_source.html#l00086">build_raw_padding()</a>, <a class="el" href="_padding_utils_8cpp_source.html#l00128">build_spatial_padding()</a>, <a class="el" href="compiler_2enco_2frontend_2caffe_2src_2_padding_8h_source.html#l00039">PaddingBase&lt; Derived &gt;::value()</a>, <a class="el" href="_padding_utils_8cpp_source.html#l00024">RawPaddingBuilder::with()</a>, and <a class="el" href="_padding_utils_8cpp_source.html#l00091">SpatialPaddingBuilder::with()</a>.</p>
+<p class="reference">References <a class="el" href="_padding_utils_8cpp_source.html#l00086">build_raw_padding()</a>, <a class="el" href="_padding_utils_8cpp_source.html#l00128">build_spatial_padding()</a>, <a class="el" href="compiler_2__deprecated_2enco_2frontend_2caffe_2src_2_padding_8h_source.html#l00039">PaddingBase&lt; Derived &gt;::value()</a>, <a class="el" href="_padding_utils_8cpp_source.html#l00024">RawPaddingBuilder::with()</a>, and <a class="el" href="_padding_utils_8cpp_source.html#l00091">SpatialPaddingBuilder::with()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_pooling_spec_8cpp_source.html#l00126">ofm_shape()</a>.</p>
 
@@ -515,8 +515,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>compiler/enco/frontend/caffe/src/<a class="el" href="_pooling_spec_8h_source.html">PoolingSpec.h</a></li>
-<li>compiler/enco/frontend/caffe/src/<a class="el" href="_pooling_spec_8cpp_source.html">PoolingSpec.cpp</a></li>
+<li>compiler/_deprecated/enco/frontend/caffe/src/<a class="el" href="_pooling_spec_8h_source.html">PoolingSpec.h</a></li>
+<li>compiler/_deprecated/enco/frontend/caffe/src/<a class="el" href="_pooling_spec_8cpp_source.html">PoolingSpec.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
