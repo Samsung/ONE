@@ -69,3 +69,8 @@ This section will be updated as projects are moved to this directory.
 | tf2circle-model-test | 2026-03-18 | `tf2circle` is deprecated |
 | tf2circle-ui-check | 2026-03-18 | `tf2circle` is deprecated |
 | tf2circle-value-pbtxt-remoe-test | 2026-03-18 | `tf2circle` is deprecated |
+| moco | 2026-03-19 | TF model uses TF's official tools, convert to circle model by TF's TFLite converter and tflite2circle |
+| moco-tf | 2026-03-19 | `moco` is deprecated |
+| moco-value-pbtxt-test | 2026-03-19 | `moco-tf` is deprecated |
+| nnkit-mocotf | 2026-03-19 | `moco-tf` is deprecated |
+| tf2nnpkg | 2026-03-19 | Replaced by tf2nnpkg script `infra/packaging/res/tf2nnpkg*` |
