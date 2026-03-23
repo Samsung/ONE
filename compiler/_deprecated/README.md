@@ -74,3 +74,5 @@ This section will be updated as projects are moved to this directory.
 | moco-value-pbtxt-test | 2026-03-19 | `moco-tf` is deprecated |
 | nnkit-mocotf | 2026-03-19 | `moco-tf` is deprecated |
 | tf2nnpkg | 2026-03-19 | Replaced by tf2nnpkg script `infra/packaging/res/tf2nnpkg*` |
+| ann-api | 2026-03-24 | `enco` deprecated: No longer maintain Android NN API backend |
+| ann-ref | 2026-03-24 | `enco` and `ann-ref` deprecated |
