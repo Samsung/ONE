@@ -76,3 +76,8 @@ This section will be updated as projects are moved to this directory.
 | tf2nnpkg | 2026-03-19 | Replaced by tf2nnpkg script `infra/packaging/res/tf2nnpkg*` |
 | ann-api | 2026-03-24 | `enco` deprecated: No longer maintain Android NN API backend |
 | ann-ref | 2026-03-24 | `enco` and `ann-ref` deprecated |
+| coco | 2026-03-24 | Experimental IR: No longer maintain |
+| mir | 2026-03-24 | Experimental IR: No longer maintain |
+| mir-interpreter | 2026-03-24 | `mir` is deprecated |
+| mir2loco | 2026-03-24 | `mir` is deprecated |
+| nnc | 2026-03-24 | `mir` is deprecated |

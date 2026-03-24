@@ -15,7 +15,7 @@ repos:
         exclude:
           (?x)^(
             .*/__init__.py$|
-            compiler/nnc/utils/.*\.py$|
+            .*/nnc/utils/.*\.py$|
             runtime/tests/scripts/models/.*/config\.sh$|
             res/TensorFlowTests/.*\.py$
           )
