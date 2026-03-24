@@ -81,3 +81,5 @@ This section will be updated as projects are moved to this directory.
 | mir-interpreter | 2026-03-24 | `mir` is deprecated |
 | mir2loco | 2026-03-24 | `mir` is deprecated |
 | nnc | 2026-03-24 | `mir` is deprecated |
+| caffegen | 2026-03-24 | No longer support caffe model |
+| nnkit-caffe | 2026-03-24 | No longer support caffe model |
