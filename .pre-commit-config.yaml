@@ -83,7 +83,7 @@ repos:
         # Ignore 3rd-party code
         exclude:
           (?x)^(
-            compiler/ann-api/.*|
+            .*/NeuralNetworks.h|
             onert-micro/externals/.*|
             runtime/3rdparty/.*|
             runtime/tests/nnapi/.*
