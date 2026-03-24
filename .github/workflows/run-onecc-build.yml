@@ -92,12 +92,16 @@ jobs:
           path: ${{ env.NNCC_WORKSPACE }}/overlay
           key: overlay-onecc-${{ matrix.ubuntu_code }}-${{ hashFiles('compiler/common-artifacts/CMakeLists.txt') }}-${{ hashFiles('infra/cmake/packages/**/*.cmake') }}
 
+      - name: Get month for ccache cache key
+        id: get-month
+        run: echo "key_month=$(date +%y%m)" >> "$GITHUB_OUTPUT"
+
       - name: Restore ccache cache
         uses: actions/cache/restore@v4
         id: ccache-cache
         with:
           path: ~/.cache/ccache
-          key: ccache-onecc-${{ matrix.ubuntu_code }}-${{ matrix.type }}-${{ github.sha }}
+          key: ccache-onecc-${{ matrix.ubuntu_code }}-${{ matrix.type }}-${{ steps.get-month.outputs.key_month }}
           restore-keys: |
             ccache-onecc-${{ matrix.ubuntu_code }}-${{ matrix.type }}
 
