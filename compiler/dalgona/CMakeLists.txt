@@ -1,5 +1,5 @@
 # NOTE find_package will try to use at least python3.10 as follows depending on platform version
-#   Ubuntu20.04; explictly installed python3.10 (default is python3.8)
+#   Ubuntu20.04; explicitly installed python3.10 (default is python3.8)
 #   Ubuntu22.04; default python3.10
 #   Ubuntu24.04; default python3.12
 #   refer https://github.com/Samsung/ONE/issues/9962
@@ -16,11 +16,13 @@ if(NOT Python_Development_FOUND)
   return()
 endif()
 
-# NOTE assume only use 3.10.x or 3.12.x
+# NOTE assume only use 3.10.x, 3.12.x or 3.13.x
 if((Python_VERSION VERSION_GREATER_EQUAL 3.10) AND (Python_VERSION VERSION_LESS 3.11))
   set(PYTHON_VERSION_MINOR 10)
 elseif((Python_VERSION VERSION_GREATER_EQUAL 3.12) AND (Python_VERSION VERSION_LESS 3.13))
   set(PYTHON_VERSION_MINOR 12)
+elseif((Python_VERSION VERSION_GREATER_EQUAL 3.13) AND (Python_VERSION VERSION_LESS 3.14))
+  set(PYTHON_VERSION_MINOR 13)
 else()
   # TODO support more
   message(STATUS "Build dalgona: FAILED (Unsupported python: ${Python_VERSION})")
