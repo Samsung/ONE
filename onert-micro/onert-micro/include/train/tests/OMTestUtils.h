@@ -40,7 +40,13 @@ OMStatus train(OMTrainingInterpreter &train_interpreter, OMConfig &config,
   const uint32_t num_train_data_samples = test_base.getTrainNumSamples();
   const uint32_t batch_size = config.training_context.batch_size;
   const uint32_t input_size = train_interpreter.getInputSizeAt(0);
-  const uint32_t target_size = train_interpreter.getOutputSizeAt(0);
+  uint32_t target_size = train_interpreter.getOutputSizeAt(0);
+
+  // TODO: Need to revisit this to make getOuputSize can get proper output number
+  // when 'all' target number and output numbers are different
+  if (config.training_context.loss == SPARSE_CROSS_ENTROPY)
+    target_size = 1;
+
   for (uint32_t e = 0; e < training_epochs; ++e)
   {
     config.training_context.num_epoch = e + 1;
@@ -92,7 +98,13 @@ OMStatus evaluate(OMTrainingInterpreter &train_interpreter, OMConfig &config,
   const uint32_t num_test_data_samples = test_base.getTestNumSamples();
   const uint32_t batch_size = 1;
   const uint32_t input_size = train_interpreter.getInputSizeAt(0);
-  const uint32_t target_size = train_interpreter.getOutputSizeAt(0);
+  uint32_t target_size = train_interpreter.getOutputSizeAt(0);
+
+  // TODO: Need to revisit this to make getOuputSize can get proper output number
+  // when 'all' target number and output numbers are different
+  if (config.training_context.loss == SPARSE_CROSS_ENTROPY)
+    target_size = 1;
+
   for (int i = 0; i < num_test_data_samples; ++i)
   {
     // Read current input and target data
