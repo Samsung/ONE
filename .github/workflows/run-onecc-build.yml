@@ -48,9 +48,9 @@ jobs:
         # TODO enable focal when possible
         #      refer https://github.com/Samsung/ONE/issues/16196
         ubuntu_code: ['jammy', 'noble']
-    runs-on: one-x64-linux
+    runs-on: ubuntu-24.04
     container:
-      image: samsungonedev.azurecr.io/nnfw/one-devtools:${{ matrix.ubuntu_code }}
+      image: nnfw/one-devtools:${{ matrix.ubuntu_code }}
       options: --user root
     env:
       NNCC_WORKSPACE : build
