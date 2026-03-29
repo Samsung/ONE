@@ -8,7 +8,7 @@ var searchData=
   ['nnfw_5ftrain_5finfo_5',['nnfw_train_info',['../onert-micro_8h.html#a559e509a0e2416d37475a67466c48975',1,'nnfw_train_info:&#160;onert-micro.h'],['../nnfw__experimental_8h.html#a559e509a0e2416d37475a67466c48975',1,'nnfw_train_info:&#160;nnfw_experimental.h']]],
   ['nodecontext_6',['NodeContext',['../classloco_1_1_graph.html#a7ab608d082644c3b5ac526298607f542',1,'loco::Graph']]],
   ['nodedepthtype_7',['NodeDepthType',['../namespacempqsolver_1_1bisection.html#a286c973e6531a1759bb45c77ca65d0a0',1,'mpqsolver::bisection']]],
-  ['nodename_8',['nodename',['../namespaceluci.html#a269f72042ae95fc05af9c022011b519c',1,'luci::NodeName'],['../namespacemoco.html#a21a1e8ddb00f8f7f382fad01155f75c7',1,'moco::NodeName']]],
+  ['nodename_8',['nodename',['../namespacemoco.html#a21a1e8ddb00f8f7f382fad01155f75c7',1,'moco::NodeName'],['../namespaceluci.html#a269f72042ae95fc05af9c022011b519c',1,'luci::NodeName']]],
   ['nodepair_9',['NodePair',['../namespacemoco_1_1tf_1_1eltwise_1_1binary.html#ab8e1eda974932511117c377c522f48b6',1,'moco::tf::eltwise::binary']]],
   ['nodesummary_10',['NodeSummary',['../namespacelocop.html#a387ee1cce78b5796d258e5e786c84b7d',1,'locop']]]
 ];

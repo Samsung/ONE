@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ONE - On-device Neural Engine: compiler/ann-ref/src/MemoryTracker.cpp Source File</title>
+<title>ONE - On-device Neural Engine: compiler/_deprecated/ann-ref/src/MemoryTracker.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -127,7 +127,7 @@ $(document).ready(function(){initNavTree('_memory_tracker_8cpp_source.html','');
 <div class="foldopen" id="foldopen00028" data-start="{" data-end="}">
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="class_memory_tracker.html#a6984d454e16a57ba287ce78fdc3eaca9">   28</a></span>uint32_t <a class="code hl_function" href="class_memory_tracker.html#a6984d454e16a57ba287ce78fdc3eaca9">MemoryTracker::add</a>(<span class="keyword">const</span> <a class="code hl_struct" href="struct_memory.html">Memory</a> *memory)</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>{</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <a class="code hl_define" href="compiler_2ann-ref_2src_2_logging_8h.html#a35e71de09dfd64892a48e3f7c56c5619">VLOG</a>(MODEL) &lt;&lt; __func__ &lt;&lt; <span class="stringliteral">&quot; for &quot;</span> &lt;&lt; memory;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <a class="code hl_define" href="compiler_2__deprecated_2ann-ref_2src_2_logging_8h.html#a35e71de09dfd64892a48e3f7c56c5619">VLOG</a>(MODEL) &lt;&lt; __func__ &lt;&lt; <span class="stringliteral">&quot; for &quot;</span> &lt;&lt; memory;</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="comment">// See if we already have this memory. If so,</span></div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="comment">// return its index.</span></div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="keyword">auto</span> i = mKnown.find(memory);</div>
@@ -135,12 +135,12 @@ $(document).ready(function(){initNavTree('_memory_tracker_8cpp_source.html','');
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  {</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordflow">return</span> i-&gt;second;</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  }</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <a class="code hl_define" href="compiler_2ann-ref_2src_2_logging_8h.html#a35e71de09dfd64892a48e3f7c56c5619">VLOG</a>(MODEL) &lt;&lt; <span class="stringliteral">&quot;It&#39;s new&quot;</span>;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <a class="code hl_define" href="compiler_2__deprecated_2ann-ref_2src_2_logging_8h.html#a35e71de09dfd64892a48e3f7c56c5619">VLOG</a>(MODEL) &lt;&lt; <span class="stringliteral">&quot;It&#39;s new&quot;</span>;</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="comment">// It&#39;s a new one.  Save it an assign an index to it.</span></div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keywordtype">size_t</span> next = mKnown.size();</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keywordflow">if</span> (next &gt; 0xFFFFFFFF)</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  {</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <a class="code hl_define" href="compiler_2ann-ref_2src_2_logging_8h.html#a3577749fb48d57a158b8ac1a0b3ab57e">LOG</a>(ERROR) &lt;&lt; <span class="stringliteral">&quot;ANeuralNetworks more than 2^32 memories.&quot;</span>;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <a class="code hl_define" href="compiler_2__deprecated_2ann-ref_2src_2_logging_8h.html#a3577749fb48d57a158b8ac1a0b3ab57e">LOG</a>(ERROR) &lt;&lt; <span class="stringliteral">&quot;ANeuralNetworks more than 2^32 memories.&quot;</span>;</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a27e8dff6d655275b20c35d80d26d202a">ANEURALNETWORKS_BAD_DATA</a>;</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  }</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  uint32_t idx = <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(next);</div>
@@ -152,8 +152,8 @@ $(document).ready(function(){initNavTree('_memory_tracker_8cpp_source.html','');
 <div class="ttc" id="a_memory_tracker_8h_html"><div class="ttname"><a href="_memory_tracker_8h.html">MemoryTracker.h</a></div></div>
 <div class="ttc" id="a_neural_networks_8h_html"><div class="ttname"><a href="_neural_networks_8h.html">NeuralNetworks.h</a></div></div>
 <div class="ttc" id="aclass_memory_tracker_html_a6984d454e16a57ba287ce78fdc3eaca9"><div class="ttname"><a href="class_memory_tracker.html#a6984d454e16a57ba287ce78fdc3eaca9">MemoryTracker::add</a></div><div class="ttdeci">uint32_t add(const Memory *memory)</div><div class="ttdef"><b>Definition</b> <a href="_memory_tracker_8cpp_source.html#l00028">MemoryTracker.cpp:28</a></div></div>
-<div class="ttc" id="acompiler_2ann-ref_2src_2_logging_8h_html_a3577749fb48d57a158b8ac1a0b3ab57e"><div class="ttname"><a href="compiler_2ann-ref_2src_2_logging_8h.html#a3577749fb48d57a158b8ac1a0b3ab57e">LOG</a></div><div class="ttdeci">#define LOG(...)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2ann-ref_2src_2_logging_8h_source.html#l00036">Logging.h:36</a></div></div>
-<div class="ttc" id="acompiler_2ann-ref_2src_2_logging_8h_html_a35e71de09dfd64892a48e3f7c56c5619"><div class="ttname"><a href="compiler_2ann-ref_2src_2_logging_8h.html#a35e71de09dfd64892a48e3f7c56c5619">VLOG</a></div><div class="ttdeci">#define VLOG(...)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2ann-ref_2src_2_logging_8h_source.html#l00037">Logging.h:37</a></div></div>
+<div class="ttc" id="acompiler_2__deprecated_2ann-ref_2src_2_logging_8h_html_a3577749fb48d57a158b8ac1a0b3ab57e"><div class="ttname"><a href="compiler_2__deprecated_2ann-ref_2src_2_logging_8h.html#a3577749fb48d57a158b8ac1a0b3ab57e">LOG</a></div><div class="ttdeci">#define LOG(...)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2__deprecated_2ann-ref_2src_2_logging_8h_source.html#l00036">Logging.h:36</a></div></div>
+<div class="ttc" id="acompiler_2__deprecated_2ann-ref_2src_2_logging_8h_html_a35e71de09dfd64892a48e3f7c56c5619"><div class="ttname"><a href="compiler_2__deprecated_2ann-ref_2src_2_logging_8h.html#a35e71de09dfd64892a48e3f7c56c5619">VLOG</a></div><div class="ttdeci">#define VLOG(...)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2__deprecated_2ann-ref_2src_2_logging_8h_source.html#l00037">Logging.h:37</a></div></div>
 <div class="ttc" id="agroup___neural_networks_html_ggad8097859ab1bdd06be52a8421df152d4a27e8dff6d655275b20c35d80d26d202a"><div class="ttname"><a href="group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a27e8dff6d655275b20c35d80d26d202a">ANEURALNETWORKS_BAD_DATA</a></div><div class="ttdeci">@ ANEURALNETWORKS_BAD_DATA</div><div class="ttdef"><b>Definition</b> <a href="_neural_networks_8h_source.html#l01389">NeuralNetworks.h:1389</a></div></div>
 <div class="ttc" id="aruntime_2onert_2core_2include_2util_2_logging_8h_html"><div class="ttname"><a href="runtime_2onert_2core_2include_2util_2_logging_8h.html">logging.h</a></div></div>
 <div class="ttc" id="astruct_memory_html"><div class="ttname"><a href="struct_memory.html">Memory</a></div><div class="ttdef"><b>Definition</b> <a href="_memory_8h_source.html#l00025">Memory.h:26</a></div></div>
@@ -162,7 +162,7 @@ $(document).ready(function(){initNavTree('_memory_tracker_8cpp_source.html','');
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_e955afc72e8af59637c9070b8690ff98.html">compiler</a></li><li class="navelem"><a class="el" href="dir_dddc08f7920075e2fa4c7ab1c3ecfa74.html">ann-ref</a></li><li class="navelem"><a class="el" href="dir_57133d2148aa35a8f07cb0b0f49ff20f.html">src</a></li><li class="navelem"><a class="el" href="_memory_tracker_8cpp.html">MemoryTracker.cpp</a></li>
+    <li class="navelem"><a class="el" href="dir_e955afc72e8af59637c9070b8690ff98.html">compiler</a></li><li class="navelem"><a class="el" href="dir_d45624ffc5eee5107ee20c42fd9bb74b.html">_deprecated</a></li><li class="navelem"><a class="el" href="dir_067d2c316220df8576261a918108ef26.html">ann-ref</a></li><li class="navelem"><a class="el" href="dir_0e451978f09db3d39a095a6248ac437c.html">src</a></li><li class="navelem"><a class="el" href="_memory_tracker_8cpp.html">MemoryTracker.cpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

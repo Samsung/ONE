@@ -167,7 +167,7 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="nnkit-tflite_2_conv_backend_8cpp_source.html#l00076">76</a> of file <a class="el" href="nnkit-tflite_2_conv_backend_8cpp_source.html">ConvBackend.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   77</span>  : _ifm_name{<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a>.ifm_name()}, _ofm_name{<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a>.ofm_name()}</div>
+<div class="fragment"><div class="line"><span class="lineno">   77</span>  : _ifm_name{<a class="code hl_variable" href="namespaceinfer__testcases.html#ad0d434c7b1aafb339369b12c6e1799eb">model</a>.ifm_name()}, _ofm_name{<a class="code hl_variable" href="namespaceinfer__testcases.html#ad0d434c7b1aafb339369b12c6e1799eb">model</a>.ofm_name()}</div>
 <div class="line"><span class="lineno">   78</span>{</div>
 <div class="line"><span class="lineno">   79</span>  <span class="keyword">using </span><a class="code hl_class" href="classnncc_1_1core_1_1_a_d_t_1_1kernel_1_1_overlay.html">nncc::core::ADT::kernel::Overlay</a>;</div>
 <div class="line"><span class="lineno">   80</span>  <span class="keyword">using </span><a class="code hl_struct" href="structnncc_1_1core_1_1_a_d_t_1_1kernel_1_1_n_h_w_c_layout.html">nncc::core::ADT::kernel::NHWCLayout</a>;</div>
@@ -176,9 +176,9 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   83</span>  <span class="keyword">using </span><a class="code hl_function" href="namespacenncc_1_1core_1_1_a_d_t_1_1kernel.html#a14fd47046f2c798e1cdfad7ed027d330">nncc::core::ADT::kernel::num_elements</a>;</div>
 <div class="line"><span class="lineno">   84</span> </div>
 <div class="line"><span class="lineno">   85</span>  <span class="comment">// Set kernel data</span></div>
-<div class="line"><span class="lineno">   86</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;ker_shape = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a>.ker_shape();</div>
+<div class="line"><span class="lineno">   86</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;ker_shape = <a class="code hl_variable" href="namespaceinfer__testcases.html#ad0d434c7b1aafb339369b12c6e1799eb">model</a>.ker_shape();</div>
 <div class="line"><span class="lineno">   87</span> </div>
-<div class="line"><span class="lineno">   88</span>  _kernel.resize(<a class="code hl_function" href="namespacenncc_1_1core_1_1_a_d_t_1_1feature.html#a1780a62ce2f7897524ee6a9c8967158d">num_elements</a>(ker_shape));</div>
+<div class="line"><span class="lineno">   88</span>  _kernel.resize(num_elements(ker_shape));</div>
 <div class="line"><span class="lineno">   89</span> </div>
 <div class="line"><span class="lineno">   90</span>  <span class="keyword">auto</span> kernel_overlay = make_overlay&lt;float, NHWCLayout&gt;(ker_shape, _kernel.data());</div>
 <div class="line"><span class="lineno">   91</span> </div>
@@ -190,7 +190,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   97</span>      {</div>
 <div class="line"><span class="lineno">   98</span>        <span class="keywordflow">for</span> (uint32_t col = 0; col &lt; ker_shape.width(); ++col)</div>
 <div class="line"><span class="lineno">   99</span>        {</div>
-<div class="line"><span class="lineno">  100</span>          kernel_overlay.at(n, ch, row, col) = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a>.ker_data().at(n, ch, row, col);</div>
+<div class="line"><span class="lineno">  100</span>          kernel_overlay.at(n, ch, row, col) = <a class="code hl_variable" href="namespaceinfer__testcases.html#ad0d434c7b1aafb339369b12c6e1799eb">model</a>.ker_data().at(n, ch, row, col);</div>
 <div class="line"><span class="lineno">  101</span>        }</div>
 <div class="line"><span class="lineno">  102</span>      }</div>
 <div class="line"><span class="lineno">  103</span>    }</div>
@@ -210,13 +210,13 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  117</span>  _interp.AddTensors(4);</div>
 <div class="line"><span class="lineno">  118</span> </div>
 <div class="line"><span class="lineno">  119</span>  _interp.SetTensorParametersReadWrite(0, kTfLiteFloat32 <span class="comment">/* type */</span>, _ofm_name.c_str(),</div>
-<div class="line"><span class="lineno">  120</span>                                       <a class="code hl_function" href="namespacemorph.html#aa99b14b3992c5801d3e46acfc4f19909">as_dims</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a>.ofm_shape()), quantization);</div>
+<div class="line"><span class="lineno">  120</span>                                       <a class="code hl_function" href="namespacemorph.html#aa99b14b3992c5801d3e46acfc4f19909">as_dims</a>(<a class="code hl_variable" href="namespaceinfer__testcases.html#ad0d434c7b1aafb339369b12c6e1799eb">model</a>.ofm_shape()), quantization);</div>
 <div class="line"><span class="lineno">  121</span> </div>
 <div class="line"><span class="lineno">  122</span>  _interp.SetTensorParametersReadWrite(1, kTfLiteFloat32 <span class="comment">/* type */</span>, _ifm_name.c_str(),</div>
-<div class="line"><span class="lineno">  123</span>                                       <a class="code hl_function" href="namespacemorph.html#aa99b14b3992c5801d3e46acfc4f19909">as_dims</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a>.ifm_shape()), quantization);</div>
+<div class="line"><span class="lineno">  123</span>                                       <a class="code hl_function" href="namespacemorph.html#aa99b14b3992c5801d3e46acfc4f19909">as_dims</a>(<a class="code hl_variable" href="namespaceinfer__testcases.html#ad0d434c7b1aafb339369b12c6e1799eb">model</a>.ifm_shape()), quantization);</div>
 <div class="line"><span class="lineno">  124</span> </div>
 <div class="line"><span class="lineno">  125</span>  _interp.SetTensorParametersReadOnly(</div>
-<div class="line"><span class="lineno">  126</span>    2, kTfLiteFloat32 <span class="comment">/* type */</span>, <span class="stringliteral">&quot;kernel&quot;</span> <span class="comment">/* name */</span>, <a class="code hl_function" href="namespacemorph.html#aa99b14b3992c5801d3e46acfc4f19909">as_dims</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a>.ker_shape()), quantization,</div>
+<div class="line"><span class="lineno">  126</span>    2, kTfLiteFloat32 <span class="comment">/* type */</span>, <span class="stringliteral">&quot;kernel&quot;</span> <span class="comment">/* name */</span>, <a class="code hl_function" href="namespacemorph.html#aa99b14b3992c5801d3e46acfc4f19909">as_dims</a>(<a class="code hl_variable" href="namespaceinfer__testcases.html#ad0d434c7b1aafb339369b12c6e1799eb">model</a>.ker_shape()), quantization,</div>
 <div class="line"><span class="lineno">  127</span>    <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">char</span> *<span class="keyword">&gt;</span>(_kernel.data()), _kernel.size() * <span class="keyword">sizeof</span>(<span class="keywordtype">float</span>));</div>
 <div class="line"><span class="lineno">  128</span> </div>
 <div class="line"><span class="lineno">  129</span>  _interp.SetTensorParametersReadOnly(</div>
@@ -237,9 +237,8 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  144</span>  _interp.SetOutputs({0});</div>
 <div class="line"><span class="lineno">  145</span>}</div>
 <div class="ttc" id="aclassnncc_1_1core_1_1_a_d_t_1_1kernel_1_1_overlay_html"><div class="ttname"><a href="classnncc_1_1core_1_1_a_d_t_1_1kernel_1_1_overlay.html">nncc::core::ADT::kernel::Overlay</a></div><div class="ttdef"><b>Definition</b> <a href="kernel_2_overlay_8h_source.html#l00034">Overlay.h:35</a></div></div>
-<div class="ttc" id="anamespace_gen_h5_random_inputs_html_ab0b89ce5ecc21d39e6665fcf96a623ca"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">GenH5RandomInputs.model</a></div><div class="ttdeci">model</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00038">GenH5RandomInputs.py:38</a></div></div>
+<div class="ttc" id="anamespaceinfer__testcases_html_ad0d434c7b1aafb339369b12c6e1799eb"><div class="ttname"><a href="namespaceinfer__testcases.html#ad0d434c7b1aafb339369b12c6e1799eb">infer_testcases.model</a></div><div class="ttdeci">model</div><div class="ttdef"><b>Definition</b> <a href="infer__testcases_8py_source.html#l00078">infer_testcases.py:78</a></div></div>
 <div class="ttc" id="anamespacemorph_html_aa99b14b3992c5801d3e46acfc4f19909"><div class="ttname"><a href="namespacemorph.html#aa99b14b3992c5801d3e46acfc4f19909">morph::as_dims</a></div><div class="ttdeci">Dims&lt; uint32_t &gt; as_dims(const nncc::core::ADT::tensor::Shape &amp;)</div><div class="ttdef"><b>Definition</b> <a href="morph_2src_2_dims_8cpp_source.html#l00024">dims.cpp:24</a></div></div>
-<div class="ttc" id="anamespacenncc_1_1core_1_1_a_d_t_1_1feature_html_a1780a62ce2f7897524ee6a9c8967158d"><div class="ttname"><a href="namespacenncc_1_1core_1_1_a_d_t_1_1feature.html#a1780a62ce2f7897524ee6a9c8967158d">nncc::core::ADT::feature::num_elements</a></div><div class="ttdeci">uint32_t num_elements(const Shape &amp;shape)</div><div class="ttdoc">The number of elements of a feature map of a given shape.</div><div class="ttdef"><b>Definition</b> <a href="compiler_2angkor_2include_2nncc_2core_2_a_d_t_2feature_2_shape_8h_source.html#l00059">Shape.h:59</a></div></div>
 <div class="ttc" id="anamespacenncc_1_1core_1_1_a_d_t_1_1kernel_html_a14fd47046f2c798e1cdfad7ed027d330"><div class="ttname"><a href="namespacenncc_1_1core_1_1_a_d_t_1_1kernel.html#a14fd47046f2c798e1cdfad7ed027d330">nncc::core::ADT::kernel::num_elements</a></div><div class="ttdeci">uint32_t num_elements(const Shape &amp;shape)</div><div class="ttdoc">Return the number of elements in a kernel of a given shape.</div><div class="ttdef"><b>Definition</b> <a href="compiler_2angkor_2include_2nncc_2core_2_a_d_t_2kernel_2_shape_8h_source.html#l00061">Shape.h:61</a></div></div>
 <div class="ttc" id="anamespacenncc_1_1core_1_1_a_d_t_1_1kernel_html_a1fe1262057ac3a313047ee8ccf2181dd"><div class="ttname"><a href="namespacenncc_1_1core_1_1_a_d_t_1_1kernel.html#a1fe1262057ac3a313047ee8ccf2181dd">nncc::core::ADT::kernel::make_overlay</a></div><div class="ttdeci">Overlay&lt; T, T * &gt; make_overlay(const Shape &amp;shape, T *base)</div><div class="ttdef"><b>Definition</b> <a href="kernel_2_overlay_8h_source.html#l00071">Overlay.h:71</a></div></div>
 <div class="ttc" id="astructnncc_1_1core_1_1_a_d_t_1_1kernel_1_1_n_h_w_c_layout_html"><div class="ttname"><a href="structnncc_1_1core_1_1_a_d_t_1_1kernel_1_1_n_h_w_c_layout.html">nncc::core::ADT::kernel::NHWCLayout</a></div><div class="ttdef"><b>Definition</b> <a href="_n_h_w_c_layout_8h_source.html#l00031">NHWCLayout.h:32</a></div></div>
@@ -284,14 +283,14 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   38</span>    <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = param.add_layer();</div>
 <div class="line"><span class="lineno">   39</span>    <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;set_name(<span class="stringliteral">&quot;input&quot;</span>);</div>
 <div class="line"><span class="lineno">   40</span>    <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;set_type(<span class="stringliteral">&quot;Input&quot;</span>);</div>
-<div class="line"><span class="lineno">   41</span>    <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;add_top(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a>.ifm_name());</div>
+<div class="line"><span class="lineno">   41</span>    <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;add_top(<a class="code hl_variable" href="namespaceinfer__testcases.html#ad0d434c7b1aafb339369b12c6e1799eb">model</a>.ifm_name());</div>
 <div class="line"><span class="lineno">   42</span> </div>
 <div class="line"><span class="lineno">   43</span>    <span class="keyword">auto</span> input_param = new ::caffe::InputParameter{};</div>
 <div class="line"><span class="lineno">   44</span>    <span class="keyword">auto</span> input_shape = input_param-&gt;add_shape();</div>
 <div class="line"><span class="lineno">   45</span>    input_shape-&gt;add_dim(1);</div>
-<div class="line"><span class="lineno">   46</span>    input_shape-&gt;add_dim(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a>.ifm_shape().depth());</div>
-<div class="line"><span class="lineno">   47</span>    input_shape-&gt;add_dim(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a>.ifm_shape().height());</div>
-<div class="line"><span class="lineno">   48</span>    input_shape-&gt;add_dim(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a>.ifm_shape().width());</div>
+<div class="line"><span class="lineno">   46</span>    input_shape-&gt;add_dim(<a class="code hl_variable" href="namespaceinfer__testcases.html#ad0d434c7b1aafb339369b12c6e1799eb">model</a>.ifm_shape().depth());</div>
+<div class="line"><span class="lineno">   47</span>    input_shape-&gt;add_dim(<a class="code hl_variable" href="namespaceinfer__testcases.html#ad0d434c7b1aafb339369b12c6e1799eb">model</a>.ifm_shape().height());</div>
+<div class="line"><span class="lineno">   48</span>    input_shape-&gt;add_dim(<a class="code hl_variable" href="namespaceinfer__testcases.html#ad0d434c7b1aafb339369b12c6e1799eb">model</a>.ifm_shape().width());</div>
 <div class="line"><span class="lineno">   49</span>    <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;set_allocated_input_param(input_param);</div>
 <div class="line"><span class="lineno">   50</span>  }</div>
 <div class="line"><span class="lineno">   51</span> </div>
@@ -300,10 +299,10 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   54</span>    <span class="keyword">auto</span> <a class="code hl_function" href="namespacennop.html#acf3d089479785117472a0b30cebc048d">conv</a> = param.add_layer();</div>
 <div class="line"><span class="lineno">   55</span>    <a class="code hl_function" href="namespacennop.html#acf3d089479785117472a0b30cebc048d">conv</a>-&gt;set_name(<span class="stringliteral">&quot;conv&quot;</span>);</div>
 <div class="line"><span class="lineno">   56</span>    <a class="code hl_function" href="namespacennop.html#acf3d089479785117472a0b30cebc048d">conv</a>-&gt;set_type(<span class="stringliteral">&quot;Convolution&quot;</span>);</div>
-<div class="line"><span class="lineno">   57</span>    <a class="code hl_function" href="namespacennop.html#acf3d089479785117472a0b30cebc048d">conv</a>-&gt;add_bottom(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a>.ifm_name());</div>
-<div class="line"><span class="lineno">   58</span>    <a class="code hl_function" href="namespacennop.html#acf3d089479785117472a0b30cebc048d">conv</a>-&gt;add_top(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a>.ofm_name());</div>
+<div class="line"><span class="lineno">   57</span>    <a class="code hl_function" href="namespacennop.html#acf3d089479785117472a0b30cebc048d">conv</a>-&gt;add_bottom(<a class="code hl_variable" href="namespaceinfer__testcases.html#ad0d434c7b1aafb339369b12c6e1799eb">model</a>.ifm_name());</div>
+<div class="line"><span class="lineno">   58</span>    <a class="code hl_function" href="namespacennop.html#acf3d089479785117472a0b30cebc048d">conv</a>-&gt;add_top(<a class="code hl_variable" href="namespaceinfer__testcases.html#ad0d434c7b1aafb339369b12c6e1799eb">model</a>.ofm_name());</div>
 <div class="line"><span class="lineno">   59</span> </div>
-<div class="line"><span class="lineno">   60</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;ker_shape = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a>.ker_shape();</div>
+<div class="line"><span class="lineno">   60</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;ker_shape = <a class="code hl_variable" href="namespaceinfer__testcases.html#ad0d434c7b1aafb339369b12c6e1799eb">model</a>.ker_shape();</div>
 <div class="line"><span class="lineno">   61</span> </div>
 <div class="line"><span class="lineno">   62</span>    <span class="keyword">auto</span> ker_blob_shape = new ::caffe::BlobShape{};</div>
 <div class="line"><span class="lineno">   63</span> </div>
@@ -322,7 +321,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   76</span>        {</div>
 <div class="line"><span class="lineno">   77</span>          <span class="keywordflow">for</span> (uint32_t col = 0; col &lt; ker_shape.width(); ++col)</div>
 <div class="line"><span class="lineno">   78</span>          {</div>
-<div class="line"><span class="lineno">   79</span>            ker_blob-&gt;add_data(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a>.ker_data().at(n, ch, row, col));</div>
+<div class="line"><span class="lineno">   79</span>            ker_blob-&gt;add_data(<a class="code hl_variable" href="namespaceinfer__testcases.html#ad0d434c7b1aafb339369b12c6e1799eb">model</a>.ker_data().at(n, ch, row, col));</div>
 <div class="line"><span class="lineno">   80</span>          }</div>
 <div class="line"><span class="lineno">   81</span>        }</div>
 <div class="line"><span class="lineno">   82</span>      }</div>
@@ -331,10 +330,10 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   85</span>    ker_blob-&gt;set_allocated_shape(ker_blob_shape);</div>
 <div class="line"><span class="lineno">   86</span> </div>
 <div class="line"><span class="lineno">   87</span>    <span class="keyword">auto</span> conv_param = new ::caffe::ConvolutionParameter{};</div>
-<div class="line"><span class="lineno">   88</span>    conv_param-&gt;set_num_output(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a>.ker_shape().count());</div>
+<div class="line"><span class="lineno">   88</span>    conv_param-&gt;set_num_output(<a class="code hl_variable" href="namespaceinfer__testcases.html#ad0d434c7b1aafb339369b12c6e1799eb">model</a>.ker_shape().count());</div>
 <div class="line"><span class="lineno">   89</span>    conv_param-&gt;set_bias_term(<span class="keyword">false</span>);</div>
-<div class="line"><span class="lineno">   90</span>    conv_param-&gt;add_kernel_size(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a>.ker_shape().height());</div>
-<div class="line"><span class="lineno">   91</span>    conv_param-&gt;add_kernel_size(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a>.ker_shape().width());</div>
+<div class="line"><span class="lineno">   90</span>    conv_param-&gt;add_kernel_size(<a class="code hl_variable" href="namespaceinfer__testcases.html#ad0d434c7b1aafb339369b12c6e1799eb">model</a>.ker_shape().height());</div>
+<div class="line"><span class="lineno">   91</span>    conv_param-&gt;add_kernel_size(<a class="code hl_variable" href="namespaceinfer__testcases.html#ad0d434c7b1aafb339369b12c6e1799eb">model</a>.ker_shape().width());</div>
 <div class="line"><span class="lineno">   92</span>    <a class="code hl_function" href="namespacennop.html#acf3d089479785117472a0b30cebc048d">conv</a>-&gt;set_allocated_convolution_param(conv_param);</div>
 <div class="line"><span class="lineno">   93</span>  }</div>
 <div class="line"><span class="lineno">   94</span> </div>
@@ -344,7 +343,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 <div class="ttc" id="anamespacennop_html_acf3d089479785117472a0b30cebc048d"><div class="ttname"><a href="namespacennop.html#acf3d089479785117472a0b30cebc048d">nnop::conv</a></div><div class="ttdeci">void conv(const nncc::core::ADT::feature::Shape &amp;out_shape, nncc::core::ADT::feature::Accessor&lt; OutputDType &gt; &amp;out_data, const nncc::core::ADT::feature::Shape &amp;in_shape, const nncc::core::ADT::feature::Reader&lt; InputDType &gt; &amp;in_data, const nncc::core::ADT::kernel::Shape &amp;ker_shape, const nncc::core::ADT::kernel::Reader&lt; KernelDType &gt; &amp;ker_data, const PadInfo &amp;pad_info, const StrideInfo &amp;stride_info)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2nnop_2include_2nnop_2_conv2_d_8h_source.html#l00034">Conv2D.h:34</a></div></div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="nnsuite_2conv_2nnkit-caffe_2_entry_8cpp_source.html#l00025">make_backend()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="nnsuite_2conv_2nnkit-caffe_2entry_8cpp_source.html#l00025">make_backend()</a>.</p>
 
 </div>
 </div>

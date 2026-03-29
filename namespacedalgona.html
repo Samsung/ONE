@@ -448,7 +448,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  140</span>    <span class="keyword">const</span> <span class="keyword">auto</span> output_tensor = interpreter-&gt;getTensor(succ);</div>
 <div class="line"><span class="lineno">  141</span>    <span class="keyword">auto</span> circle_node = <span class="keyword">static_cast&lt;</span><a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *<span class="keyword">&gt;</span>(succ);</div>
 <div class="line"><span class="lineno">  142</span> </div>
-<div class="line"><span class="lineno">  143</span>    <span class="keyword">auto</span> opcode_str = <a class="code hl_function" href="namespacedalgona.html#a5aa88e1ccfc9007d5732982841a15248">toString</a>(circle_node-&gt;opcode());</div>
+<div class="line"><span class="lineno">  143</span>    <span class="keyword">auto</span> opcode_str = toString(circle_node-&gt;opcode());</div>
 <div class="line"><span class="lineno">  144</span>    <span class="comment">// Check if node is a multi-output node</span></div>
 <div class="line"><span class="lineno">  145</span>    <span class="comment">// Assumption: Multi-output virtual nodes have &#39;Out&#39; prefix</span></div>
 <div class="line"><span class="lineno">  146</span>    <span class="comment">// TODO Fix this if the assumption changes</span></div>
@@ -463,8 +463,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  155</span>  }</div>
 <div class="line"><span class="lineno">  156</span>  <span class="keywordflow">return</span> outputs;</div>
 <div class="line"><span class="lineno">  157</span>}</div>
-<div class="ttc" id="anamespacedalgona_html_a5aa88e1ccfc9007d5732982841a15248"><div class="ttname"><a href="namespacedalgona.html#a5aa88e1ccfc9007d5732982841a15248">dalgona::toString</a></div><div class="ttdeci">const std::string toString(luci::CircleOpcode opcode)</div><div class="ttdef"><b>Definition</b> <a href="_string_utils_8cpp_source.html#l00026">StringUtils.cpp:26</a></div></div>
-<div class="ttc" id="anamespaceloco_html"><div class="ttname"><a href="namespaceloco.html">loco</a></div><div class="ttdef"><b>Definition</b> <a href="exo_2src_2_log_helper_8cpp_source.html#l00019">LogHelper.cpp:20</a></div></div>
+<div class="ttc" id="anamespaceloco_html"><div class="ttname"><a href="namespaceloco.html">loco</a></div><div class="ttdef"><b>Definition</b> <a href="__deprecated_2moco-tf_2src_2_log_helper_8cpp_source.html#l00019">LogHelper.cpp:20</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00051">luci::CircleNode::name()</a>, <a class="el" href="loco_2src_2_i_r_2_node_8cpp_source.html#l00046">loco::succs()</a>, <a class="el" href="_metric_printer_8cpp_source.html#l00027">THROW_UNLESS</a>, and <a class="el" href="_string_utils_8cpp_source.html#l00026">toString()</a>.</p>
 

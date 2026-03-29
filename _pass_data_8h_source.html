@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ONE - On-device Neural Engine: compiler/nnc/include/pass/PassData.h Source File</title>
+<title>ONE - On-device Neural Engine: compiler/_deprecated/nnc/include/pass/PassData.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -116,7 +116,7 @@ $(document).ready(function(){initNavTree('_pass_data_8h_source.html',''); initRe
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#ifndef NNCC_PASSDATA_H</span></div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#define NNCC_PASSDATA_H</span></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;<a class="code" href="compiler_2mir_2include_2mir_2_graph_8h.html">mir/Graph.h</a>&quot;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;<a class="code" href="compiler_2__deprecated_2mir_2include_2mir_2_graph_8h.html">mir/Graph.h</a>&quot;</span></div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;<a class="code" href="_tensor_variant_8h.html">mir/TensorVariant.h</a>&quot;</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacennc.html">nnc</a></div>
@@ -129,7 +129,7 @@ $(document).ready(function(){initNavTree('_pass_data_8h_source.html',''); initRe
 <div class="foldopen" id="foldopen00032" data-start="{" data-end="}">
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="classnnc_1_1_pass_data.html#a128262f713386f1531938e0efd5b0cdc">   32</a></span>  <span class="comment">/* implicit */</span> <a class="code hl_function" href="classnnc_1_1_pass_data.html#a128262f713386f1531938e0efd5b0cdc">PassData</a>(std::nullptr_t data)</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    : <span class="comment">// NOLINT(google-explicit-constructor, hicpp-explicit-conversions)</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>      _dataType(PDT::UNKNOWN), _dataContainer{.<a class="code hl_variable" href="classnnc_1_1_pass_data.html#a76c21c4e8f3649865da9b8f46cdc5af6">unknown</a> = data}</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>      _dataType(PDT::<a class="code hl_enumvalue" href="namespacemir.html#a07dec47866bd63b8e967cabdc82d39e3a696b031073e74bf2cb98e5ef201d4aa3">UNKNOWN</a>), _dataContainer{.<a class="code hl_variable" href="classnnc_1_1_pass_data.html#a76c21c4e8f3649865da9b8f46cdc5af6">unknown</a> = data}</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  {</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  }</div>
 </div>
@@ -174,7 +174,7 @@ $(document).ready(function(){initNavTree('_pass_data_8h_source.html',''); initRe
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  {</div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    GRAPH,</div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    TENSOR_VARIANT,</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    UNKNOWN</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <a class="code hl_enumvalue" href="namespacemir.html#a07dec47866bd63b8e967cabdc82d39e3a696b031073e74bf2cb98e5ef201d4aa3">UNKNOWN</a></div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  } _dataType;</div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
@@ -192,7 +192,7 @@ $(document).ready(function(){initNavTree('_pass_data_8h_source.html',''); initRe
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="preprocessor">#endif </span><span class="comment">// NNCC_PASSDATA_H</span></div>
 <div class="ttc" id="a_tensor_variant_8h_html"><div class="ttname"><a href="_tensor_variant_8h.html">TensorVariant.h</a></div></div>
-<div class="ttc" id="aclassmir_1_1_graph_html"><div class="ttname"><a href="classmir_1_1_graph.html">mir::Graph</a></div><div class="ttdef"><b>Definition</b> <a href="compiler_2mir_2include_2mir_2_graph_8h_source.html#l00034">Graph.h:35</a></div></div>
+<div class="ttc" id="aclassmir_1_1_graph_html"><div class="ttname"><a href="classmir_1_1_graph.html">mir::Graph</a></div><div class="ttdef"><b>Definition</b> <a href="compiler_2__deprecated_2mir_2include_2mir_2_graph_8h_source.html#l00034">Graph.h:35</a></div></div>
 <div class="ttc" id="aclassmir_1_1_tensor_variant_html"><div class="ttname"><a href="classmir_1_1_tensor_variant.html">mir::TensorVariant</a></div><div class="ttdef"><b>Definition</b> <a href="_tensor_variant_8h_source.html#l00032">TensorVariant.h:33</a></div></div>
 <div class="ttc" id="aclassnnc_1_1_pass_data_html"><div class="ttname"><a href="classnnc_1_1_pass_data.html">nnc::PassData</a></div><div class="ttdoc">class that encapsulate value returned and taken by pass</div><div class="ttdef"><b>Definition</b> <a href="_pass_data_8h_source.html#l00029">PassData.h:30</a></div></div>
 <div class="ttc" id="aclassnnc_1_1_pass_data_html_a06b238e0fe610744f16aa47460aaf6a0"><div class="ttname"><a href="classnnc_1_1_pass_data.html#a06b238e0fe610744f16aa47460aaf6a0">nnc::PassData::tensorVariant</a></div><div class="ttdeci">mir::TensorVariant * tensorVariant</div><div class="ttdef"><b>Definition</b> <a href="_pass_data_8h_source.html#l00089">PassData.h:89</a></div></div>
@@ -201,14 +201,15 @@ $(document).ready(function(){initNavTree('_pass_data_8h_source.html',''); initRe
 <div class="ttc" id="aclassnnc_1_1_pass_data_html_a89d6ce5ae35b1bb60448ab948ef67e5c"><div class="ttname"><a href="classnnc_1_1_pass_data.html#a89d6ce5ae35b1bb60448ab948ef67e5c">nnc::PassData::graph</a></div><div class="ttdeci">mir::Graph * graph</div><div class="ttdef"><b>Definition</b> <a href="_pass_data_8h_source.html#l00088">PassData.h:88</a></div></div>
 <div class="ttc" id="aclassnnc_1_1_pass_data_html_aa4ed178099d241a8be6082f9f00b59c3"><div class="ttname"><a href="classnnc_1_1_pass_data.html#aa4ed178099d241a8be6082f9f00b59c3">nnc::PassData::PassData</a></div><div class="ttdeci">PassData(mir::Graph *graph)</div><div class="ttdoc">Implicit conversion from Graph* to PassData.</div><div class="ttdef"><b>Definition</b> <a href="_pass_data_8h_source.html#l00041">PassData.h:41</a></div></div>
 <div class="ttc" id="aclassnnc_1_1_pass_data_html_ab34d6f3232758359d5427bd1b79e3fa8"><div class="ttname"><a href="classnnc_1_1_pass_data.html#ab34d6f3232758359d5427bd1b79e3fa8">nnc::PassData::PassData</a></div><div class="ttdeci">PassData(mir::TensorVariant *tv)</div><div class="ttdoc">Implicit conversion from Graph* to PassData.</div><div class="ttdef"><b>Definition</b> <a href="_pass_data_8h_source.html#l00060">PassData.h:60</a></div></div>
-<div class="ttc" id="acompiler_2mir_2include_2mir_2_graph_8h_html"><div class="ttname"><a href="compiler_2mir_2include_2mir_2_graph_8h.html">Graph.h</a></div></div>
+<div class="ttc" id="acompiler_2__deprecated_2mir_2include_2mir_2_graph_8h_html"><div class="ttname"><a href="compiler_2__deprecated_2mir_2include_2mir_2_graph_8h.html">Graph.h</a></div></div>
+<div class="ttc" id="anamespacemir_html_a07dec47866bd63b8e967cabdc82d39e3a696b031073e74bf2cb98e5ef201d4aa3"><div class="ttname"><a href="namespacemir.html#a07dec47866bd63b8e967cabdc82d39e3a696b031073e74bf2cb98e5ef201d4aa3">mir::DataType::UNKNOWN</a></div><div class="ttdeci">@ UNKNOWN</div></div>
 <div class="ttc" id="anamespacennc_html"><div class="ttname"><a href="namespacennc.html">nnc</a></div><div class="ttdef"><b>Definition</b> <a href="_acl_cpp_generator_8cpp_source.html#l00025">AclCppGenerator.cpp:26</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_e955afc72e8af59637c9070b8690ff98.html">compiler</a></li><li class="navelem"><a class="el" href="dir_afb6418346ab6b98bad9a049d5ca49ac.html">nnc</a></li><li class="navelem"><a class="el" href="dir_9804b8e07d0d112d52bcfaf559d62480.html">include</a></li><li class="navelem"><a class="el" href="dir_24732d9157ecc40ad5bb793d48c44e49.html">pass</a></li><li class="navelem"><a class="el" href="_pass_data_8h.html">PassData.h</a></li>
+    <li class="navelem"><a class="el" href="dir_e955afc72e8af59637c9070b8690ff98.html">compiler</a></li><li class="navelem"><a class="el" href="dir_d45624ffc5eee5107ee20c42fd9bb74b.html">_deprecated</a></li><li class="navelem"><a class="el" href="dir_58d83e4799de69052d690692bc6a939c.html">nnc</a></li><li class="navelem"><a class="el" href="dir_61c692830c71833dde9739505da16ae1.html">include</a></li><li class="navelem"><a class="el" href="dir_984c8ca0c30729e373eb7daf69eb3ac2.html">pass</a></li><li class="navelem"><a class="el" href="_pass_data_8h.html">PassData.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

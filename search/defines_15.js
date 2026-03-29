@@ -18,7 +18,7 @@ var searchData=
   ['vload_15',['VLOAD',['../helpers_8h.html#a287e2fc366c312b468382c95bb90f91f',1,'helpers.h']]],
   ['vload1_16',['vload1',['../helpers_8h.html#ac7d6861d3efed38307fbf891ecc63002',1,'helpers.h']]],
   ['vload_5fstr_17',['VLOAD_STR',['../helpers_8h.html#a29367a809c14c294feefc1a8dad93752',1,'helpers.h']]],
-  ['vlog_18',['VLOG',['../compiler_2ann-ref_2src_2_logging_8h.html#a35e71de09dfd64892a48e3f7c56c5619',1,'Logging.h']]],
+  ['vlog_18',['VLOG',['../compiler_2__deprecated_2ann-ref_2src_2_logging_8h.html#a35e71de09dfd64892a48e3f7c56c5619',1,'Logging.h']]],
   ['vstore_19',['VSTORE',['../helpers_8h.html#acb282042d1edeeaa3cc979a206f78b54',1,'helpers.h']]],
   ['vstore1_20',['vstore1',['../helpers_8h.html#a02b55beb6e5825632a5b9476d64188a1',1,'helpers.h']]],
   ['vstore_5fstr_21',['VSTORE_STR',['../helpers_8h.html#aeedcb2d8b4b0ce17747474d4da15f199',1,'helpers.h']]]

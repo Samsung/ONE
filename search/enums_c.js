@@ -13,7 +13,7 @@ var searchData=
   ['omtrainoptimizer_10',['OMTrainOptimizer',['../namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685c',1,'onert_micro']]],
   ['opcode_11',['OpCode',['../namespaceonert_1_1ir.html#a587a2982319cf192bc7a6e6e44cde3b7',1,'onert::ir']]],
   ['operandcode_12',['OperandCode',['../group___neural_networks.html#gaf06d1affd33f3bc698d0c04eceb23298',1,'NeuralNetworks.h']]],
-  ['operandlifetime_13',['OperandLifeTime',['../compiler_2ann-ref_2src_2_operand_8h.html#a6d43dbf7e892bb998b357897692acfea',1,'Operand.h']]],
+  ['operandlifetime_13',['OperandLifeTime',['../compiler_2__deprecated_2ann-ref_2src_2_operand_8h.html#a6d43dbf7e892bb998b357897692acfea',1,'Operand.h']]],
   ['operandtype_14',['OperandType',['../_operand_type_8h.html#aeb6507c1024b22251bb08c413044d1fd',1,'OperandType.h']]],
   ['operationcode_15',['OperationCode',['../group___neural_networks.html#gaabbe492c60331b13038e39d4207940e0',1,'NeuralNetworks.h']]],
   ['operationtype_16',['OperationType',['../_operation_type_8h.html#ae75fec8376570a470a9035fab2a08152',1,'OperationType.h']]],

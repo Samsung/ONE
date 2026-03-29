@@ -307,7 +307,7 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="nnkit-tf_2support_2src_2_backend_8cpp_source.html#l00068">68</a> of file <a class="el" href="nnkit-tf_2support_2src_2_backend_8cpp_source.html">Backend.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   69</span>{</div>
 <div class="line"><span class="lineno">   70</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;input_tensor : _inputs)</div>
-<div class="line"><span class="lineno">   71</span>    _data_map.allocate(input_tensor.<a class="code hl_function" href="namespaceexo.html#aff46e62f58bb005a0fc63b6bed6f8698">get</a>());</div>
+<div class="line"><span class="lineno">   71</span>    _data_map.allocate(input_tensor.<a class="code hl_function" href="namespacemoco_1_1tf.html#a13f64637204bc67b4190d4658a175c7f">get</a>());</div>
 <div class="line"><span class="lineno">   72</span> </div>
 <div class="line"><span class="lineno">   73</span>  TensorContext ctx(_inputs, _data_map);</div>
 <div class="line"><span class="lineno">   74</span>  f(ctx); <span class="comment">// fill values</span></div>
@@ -317,7 +317,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   78</span>}</div>
 <div class="ttc" id="aclassnnkit_1_1support_1_1tf_1_1_runner_html_a1aeb8172fe7c3aa0b77411b77c42cde2"><div class="ttname"><a href="classnnkit_1_1support_1_1tf_1_1_runner.html#a1aeb8172fe7c3aa0b77411b77c42cde2">nnkit::support::tf::Runner::prepareInputs</a></div><div class="ttdeci">void prepareInputs(const std::vector&lt; std::unique_ptr&lt; ParsedTensor &gt; &gt; &amp;inputs, TensorDataMap &amp;data_map)</div><div class="ttdef"><b>Definition</b> <a href="nnkit-tf_2support_2src_2_runner_8cpp_source.html#l00242">Runner.cpp:242</a></div></div>
 <div class="ttc" id="aclassnnkit_1_1support_1_1tf_1_1_runner_html_a571b81e4f424c35f149827e5e03de761"><div class="ttname"><a href="classnnkit_1_1support_1_1tf_1_1_runner.html#a571b81e4f424c35f149827e5e03de761">nnkit::support::tf::Runner::prepareOutputs</a></div><div class="ttdeci">void prepareOutputs(const std::vector&lt; std::unique_ptr&lt; ParsedTensor &gt; &gt; &amp;outputs)</div><div class="ttdef"><b>Definition</b> <a href="nnkit-tf_2support_2src_2_runner_8cpp_source.html#l00274">Runner.cpp:274</a></div></div>
-<div class="ttc" id="anamespaceexo_html_aff46e62f58bb005a0fc63b6bed6f8698"><div class="ttname"><a href="namespaceexo.html#aff46e62f58bb005a0fc63b6bed6f8698">exo::get</a></div><div class="ttdeci">KnobTrait&lt; K &gt;::ValueType get(void)</div></div>
+<div class="ttc" id="anamespacemoco_1_1tf_html_a13f64637204bc67b4190d4658a175c7f"><div class="ttname"><a href="namespacemoco_1_1tf.html#a13f64637204bc67b4190d4658a175c7f">moco::tf::get</a></div><div class="ttdeci">KnobTrait&lt; K &gt;::ValueType get(void)</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_tensor_data_map_8h_source.html#l00048">nnkit::support::tf::TensorDataMap::allocate()</a>, <a class="el" href="nnkit-tf_2support_2src_2_runner_8cpp_source.html#l00242">nnkit::support::tf::Runner::prepareInputs()</a>, and <a class="el" href="nnkit-tf_2support_2src_2_runner_8cpp_source.html#l00274">nnkit::support::tf::Runner::prepareOutputs()</a>.</p>
 
@@ -368,7 +368,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   96</span>    {</div>
 <div class="line"><span class="lineno">   97</span>      _outputs[n]-&gt;mutable_shape().dim(r) = TF_Dim(actual, r);</div>
 <div class="line"><span class="lineno">   98</span>    }</div>
-<div class="line"><span class="lineno">   99</span>    uint8_t *dest = _data_map.<a class="code hl_function" href="classnnkit_1_1support_1_1tf_1_1_tensor_data_map.html#a7a8edbdb41a6f692b04df9d8f1dc4276">allocate</a>(_outputs[n].<a class="code hl_function" href="namespaceexo.html#aff46e62f58bb005a0fc63b6bed6f8698">get</a>());</div>
+<div class="line"><span class="lineno">   99</span>    uint8_t *dest = _data_map.<a class="code hl_function" href="classnnkit_1_1support_1_1tf_1_1_tensor_data_map.html#a7a8edbdb41a6f692b04df9d8f1dc4276">allocate</a>(_outputs[n].<a class="code hl_function" href="namespacemoco_1_1tf.html#a13f64637204bc67b4190d4658a175c7f">get</a>());</div>
 <div class="line"><span class="lineno">  100</span> </div>
 <div class="line"><span class="lineno">  101</span>    std::memcpy(dest, tf_data, byte_size);</div>
 <div class="line"><span class="lineno">  102</span>  }</div>

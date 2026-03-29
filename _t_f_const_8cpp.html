@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ONE - On-device Neural Engine: compiler/moco/lang/src/IR/Nodes/TFConst.cpp File Reference</title>
+<title>ONE - On-device Neural Engine: compiler/_deprecated/moco/lang/src/IR/Nodes/TFConst.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -159,18 +159,18 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   77</span>  <span class="keywordflow">return</span> shape;</div>
 <div class="line"><span class="lineno">   78</span>}</div>
 <div class="line"><span class="lineno">   79</span> </div>
-<div class="line"><span class="lineno">   80</span>uint32_t <a class="code hl_function" href="namespacenncc_1_1core_1_1_a_d_t_1_1feature.html#a1780a62ce2f7897524ee6a9c8967158d">num_elements</a>(<span class="keyword">const</span> TFConst *tfconst)</div>
+<div class="line"><span class="lineno">   80</span>uint32_t num_elements(<span class="keyword">const</span> TFConst *tfconst)</div>
 <div class="line"><span class="lineno">   81</span>{</div>
 <div class="line"><span class="lineno">   82</span>  assert(tfconst != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   83</span> </div>
-<div class="line"><span class="lineno">   84</span>  uint32_t <a class="code hl_function" href="namespacenncc_1_1core_1_1_a_d_t_1_1feature.html#a1780a62ce2f7897524ee6a9c8967158d">num_elements</a> = 1;</div>
+<div class="line"><span class="lineno">   84</span>  uint32_t num_elements = 1;</div>
 <div class="line"><span class="lineno">   85</span>  <span class="keywordflow">for</span> (uint32_t index = 0; <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> &lt; tfconst-&gt;rank(); ++<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>)</div>
 <div class="line"><span class="lineno">   86</span>  {</div>
 <div class="line"><span class="lineno">   87</span>    assert(tfconst-&gt;dim(index).known());</div>
 <div class="line"><span class="lineno">   88</span>    uint32_t dim = tfconst-&gt;dim(index).value();</div>
-<div class="line"><span class="lineno">   89</span>    <a class="code hl_function" href="namespacenncc_1_1core_1_1_a_d_t_1_1feature.html#a1780a62ce2f7897524ee6a9c8967158d">num_elements</a> = <a class="code hl_function" href="namespacenncc_1_1core_1_1_a_d_t_1_1feature.html#a1780a62ce2f7897524ee6a9c8967158d">num_elements</a> * dim;</div>
+<div class="line"><span class="lineno">   89</span>    num_elements = num_elements * dim;</div>
 <div class="line"><span class="lineno">   90</span>  }</div>
-<div class="line"><span class="lineno">   91</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespacenncc_1_1core_1_1_a_d_t_1_1feature.html#a1780a62ce2f7897524ee6a9c8967158d">num_elements</a>;</div>
+<div class="line"><span class="lineno">   91</span>  <span class="keywordflow">return</span> num_elements;</div>
 <div class="line"><span class="lineno">   92</span>}</div>
 <div class="line"><span class="lineno">   93</span> </div>
 <div class="line"><span class="lineno">   94</span><span class="keywordtype">bool</span> same_shape(<span class="keyword">const</span> TFConst *lhs, <span class="keyword">const</span> TFConst *rhs)</div>
@@ -197,7 +197,6 @@ Functions</h2></td></tr>
 <div class="ttc" id="aclassloco_1_1_tensor_shape_html_a0d6b59ff61333f8856ce7b3ffa687423"><div class="ttname"><a href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">loco::TensorShape::dim</a></div><div class="ttdeci">const Dimension &amp; dim(uint32_t axis) const</div><div class="ttdef"><b>Definition</b> <a href="loco_2include_2loco_2_i_r_2_tensor_shape_8h_source.html#l00038">TensorShape.h:38</a></div></div>
 <div class="ttc" id="aclassloco_1_1_tensor_shape_html_af1de7d61456632efdf2ef3b4320d049f"><div class="ttname"><a href="classloco_1_1_tensor_shape.html#af1de7d61456632efdf2ef3b4320d049f">loco::TensorShape::rank</a></div><div class="ttdeci">uint32_t rank(void) const</div><div class="ttdef"><b>Definition</b> <a href="loco_2include_2loco_2_i_r_2_tensor_shape_8h_source.html#l00035">TensorShape.h:35</a></div></div>
 <div class="ttc" id="anamespacemoco_html_a2a0fb57b3701512b54ae18c23908f047"><div class="ttname"><a href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">moco::index</a></div><div class="ttdeci">loco::GraphInputIndex index(const TFPlaceholder *node)</div><div class="ttdef"><b>Definition</b> <a href="_t_f_node_8cpp_source.html#l00054">TFNode.cpp:54</a></div></div>
-<div class="ttc" id="anamespacenncc_1_1core_1_1_a_d_t_1_1feature_html_a1780a62ce2f7897524ee6a9c8967158d"><div class="ttname"><a href="namespacenncc_1_1core_1_1_a_d_t_1_1feature.html#a1780a62ce2f7897524ee6a9c8967158d">nncc::core::ADT::feature::num_elements</a></div><div class="ttdeci">uint32_t num_elements(const Shape &amp;shape)</div><div class="ttdoc">The number of elements of a feature map of a given shape.</div><div class="ttdef"><b>Definition</b> <a href="compiler_2angkor_2include_2nncc_2core_2_a_d_t_2feature_2_shape_8h_source.html#l00059">Shape.h:59</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -206,7 +205,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_e955afc72e8af59637c9070b8690ff98.html">compiler</a></li><li class="navelem"><a class="el" href="dir_9f777a619f2bd1e387986eb99afa94e4.html">moco</a></li><li class="navelem"><a class="el" href="dir_cd83cb5bba10c1a6f95844e2303687ce.html">lang</a></li><li class="navelem"><a class="el" href="dir_305d7ae8343ffbea0cafd2f7e053e7ee.html">src</a></li><li class="navelem"><a class="el" href="dir_fee4009ceb265612576265c4b2e1bbc8.html">IR</a></li><li class="navelem"><a class="el" href="dir_50dbc4f70d7e3c428b0cb3d6bea11b5c.html">Nodes</a></li><li class="navelem"><a class="el" href="_t_f_const_8cpp.html">TFConst.cpp</a></li>
+    <li class="navelem"><a class="el" href="dir_e955afc72e8af59637c9070b8690ff98.html">compiler</a></li><li class="navelem"><a class="el" href="dir_d45624ffc5eee5107ee20c42fd9bb74b.html">_deprecated</a></li><li class="navelem"><a class="el" href="dir_3ad12f3da2a26105d4b70bbf4c592c51.html">moco</a></li><li class="navelem"><a class="el" href="dir_d40bce76fb41d53685f0312f7c7c5b7a.html">lang</a></li><li class="navelem"><a class="el" href="dir_b8e4e56bcd619e0fccd4a891df552195.html">src</a></li><li class="navelem"><a class="el" href="dir_1fce033aafa75ff98850cee404440d5f.html">IR</a></li><li class="navelem"><a class="el" href="dir_e654b0396db2e7c8d20a3b3623124d51.html">Nodes</a></li><li class="navelem"><a class="el" href="_t_f_const_8cpp.html">TFConst.cpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

@@ -129,11 +129,11 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_compilation_builder_8cpp_source.html#l00023">23</a> of file <a class="el" href="_compilation_builder_8cpp_source.html">CompilationBuilder.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   23</span>                                                                : mModel(model)</div>
 <div class="line"><span class="lineno">   24</span>{</div>
-<div class="line"><span class="lineno">   25</span>  <a class="code hl_define" href="compiler_2ann-ref_2src_2_logging_8h.html#a35e71de09dfd64892a48e3f7c56c5619">VLOG</a>(COMPILATION) &lt;&lt; <span class="stringliteral">&quot;CompilationBuilder::CompilationBuilder&quot;</span>;</div>
+<div class="line"><span class="lineno">   25</span>  <a class="code hl_define" href="compiler_2__deprecated_2ann-ref_2src_2_logging_8h.html#a35e71de09dfd64892a48e3f7c56c5619">VLOG</a>(COMPILATION) &lt;&lt; <span class="stringliteral">&quot;CompilationBuilder::CompilationBuilder&quot;</span>;</div>
 <div class="line"><span class="lineno">   26</span>}</div>
-<div class="ttc" id="acompiler_2ann-ref_2src_2_logging_8h_html_a35e71de09dfd64892a48e3f7c56c5619"><div class="ttname"><a href="compiler_2ann-ref_2src_2_logging_8h.html#a35e71de09dfd64892a48e3f7c56c5619">VLOG</a></div><div class="ttdeci">#define VLOG(...)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2ann-ref_2src_2_logging_8h_source.html#l00037">Logging.h:37</a></div></div>
+<div class="ttc" id="acompiler_2__deprecated_2ann-ref_2src_2_logging_8h_html_a35e71de09dfd64892a48e3f7c56c5619"><div class="ttname"><a href="compiler_2__deprecated_2ann-ref_2src_2_logging_8h.html#a35e71de09dfd64892a48e3f7c56c5619">VLOG</a></div><div class="ttdeci">#define VLOG(...)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2__deprecated_2ann-ref_2src_2_logging_8h_source.html#l00037">Logging.h:37</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compiler_2ann-ref_2src_2_logging_8h_source.html#l00037">VLOG</a>.</p>
+<p class="reference">References <a class="el" href="compiler_2__deprecated_2ann-ref_2src_2_logging_8h_source.html#l00037">VLOG</a>.</p>
 
 </div>
 </div>
@@ -158,20 +158,20 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   43</span>{</div>
 <div class="line"><span class="lineno">   44</span>  <span class="keywordflow">if</span> (!mFinished)</div>
 <div class="line"><span class="lineno">   45</span>  {</div>
-<div class="line"><span class="lineno">   46</span>    <a class="code hl_define" href="compiler_2ann-ref_2src_2_logging_8h.html#a3577749fb48d57a158b8ac1a0b3ab57e">LOG</a>(ERROR) &lt;&lt; <span class="stringliteral">&quot;ANeuralNetworksExecution_create passed an unfinished compilation&quot;</span>;</div>
+<div class="line"><span class="lineno">   46</span>    <a class="code hl_define" href="compiler_2__deprecated_2ann-ref_2src_2_logging_8h.html#a3577749fb48d57a158b8ac1a0b3ab57e">LOG</a>(ERROR) &lt;&lt; <span class="stringliteral">&quot;ANeuralNetworksExecution_create passed an unfinished compilation&quot;</span>;</div>
 <div class="line"><span class="lineno">   47</span>    *execution = <span class="keyword">nullptr</span>;</div>
 <div class="line"><span class="lineno">   48</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a8c8e618c0184e486c226c99a6946d835">ANEURALNETWORKS_BAD_STATE</a>;</div>
 <div class="line"><span class="lineno">   49</span>  }</div>
 <div class="line"><span class="lineno">   50</span>  *execution = <span class="keyword">new</span> <a class="code hl_class" href="class_execution_builder.html">ExecutionBuilder</a>(mModel);</div>
 <div class="line"><span class="lineno">   51</span>  <span class="keywordflow">return</span> (*execution ? <a class="code hl_enumvalue" href="group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a3d43394f34347d3a8de3c98dbd8a0365">ANEURALNETWORKS_NO_ERROR</a> : <a class="code hl_enumvalue" href="group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a4012e33e698fe25493872e7e35a8aa71">ANEURALNETWORKS_OUT_OF_MEMORY</a>);</div>
 <div class="line"><span class="lineno">   52</span>}</div>
-<div class="ttc" id="aclass_execution_builder_html"><div class="ttname"><a href="class_execution_builder.html">ExecutionBuilder</a></div><div class="ttdef"><b>Definition</b> <a href="compiler_2ann-ref_2src_2_execution_builder_8h_source.html#l00032">ExecutionBuilder.h:33</a></div></div>
-<div class="ttc" id="acompiler_2ann-ref_2src_2_logging_8h_html_a3577749fb48d57a158b8ac1a0b3ab57e"><div class="ttname"><a href="compiler_2ann-ref_2src_2_logging_8h.html#a3577749fb48d57a158b8ac1a0b3ab57e">LOG</a></div><div class="ttdeci">#define LOG(...)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2ann-ref_2src_2_logging_8h_source.html#l00036">Logging.h:36</a></div></div>
+<div class="ttc" id="aclass_execution_builder_html"><div class="ttname"><a href="class_execution_builder.html">ExecutionBuilder</a></div><div class="ttdef"><b>Definition</b> <a href="compiler_2__deprecated_2ann-ref_2src_2_execution_builder_8h_source.html#l00032">ExecutionBuilder.h:33</a></div></div>
+<div class="ttc" id="acompiler_2__deprecated_2ann-ref_2src_2_logging_8h_html_a3577749fb48d57a158b8ac1a0b3ab57e"><div class="ttname"><a href="compiler_2__deprecated_2ann-ref_2src_2_logging_8h.html#a3577749fb48d57a158b8ac1a0b3ab57e">LOG</a></div><div class="ttdeci">#define LOG(...)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2__deprecated_2ann-ref_2src_2_logging_8h_source.html#l00036">Logging.h:36</a></div></div>
 <div class="ttc" id="agroup___neural_networks_html_ggad8097859ab1bdd06be52a8421df152d4a3d43394f34347d3a8de3c98dbd8a0365"><div class="ttname"><a href="group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a3d43394f34347d3a8de3c98dbd8a0365">ANEURALNETWORKS_NO_ERROR</a></div><div class="ttdeci">@ ANEURALNETWORKS_NO_ERROR</div><div class="ttdef"><b>Definition</b> <a href="_neural_networks_8h_source.html#l01385">NeuralNetworks.h:1385</a></div></div>
 <div class="ttc" id="agroup___neural_networks_html_ggad8097859ab1bdd06be52a8421df152d4a4012e33e698fe25493872e7e35a8aa71"><div class="ttname"><a href="group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a4012e33e698fe25493872e7e35a8aa71">ANEURALNETWORKS_OUT_OF_MEMORY</a></div><div class="ttdeci">@ ANEURALNETWORKS_OUT_OF_MEMORY</div><div class="ttdef"><b>Definition</b> <a href="_neural_networks_8h_source.html#l01386">NeuralNetworks.h:1386</a></div></div>
 <div class="ttc" id="agroup___neural_networks_html_ggad8097859ab1bdd06be52a8421df152d4a8c8e618c0184e486c226c99a6946d835"><div class="ttname"><a href="group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a8c8e618c0184e486c226c99a6946d835">ANEURALNETWORKS_BAD_STATE</a></div><div class="ttdeci">@ ANEURALNETWORKS_BAD_STATE</div><div class="ttdef"><b>Definition</b> <a href="_neural_networks_8h_source.html#l01392">NeuralNetworks.h:1392</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_neural_networks_8h_source.html#l01392">ANEURALNETWORKS_BAD_STATE</a>, <a class="el" href="_neural_networks_8h_source.html#l01385">ANEURALNETWORKS_NO_ERROR</a>, <a class="el" href="_neural_networks_8h_source.html#l01386">ANEURALNETWORKS_OUT_OF_MEMORY</a>, and <a class="el" href="compiler_2ann-ref_2src_2_logging_8h_source.html#l00036">LOG</a>.</p>
+<p class="reference">References <a class="el" href="_neural_networks_8h_source.html#l01392">ANEURALNETWORKS_BAD_STATE</a>, <a class="el" href="_neural_networks_8h_source.html#l01385">ANEURALNETWORKS_NO_ERROR</a>, <a class="el" href="_neural_networks_8h_source.html#l01386">ANEURALNETWORKS_OUT_OF_MEMORY</a>, and <a class="el" href="compiler_2__deprecated_2ann-ref_2src_2_logging_8h_source.html#l00036">LOG</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_neural_networks_8cpp_source.html#l00202">ANeuralNetworksExecution_create()</a>.</p>
 
@@ -196,7 +196,7 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   29</span>{</div>
 <div class="line"><span class="lineno">   30</span>  <span class="keywordflow">if</span> (mFinished)</div>
 <div class="line"><span class="lineno">   31</span>  {</div>
-<div class="line"><span class="lineno">   32</span>    <a class="code hl_define" href="compiler_2ann-ref_2src_2_logging_8h.html#a3577749fb48d57a158b8ac1a0b3ab57e">LOG</a>(ERROR) &lt;&lt; <span class="stringliteral">&quot;ANeuralNetworksCompilation_finish called more than once&quot;</span>;</div>
+<div class="line"><span class="lineno">   32</span>    <a class="code hl_define" href="compiler_2__deprecated_2ann-ref_2src_2_logging_8h.html#a3577749fb48d57a158b8ac1a0b3ab57e">LOG</a>(ERROR) &lt;&lt; <span class="stringliteral">&quot;ANeuralNetworksCompilation_finish called more than once&quot;</span>;</div>
 <div class="line"><span class="lineno">   33</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a8c8e618c0184e486c226c99a6946d835">ANEURALNETWORKS_BAD_STATE</a>;</div>
 <div class="line"><span class="lineno">   34</span>  }</div>
 <div class="line"><span class="lineno">   35</span>  <span class="comment">// TODO validate the rest</span></div>
@@ -206,15 +206,15 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   39</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a3d43394f34347d3a8de3c98dbd8a0365">ANEURALNETWORKS_NO_ERROR</a>;</div>
 <div class="line"><span class="lineno">   40</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_neural_networks_8h_source.html#l01392">ANEURALNETWORKS_BAD_STATE</a>, <a class="el" href="_neural_networks_8h_source.html#l01385">ANEURALNETWORKS_NO_ERROR</a>, and <a class="el" href="compiler_2ann-ref_2src_2_logging_8h_source.html#l00036">LOG</a>.</p>
+<p class="reference">References <a class="el" href="_neural_networks_8h_source.html#l01392">ANEURALNETWORKS_BAD_STATE</a>, <a class="el" href="_neural_networks_8h_source.html#l01385">ANEURALNETWORKS_NO_ERROR</a>, and <a class="el" href="compiler_2__deprecated_2ann-ref_2src_2_logging_8h_source.html#l00036">LOG</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_neural_networks_8cpp_source.html#l00191">ANeuralNetworksCompilation_finish()</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>compiler/ann-ref/src/<a class="el" href="_compilation_builder_8h_source.html">CompilationBuilder.h</a></li>
-<li>compiler/ann-ref/src/<a class="el" href="_compilation_builder_8cpp_source.html">CompilationBuilder.cpp</a></li>
+<li>compiler/_deprecated/ann-ref/src/<a class="el" href="_compilation_builder_8h_source.html">CompilationBuilder.h</a></li>
+<li>compiler/_deprecated/ann-ref/src/<a class="el" href="_compilation_builder_8cpp_source.html">CompilationBuilder.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

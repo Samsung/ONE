@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ONE - On-device Neural Engine: compiler/coco/core/src/IR/Object.cpp Source File</title>
+<title>ONE - On-device Neural Engine: compiler/_deprecated/coco/core/src/IR/Object.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -113,9 +113,9 @@ $(document).ready(function(){initNavTree('_object_8cpp_source.html',''); initRes
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"> * limitations under the License.</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> */</span></div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="compiler_2coco_2core_2include_2coco_2_i_r_2_object_8h.html">coco/IR/Object.h</a>&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="compiler_2__deprecated_2coco_2core_2include_2coco_2_i_r_2_object_8h.html">coco/IR/Object.h</a>&quot;</span></div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &quot;<a class="code" href="_def_8h.html">coco/IR/Def.h</a>&quot;</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;<a class="code" href="coco_2core_2include_2coco_2_i_r_2_use_8h.html">coco/IR/Use.h</a>&quot;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;<a class="code" href="__deprecated_2coco_2core_2include_2coco_2_i_r_2_use_8h.html">coco/IR/Use.h</a>&quot;</span></div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &lt;cassert&gt;</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &lt;stdexcept&gt;</span></div>
@@ -222,17 +222,17 @@ $(document).ready(function(){initNavTree('_object_8cpp_source.html',''); initRes
 </div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>} <span class="comment">// namespace coco</span></div>
+<div class="ttc" id="a__deprecated_2coco_2core_2include_2coco_2_i_r_2_use_8h_html"><div class="ttname"><a href="__deprecated_2coco_2core_2include_2coco_2_i_r_2_use_8h.html">Use.h</a></div></div>
 <div class="ttc" id="a_def_8h_html"><div class="ttname"><a href="_def_8h.html">Def.h</a></div></div>
 <div class="ttc" id="aclasscoco_1_1_def_html"><div class="ttname"><a href="classcoco_1_1_def.html">coco::Def</a></div><div class="ttdef"><b>Definition</b> <a href="_def_8h_source.html#l00025">Def.h:26</a></div></div>
 <div class="ttc" id="aclasscoco_1_1_def_html_abf4cd274ad366f5bf744655316b7887f"><div class="ttname"><a href="classcoco_1_1_def.html#abf4cd274ad366f5bf744655316b7887f">coco::Def::producer</a></div><div class="ttdeci">Object::Producer * producer(void) const</div><div class="ttdef"><b>Definition</b> <a href="_def_8h_source.html#l00043">Def.h:43</a></div></div>
 <div class="ttc" id="aclasscoco_1_1_dep_html_a66bd8155ec2d4674fae78b07767a5007"><div class="ttname"><a href="classcoco_1_1_dep.html#a66bd8155ec2d4674fae78b07767a5007">coco::Dep::object</a></div><div class="ttdeci">Object * object(void) const</div><div class="ttdef"><b>Definition</b> <a href="_dep_8h_source.html#l00049">Dep.h:49</a></div></div>
 <div class="ttc" id="aclasscoco_1_1_feature_object_html"><div class="ttname"><a href="classcoco_1_1_feature_object.html">coco::FeatureObject</a></div><div class="ttdoc">FeatureMap values (used in CNN)</div><div class="ttdef"><b>Definition</b> <a href="_feature_object_8h_source.html#l00035">FeatureObject.h:36</a></div></div>
 <div class="ttc" id="aclasscoco_1_1_kernel_object_html"><div class="ttname"><a href="classcoco_1_1_kernel_object.html">coco::KernelObject</a></div><div class="ttdoc">Convolution Kernel (in CNN) values.</div><div class="ttdef"><b>Definition</b> <a href="_kernel_object_8h_source.html#l00033">KernelObject.h:34</a></div></div>
-<div class="ttc" id="aclasscoco_1_1_object_html"><div class="ttname"><a href="classcoco_1_1_object.html">coco::Object</a></div><div class="ttdoc">Base interface on all typed NN values.</div><div class="ttdef"><b>Definition</b> <a href="compiler_2coco_2core_2include_2coco_2_i_r_2_object_8h_source.html#l00037">Object.h:38</a></div></div>
-<div class="ttc" id="aclasscoco_1_1_object_html_a22c05f2daa60b5d6e574b75bd42fab74"><div class="ttname"><a href="classcoco_1_1_object.html#a22c05f2daa60b5d6e574b75bd42fab74">coco::Object::asKernel</a></div><div class="ttdeci">virtual KernelObject * asKernel(void)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2coco_2core_2include_2coco_2_i_r_2_object_8h_source.html#l00081">Object.h:81</a></div></div>
-<div class="ttc" id="aclasscoco_1_1_object_html_a6a023e21f5b6c47910564b7784e2f0a6"><div class="ttname"><a href="classcoco_1_1_object.html#a6a023e21f5b6c47910564b7784e2f0a6">coco::Object::asFeature</a></div><div class="ttdeci">virtual FeatureObject * asFeature(void)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2coco_2core_2include_2coco_2_i_r_2_object_8h_source.html#l00078">Object.h:78</a></div></div>
-<div class="ttc" id="acoco_2core_2include_2coco_2_i_r_2_use_8h_html"><div class="ttname"><a href="coco_2core_2include_2coco_2_i_r_2_use_8h.html">Use.h</a></div></div>
-<div class="ttc" id="acompiler_2coco_2core_2include_2coco_2_i_r_2_object_8h_html"><div class="ttname"><a href="compiler_2coco_2core_2include_2coco_2_i_r_2_object_8h.html">Object.h</a></div></div>
+<div class="ttc" id="aclasscoco_1_1_object_html"><div class="ttname"><a href="classcoco_1_1_object.html">coco::Object</a></div><div class="ttdoc">Base interface on all typed NN values.</div><div class="ttdef"><b>Definition</b> <a href="compiler_2__deprecated_2coco_2core_2include_2coco_2_i_r_2_object_8h_source.html#l00037">Object.h:38</a></div></div>
+<div class="ttc" id="aclasscoco_1_1_object_html_a22c05f2daa60b5d6e574b75bd42fab74"><div class="ttname"><a href="classcoco_1_1_object.html#a22c05f2daa60b5d6e574b75bd42fab74">coco::Object::asKernel</a></div><div class="ttdeci">virtual KernelObject * asKernel(void)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2__deprecated_2coco_2core_2include_2coco_2_i_r_2_object_8h_source.html#l00081">Object.h:81</a></div></div>
+<div class="ttc" id="aclasscoco_1_1_object_html_a6a023e21f5b6c47910564b7784e2f0a6"><div class="ttname"><a href="classcoco_1_1_object.html#a6a023e21f5b6c47910564b7784e2f0a6">coco::Object::asFeature</a></div><div class="ttdeci">virtual FeatureObject * asFeature(void)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2__deprecated_2coco_2core_2include_2coco_2_i_r_2_object_8h_source.html#l00078">Object.h:78</a></div></div>
+<div class="ttc" id="acompiler_2__deprecated_2coco_2core_2include_2coco_2_i_r_2_object_8h_html"><div class="ttname"><a href="compiler_2__deprecated_2coco_2core_2include_2coco_2_i_r_2_object_8h.html">Object.h</a></div></div>
 <div class="ttc" id="anamespacecoco_html"><div class="ttname"><a href="namespacecoco.html">coco</a></div><div class="ttdef"><b>Definition</b> <a href="_d_linked_list_8h_source.html#l00023">DLinkedList.h:24</a></div></div>
 <div class="ttc" id="anamespacecoco_html_a122b489cf4940ffaaf41706a44d14bbc"><div class="ttname"><a href="namespacecoco.html#a122b489cf4940ffaaf41706a44d14bbc">coco::UseSet</a></div><div class="ttdeci">std::set&lt; Use * &gt; UseSet</div><div class="ttdef"><b>Definition</b> <a href="_use_set_8h_source.html#l00027">UseSet.h:27</a></div></div>
 <div class="ttc" id="anamespacecoco_html_a36a578972707e73614ef87035bb5ecd4"><div class="ttname"><a href="namespacecoco.html#a36a578972707e73614ef87035bb5ecd4">coco::isa&lt; FeatureObject &gt;</a></div><div class="ttdeci">bool isa&lt; FeatureObject &gt;(const Object *o)</div><div class="ttdef"><b>Definition</b> <a href="_object_8cpp_source.html#l00085">Object.cpp:85</a></div></div>
@@ -246,7 +246,7 @@ $(document).ready(function(){initNavTree('_object_8cpp_source.html',''); initRes
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_e955afc72e8af59637c9070b8690ff98.html">compiler</a></li><li class="navelem"><a class="el" href="dir_b6096d1901c08b00bb1e8ec99b6453fd.html">coco</a></li><li class="navelem"><a class="el" href="dir_94f7174141d2055842a6905b7e928ebb.html">core</a></li><li class="navelem"><a class="el" href="dir_796afaaa8ebde5045486ccd049b8f2c7.html">src</a></li><li class="navelem"><a class="el" href="dir_1d3e5a1e3b3f8881accdef90512438a4.html">IR</a></li><li class="navelem"><a class="el" href="_object_8cpp.html">Object.cpp</a></li>
+    <li class="navelem"><a class="el" href="dir_e955afc72e8af59637c9070b8690ff98.html">compiler</a></li><li class="navelem"><a class="el" href="dir_d45624ffc5eee5107ee20c42fd9bb74b.html">_deprecated</a></li><li class="navelem"><a class="el" href="dir_7f1c71043964bc77f8a82a8210e7633e.html">coco</a></li><li class="navelem"><a class="el" href="dir_a502bee4c0ed7825212e6eee870aae13.html">core</a></li><li class="navelem"><a class="el" href="dir_c0e2500f0d919447c612b5431f8d2885.html">src</a></li><li class="navelem"><a class="el" href="dir_474efa7b7d65be75a19884bcbb834a63.html">IR</a></li><li class="navelem"><a class="el" href="_object_8cpp.html">Object.cpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

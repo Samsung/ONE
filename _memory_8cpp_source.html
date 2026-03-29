@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ONE - On-device Neural Engine: compiler/ann-ref/src/Memory.cpp Source File</title>
+<title>ONE - On-device Neural Engine: compiler/_deprecated/ann-ref/src/Memory.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -137,18 +137,18 @@ $(document).ready(function(){initNavTree('_memory_8cpp_source.html',''); initRes
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#if 0</span></div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keywordflow">if</span> (fd &lt; 0)</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  {</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <a class="code hl_define" href="compiler_2ann-ref_2src_2_logging_8h.html#a3577749fb48d57a158b8ac1a0b3ab57e">LOG</a>(ERROR) &lt;&lt; <span class="stringliteral">&quot;ANeuralNetworksMemory_createFromFd invalid fd &quot;</span> &lt;&lt; fd;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <a class="code hl_define" href="compiler_2__deprecated_2ann-ref_2src_2_logging_8h.html#a3577749fb48d57a158b8ac1a0b3ab57e">LOG</a>(ERROR) &lt;&lt; <span class="stringliteral">&quot;ANeuralNetworksMemory_createFromFd invalid fd &quot;</span> &lt;&lt; fd;</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a16c507550e6c79ed74a18277f243b6e8">ANEURALNETWORKS_UNEXPECTED_NULL</a>;</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  }</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> == 0 || fd &lt; 0)</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  {</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <a class="code hl_define" href="compiler_2ann-ref_2src_2_logging_8h.html#a3577749fb48d57a158b8ac1a0b3ab57e">LOG</a>(ERROR) &lt;&lt; <span class="stringliteral">&quot;Invalid size or fd&quot;</span>;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <a class="code hl_define" href="compiler_2__deprecated_2ann-ref_2src_2_logging_8h.html#a3577749fb48d57a158b8ac1a0b3ab57e">LOG</a>(ERROR) &lt;&lt; <span class="stringliteral">&quot;Invalid size or fd&quot;</span>;</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a27e8dff6d655275b20c35d80d26d202a">ANEURALNETWORKS_BAD_DATA</a>;</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  }</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordtype">int</span> dupfd = dup(fd);</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keywordflow">if</span> (dupfd == -1)</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  {</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <a class="code hl_define" href="compiler_2ann-ref_2src_2_logging_8h.html#a3577749fb48d57a158b8ac1a0b3ab57e">LOG</a>(ERROR) &lt;&lt; <span class="stringliteral">&quot;Failed to dup the fd&quot;</span>;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <a class="code hl_define" href="compiler_2__deprecated_2ann-ref_2src_2_logging_8h.html#a3577749fb48d57a158b8ac1a0b3ab57e">LOG</a>(ERROR) &lt;&lt; <span class="stringliteral">&quot;Failed to dup the fd&quot;</span>;</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a16c507550e6c79ed74a18277f243b6e8">ANEURALNETWORKS_UNEXPECTED_NULL</a>;</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  }</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="preprocessor">#endif</span></div>
@@ -228,7 +228,7 @@ $(document).ready(function(){initNavTree('_memory_8cpp_source.html',''); initRes
 <div class="ttc" id="aclass_private_memory_html_aa2b85c433ceea21a022aec357eebe8d2"><div class="ttname"><a href="class_private_memory.html#aa2b85c433ceea21a022aec357eebe8d2">PrivateMemory::validateSize</a></div><div class="ttdeci">virtual bool validateSize(uint32_t offset, uint32_t length) const</div><div class="ttdef"><b>Definition</b> <a href="_memory_8cpp_source.html#l00102">Memory.cpp:102</a></div></div>
 <div class="ttc" id="aclass_private_memory_html_ab930aba451f7a2c8e702884aa7238d49"><div class="ttname"><a href="class_private_memory.html#ab930aba451f7a2c8e702884aa7238d49">PrivateMemory::~PrivateMemory</a></div><div class="ttdeci">~PrivateMemory()</div><div class="ttdef"><b>Definition</b> <a href="_memory_8cpp_source.html#l00077">Memory.cpp:77</a></div></div>
 <div class="ttc" id="aclass_private_memory_html_afd34b2bcbc55f7c63785264c38c5e795"><div class="ttname"><a href="class_private_memory.html#afd34b2bcbc55f7c63785264c38c5e795">PrivateMemory::getPointer</a></div><div class="ttdeci">virtual int getPointer(uint8_t **buffer) const</div><div class="ttdef"><b>Definition</b> <a href="_memory_8cpp_source.html#l00096">Memory.cpp:96</a></div></div>
-<div class="ttc" id="acompiler_2ann-ref_2src_2_logging_8h_html_a3577749fb48d57a158b8ac1a0b3ab57e"><div class="ttname"><a href="compiler_2ann-ref_2src_2_logging_8h.html#a3577749fb48d57a158b8ac1a0b3ab57e">LOG</a></div><div class="ttdeci">#define LOG(...)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2ann-ref_2src_2_logging_8h_source.html#l00036">Logging.h:36</a></div></div>
+<div class="ttc" id="acompiler_2__deprecated_2ann-ref_2src_2_logging_8h_html_a3577749fb48d57a158b8ac1a0b3ab57e"><div class="ttname"><a href="compiler_2__deprecated_2ann-ref_2src_2_logging_8h.html#a3577749fb48d57a158b8ac1a0b3ab57e">LOG</a></div><div class="ttdeci">#define LOG(...)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2__deprecated_2ann-ref_2src_2_logging_8h_source.html#l00036">Logging.h:36</a></div></div>
 <div class="ttc" id="agroup___neural_networks_html_ggad8097859ab1bdd06be52a8421df152d4a16c507550e6c79ed74a18277f243b6e8"><div class="ttname"><a href="group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a16c507550e6c79ed74a18277f243b6e8">ANEURALNETWORKS_UNEXPECTED_NULL</a></div><div class="ttdeci">@ ANEURALNETWORKS_UNEXPECTED_NULL</div><div class="ttdef"><b>Definition</b> <a href="_neural_networks_8h_source.html#l01388">NeuralNetworks.h:1388</a></div></div>
 <div class="ttc" id="agroup___neural_networks_html_ggad8097859ab1bdd06be52a8421df152d4a27e8dff6d655275b20c35d80d26d202a"><div class="ttname"><a href="group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a27e8dff6d655275b20c35d80d26d202a">ANEURALNETWORKS_BAD_DATA</a></div><div class="ttdeci">@ ANEURALNETWORKS_BAD_DATA</div><div class="ttdef"><b>Definition</b> <a href="_neural_networks_8h_source.html#l01389">NeuralNetworks.h:1389</a></div></div>
 <div class="ttc" id="agroup___neural_networks_html_ggad8097859ab1bdd06be52a8421df152d4a3d43394f34347d3a8de3c98dbd8a0365"><div class="ttname"><a href="group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a3d43394f34347d3a8de3c98dbd8a0365">ANEURALNETWORKS_NO_ERROR</a></div><div class="ttdeci">@ ANEURALNETWORKS_NO_ERROR</div><div class="ttdef"><b>Definition</b> <a href="_neural_networks_8h_source.html#l01385">NeuralNetworks.h:1385</a></div></div>
@@ -239,7 +239,7 @@ $(document).ready(function(){initNavTree('_memory_8cpp_source.html',''); initRes
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_e955afc72e8af59637c9070b8690ff98.html">compiler</a></li><li class="navelem"><a class="el" href="dir_dddc08f7920075e2fa4c7ab1c3ecfa74.html">ann-ref</a></li><li class="navelem"><a class="el" href="dir_57133d2148aa35a8f07cb0b0f49ff20f.html">src</a></li><li class="navelem"><a class="el" href="_memory_8cpp.html">Memory.cpp</a></li>
+    <li class="navelem"><a class="el" href="dir_e955afc72e8af59637c9070b8690ff98.html">compiler</a></li><li class="navelem"><a class="el" href="dir_d45624ffc5eee5107ee20c42fd9bb74b.html">_deprecated</a></li><li class="navelem"><a class="el" href="dir_067d2c316220df8576261a918108ef26.html">ann-ref</a></li><li class="navelem"><a class="el" href="dir_0e451978f09db3d39a095a6248ac437c.html">src</a></li><li class="navelem"><a class="el" href="_memory_8cpp.html">Memory.cpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

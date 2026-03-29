@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ONE - On-device Neural Engine: compiler/mir2loco/include/mir2loco.h Source File</title>
+<title>ONE - On-device Neural Engine: compiler/_deprecated/mir2loco/include/mir2loco.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -113,8 +113,8 @@ $(document).ready(function(){initNavTree('mir2loco_8h_source.html',''); initResi
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"> * limitations under the License.</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> */</span></div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="compiler_2mir_2include_2mir_2_graph_8h.html">mir/Graph.h</a>&quot;</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &quot;<a class="code" href="mir_2include_2mir_2_visitor_8h.html">mir/Visitor.h</a>&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="compiler_2__deprecated_2mir_2include_2mir_2_graph_8h.html">mir/Graph.h</a>&quot;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &quot;<a class="code" href="__deprecated_2mir_2include_2mir_2_visitor_8h.html">mir/Visitor.h</a>&quot;</span></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;<a class="code" href="loco_8h.html">loco.h</a>&quot;</span></div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
 <div class="foldopen" id="foldopen00021" data-start="{" data-end="}">
@@ -159,15 +159,16 @@ $(document).ready(function(){initNavTree('mir2loco_8h_source.html',''); initResi
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>} <span class="comment">// namespace mir2loco</span></div>
 </div>
+<div class="ttc" id="a__deprecated_2mir_2include_2mir_2_visitor_8h_html"><div class="ttname"><a href="__deprecated_2mir_2include_2mir_2_visitor_8h.html">Visitor.h</a></div></div>
 <div class="ttc" id="aclassmir2loco_1_1_transformer_html"><div class="ttname"><a href="classmir2loco_1_1_transformer.html">mir2loco::Transformer</a></div><div class="ttdef"><b>Definition</b> <a href="mir2loco_8h_source.html#l00024">mir2loco.h:25</a></div></div>
 <div class="ttc" id="aclassmir2loco_1_1_transformer_html_a2333a26d4a2fece84bda55b085a67f09"><div class="ttname"><a href="classmir2loco_1_1_transformer.html#a2333a26d4a2fece84bda55b085a67f09">mir2loco::Transformer::visit</a></div><div class="ttdeci">void visit(mir::ops::AddOp &amp;op) override</div><div class="ttdef"><b>Definition</b> <a href="mir2loco_8cpp_source.html#l00266">mir2loco.cpp:266</a></div></div>
 <div class="ttc" id="aclassmir2loco_1_1_transformer_html_a78e3d0233952c6579502e8aa0eff9d29"><div class="ttname"><a href="classmir2loco_1_1_transformer.html#a78e3d0233952c6579502e8aa0eff9d29">mir2loco::Transformer::Transformer</a></div><div class="ttdeci">Transformer()=default</div></div>
 <div class="ttc" id="aclassmir2loco_1_1_transformer_html_a99de522dad163f2581a9ab1d0a25208b"><div class="ttname"><a href="classmir2loco_1_1_transformer.html#a99de522dad163f2581a9ab1d0a25208b">mir2loco::Transformer::~Transformer</a></div><div class="ttdeci">~Transformer()=default</div></div>
 <div class="ttc" id="aclassmir2loco_1_1_transformer_html_ad792d4d3afa2891eb038494ddad96a99"><div class="ttname"><a href="classmir2loco_1_1_transformer.html#ad792d4d3afa2891eb038494ddad96a99">mir2loco::Transformer::transform</a></div><div class="ttdeci">std::unique_ptr&lt; loco::Graph &gt; transform(mir::Graph *mir_graph)</div><div class="ttdef"><b>Definition</b> <a href="mir2loco_8cpp_source.html#l00710">mir2loco.cpp:710</a></div></div>
 <div class="ttc" id="aclassmir2loco_1_1_transformer_html_af61212fa075edce015b87736b034abd0"><div class="ttname"><a href="classmir2loco_1_1_transformer.html#af61212fa075edce015b87736b034abd0">mir2loco::Transformer::visit_fallback</a></div><div class="ttdeci">void visit_fallback(mir::Operation &amp;op) override</div><div class="ttdef"><b>Definition</b> <a href="mir2loco_8cpp_source.html#l00708">mir2loco.cpp:708</a></div></div>
-<div class="ttc" id="aclassmir_1_1_graph_html"><div class="ttname"><a href="classmir_1_1_graph.html">mir::Graph</a></div><div class="ttdef"><b>Definition</b> <a href="compiler_2mir_2include_2mir_2_graph_8h_source.html#l00034">Graph.h:35</a></div></div>
-<div class="ttc" id="aclassmir_1_1_operation_html"><div class="ttname"><a href="classmir_1_1_operation.html">mir::Operation</a></div><div class="ttdef"><b>Definition</b> <a href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00032">Operation.h:33</a></div></div>
-<div class="ttc" id="aclassmir_1_1_visitor_html"><div class="ttname"><a href="classmir_1_1_visitor.html">mir::Visitor</a></div><div class="ttdoc">Base visitor with empty fallback function.</div><div class="ttdef"><b>Definition</b> <a href="mir_2include_2mir_2_visitor_8h_source.html#l00050">Visitor.h:51</a></div></div>
+<div class="ttc" id="aclassmir_1_1_graph_html"><div class="ttname"><a href="classmir_1_1_graph.html">mir::Graph</a></div><div class="ttdef"><b>Definition</b> <a href="compiler_2__deprecated_2mir_2include_2mir_2_graph_8h_source.html#l00034">Graph.h:35</a></div></div>
+<div class="ttc" id="aclassmir_1_1_operation_html"><div class="ttname"><a href="classmir_1_1_operation.html">mir::Operation</a></div><div class="ttdef"><b>Definition</b> <a href="compiler_2__deprecated_2mir_2include_2mir_2_operation_8h_source.html#l00032">Operation.h:33</a></div></div>
+<div class="ttc" id="aclassmir_1_1_visitor_html"><div class="ttname"><a href="classmir_1_1_visitor.html">mir::Visitor</a></div><div class="ttdoc">Base visitor with empty fallback function.</div><div class="ttdef"><b>Definition</b> <a href="__deprecated_2mir_2include_2mir_2_visitor_8h_source.html#l00050">Visitor.h:51</a></div></div>
 <div class="ttc" id="aclassmir_1_1ops_1_1_add_op_html"><div class="ttname"><a href="classmir_1_1ops_1_1_add_op.html">mir::ops::AddOp</a></div><div class="ttdef"><b>Definition</b> <a href="_add_op_8h_source.html#l00027">AddOp.h:28</a></div></div>
 <div class="ttc" id="aclassmir_1_1ops_1_1_avg_pool2_d_op_html"><div class="ttname"><a href="classmir_1_1ops_1_1_avg_pool2_d_op.html">mir::ops::AvgPool2DOp</a></div><div class="ttdef"><b>Definition</b> <a href="_avg_pool2_d_op_8h_source.html#l00031">AvgPool2DOp.h:32</a></div></div>
 <div class="ttc" id="aclassmir_1_1ops_1_1_concat_op_html"><div class="ttname"><a href="classmir_1_1ops_1_1_concat_op.html">mir::ops::ConcatOp</a></div><div class="ttdoc">Description of tensor concatenation operation.</div><div class="ttdef"><b>Definition</b> <a href="_concat_op_8h_source.html#l00030">ConcatOp.h:31</a></div></div>
@@ -186,16 +187,15 @@ $(document).ready(function(){initNavTree('mir2loco_8h_source.html',''); initResi
 <div class="ttc" id="aclassmir_1_1ops_1_1_softmax_op_html"><div class="ttname"><a href="classmir_1_1ops_1_1_softmax_op.html">mir::ops::SoftmaxOp</a></div><div class="ttdoc">description of softmax operation.</div><div class="ttdef"><b>Definition</b> <a href="_softmax_op_8h_source.html#l00030">SoftmaxOp.h:31</a></div></div>
 <div class="ttc" id="aclassmir_1_1ops_1_1_sub_op_html"><div class="ttname"><a href="classmir_1_1ops_1_1_sub_op.html">mir::ops::SubOp</a></div><div class="ttdef"><b>Definition</b> <a href="_sub_op_8h_source.html#l00027">SubOp.h:28</a></div></div>
 <div class="ttc" id="aclassmir_1_1ops_1_1_transpose_op_html"><div class="ttname"><a href="classmir_1_1ops_1_1_transpose_op.html">mir::ops::TransposeOp</a></div><div class="ttdoc">Tensor transpose operation.</div><div class="ttdef"><b>Definition</b> <a href="_transpose_op_8h_source.html#l00033">TransposeOp.h:34</a></div></div>
-<div class="ttc" id="acompiler_2mir_2include_2mir_2_graph_8h_html"><div class="ttname"><a href="compiler_2mir_2include_2mir_2_graph_8h.html">Graph.h</a></div></div>
+<div class="ttc" id="acompiler_2__deprecated_2mir_2include_2mir_2_graph_8h_html"><div class="ttname"><a href="compiler_2__deprecated_2mir_2include_2mir_2_graph_8h.html">Graph.h</a></div></div>
 <div class="ttc" id="aloco_8h_html"><div class="ttname"><a href="loco_8h.html">loco.h</a></div></div>
-<div class="ttc" id="amir_2include_2mir_2_visitor_8h_html"><div class="ttname"><a href="mir_2include_2mir_2_visitor_8h.html">Visitor.h</a></div></div>
 <div class="ttc" id="anamespacemir2loco_html"><div class="ttname"><a href="namespacemir2loco.html">mir2loco</a></div><div class="ttdef"><b>Definition</b> <a href="mir2loco_8h_source.html#l00021">mir2loco.h:22</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_e955afc72e8af59637c9070b8690ff98.html">compiler</a></li><li class="navelem"><a class="el" href="dir_4c2e292b2d05bba4b93c70da4993efe8.html">mir2loco</a></li><li class="navelem"><a class="el" href="dir_a4e055b7e42253aa687450a0c20a0477.html">include</a></li><li class="navelem"><a class="el" href="mir2loco_8h.html">mir2loco.h</a></li>
+    <li class="navelem"><a class="el" href="dir_e955afc72e8af59637c9070b8690ff98.html">compiler</a></li><li class="navelem"><a class="el" href="dir_d45624ffc5eee5107ee20c42fd9bb74b.html">_deprecated</a></li><li class="navelem"><a class="el" href="dir_6ece2b3c32abc85ff81b1befda850f25.html">mir2loco</a></li><li class="navelem"><a class="el" href="dir_47285430dffc18b613a3e77d17c7e5b9.html">include</a></li><li class="navelem"><a class="el" href="mir2loco_8h.html">mir2loco.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

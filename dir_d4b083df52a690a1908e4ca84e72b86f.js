@@ -10,7 +10,7 @@ var dir_d4b083df52a690a1908e4ca84e72b86f =
     [ "CircleNodes.h", "exo_2src_2_dialect_2_i_r_2_circle_nodes_8h.html", "exo_2src_2_dialect_2_i_r_2_circle_nodes_8h" ],
     [ "CircleNodeVisitor.forward.h", "exo_2src_2_dialect_2_i_r_2_circle_node_visitor_8forward_8h.html", null ],
     [ "CircleNodeVisitor.h", "exo_2src_2_dialect_2_i_r_2_circle_node_visitor_8h.html", "exo_2src_2_dialect_2_i_r_2_circle_node_visitor_8h" ],
-    [ "CircleOpcode.h", "exo_2src_2_dialect_2_i_r_2_circle_op_code_8h.html", "exo_2src_2_dialect_2_i_r_2_circle_op_code_8h" ],
+    [ "CircleOpcode.h", "exo_2src_2_dialect_2_i_r_2_circle_opcode_8h.html", "exo_2src_2_dialect_2_i_r_2_circle_opcode_8h" ],
     [ "FusedActFunc.h", "_fused_act_func_8h.html", "_fused_act_func_8h" ],
     [ "NodeMixins.cpp", "exo_2src_2_dialect_2_i_r_2_node_mixins_8cpp.html", null ],
     [ "NodeMixins.h", "exo_2src_2_dialect_2_i_r_2_node_mixins_8h.html", "exo_2src_2_dialect_2_i_r_2_node_mixins_8h" ],

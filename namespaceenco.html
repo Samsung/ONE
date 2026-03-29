@@ -541,7 +541,7 @@ template&lt;typename It &gt; </div>
 <div class="line"><span class="lineno">   54</span>  <span class="comment">// Destroy a dead bag and its updaters</span></div>
 <div class="line"><span class="lineno">   55</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> bag : dead_bags(<a class="code hl_variable" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a>))</div>
 <div class="line"><span class="lineno">   56</span>  {</div>
-<div class="line"><span class="lineno">   57</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> updater : <a class="code hl_namespace" href="namespacecoco.html">coco</a>::<a class="code hl_function" href="namespaceenco.html#ac986b450ed8a39d5721a646501b09d46">updaters</a>(bag))</div>
+<div class="line"><span class="lineno">   57</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> updater : <a class="code hl_namespace" href="namespacecoco.html">coco</a>::updaters(bag))</div>
 <div class="line"><span class="lineno">   58</span>    {</div>
 <div class="line"><span class="lineno">   59</span>      <span class="keyword">auto</span> ins = updater-&gt;loc();</div>
 <div class="line"><span class="lineno">   60</span> </div>
@@ -558,7 +558,6 @@ template&lt;typename It &gt; </div>
 <div class="ttc" id="a_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_html_aa73e018b04368e7afaded77ef0ac69db"><div class="ttname"><a href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a></div><div class="ttdeci">std::mutex m</div><div class="ttdef"><b>Definition</b> <a href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_source.html#l00135">NEGEMMMatrixAccumulateBiasesKernel.cpp:135</a></div></div>
 <div class="ttc" id="anamespacecoco_html"><div class="ttname"><a href="namespacecoco.html">coco</a></div><div class="ttdef"><b>Definition</b> <a href="_d_linked_list_8h_source.html#l00023">DLinkedList.h:24</a></div></div>
 <div class="ttc" id="anamespaceenco_html_a3d4e56ec31be86ad47be84f20622bc0e"><div class="ttname"><a href="namespaceenco.html#a3d4e56ec31be86ad47be84f20622bc0e">enco::code</a></div><div class="ttdeci">Code * code(const SessionID &amp;sess)</div><div class="ttdef"><b>Definition</b> <a href="__deprecated_2enco_2core_2src_2_session_8cpp_source.html#l00054">Session.cpp:54</a></div></div>
-<div class="ttc" id="anamespaceenco_html_ac986b450ed8a39d5721a646501b09d46"><div class="ttname"><a href="namespaceenco.html#ac986b450ed8a39d5721a646501b09d46">enco::updaters</a></div><div class="ttdeci">std::set&lt; coco::Block * &gt; updaters(const coco::Bag *bag)</div><div class="ttdoc">Return the set of blocks that updates a given bag.</div><div class="ttdef"><b>Definition</b> <a href="_usage_8cpp_source.html#l00040">Usage.cpp:40</a></div></div>
 <div class="ttc" id="astructenco_1_1_code_html_a022dab73aea454d37ada345303b6e848"><div class="ttname"><a href="structenco_1_1_code.html#a022dab73aea454d37ada345303b6e848">enco::Code::module</a></div><div class="ttdeci">coco::Module * module(void) const</div><div class="ttdef"><b>Definition</b> <a href="_code_8h_source.html#l00037">Code.h:37</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="__deprecated_2enco_2core_2src_2_session_8cpp_source.html#l00054">code()</a>, <a class="el" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_source.html#l00135">m</a>, <a class="el" href="_code_8h_source.html#l00037">enco::Code::module()</a>, and <a class="el" href="_bag_8cpp_source.html#l00125">coco::updaters()</a>.</p>
@@ -846,7 +845,7 @@ template&lt;typename It &gt; </div>
 <div class="line"><span class="lineno">   32</span> </div>
 <div class="line"><span class="lineno">   33</span>    <span class="comment">// NOTE The current implementation assumes that all the updates occurs before the first read</span></div>
 <div class="line"><span class="lineno">   34</span>    <span class="comment">// TODO Remove this assumption</span></div>
-<div class="line"><span class="lineno">   35</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> u : <a class="code hl_namespace" href="namespacecoco.html">coco</a>::<a class="code hl_function" href="namespaceenco.html#ac986b450ed8a39d5721a646501b09d46">updaters</a>(bag))</div>
+<div class="line"><span class="lineno">   35</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> u : <a class="code hl_namespace" href="namespacecoco.html">coco</a>::updaters(bag))</div>
 <div class="line"><span class="lineno">   36</span>    {</div>
 <div class="line"><span class="lineno">   37</span>      <span class="keywordflow">if</span> ((u-&gt;loc() == <span class="keyword">nullptr</span>) || (u-&gt;loc()-&gt;asShuffle() == <span class="keyword">nullptr</span>))</div>
 <div class="line"><span class="lineno">   38</span>      {</div>
@@ -1106,7 +1105,7 @@ template&lt;typename It &gt; </div>
 <div class="line"><span class="lineno">  207</span> </div>
 <div class="line"><span class="lineno">  208</span>    std::map&lt;CodeIndex, coco::Shuffle *&gt; collected;</div>
 <div class="line"><span class="lineno">  209</span> </div>
-<div class="line"><span class="lineno">  210</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> reader : <a class="code hl_namespace" href="namespacecoco.html">coco</a>::<a class="code hl_function" href="namespaceenco.html#a0f847509e0324ff458c26b4d5e840399">readers</a>(bag))</div>
+<div class="line"><span class="lineno">  210</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> reader : <a class="code hl_namespace" href="namespacecoco.html">coco</a>::<a class="code hl_function" href="namespacecoco.html#ab2cf693361d21ba0b1d02fcb4fbd0332">readers</a>(bag))</div>
 <div class="line"><span class="lineno">  211</span>    {</div>
 <div class="line"><span class="lineno">  212</span>      <span class="keywordflow">if</span> (<span class="keyword">auto</span> ins = reader-&gt;loc())</div>
 <div class="line"><span class="lineno">  213</span>      {</div>
@@ -1153,7 +1152,7 @@ template&lt;typename It &gt; </div>
 <div class="line"><span class="lineno">  254</span>  }</div>
 <div class="line"><span class="lineno">  255</span>}</div>
 <div class="ttc" id="aclasscoco_1_1_bag_html_acb340513733ce20478bfbd479280d660"><div class="ttname"><a href="classcoco_1_1_bag.html#acb340513733ce20478bfbd479280d660">coco::Bag::replaceAllDepsWith</a></div><div class="ttdeci">void replaceAllDepsWith(Bag *)</div><div class="ttdoc">Replace all the occurence of a bag in Object with another bag.</div><div class="ttdef"><b>Definition</b> <a href="_bag_8cpp_source.html#l00076">Bag.cpp:76</a></div></div>
-<div class="ttc" id="anamespaceenco_html_a0f847509e0324ff458c26b4d5e840399"><div class="ttname"><a href="namespaceenco.html#a0f847509e0324ff458c26b4d5e840399">enco::readers</a></div><div class="ttdeci">std::set&lt; coco::Block * &gt; readers(const coco::Bag *bag)</div><div class="ttdoc">Returns the set of blocks that reads a given bag.</div><div class="ttdef"><b>Definition</b> <a href="_usage_8cpp_source.html#l00022">Usage.cpp:22</a></div></div>
+<div class="ttc" id="anamespacecoco_html_ab2cf693361d21ba0b1d02fcb4fbd0332"><div class="ttname"><a href="namespacecoco.html#ab2cf693361d21ba0b1d02fcb4fbd0332">coco::readers</a></div><div class="ttdeci">Bag::ReaderSet readers(const Bag *)</div><div class="ttdoc">Return a set of readers that reads a given bag.</div><div class="ttdef"><b>Definition</b> <a href="_bag_8cpp_source.html#l00102">Bag.cpp:102</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_instrs_8h_source.html#l00124">coco::Shuffle::asShuffle()</a>, <a class="el" href="_instrs_8h_source.html#l00160">coco::Shuffle::at()</a>, <a class="el" href="__deprecated_2enco_2core_2src_2_session_8cpp_source.html#l00054">code()</a>, <a class="el" href="_instrs_8h_source.html#l00131">coco::Shuffle::from()</a>, <a class="el" href="_instrs_8h_source.html#l00135">coco::Shuffle::into()</a>, <a class="el" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_source.html#l00135">m</a>, <a class="el" href="_code_8h_source.html#l00037">enco::Code::module()</a>, <a class="el" href="_d_linked_list_8h_source.html#l00186">coco::DLinkedList&lt; Child, Parent &gt;::Node::parent()</a>, <a class="el" href="_bag_8cpp_source.html#l00102">coco::readers()</a>, <a class="el" href="_bag_8cpp_source.html#l00076">coco::Bag::replaceAllDepsWith()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
@@ -1564,13 +1563,13 @@ template&lt;typename It &gt; </div>
 <div class="line"><span class="lineno">   48</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classcoco_1_1_feature_shape.html">coco::FeatureShape</a>(ifm-&gt;shape().batch(), ker-&gt;shape().count(), ofm_height, ofm_width);</div>
 <div class="line"><span class="lineno">   49</span>}</div>
 <div class="ttc" id="aclasscoco_1_1_conv2_d_html_a6683fb08b7e5f7cd3d4fa2c0177f95e8"><div class="ttname"><a href="classcoco_1_1_conv2_d.html#a6683fb08b7e5f7cd3d4fa2c0177f95e8">coco::Conv2D::pad</a></div><div class="ttdeci">Padding2D * pad(void)</div><div class="ttdef"><b>Definition</b> <a href="_ops_8h_source.html#l00120">Ops.h:120</a></div></div>
-<div class="ttc" id="aclasscoco_1_1_conv2_d_html_acd4f65712d78a76015906ddac257c8e8"><div class="ttname"><a href="classcoco_1_1_conv2_d.html#acd4f65712d78a76015906ddac257c8e8">coco::Conv2D::ker</a></div><div class="ttdeci">KernelObject * ker(void) const</div><div class="ttdef"><b>Definition</b> <a href="compiler_2coco_2core_2src_2_i_r_2_conv2_d_8cpp_source.html#l00064">Conv2D.cpp:64</a></div></div>
+<div class="ttc" id="aclasscoco_1_1_conv2_d_html_acd4f65712d78a76015906ddac257c8e8"><div class="ttname"><a href="classcoco_1_1_conv2_d.html#acd4f65712d78a76015906ddac257c8e8">coco::Conv2D::ker</a></div><div class="ttdeci">KernelObject * ker(void) const</div><div class="ttdef"><b>Definition</b> <a href="compiler_2__deprecated_2coco_2core_2src_2_i_r_2_conv2_d_8cpp_source.html#l00064">Conv2D.cpp:64</a></div></div>
 <div class="ttc" id="aclasscoco_1_1_conv2_d_html_ad3357c642ad65fc1294184e75f7c8a01"><div class="ttname"><a href="classcoco_1_1_conv2_d.html#ad3357c642ad65fc1294184e75f7c8a01">coco::Conv2D::stride</a></div><div class="ttdeci">Stride2D * stride(void)</div><div class="ttdef"><b>Definition</b> <a href="_ops_8h_source.html#l00124">Ops.h:124</a></div></div>
 <div class="ttc" id="aclasscoco_1_1_conv2_d_html_ade87fe47355fbf8d362dc08e64c5e848"><div class="ttname"><a href="classcoco_1_1_conv2_d.html#ade87fe47355fbf8d362dc08e64c5e848">coco::Conv2D::arg</a></div><div class="ttdeci">Op * arg(uint32_t n) const final</div><div class="ttdoc">Return N-th argument.</div></div>
-<div class="ttc" id="aclasscoco_1_1_feature_shape_html"><div class="ttname"><a href="classcoco_1_1_feature_shape.html">coco::FeatureShape</a></div><div class="ttdoc">The shape of a feature map.</div><div class="ttdef"><b>Definition</b> <a href="coco_2core_2include_2coco_2_i_r_2_feature_shape_8h_source.html#l00030">FeatureShape.h:31</a></div></div>
-<div class="ttc" id="aclasscoco_1_1_padding2_d_html_a15daab9d755d048ce4c71f7ba80ec1c8"><div class="ttname"><a href="classcoco_1_1_padding2_d.html#a15daab9d755d048ce4c71f7ba80ec1c8">coco::Padding2D::left</a></div><div class="ttdeci">uint32_t left(void) const</div><div class="ttdef"><b>Definition</b> <a href="coco_2core_2include_2coco_2_i_r_2_padding2_d_8h_source.html#l00049">Padding2D.h:49</a></div></div>
+<div class="ttc" id="aclasscoco_1_1_feature_shape_html"><div class="ttname"><a href="classcoco_1_1_feature_shape.html">coco::FeatureShape</a></div><div class="ttdoc">The shape of a feature map.</div><div class="ttdef"><b>Definition</b> <a href="__deprecated_2coco_2core_2include_2coco_2_i_r_2_feature_shape_8h_source.html#l00030">FeatureShape.h:31</a></div></div>
+<div class="ttc" id="aclasscoco_1_1_padding2_d_html_a15daab9d755d048ce4c71f7ba80ec1c8"><div class="ttname"><a href="classcoco_1_1_padding2_d.html#a15daab9d755d048ce4c71f7ba80ec1c8">coco::Padding2D::left</a></div><div class="ttdeci">uint32_t left(void) const</div><div class="ttdef"><b>Definition</b> <a href="__deprecated_2coco_2core_2include_2coco_2_i_r_2_padding2_d_8h_source.html#l00049">Padding2D.h:49</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="classcoco_1_1_conv2_d.html#ade87fe47355fbf8d362dc08e64c5e848">coco::Conv2D::arg()</a>, <a class="el" href="compiler_2coco_2core_2src_2_i_r_2_conv2_d_8cpp_source.html#l00064">coco::Conv2D::ker()</a>, <a class="el" href="coco_2core_2include_2coco_2_i_r_2_padding2_d_8h_source.html#l00049">coco::Padding2D::left()</a>, <a class="el" href="_ops_8h_source.html#l00120">coco::Conv2D::pad()</a>, and <a class="el" href="_ops_8h_source.html#l00124">coco::Conv2D::stride()</a>.</p>
+<p class="reference">References <a class="el" href="classcoco_1_1_conv2_d.html#ade87fe47355fbf8d362dc08e64c5e848">coco::Conv2D::arg()</a>, <a class="el" href="compiler_2__deprecated_2coco_2core_2src_2_i_r_2_conv2_d_8cpp_source.html#l00064">coco::Conv2D::ker()</a>, <a class="el" href="__deprecated_2coco_2core_2include_2coco_2_i_r_2_padding2_d_8h_source.html#l00049">coco::Padding2D::left()</a>, <a class="el" href="_ops_8h_source.html#l00120">coco::Conv2D::pad()</a>, and <a class="el" href="_ops_8h_source.html#l00124">coco::Conv2D::stride()</a>.</p>
 
 </div>
 </div>
@@ -1596,7 +1595,7 @@ template&lt;typename It &gt; </div>
 <div class="fragment"><div class="line"><span class="lineno">   23</span>{</div>
 <div class="line"><span class="lineno">   24</span>  std::set&lt;coco::Block *&gt; res;</div>
 <div class="line"><span class="lineno">   25</span> </div>
-<div class="line"><span class="lineno">   26</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> read : <a class="code hl_namespace" href="namespacecoco.html">coco</a>::<a class="code hl_function" href="namespaceenco.html#a0f847509e0324ff458c26b4d5e840399">readers</a>(bag))</div>
+<div class="line"><span class="lineno">   26</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> read : <a class="code hl_namespace" href="namespacecoco.html">coco</a>::readers(bag))</div>
 <div class="line"><span class="lineno">   27</span>  {</div>
 <div class="line"><span class="lineno">   28</span>    assert(read != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   29</span>    <span class="keyword">auto</span> instr = read-&gt;loc();</div>
@@ -2063,7 +2062,7 @@ template&lt;typename It &gt; </div>
 <div class="fragment"><div class="line"><span class="lineno">   41</span>{</div>
 <div class="line"><span class="lineno">   42</span>  std::set&lt;coco::Block *&gt; res;</div>
 <div class="line"><span class="lineno">   43</span> </div>
-<div class="line"><span class="lineno">   44</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> update : <a class="code hl_namespace" href="namespacecoco.html">coco</a>::<a class="code hl_function" href="namespaceenco.html#ac986b450ed8a39d5721a646501b09d46">updaters</a>(bag))</div>
+<div class="line"><span class="lineno">   44</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> update : <a class="code hl_namespace" href="namespacecoco.html">coco</a>::updaters(bag))</div>
 <div class="line"><span class="lineno">   45</span>  {</div>
 <div class="line"><span class="lineno">   46</span>    assert(update != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   47</span>    <span class="keyword">auto</span> instr = update-&gt;loc();</div>

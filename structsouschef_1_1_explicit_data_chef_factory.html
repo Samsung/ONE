@@ -152,15 +152,15 @@ template&lt;typename T &gt; </div>
 <div class="fragment"><div class="line"><span class="lineno">   86</span>  {</div>
 <div class="line"><span class="lineno">   87</span>    std::unique_ptr&lt;ExplicitDataChef&lt;T&gt;&gt; res{<span class="keyword">new</span> ExplicitDataChef&lt;T&gt;};</div>
 <div class="line"><span class="lineno">   88</span> </div>
-<div class="line"><span class="lineno">   89</span>    <span class="keywordflow">for</span> (uint32_t n = 0; n &lt; <a class="code hl_variable" href="namespaceinfer.html#a30b5ffd23ed16bed88d525da72f2e73f">args</a>.count(); ++n)</div>
+<div class="line"><span class="lineno">   89</span>    <span class="keywordflow">for</span> (uint32_t n = 0; n &lt; <a class="code hl_variable" href="namespaceinfer__testcases.html#a6f944fab6563015f701fe3773dd24cb9">args</a>.count(); ++n)</div>
 <div class="line"><span class="lineno">   90</span>    {</div>
-<div class="line"><span class="lineno">   91</span>      <span class="keyword">auto</span> <span class="keyword">const</span> value = to_number&lt;T&gt;(<a class="code hl_variable" href="namespaceinfer.html#a30b5ffd23ed16bed88d525da72f2e73f">args</a>.value(n));</div>
+<div class="line"><span class="lineno">   91</span>      <span class="keyword">auto</span> <span class="keyword">const</span> value = to_number&lt;T&gt;(<a class="code hl_variable" href="namespaceinfer__testcases.html#a6f944fab6563015f701fe3773dd24cb9">args</a>.value(n));</div>
 <div class="line"><span class="lineno">   92</span>      res-&gt;insert(value);</div>
 <div class="line"><span class="lineno">   93</span>    }</div>
 <div class="line"><span class="lineno">   94</span> </div>
 <div class="line"><span class="lineno">   95</span>    <span class="keywordflow">return</span> std::move(res);</div>
 <div class="line"><span class="lineno">   96</span>  }</div>
-<div class="ttc" id="anamespaceinfer_html_a30b5ffd23ed16bed88d525da72f2e73f"><div class="ttname"><a href="namespaceinfer.html#a30b5ffd23ed16bed88d525da72f2e73f">infer.args</a></div><div class="ttdeci">args</div><div class="ttdef"><b>Definition</b> <a href="infer_8py_source.html#l00021">infer.py:21</a></div></div>
+<div class="ttc" id="anamespaceinfer__testcases_html_a6f944fab6563015f701fe3773dd24cb9"><div class="ttname"><a href="namespaceinfer__testcases.html#a6f944fab6563015f701fe3773dd24cb9">infer_testcases.args</a></div><div class="ttdeci">dict args</div><div class="ttdef"><b>Definition</b> <a href="infer__testcases_8py_source.html#l00040">infer_testcases.py:40</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

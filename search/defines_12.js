@@ -46,5 +46,5 @@ var searchData=
   ['store_5frow_5f7_43',['STORE_ROW_7',['../gemm__helpers_8h.html#a1bcd88f16608529139b6b6a0c42be962',1,'gemm_helpers.h']]],
   ['store_5frow_5f8_44',['STORE_ROW_8',['../gemm__helpers_8h.html#a388039f02de6b40465f4623ba27eb0df',1,'gemm_helpers.h']]],
   ['store_5frow_5f9_45',['STORE_ROW_9',['../gemm__helpers_8h.html#aced5eba2ce0f7efa377a1d4e87d58a74',1,'gemm_helpers.h']]],
-  ['string_5fcontent_46',['string_content',['../moco-tf_2src_2_test_helper_8h.html#af6bd65b9f15ed4f89fdff9062718ab3b',1,'STRING_CONTENT:&#160;TestHelper.h'],['../moco_2import_2src_2_test_helper_8h.html#af6bd65b9f15ed4f89fdff9062718ab3b',1,'STRING_CONTENT:&#160;TestHelper.h']]]
+  ['string_5fcontent_46',['string_content',['../__deprecated_2moco-tf_2src_2_test_helper_8h.html#af6bd65b9f15ed4f89fdff9062718ab3b',1,'STRING_CONTENT:&#160;TestHelper.h'],['../__deprecated_2moco_2import_2src_2_test_helper_8h.html#af6bd65b9f15ed4f89fdff9062718ab3b',1,'STRING_CONTENT:&#160;TestHelper.h']]]
 ];

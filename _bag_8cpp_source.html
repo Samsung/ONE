@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ONE - On-device Neural Engine: compiler/coco/core/src/IR/Bag.cpp Source File</title>
+<title>ONE - On-device Neural Engine: compiler/_deprecated/coco/core/src/IR/Bag.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -115,8 +115,8 @@ $(document).ready(function(){initNavTree('_bag_8cpp_source.html',''); initResiza
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="_bag_8h.html">coco/IR/Bag.h</a>&quot;</span></div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;<a class="code" href="compiler_2coco_2core_2include_2coco_2_i_r_2_object_8h.html">coco/IR/Object.h</a>&quot;</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;<a class="code" href="coco_2core_2include_2coco_2_i_r_2_read_8h.html">coco/IR/Read.h</a>&quot;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;<a class="code" href="compiler_2__deprecated_2coco_2core_2include_2coco_2_i_r_2_object_8h.html">coco/IR/Object.h</a>&quot;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;<a class="code" href="__deprecated_2coco_2core_2include_2coco_2_i_r_2_read_8h.html">coco/IR/Read.h</a>&quot;</span></div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;<a class="code" href="_update_8h.html">coco/IR/Update.h</a>&quot;</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &lt;cassert&gt;</span></div>
@@ -258,6 +258,7 @@ $(document).ready(function(){initNavTree('_bag_8cpp_source.html',''); initResiza
 </div>
 <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>} <span class="comment">// namespace coco</span></div>
+<div class="ttc" id="a__deprecated_2coco_2core_2include_2coco_2_i_r_2_read_8h_html"><div class="ttname"><a href="__deprecated_2coco_2core_2include_2coco_2_i_r_2_read_8h.html">Read.h</a></div></div>
 <div class="ttc" id="a_bag_8h_html"><div class="ttname"><a href="_bag_8h.html">Bag.h</a></div></div>
 <div class="ttc" id="a_update_8h_html"><div class="ttname"><a href="_update_8h.html">Update.h</a></div></div>
 <div class="ttc" id="aclasscoco_1_1_bag_html"><div class="ttname"><a href="classcoco_1_1_bag.html">coco::Bag</a></div><div class="ttdoc">A collection of (abstracted) elements of the same type.</div><div class="ttdef"><b>Definition</b> <a href="_bag_8h_source.html#l00047">Bag.h:48</a></div></div>
@@ -273,8 +274,7 @@ $(document).ready(function(){initNavTree('_bag_8cpp_source.html',''); initResiza
 <div class="ttc" id="aclasscoco_1_1_bag_html_ac8b51988a93811e6b9e7207f389ec2a7"><div class="ttname"><a href="classcoco_1_1_bag.html#ac8b51988a93811e6b9e7207f389ec2a7">coco::Bag::isInput</a></div><div class="ttdeci">bool isInput(void) const</div><div class="ttdef"><b>Definition</b> <a href="_bag_8cpp_source.html#l00043">Bag.cpp:43</a></div></div>
 <div class="ttc" id="aclasscoco_1_1_bag_html_acb340513733ce20478bfbd479280d660"><div class="ttname"><a href="classcoco_1_1_bag.html#acb340513733ce20478bfbd479280d660">coco::Bag::replaceAllDepsWith</a></div><div class="ttdeci">void replaceAllDepsWith(Bag *)</div><div class="ttdoc">Replace all the occurence of a bag in Object with another bag.</div><div class="ttdef"><b>Definition</b> <a href="_bag_8cpp_source.html#l00076">Bag.cpp:76</a></div></div>
 <div class="ttc" id="aclasscoco_1_1_bag_html_afff5e4ed1f067c7ad97ce808c055a2a3"><div class="ttname"><a href="classcoco_1_1_bag.html#afff5e4ed1f067c7ad97ce808c055a2a3">coco::Bag::replaceWith</a></div><div class="ttdeci">void replaceWith(Bag *b)</div><div class="ttdoc">Replace all the occurence of a bag (except those in Input/Output) with another bag.</div><div class="ttdef"><b>Definition</b> <a href="_bag_8cpp_source.html#l00050">Bag.cpp:50</a></div></div>
-<div class="ttc" id="acoco_2core_2include_2coco_2_i_r_2_read_8h_html"><div class="ttname"><a href="coco_2core_2include_2coco_2_i_r_2_read_8h.html">Read.h</a></div></div>
-<div class="ttc" id="acompiler_2coco_2core_2include_2coco_2_i_r_2_object_8h_html"><div class="ttname"><a href="compiler_2coco_2core_2include_2coco_2_i_r_2_object_8h.html">Object.h</a></div></div>
+<div class="ttc" id="acompiler_2__deprecated_2coco_2core_2include_2coco_2_i_r_2_object_8h_html"><div class="ttname"><a href="compiler_2__deprecated_2coco_2core_2include_2coco_2_i_r_2_object_8h.html">Object.h</a></div></div>
 <div class="ttc" id="anamespacecoco_html"><div class="ttname"><a href="namespacecoco.html">coco</a></div><div class="ttdef"><b>Definition</b> <a href="_d_linked_list_8h_source.html#l00023">DLinkedList.h:24</a></div></div>
 <div class="ttc" id="anamespacecoco_html_a3a41e99ef1a6fd7f98187d240886b8a8"><div class="ttname"><a href="namespacecoco.html#a3a41e99ef1a6fd7f98187d240886b8a8">coco::updaters</a></div><div class="ttdeci">Bag::UpdaterSet updaters(const Bag *)</div><div class="ttdoc">Return a set of updaters that updates a given bag.</div><div class="ttdef"><b>Definition</b> <a href="_bag_8cpp_source.html#l00125">Bag.cpp:125</a></div></div>
 <div class="ttc" id="anamespacecoco_html_a54e6ea819f6bdd415a5f11e836362b61"><div class="ttname"><a href="namespacecoco.html#a54e6ea819f6bdd415a5f11e836362b61">coco::producer</a></div><div class="ttdeci">Object::Producer * producer(const Object *)</div><div class="ttdoc">Return the producer of a given object if it exists.</div><div class="ttdef"><b>Definition</b> <a href="_object_8cpp_source.html#l00055">Object.cpp:55</a></div></div>
@@ -292,7 +292,7 @@ $(document).ready(function(){initNavTree('_bag_8cpp_source.html',''); initResiza
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_e955afc72e8af59637c9070b8690ff98.html">compiler</a></li><li class="navelem"><a class="el" href="dir_b6096d1901c08b00bb1e8ec99b6453fd.html">coco</a></li><li class="navelem"><a class="el" href="dir_94f7174141d2055842a6905b7e928ebb.html">core</a></li><li class="navelem"><a class="el" href="dir_796afaaa8ebde5045486ccd049b8f2c7.html">src</a></li><li class="navelem"><a class="el" href="dir_1d3e5a1e3b3f8881accdef90512438a4.html">IR</a></li><li class="navelem"><a class="el" href="_bag_8cpp.html">Bag.cpp</a></li>
+    <li class="navelem"><a class="el" href="dir_e955afc72e8af59637c9070b8690ff98.html">compiler</a></li><li class="navelem"><a class="el" href="dir_d45624ffc5eee5107ee20c42fd9bb74b.html">_deprecated</a></li><li class="navelem"><a class="el" href="dir_7f1c71043964bc77f8a82a8210e7633e.html">coco</a></li><li class="navelem"><a class="el" href="dir_a502bee4c0ed7825212e6eee870aae13.html">core</a></li><li class="navelem"><a class="el" href="dir_c0e2500f0d919447c612b5431f8d2885.html">src</a></li><li class="navelem"><a class="el" href="dir_474efa7b7d65be75a19884bcbb834a63.html">IR</a></li><li class="navelem"><a class="el" href="_bag_8cpp.html">Bag.cpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
