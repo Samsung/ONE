@@ -83,3 +83,4 @@ This section will be updated as projects are moved to this directory.
 | nnc | 2026-03-24 | `mir` is deprecated |
 | caffegen | 2026-03-24 | No longer support caffe model |
 | nnkit-caffe | 2026-03-24 | No longer support caffe model |
+| nnsuite | 2026-03-30 | Unused test framework |
