@@ -32,7 +32,4 @@ _model_ = net_ConvTranspose2d()
 _inputs_ = (torch.Tensor(1, 4, 1, 1))
 
 _io_names_ = [['input'], ['output']]
-_dynamic_axes_ = {
-    "input": {0: "?", 3: "?"},
-    "output": {0: "?", 3: "?"}
-}
+_dynamic_axes_ = {"input": {0: "?", 3: "?"}, "output": {0: "?", 3: "?"}}
