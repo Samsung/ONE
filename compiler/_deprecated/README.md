@@ -85,3 +85,10 @@ This section will be updated as projects are moved to this directory.
 | nnkit-caffe | 2026-03-24 | No longer support caffe model |
 | nnsuite | 2026-03-30 | Unused test framework |
 | tfts | 2026-04-01 | Unused test framework |
+| nnkit | 2026-04-01 | Unused test framework |
+| nnkit-intf | 2026-04-01 | `nnkit` is deprecated |
+| nnkit-misc | 2026-04-01 | `nnkit` is deprecated |
+| nnkit-onnxrt | 2026-04-01 | `nnkit` is deprecated |
+| nnkit-tf | 2026-04-01 | `nnkit` is deprecated |
+| nnkit-tflite | 2026-04-01 | `nnkit` is deprecated |
+| tfinfo | 2026-04-01 | Helper for `nnkit`, `nnkit` is deprecated |
