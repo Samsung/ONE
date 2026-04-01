@@ -17,7 +17,7 @@ defaults:
 jobs:
   check-format:
     name: Check format
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-slim
     if: github.repository_owner == 'Samsung'
 
     steps:
