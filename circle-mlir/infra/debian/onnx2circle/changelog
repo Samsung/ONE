@@ -1,3 +1,9 @@
+onnx2circle (0.4.2~202604020259~jammy) jammy; urgency=medium
+
+  * Support dynamic input for ConvTranspose operation.
+
+ -- On-device AI developers <nnfw@samsung.com>  Thu, 02 Apr 2026 03:09:42 +0000
+
 onnx2circle (0.4.2~202603080547~jammy) jammy; urgency=medium
 
   * Introduce Sign operation.
