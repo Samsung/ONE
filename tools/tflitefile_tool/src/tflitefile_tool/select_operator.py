@@ -1305,7 +1305,7 @@ def StoreIOInfo(path, used_tensors, org_inputs, org_outputs, new_inputs, new_out
         json_file.write(f'{json.dumps(ioinfo, indent=2)}\n')
 
 
-def main(args):
+def main():
     # Define argument and read
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument("input_model",
