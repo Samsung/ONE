@@ -19,7 +19,7 @@ After code generation, you can prepare python environment by `uv sync` command.
 uv sync
 ```
 
-## Model parser
+## TFLite Model parser
 
 ### Purpose
 
@@ -28,13 +28,13 @@ This tool print operators, tensors, and buffers information in tflite model file
 ### How to use
 
 ```
-uv run model-parser <model-file>
+uv run tflite-parser <tflite-file>
 ```
 
 ### Example
 
 ```
-$ uv run model-parser /home/nnfw/convolution_test.tflite
+$ uv run tflite-parser /home/nnfw/convolution_test.tflite
 
 [Main model]
 
@@ -66,7 +66,7 @@ This tool makes small model file from base model file (such as inception v3)
 ### How to use
 
 ```
-uv run select-operator <base model file> <opcode list txt file> <output file name>
+uv run tflite-selector <base model file> <opcode list txt file> <output file name>
 ```
 
 ### Example
@@ -75,7 +75,7 @@ uv run select-operator <base model file> <opcode list txt file> <output file nam
 $ cat /home/nnfw/opcodelist.txt
 107 108 109 110 111 112 113 114 115 116 117 118 119 120
 
-$ uv run select-operator /home/nnfw/inceptionv3_non_slim_2015.tflite \
+$ uv run tflite-selector /home/nnfw/inceptionv3_non_slim_2015.tflite \
 /home/nnfw/opcodelist.txt /home/nnfw/test.tflite
 
 Input tensor(s): [29]
@@ -103,7 +103,7 @@ If selected operators contain controlflow operator, the model to be generated wi
 $ cat /home/nnfw/opcodelist.txt
 11-13
 
-$ uv run select-operator multi_subgraph.tflite
+$ uv run tflite-selector multi_subgraph.tflite
 opcodelist.txt test.tflite -g 1
 ```
 
@@ -117,7 +117,7 @@ So run model generator with the option `--store-io-info`
 #### How to use
 
 ```
-uv run select-operator <base model file> <opcode list txt file> <output file name> --store-io-info <output json file name>
+uv run tflite-selector <base model file> <opcode list txt file> <output file name> --store-io-info <output json file name>
 ```
 
 #### Example
@@ -131,12 +131,12 @@ $ cat 0-26.txt
 $ cat 27-30.txt
 27-30
 
-$ uv run select-operator mobilenet_v1_1.0_224.tflite 0-26.txt m1.tflite --store-io-info m1.json
+$ uv run tflite-selector mobilenet_v1_1.0_224.tflite 0-26.txt m1.tflite --store-io-info m1.json
 Input tensor(s): [81]
 Output tensor(s): [44]
 Append subgraphs, orginal index :  0 , new index :  0
 
-$ uv run select-operator mobilenet_v1_1.0_224.tflite 27-30.txt m2.tflite --store-io-info m2.json
+$ uv run tflite-selector mobilenet_v1_1.0_224.tflite 27-30.txt m2.tflite --store-io-info m2.json
 Input tensor(s): [6]
 Output tensor(s): [7]
 Append subgraphs, orginal index :  0 , new index :  0
