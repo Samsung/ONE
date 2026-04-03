@@ -79,7 +79,7 @@ jobs:
           apt install circle-interpreter
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       # NOTE Docker image has pre-installed submodules in /workdir
       # NOTE Docker image has pre-installed python packages
