@@ -53,7 +53,7 @@ jobs:
       BUILD_TYPE: release
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Restore onecc external cache
         uses: actions/cache/restore@v4
