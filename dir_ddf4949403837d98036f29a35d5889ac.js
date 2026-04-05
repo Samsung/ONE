@@ -7,7 +7,7 @@ var dir_ddf4949403837d98036f29a35d5889ac =
     [ "Transforms", "dir_d31c5f94d6f3badf1c70915c68acf859.html", "dir_d31c5f94d6f3badf1c70915c68acf859" ],
     [ "AsmCode.cpp", "_asm_code_8cpp.html", null ],
     [ "AsmCode.h", "_asm_code_8h.html", "_asm_code_8h" ],
-    [ "Backend.cpp", "__deprecated_2enco_2core_2src_2_backend_8cpp.html", "__deprecated_2enco_2core_2src_2_backend_8cpp" ],
+    [ "Backend.cpp", "enco_2core_2src_2_backend_8cpp.html", "enco_2core_2src_2_backend_8cpp" ],
     [ "Code.h", "_code_8h.html", "_code_8h" ],
     [ "CodeIndex.h", "_code_index_8h.html", "_code_index_8h" ],
     [ "CppCode.cpp", "_cpp_code_8cpp.html", null ],

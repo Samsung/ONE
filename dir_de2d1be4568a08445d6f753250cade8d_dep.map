@@ -1,0 +1,10 @@
+<map id="compiler/_deprecated/nnkit&#45;tflite/backend" name="compiler/_deprecated/nnkit&#45;tflite/backend">
+<area shape="rect" id="node1" href="dir_11a5e488f4b7579fbee5dccf59daec4e.html" title="support" alt="" coords="29,126,94,152"/>
+<area shape="rect" id="node2" href="dir_de2d1be4568a08445d6f753250cade8d.html" title="backend" alt="" coords="26,52,97,78"/>
+<area shape="poly" id="edge1" href="dir_000057_001036.html" alt="" coords="64,78,64,110,59,110,59,78"/>
+<area shape="rect" id="edge1-headlabel" href="dir_000057_001036.html" title="1" alt="" coords="66,100,73,115"/>
+<area shape="rect" id="node3" href="dir_d0d672bf21e838bee6b9b314a6e8b243.html" title="nnkit&#45;intf" alt="" coords="118,126,189,152"/>
+<area shape="poly" id="edge2" href="dir_000057_000653.html" alt="" coords="79,76,128,114,124,119,75,81"/>
+<area shape="rect" id="edge2-headlabel" href="dir_000057_000653.html" title="1" alt="" coords="125,100,132,115"/>
+<area shape="rect" id="clust1" href="dir_0d0bc7e21b05cfe25fbcf3c65877034b.html" title="nnkit&#45;tflite" alt="" coords="16,16,107,162"/>
+</map>

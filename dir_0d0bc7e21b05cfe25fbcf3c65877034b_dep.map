@@ -1,0 +1,16 @@
+<map id="compiler/_deprecated/nnkit&#45;tflite" name="compiler/_deprecated/nnkit&#45;tflite">
+<area shape="rect" id="node1" href="dir_d0d672bf21e838bee6b9b314a6e8b243.html" title="nnkit&#45;intf" alt="" coords="64,210,136,236"/>
+<area shape="rect" id="node3" href="dir_de2d1be4568a08445d6f753250cade8d.html" title="backend" alt="" coords="37,63,107,89"/>
+<area shape="poly" id="edge2" href="dir_000057_000653.html" alt="" coords="76,89,88,172,94,195,89,196,83,174,70,89"/>
+<area shape="rect" id="edge2-headlabel" href="dir_000057_000653.html" title="1" alt="" coords="95,183,102,198"/>
+<area shape="rect" id="node4" href="dir_11a5e488f4b7579fbee5dccf59daec4e.html" title="support" alt="" coords="97,137,162,162"/>
+<area shape="poly" id="edge1" href="dir_000057_001036.html" alt="" coords="84,87,112,123,108,126,79,91"/>
+<area shape="rect" id="edge1-headlabel" href="dir_000057_001036.html" title="1" alt="" coords="111,109,118,124"/>
+<area shape="poly" id="edge4" href="dir_001036_000653.html" alt="" coords="127,164,113,197,108,195,122,162"/>
+<area shape="rect" id="edge4-headlabel" href="dir_001036_000653.html" title="2" alt="" coords="116,189,123,204"/>
+<area shape="rect" id="node5" href="dir_ee1436e5ec12dcaaa7069791f279fa0f.html" title="angkor" alt="" coords="241,210,301,236"/>
+<area shape="poly" id="edge3" href="dir_001036_000031.html" alt="" coords="155,160,234,201,232,205,152,165"/>
+<area shape="rect" id="edge3-headlabel" href="dir_001036_000031.html" title="3" alt="" coords="231,187,238,202"/>
+<area shape="rect" id="clust2" href="dir_0d0bc7e21b05cfe25fbcf3c65877034b.html" alt="" coords="27,52,219,173"/>
+<area shape="rect" id="clust1" href="dir_d45624ffc5eee5107ee20c42fd9bb74b.html" title="_deprecated" alt="" coords="16,16,229,247"/>
+</map>

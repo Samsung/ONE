@@ -1,12 +1,5 @@
 var NAVTREEINDEX210 =
 {
-"import_2src_2_nodes_2_circle_while_8cpp_source.html":[43,0,0,52,2,1,0,126],
-"import_2src_2_nodes_2_circle_zeros_like_8cpp.html":[43,0,0,52,2,1,0,127],
-"import_2src_2_nodes_2_circle_zeros_like_8cpp_source.html":[43,0,0,52,2,1,0,127],
-"include_2backend_2basic_2_dynamic_tensor_manager_8h.html":[43,0,3,4,2,0,0,0,3],
-"include_2backend_2basic_2_dynamic_tensor_manager_8h_source.html":[43,0,3,4,2,0,0,0,3],
-"index.html":[],
-"infer_2session_8py.html":[43,0,3,4,0,1,1,2,1],
 "infer_2session_8py_source.html":[43,0,3,4,0,1,1,2,1],
 "infer_8py.html":[43,0,0,11,0],
 "infer_8py.html#a090f02d8ca09d6735c854c261ce4861e":[43,0,0,11,0,20],
@@ -75,8 +68,8 @@ var NAVTREEINDEX210 =
 "inference__benchmark_8py.html#af11f543ec75ce78be722f17f96bf8aab":[43,0,3,4,5,1,2,0],
 "inference__benchmark_8py.html#afa30cd1d0b5d9676d2cd095e4988d1a9":[43,0,3,4,5,1,2,2],
 "inference__benchmark_8py_source.html":[43,0,3,4,5,1,2],
-"ite_2support_2src_2_tensor_context_8cpp.html":[43,0,0,74,1,1,1],
-"ite_2support_2src_2_tensor_context_8cpp_source.html":[43,0,0,74,1,1,1],
+"ite_2support_2src_2_tensor_context_8cpp.html":[43,0,0,0,21,1,1,1],
+"ite_2support_2src_2_tensor_context_8cpp_source.html":[43,0,0,0,21,1,1,1],
 "jpeg2hdf5_8py.html":[43,0,0,0,13,7,5,0],
 "jpeg2hdf5_8py.html#a01a00f16b6bc56ca12c4a42576612bd8":[43,0,0,0,13,7,5,0,18],
 "jpeg2hdf5_8py.html#a025f673a901c5b69ba3c99bb293ce095":[43,0,0,0,13,7,5,0,37],
@@ -249,5 +242,12 @@ var NAVTREEINDEX210 =
 "lang_2include_2luci_2_i_r_2_nodes_2_circle_local_response_normalization_8h_source.html":[43,0,0,52,3,0,0,0,0,53],
 "lang_2include_2luci_2_i_r_2_nodes_2_circle_log_8h.html":[43,0,0,52,3,0,0,0,0,54],
 "lang_2include_2luci_2_i_r_2_nodes_2_circle_log_8h_source.html":[43,0,0,52,3,0,0,0,0,54],
-"lang_2include_2luci_2_i_r_2_nodes_2_circle_log_softmax_8h.html":[43,0,0,52,3,0,0,0,0,59]
+"lang_2include_2luci_2_i_r_2_nodes_2_circle_log_softmax_8h.html":[43,0,0,52,3,0,0,0,0,59],
+"lang_2include_2luci_2_i_r_2_nodes_2_circle_log_softmax_8h_source.html":[43,0,0,52,3,0,0,0,0,59],
+"lang_2include_2luci_2_i_r_2_nodes_2_circle_logical_and_8h.html":[43,0,0,52,3,0,0,0,0,55],
+"lang_2include_2luci_2_i_r_2_nodes_2_circle_logical_and_8h_source.html":[43,0,0,52,3,0,0,0,0,55],
+"lang_2include_2luci_2_i_r_2_nodes_2_circle_logical_not_8h.html":[43,0,0,52,3,0,0,0,0,56],
+"lang_2include_2luci_2_i_r_2_nodes_2_circle_logical_not_8h_source.html":[43,0,0,52,3,0,0,0,0,56],
+"lang_2include_2luci_2_i_r_2_nodes_2_circle_logical_or_8h.html":[43,0,0,52,3,0,0,0,0,57],
+"lang_2include_2luci_2_i_r_2_nodes_2_circle_logical_or_8h_source.html":[43,0,0,52,3,0,0,0,0,57]
 };

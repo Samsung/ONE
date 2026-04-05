@@ -1,9 +1,5 @@
 var NAVTREEINDEX244 =
 {
-"namespaceonert__micro_1_1test__model_1_1minimum__float__with__broadcasting.html#a003ab0d38e8de54684e7e0eaa621bf23":[41,0,127,4,85,3],
-"namespaceonert__micro_1_1test__model_1_1minimum__float__with__broadcasting.html#a317dd50ccd3530bd6aaec1714a5ccdfa":[41,0,127,4,85,0],
-"namespaceonert__micro_1_1test__model_1_1minimum__float__with__broadcasting.html#a72d442405dc80184aa44ec8adb21c80f":[41,0,127,4,85,1],
-"namespaceonert__micro_1_1test__model_1_1minimum__float__with__broadcasting.html#aac709d018a6729dd76cd21a77d29fb5b":[41,0,127,4,85,2],
 "namespaceonert__micro_1_1test__model_1_1mul__float__no__broadcasting.html":[41,0,127,4,86],
 "namespaceonert__micro_1_1test__model_1_1mul__float__no__broadcasting.html#a03ad5792a6be5fa851def6aae9eb8b85":[41,0,127,4,86,0],
 "namespaceonert__micro_1_1test__model_1_1mul__float__no__broadcasting.html#a78ac10afb0c7f04fa4b01340ec1c8d66":[41,0,127,4,86,2],
@@ -249,5 +245,9 @@ var NAVTREEINDEX244 =
 "namespaceonert__micro_1_1test__model_1_1neg__reshape__kernel__s8.html":[41,0,127,4,175],
 "namespaceonert__micro_1_1test__model_1_1neg__reshape__kernel__s8.html#a3a1254e4a4a8888a8bed527c7b2a4ca5":[41,0,127,4,175,0],
 "namespaceonert__micro_1_1test__model_1_1neg__reshape__kernel__s8.html#a59a11647598d355672db3fe5ec8c9ac6":[41,0,127,4,175,2],
-"namespaceonert__micro_1_1test__model_1_1neg__reshape__kernel__s8.html#aa67cfceaa200c6d88ec9a70433dd7247":[41,0,127,4,175,1]
+"namespaceonert__micro_1_1test__model_1_1neg__reshape__kernel__s8.html#aa67cfceaa200c6d88ec9a70433dd7247":[41,0,127,4,175,1],
+"namespaceonert__micro_1_1test__model_1_1neg__select__v2__input__type__mismatch.html":[41,0,127,4,176],
+"namespaceonert__micro_1_1test__model_1_1neg__select__v2__input__type__mismatch.html#a859b6de20ec59d626a3d6ba5ae7e015f":[41,0,127,4,176,0],
+"namespaceonert__micro_1_1test__model_1_1neg__softmax__input__output__type__mismatch.html":[41,0,127,4,177],
+"namespaceonert__micro_1_1test__model_1_1neg__softmax__input__output__type__mismatch.html#a336734ad7014ea12f46a339758bcf71d":[41,0,127,4,177,0]
 };

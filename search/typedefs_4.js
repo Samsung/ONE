@@ -8,7 +8,7 @@ var searchData=
   ['enableifnotconst_5',['EnableIfNotConst',['../namespaceonert__micro_1_1core_1_1type__traits.html#a90bc008261cb0b20e0c8da82d5d8b694',1,'onert_micro::core::type_traits']]],
   ['enableifnotquantized_6',['EnableIfNotQuantized',['../namespaceonert__micro_1_1core_1_1type__traits.html#ad0ee3fa9aa7fb04293324742597b80d5',1,'onert_micro::core::type_traits']]],
   ['enableifquantized_7',['EnableIfQuantized',['../namespaceonert__micro_1_1core_1_1type__traits.html#a89a74bbb6df77e80dc0462f471fb6002',1,'onert_micro::core::type_traits']]],
-  ['entry_8',['entry',['../classnnkit_1_1_backend_plugin.html#a98cb6c1557fe673980961f5db134fb52',1,'nnkit::BackendPlugin::Entry'],['../classcli_1_1_function_command.html#aed167b7fc12a243b53edfb1b1638f389',1,'cli::FunctionCommand::Entry']]],
+  ['entry_8',['entry',['../classcli_1_1_function_command.html#aed167b7fc12a243b53edfb1b1638f389',1,'cli::FunctionCommand::Entry'],['../classnnkit_1_1_backend_plugin.html#a98cb6c1557fe673980961f5db134fb52',1,'nnkit::BackendPlugin::Entry']]],
   ['envname_9',['EnvName',['../namespacehermes.html#a2ea208150728d4dd10c0b37dab406c49',1,'hermes']]],
   ['errorfn_10',['ErrorFn',['../classflatbuffers_1_1_flat_compiler.html#a1e32baf1cdb659996fd415fdc3de9783',1,'flatbuffers::FlatCompiler']]],
   ['executionplantable_11',['ExecutionPlanTable',['../namespaceluci.html#a98696859b261123c4b4dc1dc81d119e1',1,'luci']]],

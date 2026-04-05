@@ -1,12 +1,5 @@
 var NAVTREEINDEX215 =
 {
-"luci-interpreter_2include_2luci__interpreter_2test__models_2relu6_2_test_data_re_l_u6_base_8h_source.html":[43,0,2,4,0,0,1,58,2],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2relu_2_float_re_l_u_kernel_8h.html":[43,0,2,4,0,0,1,57,0],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2relu_2_float_re_l_u_kernel_8h.html#a34ae355ad0f6b80d7c2beb631aac0185":[43,0,2,4,0,0,1,57,0,3],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2relu_2_float_re_l_u_kernel_8h.html#a7d8a235759cd092d293a33b3aaa2849f":[43,0,2,4,0,0,1,57,0,2],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2relu_2_float_re_l_u_kernel_8h.html#ab021558949e18a4fe9234cf7c366cf66":[43,0,2,4,0,0,1,57,0,1],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2relu_2_float_re_l_u_kernel_8h_source.html":[43,0,2,4,0,0,1,57,0],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2relu_2_neg_re_l_u_kernel_8h.html":[43,0,2,4,0,0,1,57,1],
 "luci-interpreter_2include_2luci__interpreter_2test__models_2relu_2_neg_re_l_u_kernel_8h_source.html":[43,0,2,4,0,0,1,57,1],
 "luci-interpreter_2include_2luci__interpreter_2test__models_2relu_2_test_data_re_l_u_base_8h.html":[43,0,2,4,0,0,1,57,2],
 "luci-interpreter_2include_2luci__interpreter_2test__models_2relu_2_test_data_re_l_u_base_8h_source.html":[43,0,2,4,0,0,1,57,2],
@@ -249,5 +242,12 @@ var NAVTREEINDEX215 =
 "luci-interpreter_2pal_2common_2_p_a_l_add_n_8h.html":[43,0,2,4,1,1,3],
 "luci-interpreter_2pal_2common_2_p_a_l_add_n_8h.html#ae19d51038821799f0cae12d633ebc3de":[43,0,2,4,1,1,3,0],
 "luci-interpreter_2pal_2common_2_p_a_l_add_n_8h_source.html":[43,0,2,4,1,1,3],
-"luci-interpreter_2pal_2common_2_p_a_l_arithmetic_op_common_8h.html":[43,0,2,4,1,1,5]
+"luci-interpreter_2pal_2common_2_p_a_l_arithmetic_op_common_8h.html":[43,0,2,4,1,1,5],
+"luci-interpreter_2pal_2common_2_p_a_l_arithmetic_op_common_8h.html#a129cb2b16d9ba97c917ba12405c1a4cf":[43,0,2,4,1,1,5,4],
+"luci-interpreter_2pal_2common_2_p_a_l_arithmetic_op_common_8h.html#a86ecaa44f38f53a72eaa9dcfb18ca921":[43,0,2,4,1,1,5,5],
+"luci-interpreter_2pal_2common_2_p_a_l_arithmetic_op_common_8h.html#ae62c54bb49676f990685cd3f09e99b29":[43,0,2,4,1,1,5,6],
+"luci-interpreter_2pal_2common_2_p_a_l_arithmetic_op_common_8h_source.html":[43,0,2,4,1,1,5],
+"luci-interpreter_2pal_2common_2_p_a_l_average_pool2_d_common_8h.html":[43,0,2,4,1,1,6],
+"luci-interpreter_2pal_2common_2_p_a_l_average_pool2_d_common_8h.html#aa08ab898fe6ce88f53f2de8b8b398e16":[43,0,2,4,1,1,6,0],
+"luci-interpreter_2pal_2common_2_p_a_l_average_pool2_d_common_8h_source.html":[43,0,2,4,1,1,6]
 };

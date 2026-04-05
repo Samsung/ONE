@@ -1,12 +1,5 @@
 var NAVTREEINDEX208 =
 {
-"import_2include_2luci_2_import_2_nodes_2_circle_arg_min_8h_source.html":[43,0,0,52,2,0,0,0,0,4],
-"import_2include_2luci_2_import_2_nodes_2_circle_average_pool2_d_8h.html":[43,0,0,52,2,0,0,0,0,5],
-"import_2include_2luci_2_import_2_nodes_2_circle_average_pool2_d_8h_source.html":[43,0,0,52,2,0,0,0,0,5],
-"import_2include_2luci_2_import_2_nodes_2_circle_b_c_q_fully_connected_8h.html":[43,0,0,52,2,0,0,0,0,8],
-"import_2include_2luci_2_import_2_nodes_2_circle_b_c_q_fully_connected_8h_source.html":[43,0,0,52,2,0,0,0,0,8],
-"import_2include_2luci_2_import_2_nodes_2_circle_b_c_q_gather_8h.html":[43,0,0,52,2,0,0,0,0,9],
-"import_2include_2luci_2_import_2_nodes_2_circle_b_c_q_gather_8h_source.html":[43,0,0,52,2,0,0,0,0,9],
 "import_2include_2luci_2_import_2_nodes_2_circle_batch_mat_mul_8h.html":[43,0,0,52,2,0,0,0,0,6],
 "import_2include_2luci_2_import_2_nodes_2_circle_batch_mat_mul_8h_source.html":[43,0,0,52,2,0,0,0,0,6],
 "import_2include_2luci_2_import_2_nodes_2_circle_batch_to_space_n_d_8h.html":[43,0,0,52,2,0,0,0,0,7],
@@ -249,5 +242,12 @@ var NAVTREEINDEX208 =
 "import_2include_2luci_2_import_2_nodes_2_circle_zeros_like_8h.html":[43,0,0,52,2,0,0,0,0,127],
 "import_2include_2luci_2_import_2_nodes_2_circle_zeros_like_8h_source.html":[43,0,0,52,2,0,0,0,0,127],
 "import_2src_2_nodes_2_circle_abs_8cpp.html":[43,0,0,52,2,1,0,0],
-"import_2src_2_nodes_2_circle_abs_8cpp_source.html":[43,0,0,52,2,1,0,0]
+"import_2src_2_nodes_2_circle_abs_8cpp_source.html":[43,0,0,52,2,1,0,0],
+"import_2src_2_nodes_2_circle_add_8cpp.html":[43,0,0,52,2,1,0,1],
+"import_2src_2_nodes_2_circle_add_8cpp_source.html":[43,0,0,52,2,1,0,1],
+"import_2src_2_nodes_2_circle_add_n_8cpp.html":[43,0,0,52,2,1,0,2],
+"import_2src_2_nodes_2_circle_add_n_8cpp_source.html":[43,0,0,52,2,1,0,2],
+"import_2src_2_nodes_2_circle_arg_max_8cpp.html":[43,0,0,52,2,1,0,3],
+"import_2src_2_nodes_2_circle_arg_max_8cpp_source.html":[43,0,0,52,2,1,0,3],
+"import_2src_2_nodes_2_circle_arg_min_8cpp.html":[43,0,0,52,2,1,0,4]
 };

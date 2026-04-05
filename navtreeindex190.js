@@ -1,5 +1,15 @@
 var NAVTREEINDEX190 =
 {
+"compiler_2luci-interpreter_2src_2kernels_2_logical_and_8h_source.html":[43,0,0,55,2,2,82],
+"compiler_2luci-interpreter_2src_2kernels_2_logical_not_8cpp.html":[43,0,0,55,2,2,83],
+"compiler_2luci-interpreter_2src_2kernels_2_logical_not_8cpp_source.html":[43,0,0,55,2,2,83],
+"compiler_2luci-interpreter_2src_2kernels_2_logical_not_8h.html":[43,0,0,55,2,2,84],
+"compiler_2luci-interpreter_2src_2kernels_2_logical_not_8h_source.html":[43,0,0,55,2,2,84],
+"compiler_2luci-interpreter_2src_2kernels_2_logical_or_8cpp.html":[43,0,0,55,2,2,85],
+"compiler_2luci-interpreter_2src_2kernels_2_logical_or_8cpp_source.html":[43,0,0,55,2,2,85],
+"compiler_2luci-interpreter_2src_2kernels_2_logical_or_8h.html":[43,0,0,55,2,2,86],
+"compiler_2luci-interpreter_2src_2kernels_2_logical_or_8h_source.html":[43,0,0,55,2,2,86],
+"compiler_2luci-interpreter_2src_2kernels_2_logistic_8cpp.html":[43,0,0,55,2,2,87],
 "compiler_2luci-interpreter_2src_2kernels_2_logistic_8cpp_source.html":[43,0,0,55,2,2,87],
 "compiler_2luci-interpreter_2src_2kernels_2_logistic_8h.html":[43,0,0,55,2,2,88],
 "compiler_2luci-interpreter_2src_2kernels_2_logistic_8h_source.html":[43,0,0,55,2,2,88],
@@ -239,15 +249,5 @@ var NAVTREEINDEX190 =
 "compiler_2luci-interpreter_2src_2loader_2_kernel_builder_8cpp.html#a1f2a0f001c3cf88ea589d4b263616ab8":[43,0,0,55,2,3,3,6],
 "compiler_2luci-interpreter_2src_2loader_2_kernel_builder_8cpp.html#a1f2a0f001c3cf88ea589d4b263616ab8a6f6cb72d544962fa333e2e34ce64f719":[43,0,0,55,2,3,3,6,0],
 "compiler_2luci-interpreter_2src_2loader_2_kernel_builder_8cpp.html#a59f867085e2fdfd747e0aa64cfb6c6ed":[43,0,0,55,2,3,3,5],
-"compiler_2luci-interpreter_2src_2loader_2_kernel_builder_8cpp.html#ab968e7590faa832d708fdf28b656fa76":[43,0,0,55,2,3,3,4],
-"compiler_2luci-interpreter_2src_2loader_2_kernel_builder_8cpp.html#acd6355225daabf033d129b51d6c88f8e":[43,0,0,55,2,3,3,1],
-"compiler_2luci-interpreter_2src_2loader_2_kernel_builder_8cpp_source.html":[43,0,0,55,2,3,3],
-"compiler_2luci-interpreter_2src_2loader_2_kernel_builder_8h.html":[43,0,0,55,2,3,4],
-"compiler_2luci-interpreter_2src_2loader_2_kernel_builder_8h_source.html":[43,0,0,55,2,3,4],
-"compiler_2luci-interpreter_2src_2loader_2_module_loader_8cpp.html":[43,0,0,55,2,3,7],
-"compiler_2luci-interpreter_2src_2loader_2_module_loader_8cpp_source.html":[43,0,0,55,2,3,7],
-"compiler_2luci-interpreter_2src_2loader_2_module_loader_8h.html":[43,0,0,55,2,3,8],
-"compiler_2luci-interpreter_2src_2loader_2_module_loader_8h_source.html":[43,0,0,55,2,3,8],
-"compiler_2luci-interpreter_2src_2loader_2nodes_2_abs_8cpp.html":[43,0,0,55,2,3,0,0],
-"compiler_2luci-interpreter_2src_2loader_2nodes_2_abs_8cpp.html#a4e621a2a187aa3355b1b5c85c4a786f6":[43,0,0,55,2,3,0,0,0]
+"compiler_2luci-interpreter_2src_2loader_2_kernel_builder_8cpp.html#ab968e7590faa832d708fdf28b656fa76":[43,0,0,55,2,3,3,4]
 };

@@ -1,15 +1,5 @@
 var NAVTREEINDEX41 =
 {
-"class_exp_chef.html#a10116963f1347bea0a27b8967ecdb7d1":[42,0,229,2],
-"class_exp_chef.html#a46e1498c9759cd39826233b3357b7633":[42,0,229,3],
-"class_exp_chef.html#a973b38f30ea975d68aef6638a53ccb44":[42,0,229,1],
-"class_exp_chef.html#ae8452c58736983a4d6420e0c217c0a4b":[42,0,229,0],
-"class_expand_dims_chef.html":[42,0,227],
-"class_expand_dims_chef.html#a332db6933d7d7ccb0a3c8513916980dc":[42,0,227,1],
-"class_expand_dims_chef.html#a5a3e0ba0fc48d84de90e884d77e8b45c":[42,0,227,0],
-"class_expand_dims_chef.html#a68d72ed674d2e94e04acb8b8979364fd":[42,0,227,3],
-"class_expand_dims_chef.html#ac6ddd26d5123ea43deadb2738e5f38d8":[42,0,227,2],
-"class_fake_quant_chef.html":[42,0,231],
 "class_fake_quant_chef.html#a10e07aafd6aa89b5f654f04ca0ce36ab":[42,0,231,3],
 "class_fake_quant_chef.html#a5235d4f39d68e6c527a04f5d1446c890":[42,0,231,0],
 "class_fake_quant_chef.html#ae3ff68e2c9cf92c5f8ac125c9ea69e6a":[42,0,231,1],
@@ -52,8 +42,8 @@ var NAVTREEINDEX41 =
 "class_floor_mod_chef.html#ae11e8706fb16d9e14441663f4ad4af3b":[42,0,244,3],
 "class_floor_mod_chef.html#af9529b021c7306dd5afb71d29c14ef6a":[42,0,244,1],
 "class_frontend.html":[42,0,248],
-"class_frontend.html#a3d6efd1fe035081215194d17a985af8b":[42,0,248,3],
 "class_frontend.html#a3d6efd1fe035081215194d17a985af8b":[42,0,248,4],
+"class_frontend.html#a3d6efd1fe035081215194d17a985af8b":[42,0,248,3],
 "class_frontend.html#a5ba8994a3e80ac826785ce50016bed44":[42,0,248,5],
 "class_frontend.html#a656c55f1eb54f255000933050334ca62":[42,0,248,0],
 "class_frontend.html#a7975e7135f9e7f77c2af37aa4fab818c":[42,0,248,2],
@@ -249,5 +239,15 @@ var NAVTREEINDEX41 =
 "class_leaky_relu_chef.html#a597091d9f92eda09f589ead31d98e80b":[42,0,306,0],
 "class_leaky_relu_chef.html#a9c45b0d7e013bdb4db29e8b699f4c260":[42,0,306,1],
 "class_leaky_relu_chef.html#ab859d6a18cfe3a8cd534444335a438cc":[42,0,306,2],
-"class_less_chef.html":[42,0,308]
+"class_less_chef.html":[42,0,308],
+"class_less_chef.html#a560925adc2286df0d2c8de6ab72b388e":[42,0,308,2],
+"class_less_chef.html#a95a6f424a777b990cdf0774aaa6eca3e":[42,0,308,1],
+"class_less_chef.html#acaf649650d580cfb548336a6e17a0da0":[42,0,308,3],
+"class_less_chef.html#aed0d55bbbb21cb0ab8a22d43a2e38676":[42,0,308,0],
+"class_less_equal_chef.html":[42,0,310],
+"class_less_equal_chef.html#a0104400f71aff5fc1c1ecc7063873ec6":[42,0,310,0],
+"class_less_equal_chef.html#a9569d6de6e10c49361159b6be8a31960":[42,0,310,3],
+"class_less_equal_chef.html#aace39b39c33d3867befb2c81c70447fa":[42,0,310,1],
+"class_less_equal_chef.html#ae59cc801d9027576d503fde66f33caa2":[42,0,310,2],
+"class_local_response_normalization_chef.html":[42,0,312]
 };
