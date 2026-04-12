@@ -151,8 +151,6 @@ var NAVTREEINDEX189 =
 "compiler_2luci-interpreter_2src_2kernels_2_concatenation_8cpp_source.html":[43,0,0,55,2,2,17],
 "compiler_2luci-interpreter_2src_2kernels_2_concatenation_8h.html":[43,0,0,55,2,2,18],
 "compiler_2luci-interpreter_2src_2kernels_2_concatenation_8h_source.html":[43,0,0,55,2,2,18],
-"compiler_2luci-interpreter_2src_2kernels_2_conv2_d_8cpp.html":[43,0,0,55,2,2,19],
-"compiler_2luci-interpreter_2src_2kernels_2_conv2_d_8cpp_source.html":[43,0,0,55,2,2,19],
 "compiler_2luci-interpreter_2src_2kernels_2_conv2_d_8h.html":[43,0,0,55,2,2,20],
 "compiler_2luci-interpreter_2src_2kernels_2_conv2_d_8h_source.html":[43,0,0,55,2,2,20],
 "compiler_2luci-interpreter_2src_2kernels_2_cos_8cpp.html":[43,0,0,55,2,2,21],
@@ -171,10 +169,10 @@ var NAVTREEINDEX189 =
 "compiler_2luci-interpreter_2src_2kernels_2_dequantize_8h_source.html":[43,0,0,55,2,2,30],
 "compiler_2luci-interpreter_2src_2kernels_2_div_8cpp.html":[43,0,0,55,2,2,31],
 "compiler_2luci-interpreter_2src_2kernels_2_div_8cpp_source.html":[43,0,0,55,2,2,31],
-"compiler_2luci-interpreter_2src_2kernels_2_e_l_u_8cpp.html":[43,0,0,55,2,2,33],
-"compiler_2luci-interpreter_2src_2kernels_2_e_l_u_8cpp_source.html":[43,0,0,55,2,2,33],
-"compiler_2luci-interpreter_2src_2kernels_2_e_l_u_8h.html":[43,0,0,55,2,2,34],
-"compiler_2luci-interpreter_2src_2kernels_2_e_l_u_8h_source.html":[43,0,0,55,2,2,34],
+"compiler_2luci-interpreter_2src_2kernels_2_elu_8cpp.html":[43,0,0,55,2,2,33],
+"compiler_2luci-interpreter_2src_2kernels_2_elu_8cpp_source.html":[43,0,0,55,2,2,33],
+"compiler_2luci-interpreter_2src_2kernels_2_elu_8h.html":[43,0,0,55,2,2,34],
+"compiler_2luci-interpreter_2src_2kernels_2_elu_8h_source.html":[43,0,0,55,2,2,34],
 "compiler_2luci-interpreter_2src_2kernels_2_equal_8cpp.html":[43,0,0,55,2,2,35],
 "compiler_2luci-interpreter_2src_2kernels_2_equal_8cpp_source.html":[43,0,0,55,2,2,35],
 "compiler_2luci-interpreter_2src_2kernels_2_exp_8cpp.html":[43,0,0,55,2,2,37],
@@ -249,5 +247,7 @@ var NAVTREEINDEX189 =
 "compiler_2luci-interpreter_2src_2kernels_2_log_softmax_8h_source.html":[43,0,0,55,2,2,90],
 "compiler_2luci-interpreter_2src_2kernels_2_logical_and_8cpp.html":[43,0,0,55,2,2,81],
 "compiler_2luci-interpreter_2src_2kernels_2_logical_and_8cpp_source.html":[43,0,0,55,2,2,81],
-"compiler_2luci-interpreter_2src_2kernels_2_logical_and_8h.html":[43,0,0,55,2,2,82]
+"compiler_2luci-interpreter_2src_2kernels_2_logical_and_8h.html":[43,0,0,55,2,2,82],
+"compiler_2luci-interpreter_2src_2kernels_2_logical_and_8h_source.html":[43,0,0,55,2,2,82],
+"compiler_2luci-interpreter_2src_2kernels_2_logical_not_8cpp.html":[43,0,0,55,2,2,83]
 };

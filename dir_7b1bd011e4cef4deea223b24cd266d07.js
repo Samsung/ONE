@@ -5,7 +5,7 @@ var dir_7b1bd011e4cef4deea223b24cd266d07 =
     [ "BiasAdd.cpp", "__deprecated_2moco_2import_2src_2_nodes_2_bias_add_8cpp.html", null ],
     [ "Concat.cpp", "moco_2import_2src_2_nodes_2_concat_8cpp.html", null ],
     [ "Const.cpp", "_const_8cpp.html", null ],
-    [ "Conv2D.cpp", "compiler_2__deprecated_2moco_2import_2src_2_nodes_2_conv2_d_8cpp.html", null ],
+    [ "Conv2D.cpp", "compiler_2__deprecated_2moco_2import_2src_2_nodes_2conv2d_8cpp.html", null ],
     [ "Conv2DBackpropInput.cpp", "_conv2_d_backprop_input_8cpp.html", null ],
     [ "DepthwiseConv2dNative.cpp", "_depthwise_conv2d_native_8cpp.html", null ],
     [ "FakeQuantWithMinMaxVars.cpp", "_fake_quant_with_min_max_vars_8cpp.html", null ],

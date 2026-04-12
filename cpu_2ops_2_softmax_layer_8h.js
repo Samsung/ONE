@@ -1,4 +1,0 @@
-var cpu_2ops_2_softmax_layer_8h =
-[
-    [ "onert::backend::cpu::ops::SoftMaxLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_soft_max_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_soft_max_layer" ]
-];

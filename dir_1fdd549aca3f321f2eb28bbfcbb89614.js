@@ -13,7 +13,7 @@ var dir_1fdd549aca3f321f2eb28bbfcbb89614 =
     [ "Pooling.cpp", "enco_2frontend_2caffe_2src_2_layer_2_pooling_8cpp.html", null ],
     [ "Pooling.h", "enco_2frontend_2caffe_2src_2_layer_2_pooling_8h.html", "enco_2frontend_2caffe_2src_2_layer_2_pooling_8h" ],
     [ "ReLU.cpp", "compiler_2__deprecated_2enco_2frontend_2caffe_2src_2_layer_2_re_l_u_8cpp.html", null ],
-    [ "ReLU.h", "compiler_2__deprecated_2enco_2frontend_2caffe_2src_2_layer_2_re_l_u_8h.html", "compiler_2__deprecated_2enco_2frontend_2caffe_2src_2_layer_2_re_l_u_8h" ],
+    [ "ReLU.h", "compiler_2__deprecated_2enco_2frontend_2caffe_2src_2_layer_2_relu_8h.html", "compiler_2__deprecated_2enco_2frontend_2caffe_2src_2_layer_2_relu_8h" ],
     [ "Scale.cpp", "_scale_8cpp.html", null ],
     [ "Scale.h", "_scale_8h.html", "_scale_8h" ]
 ];
