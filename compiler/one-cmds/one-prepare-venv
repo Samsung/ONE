@@ -96,12 +96,16 @@ fi
 
 # Install PyTorch and ONNX related
 # NOTE set ONE_PREPVENV_TORCH_SOURCE to override options for source URL.
-TORCH_SOURCE_OPTION="--extra-index-url https://download.pytorch.org/whl/cpu"
-if [[ ! -z "$ONE_PREPVENV_TORCH_SOURCE" ]]; then
+TORCH_SOURCE_OPTION=""
+if [[ -n "$ONE_PREPVENV_PIP_OPTION" ]]; then
+  echo "ONE_PREPVENV_PIP_OPTION is set; skipping default torch source option."
+elif [[ -n "$ONE_PREPVENV_TORCH_SOURCE" ]]; then
   TORCH_SOURCE_OPTION="${ONE_PREPVENV_TORCH_SOURCE}"
+else
+  TORCH_SOURCE_OPTION="--extra-index-url https://download.pytorch.org/whl/cpu"
 fi
-# TODO remove torch message
-echo "Torch from '${ONE_PREPVENV_TORCH_SOURCE}' -> '${TORCH_SOURCE_OPTION}'"
+
+echo "Torch source option: '${TORCH_SOURCE_OPTION}'"
 
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade pip setuptools
 
