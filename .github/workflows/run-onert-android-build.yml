@@ -42,9 +42,9 @@ concurrency:
 jobs:
   build:
     if: github.repository_owner == 'Samsung'
-    runs-on: one-x64-linux
+    runs-on: ubuntu-24.04
     container:
-      image: samsungonedev.azurecr.io/nnfw/one-devtools:android-sdk
+      image: nnfw/one-devtools:android-sdk
       options: --user root
     env:
       TARGET_ARCH: aarch64
