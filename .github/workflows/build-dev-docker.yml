@@ -50,7 +50,7 @@ jobs:
         version: ${{ fromJSON(needs.filtering.outputs.ubuntu-target) }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Build Docker Image
         run: |
@@ -87,7 +87,7 @@ jobs:
     runs-on: one-x64-linux
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Build Docker Image
         run: |

@@ -48,6 +48,8 @@ AddModel(ConvTranspose2d_F32_R4_op01)
 AddModel(ConvTranspose2d_F32_R4_p10)
 AddModel(ConvTranspose2d_F32_R4_p11)
 AddModel(ConvTranspose2d_F32_R4_p11_nobias)
+# AddModel(ConvTranspose2d_F32_R4_unk_bh) --> Does't support dynamic shape output
+# AddModel(ConvTranspose2d_F32_R4_unk_bw) --> Does't support dynamic shape output
 AddModel(Cos_F32_R4)
 AddModel(CumSum_F32_R4_1)
 AddModel(CumSum_F32_R4_2)

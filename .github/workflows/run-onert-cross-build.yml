@@ -62,7 +62,7 @@ jobs:
       OPTIONS: "-DBUILD_ARMCOMPUTE=OFF" # Disable arm compute library
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Restore onecc external cache
         uses: actions/cache/restore@v4
@@ -80,12 +80,16 @@ jobs:
           restore-keys: |
             external-onert-${{ matrix.ubuntu_code }}-
 
+      - name: Get month for ccache cache key
+        id: get-month
+        run: echo "key_month=$(date +%y%m)" >> "$GITHUB_OUTPUT"
+
       - name: Restore ccache cache
         uses: actions/cache/restore@v4
         id: ccache-cache
         with:
           path: ~/.cache/ccache
-          key: ccache-onert-${{ matrix.ubuntu_code }}-${{ matrix.arch }}-${{ matrix.type }}-${{ github.sha }}
+          key: ccache-onert-${{ matrix.ubuntu_code }}-${{ matrix.arch }}-${{ matrix.type }}-${{ steps.get-month.outputs.key_month }}
           restore-keys: |
             ccache-onert-${{ matrix.ubuntu_code }}-${{ matrix.arch }}-${{ matrix.type }}
 

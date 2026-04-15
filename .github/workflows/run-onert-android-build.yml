@@ -53,7 +53,7 @@ jobs:
       BUILD_TYPE: release
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Restore onecc external cache
         uses: actions/cache/restore@v4
@@ -72,12 +72,16 @@ jobs:
           restore-keys: |
             external-onert-ndk-
 
+      - name: Get month for ccache cache key
+        id: get-month
+        run: echo "key_month=$(date +%y%m)" >> "$GITHUB_OUTPUT"
+
       - name: Restore ccache cache
         uses: actions/cache/restore@v4
         id: cache-ccache
         with:
           path: ~/.cache/ccache
-          key: ccache-onert-android-${{ github.sha }}
+          key: ccache-onert-android-${{ steps.get-month.outputs.key_month }}
           restore-keys: |
             ccache-onert-android
 

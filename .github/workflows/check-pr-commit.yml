@@ -18,13 +18,13 @@ defaults:
 jobs:
   check-commit-message:
     name: Check commit message
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-slim
     # Skip on draft, check on draft -> ready
     if: github.repository_owner == 'Samsung' && github.event.pull_request.draft == false
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           # Checkout PR head commit
           # Checkout Action use merge commit as default

@@ -128,19 +128,30 @@ public:
     // create output_shape constant
     mlir::Value output_shape;
     mlir::SmallVector<int32_t, 4> os_i32;
+    mlir::SmallVector<int64_t, 4> os_i64;
     {
-      int32_t hin = static_cast<int32_t>(inshape[2]);
-      int32_t win = static_cast<int32_t>(inshape[3]);
-      int32_t hfs = static_cast<int32_t>(filtershape[2]);
-      int32_t wfs = static_cast<int32_t>(filtershape[3]);
-      int32_t hout = (hin - 1) * stride_h + dilation_h * (hfs - 1) + output_padding_h + 1;
-      int32_t wout = (win - 1) * stride_w + dilation_w * (wfs - 1) + output_padding_w + 1;
-      int32_t nin = static_cast<int32_t>(inshape[0]);
-      int32_t ofs = static_cast<int32_t>(filtershape[1]);
-      os_i32.push_back(nin);
-      os_i32.push_back(hout);
-      os_i32.push_back(wout);
-      os_i32.push_back(ofs); // from IOHW
+      int64_t dyn = mlir::ShapedType::kDynamic;
+      int64_t hin = inshape[2];
+      int64_t win = inshape[3];
+      int64_t hfs = filtershape[2];
+      int64_t wfs = filtershape[3];
+      int64_t hout = dyn;
+      int64_t wout = dyn;
+      int64_t nin = dyn;
+      int64_t ofs = filtershape[1];
+
+      if (!mlir::ShapedType::isDynamic(inshape[0]))
+        nin = inshape[0];
+      if (!mlir::ShapedType::isDynamic(inshape[2]))
+        hout = (hin - 1) * stride_h + dilation_h * (hfs - 1) + output_padding_h + 1;
+      if (!mlir::ShapedType::isDynamic(inshape[3]))
+        wout = (win - 1) * stride_w + dilation_w * (wfs - 1) + output_padding_w + 1;
+
+      os_i64 = {nin, hout, wout, ofs};
+      os_i32.push_back(static_cast<int32_t>(nin));
+      os_i32.push_back(static_cast<int32_t>(hout));
+      os_i32.push_back(static_cast<int32_t>(wout));
+      os_i32.push_back(static_cast<int32_t>(ofs)); // from IOHW
 
       mlir::Location shape_loc = mlir::NameLoc::get(rewriter.getStringAttr(op_name + "/shape"));
       mlir::Type i32 = rewriter.getI32Type();
@@ -148,7 +159,7 @@ public:
       output_shape = rewriter.create<ConstOp>(shape_loc, DenseIntElementsAttr::get(ostype, os_i32));
     }
 
-    mlir::SmallVector<int64_t> trconv2d_shape({os_i32[0], os_i32[1], os_i32[2], os_i32[3]});
+    mlir::SmallVector<int64_t> trconv2d_shape({os_i64[0], os_i64[1], os_i64[2], os_i64[3]});
     auto trconv_output_type = mlir::RankedTensorType::get(trconv2d_shape, outtype.getElementType());
     mlir::Value trconv2d = rewriter.create<TransposeConvOp>(
       opLoc, trconv_output_type, output_shape, filter_tran, pre_tran, bias,
@@ -173,10 +184,10 @@ public:
 
       mlir::Location ss_loc = mlir::NameLoc::get(rewriter.getStringAttr(op_name + "/slice/size"));
       mlir::SmallVector<int32_t, 4> size_i32;
-      size_i32.push_back(os_i32[0]);
-      size_i32.push_back(os_i32[1] - 2 * padsValue[0]);
-      size_i32.push_back(os_i32[2] - 2 * padsValue[1]);
-      size_i32.push_back(os_i32[3]);
+      size_i32.push_back(static_cast<int32_t>(os_i64[0]));
+      size_i32.push_back(static_cast<int32_t>(os_i64[1]) - 2 * padsValue[0]);
+      size_i32.push_back(static_cast<int32_t>(os_i64[2]) - 2 * padsValue[1]);
+      size_i32.push_back(static_cast<int32_t>(os_i64[3]));
       auto sizeConst =
         rewriter.create<ConstOp>(ss_loc, DenseIntElementsAttr::get(bstype, size_i32));
 

@@ -51,6 +51,44 @@ This section will be updated as projects are moved to this directory.
 | Project | Deprecation Date | Reason |
 |---------|------------------|--------|
 | caffe2circle | 2026-03-13 | Caffe models are no longer supported |
+| enco | 2026-03-16 | We don't longer maintain Android NN API backend any more |
+| enco-intf | 2026-03-16 | We don't maintain `enco` any more |
+| encodump | 2026-03-16 | We don't maintain `enco` any more |
 | onnx2circle | 2026-03-16 | Use circle-mlir's onnx2circle tool |
 | onnx2tflite | 2026-03-16 | onnx2tflite + tflite2circle is replaced as circle-mlir's onnx2circle tool |
 | onnx2tflite-integration-test | 2026-03-16 | onnx2tflite is no longer used |
+| tf2tflite | 2026-03-18 | Use TF's official tool |
+| tf2tflite-dredd-pb-test | 2026-03-18 | `tf2tflite` is deprecated |
+| tf2tflite-dredd-pbtxt-test | 2026-03-18 | `tf2tflite` is deprecated |
+| tf2tflite-value-pb-test | 2026-03-18 | `tf2tflite` is deprecated |
+| tf2tflite-value-pbtxt-test | 2026-03-18 | `tf2tflite` is deprecated |
+| tf2circle | 2026-03-18 | Replaced to use official TFLite converter then use tflite2circle |
+| tf2circle-conversion-test | 2026-03-18 | `tf2circle` is deprecated |
+| tf2circle-dredd-pb-test | 2026-03-18 | `tf2circle` is deprecated |
+| tf2circle-dredd-pbtxt-test | 2026-03-18 | `tf2circle` is deprecated |
+| tf2circle-model-test | 2026-03-18 | `tf2circle` is deprecated |
+| tf2circle-ui-check | 2026-03-18 | `tf2circle` is deprecated |
+| tf2circle-value-pbtxt-remoe-test | 2026-03-18 | `tf2circle` is deprecated |
+| moco | 2026-03-19 | TF model uses TF's official tools, convert to circle model by TF's TFLite converter and tflite2circle |
+| moco-tf | 2026-03-19 | `moco` is deprecated |
+| moco-value-pbtxt-test | 2026-03-19 | `moco-tf` is deprecated |
+| nnkit-mocotf | 2026-03-19 | `moco-tf` is deprecated |
+| tf2nnpkg | 2026-03-19 | Replaced by tf2nnpkg script `infra/packaging/res/tf2nnpkg*` |
+| ann-api | 2026-03-24 | `enco` deprecated: No longer maintain Android NN API backend |
+| ann-ref | 2026-03-24 | `enco` and `ann-ref` deprecated |
+| coco | 2026-03-24 | Experimental IR: No longer maintain |
+| mir | 2026-03-24 | Experimental IR: No longer maintain |
+| mir-interpreter | 2026-03-24 | `mir` is deprecated |
+| mir2loco | 2026-03-24 | `mir` is deprecated |
+| nnc | 2026-03-24 | `mir` is deprecated |
+| caffegen | 2026-03-24 | No longer support caffe model |
+| nnkit-caffe | 2026-03-24 | No longer support caffe model |
+| nnsuite | 2026-03-30 | Unused test framework |
+| tfts | 2026-04-01 | Unused test framework |
+| nnkit | 2026-04-01 | Unused test framework |
+| nnkit-intf | 2026-04-01 | `nnkit` is deprecated |
+| nnkit-misc | 2026-04-01 | `nnkit` is deprecated |
+| nnkit-onnxrt | 2026-04-01 | `nnkit` is deprecated |
+| nnkit-tf | 2026-04-01 | `nnkit` is deprecated |
+| nnkit-tflite | 2026-04-01 | `nnkit` is deprecated |
+| tfinfo | 2026-04-01 | Helper for `nnkit`, `nnkit` is deprecated |
