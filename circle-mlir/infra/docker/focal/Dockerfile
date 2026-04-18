@@ -32,6 +32,7 @@ ARG VER_TORCH=2.7.0+cpu
 ARG VER_ONNX=1.18.0
 ARG VER_ONNXRUNTIME=1.21.1
 ARG VER_NUMPY=1.26.4
+ARG VER_H5PY=3.12.1
 
 # Clean archives (to reduce image size)
 RUN apt-get clean -y
@@ -60,7 +61,7 @@ RUN ${WORK_DIR}/venv/bin/python3 -m pip install --upgrade pip setuptools
 RUN ${WORK_DIR}/venv/bin/python3 -m pip install numpy==${VER_NUMPY} torch==${VER_TORCH} \
     -f https://download.pytorch.org/whl/torch
 RUN ${WORK_DIR}/venv/bin/python3 -m pip install onnx==${VER_ONNX} onnxruntime==${VER_ONNXRUNTIME} \
-    h5py==3.8.0 einops
+    h5py==${VER_H5PY} einops
 
 # Download experimental patch file for onnx-mlir
 
