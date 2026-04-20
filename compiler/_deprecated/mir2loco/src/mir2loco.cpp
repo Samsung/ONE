@@ -395,7 +395,7 @@ void Transformer::visit(mir::ops::ConstantOp &op)
       break;
     }
     default:
-      std::runtime_error("Unsupported data type");
+      throw std::runtime_error("Unsupported data type");
   }
   // Add to map
   _mir2loco_map.emplace(op.getOutput(0), const_node);
