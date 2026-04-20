@@ -298,12 +298,13 @@ void TransposeConv::evalQuantizedS16() const
 
   const int64_t num_elements = scratch_tensor->shape().large_num_elements();
   const size_t element_size = sizeof(int64_t);
-  
+
   // Check for integer overflow in size calculation
-  if (num_elements < 0 || num_elements > SIZE_MAX / element_size) {
+  if (num_elements < 0 || num_elements > SIZE_MAX / element_size)
+  {
     throw std::runtime_error("Integer overflow in size calculation");
   }
-  
+
   const int64_t total_size = num_elements * element_size;
   std::memset(scratch_data, 0, static_cast<size_t>(total_size));
 

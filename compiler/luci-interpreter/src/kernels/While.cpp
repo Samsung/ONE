@@ -37,12 +37,13 @@ void copy(const std::vector<const Tensor *> &src, const std::vector<Tensor *> &d
 
     const int64_t num_elements = src[i]->shape().large_num_elements();
     const std::size_t element_size = getDataTypeSize(src[i]->element_type());
-    
+
     // Check for integer overflow in size calculation
-    if (num_elements < 0 || num_elements > SIZE_MAX / element_size) {
+    if (num_elements < 0 || num_elements > SIZE_MAX / element_size)
+    {
       throw std::runtime_error("Integer overflow in size calculation");
     }
-    
+
     const int64_t total_size = num_elements * element_size;
     std::memcpy(dst[i]->data<void>(), src[i]->data<void>(), static_cast<size_t>(total_size));
   }

@@ -85,12 +85,13 @@ void If::execute() const
 
     const int64_t num_elements = output(i)->shape().large_num_elements();
     const std::size_t element_size = getDataTypeSize(output(i)->element_type());
-    
+
     // Check for integer overflow in size calculation
-    if (num_elements < 0 || num_elements > SIZE_MAX / element_size) {
+    if (num_elements < 0 || num_elements > SIZE_MAX / element_size)
+    {
       throw std::runtime_error("Integer overflow in size calculation");
     }
-    
+
     const int64_t total_size = num_elements * element_size;
     std::memcpy(output(i)->data<void>(), graph_outputs[i]->data<void>(),
                 static_cast<size_t>(total_size));
