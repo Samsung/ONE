@@ -296,7 +296,16 @@ void TransposeConv::evalQuantizedS16() const
   int32_t activation_max{};
   calculateActivationRangeQuantized(Activation::NONE, output(), &activation_min, &activation_max);
 
-  std::memset(scratch_data, 0, scratch_tensor->shape().num_elements() * sizeof(int64_t));
+  const int64_t num_elements = scratch_tensor->shape().large_num_elements();
+  const size_t element_size = sizeof(int64_t);
+  
+  // Check for integer overflow in size calculation
+  if (num_elements < 0 || num_elements > SIZE_MAX / element_size) {
+    throw std::runtime_error("Integer overflow in size calculation");
+  }
+  
+  const int64_t total_size = num_elements * element_size;
+  std::memset(scratch_data, 0, static_cast<size_t>(total_size));
 
   BroadcastableWrapper<ChannelQuantMultipliers> output_multipliers(_quant_multipliers);
   for (int32_t batch = 0; batch < batches; ++batch)

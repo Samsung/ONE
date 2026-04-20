@@ -43,8 +43,15 @@ BuddyMemoryManager::BuddyMemoryManager(uint8_t *memory_start, int32_t memSize)
 void BuddyMemoryManager::allocate_memory(luci_interpreter::Tensor &tensor)
 {
   const size_t element_size = getDataTypeSize(tensor.element_type());
-  const int32_t num_elements = tensor.shape().num_elements();
-  auto size = num_elements * element_size;
+  const int64_t num_elements = tensor.shape().large_num_elements();
+  
+  // Check for integer overflow in size calculation
+  if (num_elements < 0 || num_elements > SIZE_MAX / element_size) {
+    throw std::runtime_error("Integer overflow in size calculation");
+  }
+  
+  const int64_t total_size = num_elements * element_size;
+  auto size = static_cast<size_t>(total_size);
   auto footprint = size + sizeof(Block);
   auto l = (footprint & (footprint - 1)) == 0
              ? lowerLog2(footprint)

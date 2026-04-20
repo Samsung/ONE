@@ -96,6 +96,23 @@ void copy_data<loco::DataType::STRING>(const VectorWrapper<uint8_t> &raw_data,
   }
   assert(offsets.size() == num_elements + 1);
 
+  // Validate STRING offsets as non-negative, monotonic, and bounded within data buffer
+  for (uint32_t i = 0; i < offsets.size(); ++i)
+  {
+    if (offsets[i] < 0)
+    {
+      throw std::runtime_error("String offset is negative");
+    }
+    if (i > 0 && offsets[i] < offsets[i - 1])
+    {
+      throw std::runtime_error("String offsets are not monotonic");
+    }
+    if (offsets[i] > static_cast<int32_t>(raw_data.size()))
+    {
+      throw std::runtime_error("String offset is out of bounds");
+    }
+  }
+
   const_node->size<loco::DataType::STRING>(num_elements);
   for (uint32_t i = 0; i < num_elements; ++i)
   {
