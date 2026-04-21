@@ -19,8 +19,9 @@
 #include <pepper/strcast.h>
 
 #include <iostream>
-#include <string>
 #include <map>
+#include <stdexcept>
+#include <string>
 
 // Basic Infrastructure to declare and access Knob values
 namespace
@@ -115,7 +116,7 @@ void set(Dialect d)
 #undef KNOB_BOOL
       break;
     default:
-      std::runtime_error("UnKnown dialect");
+      throw std::runtime_error("Unknown dialect");
   }
 }
 
