@@ -23,16 +23,16 @@ endif()
 # configuration flags
 include(CfgOptionFlags)
 
-# enable test coverage
+# setup test coverage
 include(TestCoverage)
 
-# enable ctest
-include(CTest)
-
-# enable googletest but do not install
-set(INSTALL_GTEST OFF)
-include(GTestHelper)
-include(GoogleTest)
+if(ENABLE_TEST)
+  include(CTest)
+  # enable googletest but do not install
+  set(INSTALL_GTEST OFF)
+  include(GTestHelper)
+  include(GoogleTest)
+endif()
 
 # to override externals install
 if(DEFINED ENV{CIRCLE_MLIR_LOCALINST})
