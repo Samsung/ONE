@@ -31,6 +31,7 @@
 #include "tensorflow/lite/delegates/gpu/common/task/storage_type_util.h"
 
 #include <cassert>
+#include <stdexcept>
 
 namespace onert
 {
@@ -69,7 +70,7 @@ public:
 
       if (!CreateTensor(*_context, shape, descriptor, tensor->handle()).ok())
       {
-        std::runtime_error("Failed to CreateTensor");
+        throw std::runtime_error("Failed to CreateTensor");
       }
       switch (type)
       {
