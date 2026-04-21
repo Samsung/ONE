@@ -87,7 +87,7 @@ void If::execute() const
     const std::size_t element_size = getDataTypeSize(output(i)->element_type());
 
     // Check for integer overflow in size calculation
-    if (num_elements < 0 || num_elements > SIZE_MAX / element_size)
+    if (num_elements < 0 || static_cast<uint64_t>(num_elements) > SIZE_MAX / element_size)
     {
       throw std::runtime_error("Integer overflow in size calculation");
     }

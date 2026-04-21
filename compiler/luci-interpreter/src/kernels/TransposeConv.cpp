@@ -300,7 +300,7 @@ void TransposeConv::evalQuantizedS16() const
   const size_t element_size = sizeof(int64_t);
 
   // Check for integer overflow in size calculation
-  if (num_elements < 0 || num_elements > SIZE_MAX / element_size)
+  if (num_elements < 0 || static_cast<uint64_t>(num_elements) > SIZE_MAX / element_size)
   {
     throw std::runtime_error("Integer overflow in size calculation");
   }

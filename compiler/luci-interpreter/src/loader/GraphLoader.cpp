@@ -42,7 +42,7 @@ template <DataType DT> const void *getNodeDataImpl(const luci::CircleConst *node
   const int64_t num_elements = node->size<DT>(); // Assuming size<DT>() uses large_num_elements()
 
   // Check for integer overflow in size calculation
-  if (num_elements < 0 || num_elements > SIZE_MAX / element_size)
+  if (num_elements < 0 || static_cast<uint64_t>(num_elements) > SIZE_MAX / element_size)
   {
     throw std::runtime_error("Integer overflow in size calculation");
   }
