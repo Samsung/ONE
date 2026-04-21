@@ -39,9 +39,16 @@ template <typename NodeT> Shape getNodeShape(const NodeT *node)
 template <DataType DT> const void *getNodeDataImpl(const luci::CircleConst *node, size_t *data_size)
 {
   const size_t element_size = getDataTypeSize(DT);
-  const int32_t num_elements = node->size<DT>();
+  const int64_t num_elements = node->size<DT>(); // Assuming size<DT>() uses large_num_elements()
 
-  *data_size = num_elements * element_size;
+  // Check for integer overflow in size calculation
+  if (num_elements < 0 || static_cast<uint64_t>(num_elements) > SIZE_MAX / element_size)
+  {
+    throw std::runtime_error("Integer overflow in size calculation");
+  }
+
+  const int64_t total_size = num_elements * element_size;
+  *data_size = static_cast<size_t>(total_size);
   if (*data_size > 0)
   {
     // FIXME There is no good way to get the pointer to the data currently.

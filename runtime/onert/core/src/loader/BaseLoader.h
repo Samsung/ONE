@@ -113,6 +113,13 @@ protected:
   // Get BuiltinOperator
   BuiltinOperator getBuiltinOperator(const Operator *op)
   {
+    // Enforce explicit bounds validation for opcode_index before every operator-code lookup
+    if (op->opcode_index() < 0 ||
+        static_cast<size_t>(op->opcode_index()) >= _domain_model->operator_codes()->size())
+    {
+      throw std::runtime_error("Invalid opcode_index: " + std::to_string(op->opcode_index()));
+    }
+
     auto const builtin_opcode = _domain_model->operator_codes()->Get(op->opcode_index());
     auto builtin_op = builtin_opcode->builtin_code();
     if (builtin_op < BuiltinOperator::BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES)

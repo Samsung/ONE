@@ -80,8 +80,16 @@ void ExpandDims::execute() const
   auto *output_data = output()->data<void>();
 
   const size_t element_size = getDataTypeSize(input()->element_type());
-  const int32_t num_elements = input()->shape().num_elements();
-  std::memcpy(output_data, input_data, num_elements * element_size);
+  const int64_t num_elements = input()->shape().large_num_elements();
+
+  // Check for integer overflow in size calculation
+  if (num_elements < 0 || static_cast<uint64_t>(num_elements) > SIZE_MAX / element_size)
+  {
+    throw std::runtime_error("Integer overflow in size calculation");
+  }
+
+  const int64_t total_size = num_elements * element_size;
+  std::memcpy(output_data, input_data, static_cast<size_t>(total_size));
 }
 
 } // namespace kernels

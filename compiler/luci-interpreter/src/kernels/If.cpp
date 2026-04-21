@@ -83,10 +83,18 @@ void If::execute() const
     // TODO: Think about how allocate memory for output in main graph
     active_graph->configureAllocations(output(i));
 
-    const int32_t num_elements = output(i)->shape().num_elements();
+    const int64_t num_elements = output(i)->shape().large_num_elements();
     const std::size_t element_size = getDataTypeSize(output(i)->element_type());
+
+    // Check for integer overflow in size calculation
+    if (num_elements < 0 || static_cast<uint64_t>(num_elements) > SIZE_MAX / element_size)
+    {
+      throw std::runtime_error("Integer overflow in size calculation");
+    }
+
+    const int64_t total_size = num_elements * element_size;
     std::memcpy(output(i)->data<void>(), graph_outputs[i]->data<void>(),
-                num_elements * element_size);
+                static_cast<size_t>(total_size));
   }
 }
 
