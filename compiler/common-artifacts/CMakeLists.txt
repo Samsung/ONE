@@ -1,6 +1,6 @@
-#[[ Generate common python virtual enviornment ]]
+#[[ Generate common python virtual environment ]]
 # NOTE find_package try to use at least python3.10 as follows depending on platform version
-#   Ubuntu20.04; explictly installed python3.10 (default is python3.8)
+#   Ubuntu20.04; explicitly installed python3.10 (default is python3.8)
 #   Ubuntu22.04; default python3.10
 #   Ubuntu24.04; default python3.12
 #   refer https://github.com/Samsung/ONE/issues/9962
@@ -16,11 +16,13 @@ if(NOT Python_Interpreter_FOUND)
   return()
 endif()
 
-# NOTE assume only use 3.10.x or 3.12.x
+# NOTE assume only use 3.10.x, 3.12.x or 3.13.x
 if((Python_VERSION VERSION_GREATER_EQUAL 3.10) AND (Python_VERSION VERSION_LESS 3.11))
   set(PYTHON_VERSION_MINOR 10)
 elseif((Python_VERSION VERSION_GREATER_EQUAL 3.12) AND (Python_VERSION VERSION_LESS 3.13))
   set(PYTHON_VERSION_MINOR 12)
+elseif((Python_VERSION VERSION_GREATER_EQUAL 3.13) AND (Python_VERSION VERSION_LESS 3.14))
+  set(PYTHON_VERSION_MINOR 13)
 else()
   # TODO support more
   message(STATUS "Build common-artifacts: FAILED (Unsupported python: ${Python_VERSION})")
@@ -89,6 +91,21 @@ elseif (PYTHON_VERSION_MINOR EQUAL 12)
   list(APPEND PY_PKG_LIST "h5py==3.11.0")
   list(APPEND PY_PKG_LIST "cffi==1.16.0")
   list(APPEND PY_PKG_LIST "numpy==1.26.4")
+elseif (PYTHON_VERSION_MINOR EQUAL 13)
+  # python 3.13; Ubuntu 25.04
+  # TF2.20.0 release at 2025-08-19
+  if(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
+    list(APPEND PY_PKG_LIST "tensorflow==2.20.0")
+  else(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
+    list(APPEND PY_PKG_LIST "tensorflow-cpu==2.20.0")
+  endif(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
+  list(APPEND PY_PKG_LIST "flatbuffers==24.3.25")
+  list(APPEND PY_PKG_LIST "protobuf==5.29.4")
+  list(APPEND PY_PKG_LIST "pydot==1.4.2")
+  list(APPEND PY_PKG_LIST "pytest==7.4.3")
+  list(APPEND PY_PKG_LIST "h5py==3.12.1")
+  list(APPEND PY_PKG_LIST "cffi==1.17.1")
+  list(APPEND PY_PKG_LIST "numpy==2.2.4")
 else()
   # should not enter here
   message(FATAL_ERROR "Build common-artifacts: FAILED (Invalid python version)")
