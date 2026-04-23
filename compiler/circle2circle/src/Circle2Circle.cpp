@@ -492,6 +492,9 @@ int entry(int argc, char **argv)
     }
   }
 
+  // call luci optimizations for module after optimizations for graph
+  optimizer.optimize(module.get());
+
   // Export to output Circle file
   luci::CircleExporter exporter;
 
