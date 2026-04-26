@@ -521,7 +521,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  395</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  396</span>    }</div>
 <div class="line"><span class="lineno">  397</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  398</span>      std::runtime_error(<span class="stringliteral">&quot;Unsupported data type&quot;</span>);</div>
+<div class="line"><span class="lineno">  398</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported data type&quot;</span>);</div>
 <div class="line"><span class="lineno">  399</span>  }</div>
 <div class="line"><span class="lineno">  400</span>  <span class="comment">// Add to map</span></div>
 <div class="line"><span class="lineno">  401</span>  _mir2loco_map.emplace(op.<a class="code hl_function" href="classmir_1_1_operation.html#a4892778a849665110b1c0ab9b79aa4d2">getOutput</a>(0), const_node);</div>

@@ -1413,27 +1413,27 @@ template&lt;<a class="el" href="namespaceexo.html#aa7675f323f9220979774977e80c61
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="exo_2src_2_knob_8cpp_source.html#l00100">100</a> of file <a class="el" href="exo_2src_2_knob_8cpp_source.html">Knob.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  101</span>{</div>
-<div class="line"><span class="lineno">  102</span>  ::knob_loader().dialect_set(d);</div>
-<div class="line"><span class="lineno">  103</span>  <span class="keywordflow">switch</span> (d)</div>
-<div class="line"><span class="lineno">  104</span>  {</div>
-<div class="line"><span class="lineno">  105</span>    <span class="keywordflow">case</span> Dialect::TFLITE:</div>
-<div class="line"><span class="lineno">  106</span><span class="preprocessor">#define KNOB_BOOL(NAME, TFL_DEFAULT, CIRCLE_DEFAULT, DESC) \</span></div>
-<div class="line"><span class="lineno">  107</span><span class="preprocessor">  ::knob_loader().knob_set(#NAME, TFL_DEFAULT);</span></div>
-<div class="line"><span class="lineno">  108</span><span class="preprocessor">#include &quot;Knob.lst&quot;</span></div>
-<div class="line"><span class="lineno">  109</span><span class="preprocessor">#undef KNOB_BOOL</span></div>
-<div class="line"><span class="lineno">  110</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  111</span>    <span class="keywordflow">case</span> Dialect::CIRCLE:</div>
-<div class="line"><span class="lineno">  112</span><span class="preprocessor">#define KNOB_BOOL(NAME, TFL_DEFAULT, CIRCLE_DEFAULT, DESC) \</span></div>
-<div class="line"><span class="lineno">  113</span><span class="preprocessor">  ::knob_loader().knob_set(#NAME, CIRCLE_DEFAULT);</span></div>
-<div class="line"><span class="lineno">  114</span><span class="preprocessor">#include &quot;Knob.lst&quot;</span></div>
-<div class="line"><span class="lineno">  115</span><span class="preprocessor">#undef KNOB_BOOL</span></div>
-<div class="line"><span class="lineno">  116</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  117</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  118</span>      std::runtime_error(<span class="stringliteral">&quot;UnKnown dialect&quot;</span>);</div>
-<div class="line"><span class="lineno">  119</span>  }</div>
-<div class="line"><span class="lineno">  120</span>}</div>
+<p class="definition">Definition at line <a class="el" href="exo_2src_2_knob_8cpp_source.html#l00101">101</a> of file <a class="el" href="exo_2src_2_knob_8cpp_source.html">Knob.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  102</span>{</div>
+<div class="line"><span class="lineno">  103</span>  ::knob_loader().dialect_set(d);</div>
+<div class="line"><span class="lineno">  104</span>  <span class="keywordflow">switch</span> (d)</div>
+<div class="line"><span class="lineno">  105</span>  {</div>
+<div class="line"><span class="lineno">  106</span>    <span class="keywordflow">case</span> Dialect::TFLITE:</div>
+<div class="line"><span class="lineno">  107</span><span class="preprocessor">#define KNOB_BOOL(NAME, TFL_DEFAULT, CIRCLE_DEFAULT, DESC) \</span></div>
+<div class="line"><span class="lineno">  108</span><span class="preprocessor">  ::knob_loader().knob_set(#NAME, TFL_DEFAULT);</span></div>
+<div class="line"><span class="lineno">  109</span><span class="preprocessor">#include &quot;Knob.lst&quot;</span></div>
+<div class="line"><span class="lineno">  110</span><span class="preprocessor">#undef KNOB_BOOL</span></div>
+<div class="line"><span class="lineno">  111</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  112</span>    <span class="keywordflow">case</span> Dialect::CIRCLE:</div>
+<div class="line"><span class="lineno">  113</span><span class="preprocessor">#define KNOB_BOOL(NAME, TFL_DEFAULT, CIRCLE_DEFAULT, DESC) \</span></div>
+<div class="line"><span class="lineno">  114</span><span class="preprocessor">  ::knob_loader().knob_set(#NAME, CIRCLE_DEFAULT);</span></div>
+<div class="line"><span class="lineno">  115</span><span class="preprocessor">#include &quot;Knob.lst&quot;</span></div>
+<div class="line"><span class="lineno">  116</span><span class="preprocessor">#undef KNOB_BOOL</span></div>
+<div class="line"><span class="lineno">  117</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  118</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  119</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unknown dialect&quot;</span>);</div>
+<div class="line"><span class="lineno">  120</span>  }</div>
+<div class="line"><span class="lineno">  121</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="namespaceexo.html#a465d1d127ead8680688e6a734ccc67e8a0af50777920c1401ab975cab64c4d491">CIRCLE</a>, and <a class="el" href="namespaceexo.html#a465d1d127ead8680688e6a734ccc67e8ac8870525f369b218cd652cd9f7e27868">TFLITE</a>.</p>
 
