@@ -79,6 +79,93 @@ void requant_const_int8_to_uint8(CircleConst *node)
   }
 }
 
+// Requantize Non-const node from uint8 to int8
+// Original values: 0 ~ 255
+// After requantization: -128 ~ 127
+void requant_nonconst_uint8_to_int8(CircleNode *circle_node)
+{
+  assert(circle_node->dtype() == loco::DataType::U8);
+
+  auto quantparam = circle_node->quantparam();
+  assert(quantparam != nullptr);
+  for (size_t i = 0; i < quantparam->zerop.size(); ++i)
+  {
+    float min = static_cast<float>(static_cast<int32_t>(std::numeric_limits<uint8_t>::min()) -
+                                   quantparam->zerop[i]) *
+                quantparam->scale[i];
+    float max = static_cast<float>(static_cast<int32_t>(std::numeric_limits<uint8_t>::max()) -
+                                   quantparam->zerop[i]) *
+                quantparam->scale[i];
+    float nudged_min, nudged_max;
+    compute_sym_scale(min, max, quantparam->scale[i], nudged_min, nudged_max, loco::DataType::S8);
+    quantparam->zerop[i] = 0;
+  }
+  circle_node->dtype(loco::DataType::S8);
+}
+
+// Requantize CircleConst from asymmetric uint8 to symmetric int8
+// Original values: 1 ~ 255 (zp <- zp + 128)
+// After requantization: -127 ~ 127
+void requant_const_uint8_to_int8(CircleConst *node)
+{
+  assert(node->dtype() == loco::DataType::U8);
+
+  uint32_t size = node->size<loco::DataType::U8>();
+  std::vector<int32_t> requantized_values(size);
+  std::vector<float> fake_quantized_values(size);
+
+  auto quantparam = node->quantparam();
+  assert(quantparam != nullptr);
+  const auto channel_size = size / quantparam->zerop.size();
+
+  for (auto j = 0; j < quantparam->zerop.size(); ++j)
+  {
+    for (uint32_t i = 0; i < channel_size; ++i)
+    {
+      int32_t data = node->at<loco::DataType::U8>(j * channel_size + i);
+      fake_quantized_values[j * channel_size + i] =
+        (data - quantparam->zerop[j]) * quantparam->scale[j];
+    }
+  }
+
+  for (size_t i = 0; i < quantparam->zerop.size(); ++i)
+  {
+    float min = static_cast<float>(static_cast<int32_t>(std::numeric_limits<uint8_t>::min()) -
+                                   quantparam->zerop[i]) *
+                quantparam->scale[i];
+    float max = static_cast<float>(static_cast<int32_t>(std::numeric_limits<uint8_t>::max()) -
+                                   quantparam->zerop[i]) *
+                quantparam->scale[i];
+    float nudged_min, nudged_max;
+    compute_sym_scale(min, max, quantparam->scale[i], nudged_min, nudged_max, loco::DataType::S8);
+    quantparam->zerop[i] = 0;
+  }
+
+  for (auto j = 0; j < quantparam->zerop.size(); ++j)
+  {
+    for (uint32_t i = 0; i < channel_size; ++i)
+    {
+      requantized_values[j * channel_size + i] =
+        std::round(fake_quantized_values[j * channel_size + i] / quantparam->scale[j]);
+    }
+  }
+
+  node->dtype(loco::DataType::S8); // change the type of tensor
+  node->size<loco::DataType::S8>(size);
+  for (uint32_t i = 0; i < size; ++i)
+  {
+    assert(-127 <= requantized_values[i] && requantized_values[i] <= 127);
+    node->at<loco::DataType::S8>(i) = requantized_values[i];
+  }
+
+  //  auto quantparam = node->quantparam();
+  //  assert(quantparam != nullptr);
+  //  for (size_t i = 0; i < quantparam->zerop.size(); ++i)
+  //  {
+  //    quantparam->zerop[i] += 128;
+  //  }
+}
+
 #define RETURN_UNLESS(cond) \
   if (not(cond))            \
     return;
@@ -119,6 +206,41 @@ struct RequantizeS8ToU8 final : public luci::CircleNodeMutableVisitor<void>
   }
 };
 
+/**
+ * @brief Requantize uint8 quantized tensors to int8 tensors
+ */
+struct RequantizeU8ToS8 final : public luci::CircleNodeMutableVisitor<void>
+{
+  // Requantize non-const tensors
+  void visit(luci::CircleNode *node)
+  {
+    LOGGER(l);
+    INFO(l) << "RequantizeU8ToS8 visit non-const node: " << node->name() << std::endl;
+
+    // Ignore non-quantized tensors
+    RETURN_UNLESS(node->quantparam() != nullptr);
+
+    // Check dtype is int8
+    RETURN_UNLESS(node->dtype() == loco::DataType::U8);
+
+    requant_nonconst_uint8_to_int8(node);
+  }
+
+  // Requantize const tensors
+  void visit(luci::CircleConst *node)
+  {
+    LOGGER(l);
+    INFO(l) << "RequantizeU8ToS8 visit const node: " << node->name() << std::endl;
+
+    // Ignore non-quantized tensors
+    RETURN_UNLESS(node->quantparam() != nullptr);
+
+    // Check dtype is int8
+    RETURN_UNLESS(node->dtype() == loco::DataType::U8);
+
+    requant_const_uint8_to_int8(node);
+  }
+};
 #undef RETURN_UNLESS
 
 } // namespace
@@ -135,6 +257,17 @@ bool RequantizePass::run(loco::Graph *g)
     for (auto node : loco::active_nodes(loco::output_nodes(g)))
     {
       RequantizeS8ToU8 rq;
+      auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+      circle_node->accept(&rq);
+    }
+  }
+  // Input: uint8 model
+  // Output: int8 model
+  else if (_input_dtype == loco::DataType::U8 and _output_dtype == loco::DataType::S8)
+  {
+    for (auto node : loco::active_nodes(loco::output_nodes(g)))
+    {
+      RequantizeU8ToS8 rq;
       auto circle_node = loco::must_cast<luci::CircleNode *>(node);
       circle_node->accept(&rq);
     }
