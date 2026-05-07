@@ -18,10 +18,10 @@
 #define ONERT_MICRO_TEST_MODELS_TEST_DATA_BASE_H
 
 #include <vector>
+#include <cstdint>
+#include <cassert>
 
-namespace onert_micro
-{
-namespace test_model
+namespace onert_micro::test_model
 {
 
 template <typename T, typename U = T> class TestDataBase
@@ -32,7 +32,17 @@ public:
   virtual const unsigned char *get_model_ptr() = 0;
 
   virtual const std::vector<T> &get_input_data_by_index(int i) = 0;
+
   virtual const std::vector<U> &get_output_data_by_index(int i) = 0;
+
+  // clang-format off
+
+  virtual const uint8_t *get_input_data_ptr_by_index(int i, int32_t &size)
+  {
+    return nullptr;
+  }
+
+  // clang-format on
 };
 
 class NegTestDataBase
@@ -42,7 +52,6 @@ public:
   virtual const unsigned char *get_model_ptr() = 0;
 };
 
-} // namespace test_model
-} // namespace onert_micro
+} // namespace onert_micro::test_model
 
 #endif // ONERT_MICRO_TEST_MODELS_TEST_DATA_BASE_H
