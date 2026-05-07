@@ -1,2 +1,0 @@
-add_library(nnkit_tf_backend SHARED Backend.cpp)
-target_link_libraries(nnkit_tf_backend nnkit_support_tf)

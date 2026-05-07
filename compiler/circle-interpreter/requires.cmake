@@ -1,6 +1,0 @@
-require("arser")
-require("loco")
-require("luci")
-require("luci-interpreter")
-require("safemain")
-require("vconone")

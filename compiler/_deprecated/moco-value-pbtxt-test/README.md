@@ -1,1 +1,0 @@
-# moco-value-pbtxt-test

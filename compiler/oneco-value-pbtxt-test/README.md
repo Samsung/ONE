@@ -1,1 +1,0 @@
-# oneco-value-pbtxt-test

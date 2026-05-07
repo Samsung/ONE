@@ -1,2 +1,0 @@
-add_library(nnkit_caffe_backend SHARED Module.cpp)
-target_link_libraries(nnkit_caffe_backend nnkit_support_caffe)

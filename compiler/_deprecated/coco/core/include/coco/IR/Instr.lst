@@ -1,9 +1,0 @@
-#ifndef INSTR
-#error Define INSTR first
-#endif // INSTR
-
-// INSTR(Name)
-
-INSTR(Eval)
-INSTR(Shuffle)
-INSTR(Copy)

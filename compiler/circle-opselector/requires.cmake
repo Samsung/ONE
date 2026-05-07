@@ -1,6 +1,0 @@
-require("foder")
-require("loco")
-require("safemain")
-require("luci")
-require("arser")
-require("vconone")

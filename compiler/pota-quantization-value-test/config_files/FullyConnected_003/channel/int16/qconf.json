@@ -1,9 +1,0 @@
-{
-    "layers" : [
-        {
-            "name" : "out",
-            "dtype" : "uint8",
-            "granularity" : "layer"
-        }
-    ]
-}

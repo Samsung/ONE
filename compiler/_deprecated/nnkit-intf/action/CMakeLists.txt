@@ -1,4 +1,0 @@
-add_library(nnkit_intf_action INTERFACE)
-target_include_directories(nnkit_intf_action INTERFACE include)
-target_link_libraries(nnkit_intf_action INTERFACE nnkit_intf_tensor)
-target_link_libraries(nnkit_intf_action INTERFACE nnkit_intf_cmdline)

@@ -1,7 +1,0 @@
-[partition]
-backends=cpu,npu
-default=npu
-comply=opcode
-
-[OPCODE]
-MUL=npu

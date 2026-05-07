@@ -1,7 +1,0 @@
-[partition]
-backends=cpu,npu
-default=cpu
-comply=opcode
-
-[OPCODE]
-UNPACK=npu

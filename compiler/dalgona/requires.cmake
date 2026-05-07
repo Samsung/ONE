@@ -1,6 +1,0 @@
-require("safemain")
-require("arser")
-require("foder")
-require("luci")
-require("luci-interpreter")
-require("dio-hdf5")

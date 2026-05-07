@@ -1,6 +1,0 @@
-require("i5diff")
-require("nnkit-onnxrt")
-require("nnkit-tflite")
-require("nnkit")
-require("onnx2tflite")
-require("onnxkit")
