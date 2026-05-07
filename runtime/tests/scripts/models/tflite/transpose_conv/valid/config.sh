@@ -1,1 +1,0 @@
-MODELFILE_NAME="transpose_conv_valid_test.tflite"
