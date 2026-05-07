@@ -1,0 +1,3 @@
+# External Python dependencies for the tools in tools/circle2circle
+numpy
+flatbuffers
