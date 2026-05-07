@@ -18,6 +18,8 @@
 
 #include "nnfw_api_wrapper.h"
 
+#include <pybind11/operators.h>
+
 namespace onert::api::python
 {
 
@@ -26,6 +28,38 @@ namespace py = pybind11;
 // Bind the `tensorinfo` class
 void bind_tensorinfo(py::module_ &m)
 {
+
+  static const datatype dtypes[] = {
+    datatype(NNFW_TYPE::NNFW_TYPE_TENSOR_FLOAT32),
+    datatype(NNFW_TYPE::NNFW_TYPE_TENSOR_INT32),
+    datatype(NNFW_TYPE::NNFW_TYPE_TENSOR_QUANT8_ASYMM),
+    datatype(NNFW_TYPE::NNFW_TYPE_TENSOR_UINT8),
+    datatype(NNFW_TYPE::NNFW_TYPE_TENSOR_BOOL),
+    datatype(NNFW_TYPE::NNFW_TYPE_TENSOR_INT64),
+    datatype(NNFW_TYPE::NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED),
+    datatype(NNFW_TYPE::NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED),
+  };
+
+  // Export dedicated OneRT type for tensor types. The presence of the "dtype"
+  // property allows this type to be used directly with numpy, e.g.:
+  // >>> np.array([3, 6, 3], dtype=onert.float32)
+  py::class_<datatype>(m, "dtype", "Defines the type of the OneRT tensor.", py::module_local())
+    .def(py::self == py::self)
+    .def(py::self != py::self)
+    .def("__repr__", [](const datatype &dt) { return std::string("onert.") + dt.name(); })
+    .def_property_readonly(
+      "name", [](const datatype &dt) { return dt.name(); }, "The name of the data type.")
+    .def_property_readonly(
+      "dtype", [](const datatype &dt) { return dt.py_dtype(); }, "A corresponding numpy data type.")
+    .def_property_readonly(
+      "itemsize", [](const datatype &dt) { return dt.itemsize(); },
+      "The element size of this data-type object.");
+
+  // Export OneRT dtypes in a submodule, so we can batch import them
+  auto m_dtypes = m.def_submodule("dtypes", "OneRT tensor data types");
+  for (const auto &dt : dtypes)
+    m_dtypes.attr(dt.name()) = dt;
+
   py::class_<tensorinfo>(m, "tensorinfo", "tensorinfo describes the type and shape of tensors",
                          py::module_local())
     .def(py::init<>(), "The constructor of tensorinfo")
