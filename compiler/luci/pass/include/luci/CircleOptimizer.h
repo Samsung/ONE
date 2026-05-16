@@ -78,6 +78,7 @@ public:
       FuseActivationFunction,
       FusePRelu,
       FuseGelu,
+      FuseGRU,
       FuseRsqrt,
       FuseRmsNorm,
       FuseRoPE,
