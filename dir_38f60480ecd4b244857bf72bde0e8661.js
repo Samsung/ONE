@@ -53,7 +53,7 @@ var dir_38f60480ecd4b244857bf72bde0e8661 =
     [ "ReduceMean.cpp", "mir_2src_2mir__onnx__importer_2_op_2_reduce_mean_8cpp.html", "mir_2src_2mir__onnx__importer_2_op_2_reduce_mean_8cpp" ],
     [ "ReduceMean.h", "compiler_2__deprecated_2mir_2src_2mir__onnx__importer_2_op_2_reduce_mean_8h.html", "compiler_2__deprecated_2mir_2src_2mir__onnx__importer_2_op_2_reduce_mean_8h" ],
     [ "Relu.cpp", "compiler_2__deprecated_2mir_2src_2mir__onnx__importer_2_op_2_re_l_u_8cpp.html", "compiler_2__deprecated_2mir_2src_2mir__onnx__importer_2_op_2_re_l_u_8cpp" ],
-    [ "Relu.h", "compiler_2__deprecated_2mir_2src_2mir__onnx__importer_2_op_2_relu_8h.html", "compiler_2__deprecated_2mir_2src_2mir__onnx__importer_2_op_2_relu_8h" ],
+    [ "Relu.h", "compiler_2__deprecated_2mir_2src_2mir__onnx__importer_2_op_2_re_l_u_8h.html", "compiler_2__deprecated_2mir_2src_2mir__onnx__importer_2_op_2_re_l_u_8h" ],
     [ "Reshape.cpp", "compiler_2__deprecated_2mir_2src_2mir__onnx__importer_2_op_2_reshape_8cpp.html", "compiler_2__deprecated_2mir_2src_2mir__onnx__importer_2_op_2_reshape_8cpp" ],
     [ "Reshape.h", "compiler_2__deprecated_2mir_2src_2mir__onnx__importer_2_op_2_reshape_8h.html", "compiler_2__deprecated_2mir_2src_2mir__onnx__importer_2_op_2_reshape_8h" ],
     [ "Shape.cpp", "compiler_2__deprecated_2mir_2src_2mir__onnx__importer_2_op_2_shape_8cpp.html", "compiler_2__deprecated_2mir_2src_2mir__onnx__importer_2_op_2_shape_8cpp" ],

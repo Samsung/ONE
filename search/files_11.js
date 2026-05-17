@@ -53,7 +53,7 @@ var searchData=
   ['quantizewithminmaxpass_2eh_50',['QuantizeWithMinMaxPass.h',['../_quantize_with_min_max_pass_8h.html',1,'']]],
   ['quantizewithpredecessorpass_2ecpp_51',['QuantizeWithPredecessorPass.cpp',['../_quantize_with_predecessor_pass_8cpp.html',1,'']]],
   ['quantizewithpredecessorpass_2eh_52',['QuantizeWithPredecessorPass.h',['../_quantize_with_predecessor_pass_8h.html',1,'']]],
-  ['quantlesskernel_2eh_53',['quantlesskernel.h',['../luci-interpreter_2include_2luci__interpreter_2test__models_2less_2_quant_less_kernel_8h.html',1,'(Global Namespace)'],['../onert-micro_2include_2test__models_2less_2_quant_less_kernel_8h.html',1,'(Global Namespace)']]],
+  ['quantlesskernel_2eh_53',['quantlesskernel.h',['../onert-micro_2include_2test__models_2less_2_quant_less_kernel_8h.html',1,'(Global Namespace)'],['../luci-interpreter_2include_2luci__interpreter_2test__models_2less_2_quant_less_kernel_8h.html',1,'(Global Namespace)']]],
   ['quantmaxpool2dkernel_2eh_54',['QuantMaxPool2DKernel.h',['../_quant_max_pool2_d_kernel_8h.html',1,'']]],
   ['quantmulkernel_2eh_55',['QuantMulKernel.h',['../_quant_mul_kernel_8h.html',1,'']]],
   ['quants16slicekernel_2eh_56',['QuantS16SliceKernel.h',['../_quant_s16_slice_kernel_8h.html',1,'']]],
