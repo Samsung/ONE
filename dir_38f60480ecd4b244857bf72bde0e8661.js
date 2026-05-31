@@ -29,7 +29,7 @@ var dir_38f60480ecd4b244857bf72bde0e8661 =
     [ "Gather.cpp", "compiler_2__deprecated_2mir_2src_2mir__onnx__importer_2_op_2_gather_8cpp.html", "compiler_2__deprecated_2mir_2src_2mir__onnx__importer_2_op_2_gather_8cpp" ],
     [ "Gather.h", "compiler_2__deprecated_2mir_2src_2mir__onnx__importer_2_op_2_gather_8h.html", "compiler_2__deprecated_2mir_2src_2mir__onnx__importer_2_op_2_gather_8h" ],
     [ "Gemm.cpp", "_gemm_8cpp.html", "_gemm_8cpp" ],
-    [ "Gemm.h", "compiler_2__deprecated_2mir_2src_2mir__onnx__importer_2_op_2_g_e_m_m_8h.html", "compiler_2__deprecated_2mir_2src_2mir__onnx__importer_2_op_2_g_e_m_m_8h" ],
+    [ "Gemm.h", "compiler_2__deprecated_2mir_2src_2mir__onnx__importer_2_op_2_gemm_8h.html", "compiler_2__deprecated_2mir_2src_2mir__onnx__importer_2_op_2_gemm_8h" ],
     [ "GlobalAveragePool.cpp", "_global_average_pool_8cpp.html", "_global_average_pool_8cpp" ],
     [ "GlobalAveragePool.h", "_global_average_pool_8h.html", "_global_average_pool_8h" ],
     [ "Greater.cpp", "compiler_2__deprecated_2mir_2src_2mir__onnx__importer_2_op_2_greater_8cpp.html", "compiler_2__deprecated_2mir_2src_2mir__onnx__importer_2_op_2_greater_8cpp" ],

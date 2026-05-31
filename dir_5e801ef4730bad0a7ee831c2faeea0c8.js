@@ -5,7 +5,7 @@ var dir_5e801ef4730bad0a7ee831c2faeea0c8 =
     [ "DataChef.h", "_data_chef_8h.html", "_data_chef_8h" ],
     [ "DataChefs.h", "_data_chefs_8h.html", null ],
     [ "Dataset.h", "_dataset_8h.html", "_dataset_8h" ],
-    [ "Dims.h", "souschef_2include_2souschef_2_dims_8h.html", "souschef_2include_2souschef_2_dims_8h" ],
+    [ "Dims.h", "souschef_2include_2souschef_2dims_8h.html", "souschef_2include_2souschef_2dims_8h" ],
     [ "LexicalCast.h", "_lexical_cast_8h.html", "_lexical_cast_8h" ],
     [ "RangedArguments.h", "_ranged_arguments_8h.html", "_ranged_arguments_8h" ],
     [ "Registry.h", "compiler_2souschef_2include_2souschef_2_registry_8h.html", "compiler_2souschef_2include_2souschef_2_registry_8h" ],
