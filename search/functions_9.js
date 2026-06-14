@@ -281,7 +281,7 @@ var searchData=
   ['isoptional_278',['isoptional',['../classnnc_1_1cli_1_1_i_option.html#a95935f9f75e5cd4c48547dcd2edcccfe',1,'nnc::cli::IOption::isOptional()'],['../classnnc_1_1cli_1_1_option.html#ac0850c83bdade57f1f130ad21acd1fbe',1,'nnc::cli::Option::isOptional()'],['../structflatbuffers_1_1_field_def.html#ac35589ce66ad7c66649e27831917357a',1,'flatbuffers::FieldDef::IsOptional()']]],
   ['isoptionalinputtensor_279',['isOptionalInputTensor',['../classonert_1_1loader_1_1_base_loader.html#a3612028ac287252eb81ba10c21f8e443',1,'onert::loader::BaseLoader']]],
   ['isoutput_280',['isOutput',['../classcoco_1_1_bag.html#a490b3c0c103a86e6ac2c7063d9c87417',1,'coco::Bag']]],
-  ['ispackedwithoutstrides_281',['IsPackedWithoutStrides',['../__deprecated_2ann-ref_2src_2ops_2internal_2dims_8h.html#a2ccd14d28816909b57318239dcf93f7c',1,'Dims.h']]],
+  ['ispackedwithoutstrides_281',['IsPackedWithoutStrides',['../__deprecated_2ann-ref_2src_2ops_2internal_2_dims_8h.html#a2ccd14d28816909b57318239dcf93f7c',1,'Dims.h']]],
   ['isprepared_282',['isPrepared',['../classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_pipeline_model.html#a3aa5eae2a1b7704c7e118876c716a6b0',1,'onert::backend::trix::ops::BulkPipelineModel']]],
   ['isquantized_283',['isQuantized',['../classmir_1_1_tensor_type.html#acad6b96a9f787fb04aa4db5665f919d5',1,'mir::TensorType']]],
   ['israwdata_284',['isRawData',['../classdio_1_1hdf5_1_1_h_d_f5_importer.html#abc820648847121f841668b95bea6108c',1,'dio::hdf5::HDF5Importer']]],
