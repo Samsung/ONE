@@ -20,7 +20,7 @@
 # use +e as python3.10 may not exist in the system and 'command' will return error.
 set +e
 
-PYTHON_CANDIDATES=("python3.12" "python3.10" "python3")
+PYTHON_CANDIDATES=("python3.13" "python3.12" "python3.10" "python3")
 for py in "${PYTHON_CANDIDATES[@]}"; do
   PYTHON3_EXEC=$(command -v "$py")
   if [[ -n "${PYTHON3_EXEC}" ]]; then
@@ -56,6 +56,7 @@ VER_TORCH=2.7.0+cpu
 VER_ONNX=1.18.0
 VER_ONNXRUNTIME=1.21.1
 VER_NUMPY=1.26.4
+VER_H5PY=3.12.1
 
 PYTHON_VERSION=$($VENV_PYTHON -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')")
 echo "python3 version is $PYTHON_VERSION"
@@ -65,6 +66,9 @@ if [[ "$PYTHON_VERSION" == "3.10" ]]; then
   : # use as is
 elif [[ "$PYTHON_VERSION" == "3.12" ]]; then
   # Ubuntu 24.04 is python3.12
+  : # use as is
+elif [[ "$PYTHON_VERSION" == "3.13" ]]; then
+  # Ubuntu 25.04 is python3.13
   : # use as is
 else
   echo "Error prepare-venv: Unsupported python version: $PYTHON_VERSION"
@@ -90,7 +94,7 @@ fi
 PYTHON_PACKAGES="torch==${VER_TORCH} "
 PYTHON_PACKAGES+="onnx==${VER_ONNX} "
 PYTHON_PACKAGES+="onnxruntime==${VER_ONNXRUNTIME} "
-PYTHON_PACKAGES+="h5py==3.8.0 "
+PYTHON_PACKAGES+="h5py==${VER_H5PY} "
 PYTHON_PACKAGES+="einops "
 PYTHON_PACKAGES+="numpy==${VER_NUMPY} "
 
