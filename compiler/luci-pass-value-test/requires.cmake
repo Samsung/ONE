@@ -1,7 +1,0 @@
-require("common-artifacts")
-require("luci-interpreter")
-require("safemain")
-require("oops")
-require("loco")
-require("luci-value-test")
-require("luci-eval-driver")

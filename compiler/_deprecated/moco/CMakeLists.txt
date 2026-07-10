@@ -1,5 +1,0 @@
-add_subdirectory(lang)
-add_subdirectory(support)
-add_subdirectory(service)
-add_subdirectory(import)
-add_subdirectory(pass)

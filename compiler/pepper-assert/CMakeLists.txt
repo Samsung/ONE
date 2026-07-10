@@ -1,2 +1,0 @@
-add_library(pepper_assert INTERFACE)
-target_include_directories(pepper_assert INTERFACE include)

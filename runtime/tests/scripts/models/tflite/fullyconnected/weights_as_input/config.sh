@@ -1,1 +1,0 @@
-MODELFILE_NAME="fullyconnected_weights_as_input.tflite"

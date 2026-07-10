@@ -1,9 +1,0 @@
-{
-    "layers" : [
-        {
-            "name" : "ofm",
-            "dtype" : "int16",
-            "granularity" : "channel"
-        }
-    ]
-}
