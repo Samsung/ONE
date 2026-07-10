@@ -1,6 +1,6 @@
 include(UseFlatbuffers)
 
-set(SCHEMA_FILE "${RES_CIRCLE_SCHEMA}/0.9/circle_schema.fbs")
+set(SCHEMA_FILE "${RES_CIRCLE_SCHEMA}/0.10/circle_schema.fbs")
 set(SCHEMA_TARGET "${CMAKE_CURRENT_BINARY_DIR}/schema.fbs")
 
 add_custom_command(OUTPUT "${SCHEMA_TARGET}"
