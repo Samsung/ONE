@@ -1,6 +1,0 @@
-var dir_9bef9773951f87ecc44455e6319a24cd =
-[
-    [ "FloatDepthwiseConv2DKernel.h", "luci-interpreter_2include_2luci__interpreter_2test__models_2depthwise__conv__2d_2_float_depthwise_conv2_d_kernel_8h.html", "luci-interpreter_2include_2luci__interpreter_2test__models_2depthwise__conv__2d_2_float_depthwise_conv2_d_kernel_8h" ],
-    [ "NegDepthwiseConv2DKernel.h", "luci-interpreter_2include_2luci__interpreter_2test__models_2depthwise__conv__2d_2_neg_depthwise_conv2_d_kernel_8h.html", "luci-interpreter_2include_2luci__interpreter_2test__models_2depthwise__conv__2d_2_neg_depthwise_conv2_d_kernel_8h" ],
-    [ "TestDataDepthwiseConv2DBase.h", "luci-interpreter_2include_2luci__interpreter_2test__models_2depthwise__conv__2d_2_test_data_depthwise_conv2_d_base_8h.html", "luci-interpreter_2include_2luci__interpreter_2test__models_2depthwise__conv__2d_2_test_data_depthwise_conv2_d_base_8h" ]
-];

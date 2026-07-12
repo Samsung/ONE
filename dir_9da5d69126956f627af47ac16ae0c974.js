@@ -1,6 +1,0 @@
-var dir_9da5d69126956f627af47ac16ae0c974 =
-[
-    [ "FloatSpaceToBatchNDKernel.h", "luci-interpreter_2include_2luci__interpreter_2test__models_2space__to__batch__nd_2_float_space_to_batch_n_d_kernel_8h.html", "luci-interpreter_2include_2luci__interpreter_2test__models_2space__to__batch__nd_2_float_space_to_batch_n_d_kernel_8h" ],
-    [ "NegSpaceToBatchNDKernel.h", "luci-interpreter_2include_2luci__interpreter_2test__models_2space__to__batch__nd_2_neg_space_to_batch_n_d_kernel_8h.html", "luci-interpreter_2include_2luci__interpreter_2test__models_2space__to__batch__nd_2_neg_space_to_batch_n_d_kernel_8h" ],
-    [ "TestDataSpaceToBatchNDBase.h", "luci-interpreter_2include_2luci__interpreter_2test__models_2space__to__batch__nd_2_test_data_space_to_batch_n_d_base_8h.html", "luci-interpreter_2include_2luci__interpreter_2test__models_2space__to__batch__nd_2_test_data_space_to_batch_n_d_base_8h" ]
-];

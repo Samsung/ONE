@@ -1,5 +1,0 @@
-<map id="onert::dumper::dot::Operation" name="onert::dumper::dot::Operation">
-<area shape="rect" id="Node000001" title="Class that represents an Operation." alt="" coords="5,94,129,135"/>
-<area shape="rect" id="Node000002" href="$classonert_1_1dumper_1_1dot_1_1_node.html" title="Class that represents a Node in &quot;dot&quot; format." alt="" coords="5,5,129,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="70,62,70,94,64,94,64,62"/>
-</map>

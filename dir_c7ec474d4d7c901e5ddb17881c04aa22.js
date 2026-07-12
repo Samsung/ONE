@@ -1,6 +1,0 @@
-var dir_c7ec474d4d7c901e5ddb17881c04aa22 =
-[
-    [ "BoolLogicalAndKernel.h", "luci-interpreter_2include_2luci__interpreter_2test__models_2logical__and_2_bool_logical_and_kernel_8h.html", "luci-interpreter_2include_2luci__interpreter_2test__models_2logical__and_2_bool_logical_and_kernel_8h" ],
-    [ "NegLogicalAndKernel.h", "luci-interpreter_2include_2luci__interpreter_2test__models_2logical__and_2_neg_logical_and_kernel_8h.html", "luci-interpreter_2include_2luci__interpreter_2test__models_2logical__and_2_neg_logical_and_kernel_8h" ],
-    [ "TestDataLogicalAndBase.h", "luci-interpreter_2include_2luci__interpreter_2test__models_2logical__and_2_test_data_logical_and_base_8h.html", "luci-interpreter_2include_2luci__interpreter_2test__models_2logical__and_2_test_data_logical_and_base_8h" ]
-];

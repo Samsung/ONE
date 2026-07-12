@@ -1,5 +1,0 @@
-<map id="luci_interpreter::DepthwiseConv2DParams" name="luci_interpreter::DepthwiseConv2DParams">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,154,179,195"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="62,5,122,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,47,95,153,89,153,89,47"/>
-</map>

@@ -136,24 +136,23 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-introduce-a-new
 <ol type="1">
 <li>Add name of new operation at <a href="/runtime/onert/core/include/ir/Operations.lst">Operations.lst</a></li>
 </ol>
-<div class="fragment"><div class="line"><a class="code hl_define" href="_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa">OP</a>(Select)</div>
-<div class="ttc" id="a_op_8h_html_af4b897c94610035ef1fcaccd251a8eaa"><div class="ttname"><a href="_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa">OP</a></div><div class="ttdeci">#define OP(Name)</div><div class="ttdef"><b>Definition</b> <a href="_op_8h_source.html#l00038">Op.h:38</a></div></div>
+<div class="fragment"><div class="line">OP(Select)</div>
 </div><!-- fragment --><ol type="1">
 <li>Create a class for node of new operation in <a href="/runtime/onert/core/include/ir/operation/">here</a></li>
 </ol>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &quot;ir/Operation.h&quot;</span></div>
 <div class="line"> </div>
-<div class="line"><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert.html">onert</a></div>
+<div class="line"><span class="keyword">namespace </span>onert</div>
 <div class="line">{</div>
 <div class="line"><span class="keyword">namespace </span>ir</div>
 <div class="line">{</div>
 <div class="line"><span class="keyword">namespace </span>operation</div>
 <div class="line">{</div>
 <div class="line"> </div>
-<div class="line"><span class="keyword">class </span>Select : <span class="keyword">public</span> <a class="code hl_struct" href="struct_operation.html">Operation</a></div>
+<div class="line"><span class="keyword">class </span>Select : <span class="keyword">public</span> Operation</div>
 <div class="line">{</div>
 <div class="line"><span class="keyword">public</span>:</div>
-<div class="line">  <span class="keyword">enum</span> <a class="code hl_enumeration" href="classonert_1_1ir_1_1operation_1_1_select.html#a57feacffca5a5139ac1733628b4c22dd">Input</a></div>
+<div class="line">  <span class="keyword">enum</span> Input</div>
 <div class="line">  {</div>
 <div class="line">    COND = 0,</div>
 <div class="line">    INPUT1 = 1,</div>
@@ -166,47 +165,38 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-introduce-a-new
 <div class="line">  };</div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">public</span>:</div>
-<div class="line">  <a class="code hl_function" href="classonert_1_1ir_1_1operation_1_1_select.html#a22884620d65a66205ba7dde9e3f0b6a4">Select</a>(<span class="keyword">const</span> OperandIndexSequence &amp;inputs, <span class="keyword">const</span> OperandIndexSequence &amp;outputs);</div>
+<div class="line">  Select(<span class="keyword">const</span> OperandIndexSequence &amp;inputs, <span class="keyword">const</span> OperandIndexSequence &amp;outputs);</div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">public</span>:</div>
-<div class="line">  <span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1ir_1_1operation_1_1_select.html#ac4dd35bf895ecd15b877d988d5bea4ca">accept</a>(OperationVisitor &amp;v) <span class="keyword">const override</span>;</div>
-<div class="line">  <a class="code hl_enumeration" href="namespaceonert_1_1ir.html#a587a2982319cf192bc7a6e6e44cde3b7">OpCode</a> <a class="code hl_function" href="classonert_1_1ir_1_1operation_1_1_select.html#a8fc03268e62426ee2386df26b5e9e8c6">opcode</a>() const final { <span class="keywordflow">return</span> OpCode::Select; }</div>
+<div class="line">  <span class="keywordtype">void</span> accept(OperationVisitor &amp;v) <span class="keyword">const override</span>;</div>
+<div class="line">  OpCode opcode() const final { <span class="keywordflow">return</span> OpCode::Select; }</div>
 <div class="line">};</div>
 <div class="line"> </div>
 <div class="line">} <span class="comment">// namespace operation</span></div>
 <div class="line">} <span class="comment">// namespace ir</span></div>
 <div class="line">} <span class="comment">// namespace onert</span></div>
-<div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_select_html_a22884620d65a66205ba7dde9e3f0b6a4"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_select.html#a22884620d65a66205ba7dde9e3f0b6a4">onert::ir::operation::Select::Select</a></div><div class="ttdeci">Select(const OperandIndexSequence &amp;inputs, const OperandIndexSequence &amp;outputs)</div><div class="ttdef"><b>Definition</b> <a href="_select_8cc_source.html#l00026">Select.cc:26</a></div></div>
-<div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_select_html_a57feacffca5a5139ac1733628b4c22dd"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_select.html#a57feacffca5a5139ac1733628b4c22dd">onert::ir::operation::Select::Input</a></div><div class="ttdeci">Input</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_select_8h_source.html#l00028">Select.h:29</a></div></div>
-<div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_select_html_a8fc03268e62426ee2386df26b5e9e8c6"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_select.html#a8fc03268e62426ee2386df26b5e9e8c6">onert::ir::operation::Select::opcode</a></div><div class="ttdeci">OpCode opcode() const final</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_select_8h_source.html#l00040">Select.h:40</a></div></div>
-<div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_select_html_ac4dd35bf895ecd15b877d988d5bea4ca"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_select.html#ac4dd35bf895ecd15b877d988d5bea4ca">onert::ir::operation::Select::accept</a></div><div class="ttdeci">void accept(OperationVisitor &amp;v) const override</div><div class="ttdef"><b>Definition</b> <a href="_select_8cc_source.html#l00024">Select.cc:24</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_a587a2982319cf192bc7a6e6e44cde3b7"><div class="ttname"><a href="namespaceonert_1_1ir.html#a587a2982319cf192bc7a6e6e44cde3b7">onert::ir::OpCode</a></div><div class="ttdeci">OpCode</div><div class="ttdef"><b>Definition</b> <a href="_op_code_8h_source.html#l00027">OpCode.h:28</a></div></div>
-<div class="ttc" id="anamespaceonert_html"><div class="ttname"><a href="namespaceonert.html">onert</a></div><div class="ttdef"><b>Definition</b> <a href="_custom_kernel_8cc_source.html#l00019">CustomKernel.cc:20</a></div></div>
-<div class="ttc" id="astruct_operation_html"><div class="ttname"><a href="struct_operation.html">Operation</a></div><div class="ttdef"><b>Definition</b> <a href="compiler_2__deprecated_2ann-ref_2src_2_operation_8h_source.html#l00026">Operation.h:26</a></div></div>
 </div><!-- fragment --><p>You can also define the class in other source file like below</p>
-<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="runtime_2onert_2core_2include_2ir_2operation_2_select_8h.html">ir/operation/Select.h</a>&quot;</span></div>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;ir/operation/Select.h&quot;</span></div>
 <div class="line"> </div>
-<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="_operation_visitor_8h.html">ir/OperationVisitor.h</a>&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;ir/OperationVisitor.h&quot;</span></div>
 <div class="line"> </div>
-<div class="line"><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert.html">onert</a></div>
+<div class="line"><span class="keyword">namespace </span>onert</div>
 <div class="line">{</div>
 <div class="line"><span class="keyword">namespace </span>ir</div>
 <div class="line">{</div>
 <div class="line"><span class="keyword">namespace </span>operation</div>
 <div class="line">{</div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1ir_1_1operation_1_1_select.html#ac4dd35bf895ecd15b877d988d5bea4ca">Select::accept</a>(OperationVisitor &amp;v)<span class="keyword"> const </span>{ v.visit(*<span class="keyword">this</span>); }</div>
+<div class="line"><span class="keywordtype">void</span> Select::accept(OperationVisitor &amp;v)<span class="keyword"> const </span>{ v.visit(*<span class="keyword">this</span>); }</div>
 <div class="line"> </div>
-<div class="line"><a class="code hl_function" href="classonert_1_1ir_1_1operation_1_1_select.html#a22884620d65a66205ba7dde9e3f0b6a4">Select::Select</a>(<span class="keyword">const</span> OperandIndexSequence &amp;inputs, <span class="keyword">const</span> OperandIndexSequence &amp;outputs)</div>
-<div class="line">    : <a class="code hl_struct" href="struct_operation.html">Operation</a>{OperandConstraint::createExact(3u), inputs, outputs}</div>
+<div class="line">Select::Select(<span class="keyword">const</span> OperandIndexSequence &amp;inputs, <span class="keyword">const</span> OperandIndexSequence &amp;outputs)</div>
+<div class="line">    : Operation{OperandConstraint::createExact(3u), inputs, outputs}</div>
 <div class="line">{</div>
 <div class="line">}</div>
-<div class="ttc" id="a_operation_visitor_8h_html"><div class="ttname"><a href="_operation_visitor_8h.html">OperationVisitor.h</a></div></div>
-<div class="ttc" id="aruntime_2onert_2core_2include_2ir_2operation_2_select_8h_html"><div class="ttname"><a href="runtime_2onert_2core_2include_2ir_2operation_2_select_8h.html">Select.h</a></div></div>
 </div><!-- fragment --><ul>
 <li><a href="/runtime/onert/core/include/ir/Operations.Include.h">Operations.Include.h</a></li>
 </ul>
-<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="runtime_2onert_2core_2include_2ir_2operation_2_select_8h.html">ir/operation/Select.h</a>&quot;</span></div>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;ir/operation/Select.h&quot;</span></div>
 </div><!-- fragment --><ol type="1">
 <li>Add to the OperationValidator to check if the node is valid.<ul>
 <li><a href="/runtime/onert/core/src/compiler/OperationValidator.h">OperationValidator.h</a></li>
@@ -229,7 +219,7 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-introduce-a-new
 <div class="line">  UNUSED_RELEASE(input1_index);</div>
 <div class="line">  UNUSED_RELEASE(input2_index);</div>
 <div class="line"> </div>
-<div class="line">  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespacevalidate__onnx2circle.html#a77a6e2a2481a4974cacf87f336d85e1e">output_type</a> = _ctx.at(output_index).typeInfo();</div>
+<div class="line">  <span class="keyword">const</span> <span class="keyword">auto</span> output_type = _ctx.at(output_index).typeInfo();</div>
 <div class="line">  <span class="keyword">const</span> <span class="keyword">auto</span> cond_type = _ctx.at(cond_index).typeInfo();</div>
 <div class="line">  <span class="keyword">const</span> <span class="keyword">auto</span> input1_type = _ctx.at(input1_index).typeInfo();</div>
 <div class="line">  <span class="keyword">const</span> <span class="keyword">auto</span> input2_type = _ctx.at(input2_index).typeInfo();</div>
@@ -240,27 +230,25 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-introduce-a-new
 <div class="line">  UNUSED_RELEASE(input2_type);</div>
 <div class="line"> </div>
 <div class="line">  assert(cond_type.type() == ir::DataType::BOOL8);</div>
-<div class="line">  assert(<a class="code hl_variable" href="namespacevalidate__onnx2circle.html#a77a6e2a2481a4974cacf87f336d85e1e">output_type</a>.type() == ir::DataType::FLOAT32 || <a class="code hl_variable" href="namespacevalidate__onnx2circle.html#a77a6e2a2481a4974cacf87f336d85e1e">output_type</a>.type() == ir::DataType::INT32 ||</div>
-<div class="line">         <a class="code hl_variable" href="namespacevalidate__onnx2circle.html#a77a6e2a2481a4974cacf87f336d85e1e">output_type</a>.type() == ir::DataType::QUANT8_ASYMM);</div>
-<div class="line">  assert(<a class="code hl_variable" href="namespacevalidate__onnx2circle.html#a77a6e2a2481a4974cacf87f336d85e1e">output_type</a>.type() == input1_type.type());</div>
-<div class="line">  assert(<a class="code hl_variable" href="namespacevalidate__onnx2circle.html#a77a6e2a2481a4974cacf87f336d85e1e">output_type</a>.type() == input2_type.type());</div>
+<div class="line">  assert(output_type.type() == ir::DataType::FLOAT32 || output_type.type() == ir::DataType::INT32 ||</div>
+<div class="line">         output_type.type() == ir::DataType::QUANT8_ASYMM);</div>
+<div class="line">  assert(output_type.type() == input1_type.type());</div>
+<div class="line">  assert(output_type.type() == input2_type.type());</div>
 <div class="line"> </div>
-<div class="line">  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = _ctx.at(output_index).shape();</div>
+<div class="line">  <span class="keyword">const</span> <span class="keyword">auto</span> output_shape = _ctx.at(output_index).shape();</div>
 <div class="line">  <span class="keyword">const</span> <span class="keyword">auto</span> cond_shape = _ctx.at(cond_index).shape();</div>
 <div class="line">  <span class="keyword">const</span> <span class="keyword">auto</span> input1_shape = _ctx.at(input1_index).shape();</div>
 <div class="line">  <span class="keyword">const</span> <span class="keyword">auto</span> input2_shape = _ctx.at(input2_index).shape();</div>
 <div class="line"> </div>
-<div class="line">  UNUSED_RELEASE(<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
+<div class="line">  UNUSED_RELEASE(output_shape);</div>
 <div class="line">  UNUSED_RELEASE(cond_shape);</div>
 <div class="line">  UNUSED_RELEASE(input1_shape);</div>
 <div class="line">  UNUSED_RELEASE(input2_shape);</div>
 <div class="line"> </div>
-<div class="line">  assert(<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> == input1_shape);</div>
+<div class="line">  assert(output_shape == input1_shape);</div>
 <div class="line">  assert(cond_shape == input1_shape);</div>
 <div class="line">  assert(input2_shape == input1_shape);</div>
 <div class="line">}</div>
-<div class="ttc" id="aluci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition</b> <a href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
-<div class="ttc" id="anamespacevalidate__onnx2circle_html_a77a6e2a2481a4974cacf87f336d85e1e"><div class="ttname"><a href="namespacevalidate__onnx2circle.html#a77a6e2a2481a4974cacf87f336d85e1e">validate_onnx2circle.output_type</a></div><div class="ttdeci">output_type</div><div class="ttdef"><b>Definition</b> <a href="validate__onnx2circle_8py_source.html#l00129">validate_onnx2circle.py:129</a></div></div>
 </div><!-- fragment --><ol type="1">
 <li>Add to the Dumper to dump IR information of new operation.</li>
 </ol>
@@ -269,14 +257,13 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-introduce-a-new
 </ul>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span> Dumper::visit(<span class="keyword">const</span> Select &amp;node)</div>
 <div class="line">{</div>
-<div class="line">  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(LIR) &lt;&lt; <span class="stringliteral">&quot;* Select&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line">  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(LIR) &lt;&lt; <span class="stringliteral">&quot;  - Inputs : Cond(&quot;</span> &lt;&lt; node.getInputs().at(Select::Input::COND).value()</div>
+<div class="line">  VERBOSE(LIR) &lt;&lt; <span class="stringliteral">&quot;* Select&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line">  VERBOSE(LIR) &lt;&lt; <span class="stringliteral">&quot;  - Inputs : Cond(&quot;</span> &lt;&lt; node.getInputs().at(Select::Input::COND).value()</div>
 <div class="line">               &lt;&lt; <span class="stringliteral">&quot;) Input1&quot;</span> &lt;&lt; node.getInputs().at(Select::Input::INPUT1).value() &lt;&lt; <span class="stringliteral">&quot;) Input2&quot;</span></div>
 <div class="line">               &lt;&lt; node.getInputs().at(Select::Input::INPUT2).value() &lt;&lt; <span class="stringliteral">&quot;)&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line">  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(LIR) &lt;&lt; <span class="stringliteral">&quot;  - Output : Output(&quot;</span> &lt;&lt; node.getOutputs().at(Select::Output::OUTPUT).value()</div>
+<div class="line">  VERBOSE(LIR) &lt;&lt; <span class="stringliteral">&quot;  - Output : Output(&quot;</span> &lt;&lt; node.getOutputs().at(Select::Output::OUTPUT).value()</div>
 <div class="line">               &lt;&lt; <span class="stringliteral">&quot;)&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line">}</div>
-<div class="ttc" id="aluci_2log_2include_2luci_2_log_8h_html_a212d71bce44cd84d4fe678058cd5eccd"><div class="ttname"><a href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a></div><div class="ttdeci">#define VERBOSE(name, lv)</div><div class="ttdef"><b>Definition</b> <a href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">Log.h:71</a></div></div>
 </div><!-- fragment --><ol type="1">
 <li>Add code for shape inference</li>
 </ol>
@@ -382,9 +369,8 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-introduce-a-new
 <div class="line">    inputs.append(OperandIndex{init_param.inputs[n]});</div>
 <div class="line">  }</div>
 <div class="line"> </div>
-<div class="line">  <span class="keywordflow">return</span> <span class="keyword">new</span> operation::Select{<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>, outputs};</div>
+<div class="line">  <span class="keywordflow">return</span> <span class="keyword">new</span> operation::Select{inputs, outputs};</div>
 <div class="line">};</div>
-<div class="ttc" id="anamespace_gen_h5_random_inputs_html_abcab13752e1826b70991e56f8e9a834d"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">GenH5RandomInputs.inputs</a></div><div class="ttdeci">inputs</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00049">GenH5RandomInputs.py:49</a></div></div>
 </div><!-- fragment --><ol type="1">
 <li>If you want that NNAPI supports new operation of TFLite's model, you need to update the things related to the operation in <a href="/runtime/libs/tflite/port/1.13.1/src/nnapi_delegate.cpp">nnapi_delegate</a> like below</li>
 </ol>
@@ -455,11 +441,10 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-introduce-a-new
 <div class="line">  fn-&gt;configure(cond_alloc-&gt;handle(), input1_alloc-&gt;handle(), input2_alloc-&gt;handle(),</div>
 <div class="line">                output_alloc-&gt;handle());</div>
 <div class="line"> </div>
-<div class="line">  <span class="keyword">auto</span> acl_fn = <a class="code hl_function" href="namespaceonert_1_1backend_1_1acl__common.html#ad332f86012f1af93ea4b0d773112e41c">asAclFunction</a>(std::move(fn));</div>
+<div class="line">  <span class="keyword">auto</span> acl_fn = asAclFunction(std::move(fn));</div>
 <div class="line"> </div>
 <div class="line">  _execution_builder-&gt;append(std::move(acl_fn));</div>
 <div class="line">}</div>
-<div class="ttc" id="anamespaceonert_1_1backend_1_1acl__common_html_ad332f86012f1af93ea4b0d773112e41c"><div class="ttname"><a href="namespaceonert_1_1backend_1_1acl__common.html#ad332f86012f1af93ea4b0d773112e41c">onert::backend::acl_common::asAclFunction</a></div><div class="ttdeci">std::unique_ptr&lt; AclFunction &gt; asAclFunction(std::unique_ptr&lt;::arm_compute::IFunction &gt; &amp;&amp;layer)</div><div class="ttdef"><b>Definition</b> <a href="acl__common_2_convert_8cc_source.html#l00246">Convert.cc:246</a></div></div>
 </div><!-- fragment --><h3>acl_neon</h3>
 <p>Similar implementation as acl_cl is required.</p>
 <h3>cpu</h3>
@@ -477,7 +462,7 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-introduce-a-new
 <div class="line">  <span class="keyword">const</span> <span class="keyword">auto</span> true_index{node.getInputs().at(ir::operation::Select::Input::INPUT_TRUE)};</div>
 <div class="line">  <span class="keyword">const</span> <span class="keyword">auto</span> false_index{node.getInputs().at(ir::operation::Select::Input::INPUT_FALSE)};</div>
 <div class="line"> </div>
-<div class="line">  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#a187620ffdf72abdf0acf204385501746">output_tensor</a> = _tensor_reg-&gt;getPortableTensor(output_index);</div>
+<div class="line">  <span class="keyword">auto</span> output_tensor = _tensor_reg-&gt;getPortableTensor(output_index);</div>
 <div class="line">  <span class="keyword">auto</span> condition_tensor = _tensor_reg-&gt;getPortableTensor(condition_index);</div>
 <div class="line">  <span class="keyword">auto</span> true_tensor = _tensor_reg-&gt;getPortableTensor(true_index);</div>
 <div class="line">  <span class="keyword">auto</span> false_tensor = _tensor_reg-&gt;getPortableTensor(false_index);</div>
@@ -488,7 +473,6 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-introduce-a-new
 <div class="line"> </div>
 <div class="line">  _return_fn = std::move(fn);</div>
 <div class="line">}</div>
-<div class="ttc" id="anamespacepart__eval__one_html_a187620ffdf72abdf0acf204385501746"><div class="ttname"><a href="namespacepart__eval__one.html#a187620ffdf72abdf0acf204385501746">part_eval_one.output_tensor</a></div><div class="ttdeci">output_tensor</div><div class="ttdef"><b>Definition</b> <a href="part__eval__one_8py_source.html#l00116">part_eval_one.py:116</a></div></div>
 </div><!-- fragment --><h2>ConstantInitializer (in some cases)</h2>
 <p>This component registers function initializing constant tensors and initialize constant tensor layer. Most tensors will be automatically registered internally. And there are some exceptions.</p>
 <h3>cpu</h3>

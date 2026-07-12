@@ -1,5 +1,0 @@
-var namespacennfw_1_1cker_1_1train_1_1functor =
-[
-    [ "SpatialConvolutionBackwardInputFunc", "structnnfw_1_1cker_1_1train_1_1functor_1_1_spatial_convolution_backward_input_func.html", "structnnfw_1_1cker_1_1train_1_1functor_1_1_spatial_convolution_backward_input_func" ],
-    [ "SpatialConvolutionBackwardInputWithExplicitPaddingFunc", "structnnfw_1_1cker_1_1train_1_1functor_1_1_spatial_convolution_backward_input_with_explicit_padding_func.html", "structnnfw_1_1cker_1_1train_1_1functor_1_1_spatial_convolution_backward_input_with_explicit_padding_func" ]
-];

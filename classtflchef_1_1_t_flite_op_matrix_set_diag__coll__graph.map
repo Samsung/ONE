@@ -1,5 +1,0 @@
-<map id="tflchef::TFliteOpMatrixSetDiag" name="tflchef::TFliteOpMatrixSetDiag">
-<area shape="rect" id="Node000001" title="tflchef operator builder for MatrixSetDiag" alt="" coords="5,79,199,105"/>
-<area shape="rect" id="Node000002" href="$classtflchef_1_1_t_flite_op_chef.html" title="Interface for each operators to build tflchef." alt="" coords="32,5,172,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,46,105,79,99,79,99,46"/>
-</map>

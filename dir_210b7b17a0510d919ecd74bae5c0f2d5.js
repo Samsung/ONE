@@ -1,6 +1,0 @@
-var dir_210b7b17a0510d919ecd74bae5c0f2d5 =
-[
-    [ "FloatAveragePool2DKernel.h", "luci-interpreter_2include_2luci__interpreter_2test__models_2average__pool__2d_2_float_average_pool2_d_kernel_8h.html", "luci-interpreter_2include_2luci__interpreter_2test__models_2average__pool__2d_2_float_average_pool2_d_kernel_8h" ],
-    [ "NegAveragePool2DKernel.h", "luci-interpreter_2include_2luci__interpreter_2test__models_2average__pool__2d_2_neg_average_pool2_d_kernel_8h.html", "luci-interpreter_2include_2luci__interpreter_2test__models_2average__pool__2d_2_neg_average_pool2_d_kernel_8h" ],
-    [ "TestDataAveragePool2DBase.h", "luci-interpreter_2include_2luci__interpreter_2test__models_2average__pool__2d_2_test_data_average_pool2_d_base_8h.html", "luci-interpreter_2include_2luci__interpreter_2test__models_2average__pool__2d_2_test_data_average_pool2_d_base_8h" ]
-];

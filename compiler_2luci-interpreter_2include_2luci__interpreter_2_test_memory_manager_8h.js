@@ -1,4 +1,0 @@
-var compiler_2luci_interpreter_2include_2luci__interpreter_2_test_memory_manager_8h =
-[
-    [ "luci_interpreter::TestMemoryManager", "classluci__interpreter_1_1_test_memory_manager.html", "classluci__interpreter_1_1_test_memory_manager" ]
-];

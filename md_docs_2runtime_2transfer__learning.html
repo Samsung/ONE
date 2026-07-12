@@ -221,7 +221,7 @@ $(document).ready(function(){initNavTree('md_docs_2runtime_2transfer__learning.h
 <div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div>
 <div class="line"> </div>
 <div class="line">nnpackage_path = <span class="stringliteral">&#39;{mobilenet_package_dir}/customized_mobilenetv2_trained&#39;</span></div>
-<div class="line">session = <a class="code hl_struct" href="structnnfw__session.html">nnfw_session</a>(nnpackage_path, <span class="stringliteral">&#39;cpu&#39;</span>)</div>
+<div class="line">session = nnfw_session(nnpackage_path, <span class="stringliteral">&#39;cpu&#39;</span>)</div>
 <div class="line"> </div>
 <div class="line">_URL = <span class="stringliteral">&#39;https://storage.googleapis.com/mledu-datasets/cats_and_dogs_filtered.zip&#39;</span></div>
 <div class="line">path_to_zip = tf.keras.utils.get_file(<span class="stringliteral">&#39;cats_and_dogs.zip&#39;</span>, origin=_URL, extract=<span class="keyword">True</span>)</div>
@@ -251,7 +251,6 @@ $(document).ready(function(){initNavTree('md_docs_2runtime_2transfer__learning.h
 <div class="line">plt.axis(<span class="stringliteral">&quot;off&quot;</span>)</div>
 <div class="line">plt.imshow(test_image.squeeze().astype(<span class="stringliteral">&quot;uint8&quot;</span>))</div>
 <div class="line">plt.savefig(<span class="stringliteral">&#39;transfer_learning_result.png&#39;</span>)</div>
-<div class="ttc" id="astructnnfw__session_html"><div class="ttname"><a href="structnnfw__session.html">nnfw_session</a></div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8cpp_source.html#l00068">onert-micro.cpp:69</a></div></div>
 </div><!-- fragment --><p>Example output<br  />
  <img src="transfer_learning_result.png" alt="An example result of inference" class="inline"/></p>
 <h1>References</h1>
