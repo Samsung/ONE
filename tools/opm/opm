@@ -1,0 +1,51 @@
+#!/bin/bash
+SCRIPT_DIR=$(dirname "$0")
+COMMAND="$1"
+
+if [ -z "$COMMAND" ] || [ "$COMMAND" == "-h" ] || [ "$COMMAND" == "--help" ]; then
+    cat << 'EOF'
+OPM (ONE package manager)
+
+Usage: opm <command> [options]
+
+Commands:
+  init                Initialize environment (create venv, install dependencies, fetch o2o tools)
+  import <model_id>   Download a model from HuggingFace
+                      Options: -r <requirements_file> (default: requirements.txt)
+  export              Export model to GGMA package
+                      Options: -s <export_script> -p <pipeline_config> (default: pipeline.yaml)
+  clean               Clean build artifacts
+                      Options: --all (remove venv and o2o as well)
+
+Examples:
+  opm init
+  opm import Maykeye/TinyLLama-v0
+  opm import Maykeye/TinyLLama-v0 -r custom.requirements
+  opm export -s tinyllama.py
+  opm export -s tinyllama.py -p custom.pipeline
+  opm clean --all
+
+For more information, see tools/opm/README.md
+EOF
+    exit 0
+fi
+
+shift  # Remove command from arguments
+
+if [ ! -f "$SCRIPT_DIR/$COMMAND.py" ]; then
+    echo "Error: Invalid command '$COMMAND'"
+    echo "Run 'opm --help' to see available commands"
+    exit 1
+fi
+
+if [ "$COMMAND" = "init" ]; then
+    PYTHON="python3"
+else
+    if [ ! -x "venv/bin/python3" ]; then
+        echo "Error: Virtual environment not found!"
+        echo "Please run 'opm init' first to set up the environment."
+        exit 1
+    fi
+    PYTHON="venv/bin/python3"
+fi
+$PYTHON "$SCRIPT_DIR/$COMMAND.py" "$@"
