@@ -1,0 +1,9 @@
+decode: |
+  reshape.io.py input --by_shape [1,16,30,4] [1,16,32,4] < decode.circle
+      | transpose.io.kvcache.py > _.circle && mv _.circle decode.circle
+
+merge: |
+  merge.circles.py prefill.circle decode.circle
+      | fuse.bmm_lhs_const.py
+      | downcast.input_ids.py
+      | gc.py > model.circle
