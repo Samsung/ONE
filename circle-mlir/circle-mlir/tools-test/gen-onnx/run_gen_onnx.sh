@@ -10,7 +10,7 @@
 # model_name : name of model
 # onnx_name  : name of onnx file
 
-THIS_SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+THIS_SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 PY_SCRIPT_PATH="${THIS_SCRIPT_PATH}/run_gen_onnx.py"
 
 VENV_PATH="$1"; shift
