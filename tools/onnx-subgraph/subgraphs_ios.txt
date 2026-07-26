@@ -1,0 +1,4 @@
+NPUsubgraph0: order0--input-name x;--output-name /stem/conv3/bn/act/Mul_output_0;
+NPUsubgraph1: order2--input-name /stem/pool/MaxPool_output_0;--output-name /stages/stages.3/stages.3.1/act/Mul_output_0;
+CPUsubgraph0: order1--input-name /stem/conv3/bn/act/Mul_output_0;--output-name /stem/pool/MaxPool_output_0;
+CPUsubgraph1: order3--input-name /stages/stages.3/stages.3.1/act/Mul_output_0;--output-name 316;
